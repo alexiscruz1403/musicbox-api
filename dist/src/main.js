@@ -1,13 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-require("./instrument");
-const core_1 = require("@nestjs/core");
-const nestjs_pino_1 = require("nestjs-pino");
-const app_module_1 = require("./app.module");
+import './instrument.js';
+import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+import { Logger } from 'nestjs-pino';
+import helmet from 'helmet';
+import { AppModule } from './app.module.js';
+import { HttpExceptionFilter } from './modules/common/filters/http-exception.filter.js';
 async function bootstrap() {
-    const app = await core_1.NestFactory.create(app_module_1.AppModule, { bufferLogs: true });
-    app.useLogger(app.get(nestjs_pino_1.Logger));
+    const app = await NestFactory.create(AppModule, { bufferLogs: true });
+    app.useLogger(app.get(Logger));
     app.setGlobalPrefix('v1');
+    app.use(helmet());
+    app.enableCors({ origin: process.env['FRONTEND_URL'], credentials: true });
+    app.useGlobalPipes(new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+    }));
+    app.useGlobalFilters(new HttpExceptionFilter());
     await app.listen(process.env['PORT'] ?? 3001);
 }
 void bootstrap();

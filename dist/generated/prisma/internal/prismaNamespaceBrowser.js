@@ -1,64 +1,187 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SortOrder = exports.TestScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
-const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
-exports.Decimal = runtime.Decimal;
-exports.NullTypes = {
+import * as runtime from "@prisma/client/runtime/index-browser";
+export const Decimal = runtime.Decimal;
+export const NullTypes = {
     DbNull: runtime.NullTypes.DbNull,
     JsonNull: runtime.NullTypes.JsonNull,
     AnyNull: runtime.NullTypes.AnyNull,
 };
-exports.DbNull = runtime.DbNull;
-exports.JsonNull = runtime.JsonNull;
-exports.AnyNull = runtime.AnyNull;
-exports.ModelName = {
-    test: 'test'
+export const DbNull = runtime.DbNull;
+export const JsonNull = runtime.JsonNull;
+export const AnyNull = runtime.AnyNull;
+export const ModelName = {
+    User: 'User',
+    Follow: 'Follow',
+    RefreshToken: 'RefreshToken',
+    Artist: 'Artist',
+    Album: 'Album',
+    Track: 'Track',
+    Review: 'Review',
+    TrackReviewItem: 'TrackReviewItem',
+    ReviewReaction: 'ReviewReaction',
+    Comment: 'Comment',
+    Notification: 'Notification',
+    NotificationPreference: 'NotificationPreference',
+    Report: 'Report',
+    RecommendationSnapshot: 'RecommendationSnapshot'
 };
-exports.TransactionIsolationLevel = runtime.makeStrictEnum({
+export const TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
     ReadCommitted: 'ReadCommitted',
     RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
 });
-exports.TestScalarFieldEnum = {
+export const UserScalarFieldEnum = {
     id: 'id',
-    created_at: 'created_at'
+    handle: 'handle',
+    displayName: 'displayName',
+    email: 'email',
+    passwordHash: 'passwordHash',
+    googleId: 'googleId',
+    avatarUrl: 'avatarUrl',
+    bio: 'bio',
+    notifEnabled: 'notifEnabled',
+    status: 'status',
+    emailVerifiedAt: 'emailVerifiedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
 };
-exports.SortOrder = {
+export const FollowScalarFieldEnum = {
+    followerId: 'followerId',
+    followeeId: 'followeeId',
+    createdAt: 'createdAt'
+};
+export const RefreshTokenScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    tokenHash: 'tokenHash',
+    expiresAt: 'expiresAt',
+    revokedAt: 'revokedAt',
+    userAgent: 'userAgent',
+    ip: 'ip',
+    createdAt: 'createdAt'
+};
+export const ArtistScalarFieldEnum = {
+    id: 'id',
+    deezerId: 'deezerId',
+    mbid: 'mbid',
+    name: 'name',
+    imageUrl: 'imageUrl',
+    lastSyncedAt: 'lastSyncedAt'
+};
+export const AlbumScalarFieldEnum = {
+    id: 'id',
+    deezerId: 'deezerId',
+    mbid: 'mbid',
+    title: 'title',
+    artistId: 'artistId',
+    coverUrl: 'coverUrl',
+    releaseDate: 'releaseDate',
+    genreLabel: 'genreLabel',
+    lastSyncedAt: 'lastSyncedAt'
+};
+export const TrackScalarFieldEnum = {
+    id: 'id',
+    deezerId: 'deezerId',
+    mbid: 'mbid',
+    title: 'title',
+    albumId: 'albumId',
+    artistId: 'artistId',
+    durationMs: 'durationMs',
+    trackNumber: 'trackNumber',
+    previewUrl: 'previewUrl',
+    lastSyncedAt: 'lastSyncedAt'
+};
+export const ReviewScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    type: 'type',
+    trackId: 'trackId',
+    albumId: 'albumId',
+    description: 'description',
+    rating: 'rating',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt',
+    externalTitle: 'externalTitle',
+    externalArtistName: 'externalArtistName',
+    externalCoverUrl: 'externalCoverUrl'
+};
+export const TrackReviewItemScalarFieldEnum = {
+    id: 'id',
+    reviewId: 'reviewId',
+    trackId: 'trackId',
+    rating: 'rating',
+    description: 'description',
+    position: 'position'
+};
+export const ReviewReactionScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    reviewId: 'reviewId',
+    type: 'type',
+    createdAt: 'createdAt'
+};
+export const CommentScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    reviewId: 'reviewId',
+    content: 'content',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+};
+export const NotificationScalarFieldEnum = {
+    id: 'id',
+    recipientId: 'recipientId',
+    actorId: 'actorId',
+    type: 'type',
+    reviewId: 'reviewId',
+    commentId: 'commentId',
+    readAt: 'readAt',
+    createdAt: 'createdAt'
+};
+export const NotificationPreferenceScalarFieldEnum = {
+    userId: 'userId',
+    likesEnabled: 'likesEnabled',
+    dislikesEnabled: 'dislikesEnabled',
+    commentsEnabled: 'commentsEnabled',
+    followsEnabled: 'followsEnabled'
+};
+export const ReportScalarFieldEnum = {
+    id: 'id',
+    reporterId: 'reporterId',
+    targetType: 'targetType',
+    targetId: 'targetId',
+    reason: 'reason',
+    status: 'status',
+    createdAt: 'createdAt'
+};
+export const RecommendationSnapshotScalarFieldEnum = {
+    userId: 'userId',
+    payload: 'payload',
+    generatedAt: 'generatedAt'
+};
+export const SortOrder = {
     asc: 'asc',
     desc: 'desc'
+};
+export const JsonNullValueInput = {
+    JsonNull: JsonNull
+};
+export const QueryMode = {
+    default: 'default',
+    insensitive: 'insensitive'
+};
+export const NullsOrder = {
+    first: 'first',
+    last: 'last'
+};
+export const JsonNullValueFilter = {
+    DbNull: DbNull,
+    JsonNull: JsonNull,
+    AnyNull: AnyNull
 };
 //# sourceMappingURL=prismaNamespaceBrowser.js.map

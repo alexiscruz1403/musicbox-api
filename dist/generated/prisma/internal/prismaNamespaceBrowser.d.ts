@@ -11,7 +11,20 @@ export declare const DbNull: import("@prisma/client-runtime-utils").DbNullClass;
 export declare const JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
 export declare const AnyNull: import("@prisma/client-runtime-utils").AnyNullClass;
 export declare const ModelName: {
-    readonly test: "test";
+    readonly User: "User";
+    readonly Follow: "Follow";
+    readonly RefreshToken: "RefreshToken";
+    readonly Artist: "Artist";
+    readonly Album: "Album";
+    readonly Track: "Track";
+    readonly Review: "Review";
+    readonly TrackReviewItem: "TrackReviewItem";
+    readonly ReviewReaction: "ReviewReaction";
+    readonly Comment: "Comment";
+    readonly Notification: "Notification";
+    readonly NotificationPreference: "NotificationPreference";
+    readonly Report: "Report";
+    readonly RecommendationSnapshot: "RecommendationSnapshot";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -21,13 +34,176 @@ export declare const TransactionIsolationLevel: {
     readonly Serializable: "Serializable";
 };
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
-export declare const TestScalarFieldEnum: {
+export declare const UserScalarFieldEnum: {
     readonly id: "id";
-    readonly created_at: "created_at";
+    readonly handle: "handle";
+    readonly displayName: "displayName";
+    readonly email: "email";
+    readonly passwordHash: "passwordHash";
+    readonly googleId: "googleId";
+    readonly avatarUrl: "avatarUrl";
+    readonly bio: "bio";
+    readonly notifEnabled: "notifEnabled";
+    readonly status: "status";
+    readonly emailVerifiedAt: "emailVerifiedAt";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly deletedAt: "deletedAt";
 };
-export type TestScalarFieldEnum = (typeof TestScalarFieldEnum)[keyof typeof TestScalarFieldEnum];
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
+export declare const FollowScalarFieldEnum: {
+    readonly followerId: "followerId";
+    readonly followeeId: "followeeId";
+    readonly createdAt: "createdAt";
+};
+export type FollowScalarFieldEnum = (typeof FollowScalarFieldEnum)[keyof typeof FollowScalarFieldEnum];
+export declare const RefreshTokenScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly tokenHash: "tokenHash";
+    readonly expiresAt: "expiresAt";
+    readonly revokedAt: "revokedAt";
+    readonly userAgent: "userAgent";
+    readonly ip: "ip";
+    readonly createdAt: "createdAt";
+};
+export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum];
+export declare const ArtistScalarFieldEnum: {
+    readonly id: "id";
+    readonly deezerId: "deezerId";
+    readonly mbid: "mbid";
+    readonly name: "name";
+    readonly imageUrl: "imageUrl";
+    readonly lastSyncedAt: "lastSyncedAt";
+};
+export type ArtistScalarFieldEnum = (typeof ArtistScalarFieldEnum)[keyof typeof ArtistScalarFieldEnum];
+export declare const AlbumScalarFieldEnum: {
+    readonly id: "id";
+    readonly deezerId: "deezerId";
+    readonly mbid: "mbid";
+    readonly title: "title";
+    readonly artistId: "artistId";
+    readonly coverUrl: "coverUrl";
+    readonly releaseDate: "releaseDate";
+    readonly genreLabel: "genreLabel";
+    readonly lastSyncedAt: "lastSyncedAt";
+};
+export type AlbumScalarFieldEnum = (typeof AlbumScalarFieldEnum)[keyof typeof AlbumScalarFieldEnum];
+export declare const TrackScalarFieldEnum: {
+    readonly id: "id";
+    readonly deezerId: "deezerId";
+    readonly mbid: "mbid";
+    readonly title: "title";
+    readonly albumId: "albumId";
+    readonly artistId: "artistId";
+    readonly durationMs: "durationMs";
+    readonly trackNumber: "trackNumber";
+    readonly previewUrl: "previewUrl";
+    readonly lastSyncedAt: "lastSyncedAt";
+};
+export type TrackScalarFieldEnum = (typeof TrackScalarFieldEnum)[keyof typeof TrackScalarFieldEnum];
+export declare const ReviewScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly type: "type";
+    readonly trackId: "trackId";
+    readonly albumId: "albumId";
+    readonly description: "description";
+    readonly rating: "rating";
+    readonly status: "status";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly deletedAt: "deletedAt";
+    readonly externalTitle: "externalTitle";
+    readonly externalArtistName: "externalArtistName";
+    readonly externalCoverUrl: "externalCoverUrl";
+};
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum];
+export declare const TrackReviewItemScalarFieldEnum: {
+    readonly id: "id";
+    readonly reviewId: "reviewId";
+    readonly trackId: "trackId";
+    readonly rating: "rating";
+    readonly description: "description";
+    readonly position: "position";
+};
+export type TrackReviewItemScalarFieldEnum = (typeof TrackReviewItemScalarFieldEnum)[keyof typeof TrackReviewItemScalarFieldEnum];
+export declare const ReviewReactionScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly reviewId: "reviewId";
+    readonly type: "type";
+    readonly createdAt: "createdAt";
+};
+export type ReviewReactionScalarFieldEnum = (typeof ReviewReactionScalarFieldEnum)[keyof typeof ReviewReactionScalarFieldEnum];
+export declare const CommentScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly reviewId: "reviewId";
+    readonly content: "content";
+    readonly status: "status";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly deletedAt: "deletedAt";
+};
+export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum];
+export declare const NotificationScalarFieldEnum: {
+    readonly id: "id";
+    readonly recipientId: "recipientId";
+    readonly actorId: "actorId";
+    readonly type: "type";
+    readonly reviewId: "reviewId";
+    readonly commentId: "commentId";
+    readonly readAt: "readAt";
+    readonly createdAt: "createdAt";
+};
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum];
+export declare const NotificationPreferenceScalarFieldEnum: {
+    readonly userId: "userId";
+    readonly likesEnabled: "likesEnabled";
+    readonly dislikesEnabled: "dislikesEnabled";
+    readonly commentsEnabled: "commentsEnabled";
+    readonly followsEnabled: "followsEnabled";
+};
+export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum];
+export declare const ReportScalarFieldEnum: {
+    readonly id: "id";
+    readonly reporterId: "reporterId";
+    readonly targetType: "targetType";
+    readonly targetId: "targetId";
+    readonly reason: "reason";
+    readonly status: "status";
+    readonly createdAt: "createdAt";
+};
+export type ReportScalarFieldEnum = (typeof ReportScalarFieldEnum)[keyof typeof ReportScalarFieldEnum];
+export declare const RecommendationSnapshotScalarFieldEnum: {
+    readonly userId: "userId";
+    readonly payload: "payload";
+    readonly generatedAt: "generatedAt";
+};
+export type RecommendationSnapshotScalarFieldEnum = (typeof RecommendationSnapshotScalarFieldEnum)[keyof typeof RecommendationSnapshotScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
 };
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
+export declare const JsonNullValueInput: {
+    readonly JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
+};
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput];
+export declare const QueryMode: {
+    readonly default: "default";
+    readonly insensitive: "insensitive";
+};
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
+export declare const NullsOrder: {
+    readonly first: "first";
+    readonly last: "last";
+};
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
+export declare const JsonNullValueFilter: {
+    readonly DbNull: import("@prisma/client-runtime-utils").DbNullClass;
+    readonly JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
+    readonly AnyNull: import("@prisma/client-runtime-utils").AnyNullClass;
+};
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter];
