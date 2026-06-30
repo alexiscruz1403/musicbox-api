@@ -1,1 +1,1 @@
-import './instrument';
+import './instrument.js';

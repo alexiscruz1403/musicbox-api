@@ -7,8 +7,299 @@ datasource db {
   provider = "postgresql"
 }
 
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model test {
-  id         BigInt   @id @default(autoincrement())
-  created_at DateTime @default(now()) @db.Timestamptz(6)
+// ─── Enums ───────────────────────────────────────────────────────
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum ReviewType {
+  TRACK
+  ALBUM
+}
+
+enum ContentStatus {
+  ACTIVE
+  HIDDEN
+  DELETED
+}
+
+enum ReactionType {
+  LIKE
+  DISLIKE
+}
+
+enum NotificationType {
+  LIKE
+  DISLIKE
+  COMMENT
+  FOLLOW
+}
+
+enum ReportTargetType {
+  REVIEW
+  COMMENT
+  USER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  DISMISSED
+}
+
+// ─── User & Auth ─────────────────────────────────────────────────
+
+model User {
+  id              String     @id @default(uuid())
+  handle          String     @unique
+  displayName     String
+  email           String     @unique
+  passwordHash    String?
+  googleId        String?    @unique
+  avatarUrl       String?
+  bio             String?
+  notifEnabled    Boolean    @default(true)
+  status          UserStatus @default(ACTIVE)
+  emailVerifiedAt DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  deletedAt       DateTime?
+
+  following              Follow[]                @relation("Follower")
+  followers              Follow[]                @relation("Followee")
+  reviews                Review[]
+  reactions              ReviewReaction[]
+  comments               Comment[]
+  notificationsReceived  Notification[]          @relation("Recipient")
+  notificationsActed     Notification[]          @relation("Actor")
+  notifPreference        NotificationPreference?
+  refreshTokens          RefreshToken[]
+  reports                Report[]
+  recommendationSnapshot RecommendationSnapshot?
+
+  @@map("users")
+}
+
+model Follow {
+  followerId String
+  followeeId String
+  createdAt  DateTime @default(now())
+
+  follower User @relation("Follower", fields: [followerId], references: [id])
+  followee User @relation("Followee", fields: [followeeId], references: [id])
+
+  @@id([followerId, followeeId])
+  @@map("follows")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String
+  expiresAt DateTime
+  revokedAt DateTime?
+  userAgent String?
+  ip        String?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+// ─── Catalog (cache de Deezer) ────────────────────────────────────
+
+model Artist {
+  id           String   @id @default(uuid())
+  deezerId     String   @unique
+  mbid         String?  @unique
+  name         String
+  imageUrl     String?
+  lastSyncedAt DateTime
+
+  albums Album[]
+  tracks Track[]
+
+  @@map("artists")
+}
+
+model Album {
+  id           String    @id @default(uuid())
+  deezerId     String    @unique
+  mbid         String?   @unique
+  title        String
+  artistId     String
+  coverUrl     String?
+  releaseDate  DateTime?
+  genreLabel   String?
+  lastSyncedAt DateTime
+
+  artist  Artist   @relation(fields: [artistId], references: [id])
+  tracks  Track[]
+  reviews Review[]
+
+  @@map("albums")
+}
+
+model Track {
+  id           String   @id @default(uuid())
+  deezerId     String   @unique
+  mbid         String?  @unique
+  title        String
+  albumId      String?
+  artistId     String
+  durationMs   Int?
+  trackNumber  Int?
+  previewUrl   String?
+  lastSyncedAt DateTime
+
+  album            Album?            @relation(fields: [albumId], references: [id])
+  artist           Artist            @relation(fields: [artistId], references: [id])
+  reviews          Review[]
+  trackReviewItems TrackReviewItem[]
+
+  @@map("tracks")
+}
+
+// ─── Reviews ─────────────────────────────────────────────────────
+
+model Review {
+  id          String        @id @default(uuid())
+  userId      String
+  type        ReviewType
+  trackId     String?
+  albumId     String?
+  description String
+  rating      Decimal       @db.Decimal(3, 1)
+  status      ContentStatus @default(ACTIVE)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+
+  externalTitle      String
+  externalArtistName String
+  externalCoverUrl   String?
+
+  user             User              @relation(fields: [userId], references: [id])
+  track            Track?            @relation(fields: [trackId], references: [id])
+  album            Album?            @relation(fields: [albumId], references: [id])
+  trackReviewItems TrackReviewItem[]
+  reactions        ReviewReaction[]
+  comments         Comment[]
+  notifications    Notification[]
+  reports          Report[]
+
+  @@map("reviews")
+}
+
+model TrackReviewItem {
+  id          String  @id @default(uuid())
+  reviewId    String
+  trackId     String
+  rating      Int
+  description String?
+  position    Int
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  track  Track  @relation(fields: [trackId], references: [id])
+
+  @@unique([reviewId, trackId])
+  @@map("track_review_items")
+}
+
+// ─── Social ───────────────────────────────────────────────────────
+
+model ReviewReaction {
+  id        String       @id @default(uuid())
+  userId    String
+  reviewId  String
+  type      ReactionType
+  createdAt DateTime     @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, reviewId])
+  @@map("review_reactions")
+}
+
+model Comment {
+  id        String        @id @default(uuid())
+  userId    String
+  reviewId  String
+  content   String
+  status    ContentStatus @default(ACTIVE)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  deletedAt DateTime?
+
+  user          User           @relation(fields: [userId], references: [id])
+  review        Review         @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  notifications Notification[]
+
+  @@map("comments")
+}
+
+// ─── Notificaciones ───────────────────────────────────────────────
+
+model Notification {
+  id          String           @id @default(uuid())
+  recipientId String
+  actorId     String
+  type        NotificationType
+  reviewId    String?
+  commentId   String?
+  readAt      DateTime?
+  createdAt   DateTime         @default(now())
+
+  recipient User     @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  actor     User     @relation("Actor", fields: [actorId], references: [id])
+  review    Review?  @relation(fields: [reviewId], references: [id], onDelete: SetNull)
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: SetNull)
+
+  @@map("notifications")
+}
+
+model NotificationPreference {
+  userId          String  @id
+  likesEnabled    Boolean @default(true)
+  dislikesEnabled Boolean @default(true)
+  commentsEnabled Boolean @default(true)
+  followsEnabled  Boolean @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+// ─── Moderación ───────────────────────────────────────────────────
+
+model Report {
+  id         String           @id @default(uuid())
+  reporterId String
+  targetType ReportTargetType
+  targetId   String
+  reason     String
+  status     ReportStatus     @default(PENDING)
+  createdAt  DateTime         @default(now())
+
+  reporter User    @relation(fields: [reporterId], references: [id])
+  review   Review? @relation(fields: [targetId], references: [id], map: "report_review_fk")
+
+  @@map("reports")
+}
+
+// ─── Recomendaciones ──────────────────────────────────────────────
+
+model RecommendationSnapshot {
+  userId      String   @id
+  payload     Json
+  generatedAt DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("recommendation_snapshots")
 }

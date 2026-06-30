@@ -30,7 +30,46 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     $extends: runtime.Types.Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<OmitOpts>, ExtArgs, runtime.Types.Utils.Call<Prisma.TypeMapCb<OmitOpts>, {
         extArgs: ExtArgs;
     }>>;
-    get test(): Prisma.testDelegate<ExtArgs, {
+    get user(): Prisma.UserDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get follow(): Prisma.FollowDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get refreshToken(): Prisma.RefreshTokenDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get artist(): Prisma.ArtistDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get album(): Prisma.AlbumDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get track(): Prisma.TrackDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get review(): Prisma.ReviewDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get trackReviewItem(): Prisma.TrackReviewItemDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get reviewReaction(): Prisma.ReviewReactionDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get comment(): Prisma.CommentDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get notification(): Prisma.NotificationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get notificationPreference(): Prisma.NotificationPreferenceDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get report(): Prisma.ReportDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get recommendationSnapshot(): Prisma.RecommendationSnapshotDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
 }
