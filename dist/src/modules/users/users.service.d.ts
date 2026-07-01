@@ -8,12 +8,12 @@ export declare class UsersService {
     constructor(repo: UsersRepository, config: ConfigService);
     getMe(userId: string): Promise<{
         user: {
-            id: string;
             handle: string;
-            email: string;
-            googleId: string | null;
             displayName: string;
+            email: string;
+            id: string;
             passwordHash: string | null;
+            googleId: string | null;
             avatarUrl: string | null;
             bio: string | null;
             notifEnabled: boolean;
@@ -30,12 +30,12 @@ export declare class UsersService {
         };
     }>;
     updateProfile(userId: string, dto: UpdateProfileDto): Promise<{
-        id: string;
         handle: string;
-        email: string;
-        googleId: string | null;
         displayName: string;
+        email: string;
+        id: string;
         passwordHash: string | null;
+        googleId: string | null;
         avatarUrl: string | null;
         bio: string | null;
         notifEnabled: boolean;
@@ -66,9 +66,9 @@ export declare class UsersService {
     }>;
     getPublicProfile(handle: string, viewerId?: string): Promise<{
         user: {
-            id: string;
             handle: string;
             displayName: string;
+            id: string;
             avatarUrl: string | null;
             bio: string | null;
             notifEnabled: boolean;
@@ -86,18 +86,18 @@ export declare class UsersService {
     }>;
     getFollowers(handle: string, cursor?: string, limit?: number): Promise<{
         items: {
-            id: string;
             handle: string;
             displayName: string;
+            id: string;
             avatarUrl: string | null;
         }[];
         nextCursor: string | null;
     }>;
     getFollowing(handle: string, cursor?: string, limit?: number): Promise<{
         items: {
-            id: string;
             handle: string;
             displayName: string;
+            id: string;
             avatarUrl: string | null;
         }[];
         nextCursor: string | null;
