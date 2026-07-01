@@ -9,12 +9,12 @@ export declare class UsersController {
     getMe(user: JwtPayload): Promise<{
         data: {
             user: {
-                id: string;
                 handle: string;
-                email: string;
-                googleId: string | null;
                 displayName: string;
+                email: string;
+                id: string;
                 passwordHash: string | null;
+                googleId: string | null;
                 avatarUrl: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
@@ -33,12 +33,12 @@ export declare class UsersController {
     }>;
     updateMe(user: JwtPayload, dto: UpdateProfileDto): Promise<{
         data: {
-            id: string;
             handle: string;
-            email: string;
-            googleId: string | null;
             displayName: string;
+            email: string;
+            id: string;
             passwordHash: string | null;
+            googleId: string | null;
             avatarUrl: string | null;
             bio: string | null;
             notifEnabled: boolean;
@@ -85,9 +85,9 @@ export declare class UsersController {
     }): Promise<{
         data: {
             user: {
-                id: string;
                 handle: string;
                 displayName: string;
+                id: string;
                 avatarUrl: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
@@ -107,9 +107,9 @@ export declare class UsersController {
     getFollowers(handle: string, cursor?: string, limit?: string): Promise<{
         data: {
             items: {
-                id: string;
                 handle: string;
                 displayName: string;
+                id: string;
                 avatarUrl: string | null;
             }[];
             nextCursor: string | null;
@@ -118,9 +118,9 @@ export declare class UsersController {
     getFollowing(handle: string, cursor?: string, limit?: string): Promise<{
         data: {
             items: {
-                id: string;
                 handle: string;
                 displayName: string;
+                id: string;
                 avatarUrl: string | null;
             }[];
             nextCursor: string | null;
