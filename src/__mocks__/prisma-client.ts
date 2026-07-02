@@ -42,3 +42,44 @@ export const UserStatus = {
   DELETED: 'DELETED',
 } as const;
 export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus];
+
+class MockPrismaClientKnownRequestError extends Error {
+  code: string;
+  meta?: Record<string, unknown>;
+  clientVersion: string;
+
+  constructor(
+    message: string,
+    opts: {
+      code: string;
+      clientVersion?: string;
+      meta?: Record<string, unknown>;
+    },
+  ) {
+    super(message);
+    this.code = opts.code;
+    this.meta = opts.meta;
+    this.clientVersion = opts.clientVersion ?? 'test';
+  }
+}
+
+class MockDecimal {
+  private readonly value: string;
+
+  constructor(value: string | number) {
+    this.value = String(value);
+  }
+
+  toString() {
+    return this.value;
+  }
+
+  toNumber() {
+    return Number(this.value);
+  }
+}
+
+export const Prisma = {
+  PrismaClientKnownRequestError: MockPrismaClientKnownRequestError,
+  Decimal: MockDecimal,
+};

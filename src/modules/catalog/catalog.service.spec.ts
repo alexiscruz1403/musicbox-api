@@ -45,9 +45,37 @@ const searchPageFixture: CatalogPage<CatalogSearchResult> = {
   total: 1,
 };
 
-const dbArtistRow = { id: 'uuid-artist-1', deezerId: '27', name: 'Daft Punk', imageUrl: null, lastSyncedAt: new Date(), mbid: null };
-const dbAlbumRow = { id: 'uuid-album-1', deezerId: '302127', title: 'Discovery', artistId: 'uuid-artist-1', coverUrl: null, releaseDate: null, genreLabel: null, lastSyncedAt: new Date(), mbid: null };
-const dbTrackRow = { id: 'uuid-track-1', deezerId: '3135556', title: 'One More Time', artistId: 'uuid-artist-1', albumId: 'uuid-album-1', durationMs: 320000, trackNumber: 1, previewUrl: null, lastSyncedAt: new Date(), mbid: null };
+const dbArtistRow = {
+  id: 'uuid-artist-1',
+  deezerId: '27',
+  name: 'Daft Punk',
+  imageUrl: null,
+  lastSyncedAt: new Date(),
+  mbid: null,
+};
+const dbAlbumRow = {
+  id: 'uuid-album-1',
+  deezerId: '302127',
+  title: 'Discovery',
+  artistId: 'uuid-artist-1',
+  coverUrl: null,
+  releaseDate: null,
+  genreLabel: null,
+  lastSyncedAt: new Date(),
+  mbid: null,
+};
+const dbTrackRow = {
+  id: 'uuid-track-1',
+  deezerId: '3135556',
+  title: 'One More Time',
+  artistId: 'uuid-artist-1',
+  albumId: 'uuid-album-1',
+  durationMs: 320000,
+  trackNumber: 1,
+  previewUrl: null,
+  lastSyncedAt: new Date(),
+  mbid: null,
+};
 
 describe('CatalogService', () => {
   let service: CatalogService;
@@ -98,7 +126,12 @@ describe('CatalogService', () => {
 
       const result = await service.search('daft punk', 'artist', 20, null);
 
-      expect(mockProvider.search).toHaveBeenCalledWith('daft punk', 'artist', 20, null);
+      expect(mockProvider.search).toHaveBeenCalledWith(
+        'daft punk',
+        'artist',
+        20,
+        null,
+      );
       expect(mockRedis.set).toHaveBeenCalledWith(
         'catalog:search:artist:daft punk:20:0',
         JSON.stringify(searchPageFixture),
@@ -127,8 +160,15 @@ describe('CatalogService', () => {
 
       expect(mockProvider.getAlbum).toHaveBeenCalledWith('302127');
       expect(mockRepo.upsertArtist).toHaveBeenCalledWith(artistFixture);
-      expect(mockRepo.upsertAlbum).toHaveBeenCalledWith(albumFixture, 'uuid-artist-1');
-      expect(mockRepo.upsertTrack).toHaveBeenCalledWith(trackFixture, 'uuid-artist-1', 'uuid-album-1');
+      expect(mockRepo.upsertAlbum).toHaveBeenCalledWith(
+        albumFixture,
+        'uuid-artist-1',
+      );
+      expect(mockRepo.upsertTrack).toHaveBeenCalledWith(
+        trackFixture,
+        'uuid-artist-1',
+        'uuid-album-1',
+      );
       expect(mockRedis.set).toHaveBeenCalledWith(
         'catalog:album:302127',
         JSON.stringify(albumFixture),
@@ -157,7 +197,11 @@ describe('CatalogService', () => {
 
       expect(mockProvider.getTrack).toHaveBeenCalledWith('3135556');
       expect(mockRepo.upsertArtist).toHaveBeenCalledWith(trackFixture.artist);
-      expect(mockRepo.upsertTrack).toHaveBeenCalledWith(trackFixture, 'uuid-artist-1', null);
+      expect(mockRepo.upsertTrack).toHaveBeenCalledWith(
+        trackFixture,
+        'uuid-artist-1',
+        null,
+      );
       expect(result).toEqual(trackFixture);
     });
 
@@ -204,7 +248,9 @@ describe('CatalogService', () => {
 
     it('cache miss — calls provider and caches result', async () => {
       mockRedis.get.mockResolvedValue(null);
-      vi.mocked(mockProvider.getArtistAlbums).mockResolvedValue(albumsPageFixture);
+      vi.mocked(mockProvider.getArtistAlbums).mockResolvedValue(
+        albumsPageFixture,
+      );
 
       const result = await service.getArtistAlbums('27', 20, null);
 

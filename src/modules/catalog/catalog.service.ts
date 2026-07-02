@@ -23,7 +23,10 @@ export class CatalogService {
     private readonly redis: RedisService,
   ) {}
 
-  private async withCache<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
+  private async withCache<T>(
+    key: string,
+    fetcher: () => Promise<T>,
+  ): Promise<T> {
     const cached = await this.redis.get(key);
     if (cached !== null) return JSON.parse(cached) as T;
     const result = await fetcher();

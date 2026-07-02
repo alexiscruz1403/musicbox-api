@@ -78,7 +78,8 @@ export class DeezerMusicCatalogProvider
       artist: this.mapArtist(raw.artist),
       albumDeezerId: raw.album ? String(raw.album.id) : null,
       coverUrl: raw.album?.cover_medium ?? null,
-      releaseDate: raw.release_date ?? raw.album?.release_date ?? albumReleaseDate ?? null,
+      releaseDate:
+        raw.release_date ?? raw.album?.release_date ?? albumReleaseDate ?? null,
       durationMs: raw.duration != null ? raw.duration * 1000 : null,
       trackNumber: raw.track_position ?? null,
       previewUrl: raw.preview ?? null,
@@ -93,7 +94,8 @@ export class DeezerMusicCatalogProvider
       coverUrl: raw.cover_medium ?? null,
       releaseDate: raw.release_date ?? null,
       genreLabel: raw.genres?.data[0]?.name ?? null,
-      tracks: raw.tracks?.data.map((t) => this.mapTrack(t, raw.release_date)) ?? [],
+      tracks:
+        raw.tracks?.data.map((t) => this.mapTrack(t, raw.release_date)) ?? [],
     };
   }
 
@@ -110,10 +112,11 @@ export class DeezerMusicCatalogProvider
       track: 'search/track',
     };
     const { data } = await firstValueFrom(
-      this.http.get<DeezerSearchResponse<DeezerAlbum | DeezerTrack | DeezerArtist>>(
-        `${this.baseUrl}/${searchPath[type]}`,
-        { params: { q: query, limit, index } },
-      ),
+      this.http.get<
+        DeezerSearchResponse<DeezerAlbum | DeezerTrack | DeezerArtist>
+      >(`${this.baseUrl}/${searchPath[type]}`, {
+        params: { q: query, limit, index },
+      }),
     );
     this.assertNoError(data);
 
@@ -123,12 +126,21 @@ export class DeezerMusicCatalogProvider
 
     const items: CatalogSearchResult[] = data.data.map((raw) => {
       if (type === 'artist') {
-        return { type: 'artist' as const, item: this.mapArtist(raw as DeezerArtist) };
+        return {
+          type: 'artist' as const,
+          item: this.mapArtist(raw as DeezerArtist),
+        };
       }
       if (type === 'album') {
-        return { type: 'album' as const, item: this.mapAlbum(raw as DeezerAlbum) };
+        return {
+          type: 'album' as const,
+          item: this.mapAlbum(raw as DeezerAlbum),
+        };
       }
-      return { type: 'track' as const, item: this.mapTrack(raw as DeezerTrack) };
+      return {
+        type: 'track' as const,
+        item: this.mapTrack(raw as DeezerTrack),
+      };
     });
 
     return { items, nextCursor, total: data.total };

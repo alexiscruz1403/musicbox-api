@@ -21,13 +21,18 @@ import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.j
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
+import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
+import { ReviewsService } from '../reviews/reviews.service.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersService } from './users.service.js';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly users: UsersService) {}
+  constructor(
+    private readonly users: UsersService,
+    private readonly reviews: ReviewsService,
+  ) {}
 
   @Get('me')
   async getMe(@CurrentUser() user: JwtPayload) {
@@ -136,8 +141,12 @@ export class UsersController {
 
   @Public()
   @Get(':handle/reviews')
-  getReviews() {
-    return { data: [] };
+  async getReviews(
+    @Param('handle') handle: string,
+    @Query() query: ListUserReviewsQueryDto,
+  ) {
+    const result = await this.reviews.listByUserHandle(handle, query);
+    return { data: result.items, meta: { cursor: result.nextCursor } };
   }
 
   @Post(':handle/follow')
