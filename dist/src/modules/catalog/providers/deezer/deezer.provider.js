@@ -80,18 +80,29 @@ let DeezerMusicCatalogProvider = class DeezerMusicCatalogProvider {
             album: 'search/album',
             track: 'search/track',
         };
-        const { data } = await firstValueFrom(this.http.get(`${this.baseUrl}/${searchPath[type]}`, { params: { q: query, limit, index } }));
+        const { data } = await firstValueFrom(this.http.get(`${this.baseUrl}/${searchPath[type]}`, {
+            params: { q: query, limit, index },
+        }));
         this.assertNoError(data);
         const nextOffset = index + data.data.length;
         const nextCursor = nextOffset < data.total ? this.encodeCursor(nextOffset) : null;
         const items = data.data.map((raw) => {
             if (type === 'artist') {
-                return { type: 'artist', item: this.mapArtist(raw) };
+                return {
+                    type: 'artist',
+                    item: this.mapArtist(raw),
+                };
             }
             if (type === 'album') {
-                return { type: 'album', item: this.mapAlbum(raw) };
+                return {
+                    type: 'album',
+                    item: this.mapAlbum(raw),
+                };
             }
-            return { type: 'track', item: this.mapTrack(raw) };
+            return {
+                type: 'track',
+                item: this.mapTrack(raw),
+            };
         });
         return { items, nextCursor, total: data.total };
     }

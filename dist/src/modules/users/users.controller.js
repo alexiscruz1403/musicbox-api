@@ -16,13 +16,17 @@ import { memoryStorage } from 'multer';
 import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
+import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
+import { ReviewsService } from '../reviews/reviews.service.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersService } from './users.service.js';
 let UsersController = class UsersController {
     users;
-    constructor(users) {
+    reviews;
+    constructor(users, reviews) {
         this.users = users;
+        this.reviews = reviews;
     }
     async getMe(user) {
         return { data: await this.users.getMe(user.sub) };
@@ -59,8 +63,9 @@ let UsersController = class UsersController {
             data: await this.users.getFollowing(handle, cursor, limit ? parseInt(limit, 10) : undefined),
         };
     }
-    getReviews() {
-        return { data: [] };
+    async getReviews(handle, query) {
+        const result = await this.reviews.listByUserHandle(handle, query);
+        return { data: result.items, meta: { cursor: result.nextCursor } };
     }
     async follow(user, handle) {
         await this.users.follow(user.sub, handle);
@@ -168,9 +173,11 @@ __decorate([
 __decorate([
     Public(),
     Get(':handle/reviews'),
+    __param(0, Param('handle')),
+    __param(1, Query()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [String, ListUserReviewsQueryDto]),
+    __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getReviews", null);
 __decorate([
     Post(':handle/follow'),
@@ -192,7 +199,8 @@ __decorate([
 ], UsersController.prototype, "unfollow", null);
 UsersController = __decorate([
     Controller('users'),
-    __metadata("design:paramtypes", [UsersService])
+    __metadata("design:paramtypes", [UsersService,
+        ReviewsService])
 ], UsersController);
 export { UsersController };
 //# sourceMappingURL=users.controller.js.map

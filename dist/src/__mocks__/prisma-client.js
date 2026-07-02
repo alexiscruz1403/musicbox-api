@@ -39,4 +39,31 @@ export const UserStatus = {
     SUSPENDED: 'SUSPENDED',
     DELETED: 'DELETED',
 };
+class MockPrismaClientKnownRequestError extends Error {
+    code;
+    meta;
+    clientVersion;
+    constructor(message, opts) {
+        super(message);
+        this.code = opts.code;
+        this.meta = opts.meta;
+        this.clientVersion = opts.clientVersion ?? 'test';
+    }
+}
+class MockDecimal {
+    value;
+    constructor(value) {
+        this.value = String(value);
+    }
+    toString() {
+        return this.value;
+    }
+    toNumber() {
+        return Number(this.value);
+    }
+}
+export const Prisma = {
+    PrismaClientKnownRequestError: MockPrismaClientKnownRequestError,
+    Decimal: MockDecimal,
+};
 //# sourceMappingURL=prisma-client.js.map

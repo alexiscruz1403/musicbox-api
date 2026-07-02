@@ -31,7 +31,9 @@ let CatalogController = class CatalogController {
         return { data: await this.catalog.getTrack(deezerId) };
     }
     async getArtistAlbums(deezerId, limit, cursor) {
-        const parsedLimit = limit ? Math.min(Math.max(parseInt(limit, 10), 1), 50) : 20;
+        const parsedLimit = limit
+            ? Math.min(Math.max(parseInt(limit, 10), 1), 50)
+            : 20;
         return {
             data: await this.catalog.getArtistAlbums(deezerId, parsedLimit, cursor ?? null),
         };

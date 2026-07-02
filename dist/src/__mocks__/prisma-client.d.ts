@@ -41,3 +41,24 @@ export declare const UserStatus: {
     readonly DELETED: "DELETED";
 };
 export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus];
+declare class MockPrismaClientKnownRequestError extends Error {
+    code: string;
+    meta?: Record<string, unknown>;
+    clientVersion: string;
+    constructor(message: string, opts: {
+        code: string;
+        clientVersion?: string;
+        meta?: Record<string, unknown>;
+    });
+}
+declare class MockDecimal {
+    private readonly value;
+    constructor(value: string | number);
+    toString(): string;
+    toNumber(): number;
+}
+export declare const Prisma: {
+    PrismaClientKnownRequestError: typeof MockPrismaClientKnownRequestError;
+    Decimal: typeof MockDecimal;
+};
+export {};

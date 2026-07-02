@@ -16,6 +16,8 @@ import { CommonModule } from './modules/common/common.module.js';
 import { JwtAuthGuard } from './modules/common/guards/jwt-auth.guard.js';
 import { UsersModule } from './modules/users/users.module.js';
 import { CatalogModule } from './modules/catalog/catalog.module.js';
+import { EventsModule } from './modules/events/events.module.js';
+import { ReviewsModule } from './modules/reviews/reviews.module.js';
 
 @Module({
   imports: [
@@ -45,6 +47,8 @@ import { CatalogModule } from './modules/catalog/catalog.module.js';
     AuthModule,
     UsersModule,
     CatalogModule,
+    EventsModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [
