@@ -25,6 +25,7 @@ export declare const ModelName: {
     readonly NotificationPreference: "NotificationPreference";
     readonly Report: "Report";
     readonly RecommendationSnapshot: "RecommendationSnapshot";
+    readonly FollowSuggestionSnapshot: "FollowSuggestionSnapshot";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -182,6 +183,12 @@ export declare const RecommendationSnapshotScalarFieldEnum: {
     readonly generatedAt: "generatedAt";
 };
 export type RecommendationSnapshotScalarFieldEnum = (typeof RecommendationSnapshotScalarFieldEnum)[keyof typeof RecommendationSnapshotScalarFieldEnum];
+export declare const FollowSuggestionSnapshotScalarFieldEnum: {
+    readonly userId: "userId";
+    readonly payload: "payload";
+    readonly generatedAt: "generatedAt";
+};
+export type FollowSuggestionSnapshotScalarFieldEnum = (typeof FollowSuggestionSnapshotScalarFieldEnum)[keyof typeof FollowSuggestionSnapshotScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

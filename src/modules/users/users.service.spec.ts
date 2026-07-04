@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { SocialEventsProducer } from '../events/social-events.producer.js';
 import { UsersRepository } from './users.repository.js';
 import { UsersService } from './users.service.js';
 
@@ -26,11 +27,16 @@ const mockRepo = {
   followExists: vi.fn(),
   createFollow: vi.fn(),
   deleteFollow: vi.fn(),
+  searchUsers: vi.fn(),
 };
 
 const mockConfig = {
   getOrThrow: vi.fn().mockReturnValue('mock-value'),
   get: vi.fn().mockReturnValue('mock-value'),
+};
+
+const mockEvents = {
+  emitFollowCreated: vi.fn(),
 };
 
 describe('UsersService', () => {
@@ -42,6 +48,7 @@ describe('UsersService', () => {
         UsersService,
         { provide: UsersRepository, useValue: mockRepo },
         { provide: ConfigService, useValue: mockConfig },
+        { provide: SocialEventsProducer, useValue: mockEvents },
       ],
     }).compile();
 
@@ -225,12 +232,45 @@ describe('UsersService', () => {
       );
     });
 
-    it('creates follow on success', async () => {
+    it('creates follow on success and emits follow.created', async () => {
       mockRepo.findByHandle.mockResolvedValue({ id: 'u2', status: 'ACTIVE' });
       mockRepo.followExists.mockResolvedValue(null);
       mockRepo.createFollow.mockResolvedValue({});
       await service.follow('u1', 'u2handle');
       expect(mockRepo.createFollow).toHaveBeenCalledWith('u1', 'u2');
+      expect(mockEvents.emitFollowCreated).toHaveBeenCalledWith({
+        followerId: 'u1',
+        followeeId: 'u2',
+      });
+    });
+  });
+
+  describe('searchUsers', () => {
+    it('trims the query and forwards cursor/limit/viewerId to the repository', async () => {
+      mockRepo.searchUsers.mockResolvedValue({ items: [], nextCursor: null });
+      await service.searchUsers('  juan  ', 'cursor-1', 5, 'viewer-1');
+      expect(mockRepo.searchUsers).toHaveBeenCalledWith(
+        'juan',
+        'cursor-1',
+        5,
+        'viewer-1',
+      );
+    });
+
+    it('returns items (with isFollowing) and nextCursor from the repository', async () => {
+      const user = {
+        id: 'u2',
+        handle: 'juan',
+        displayName: 'Juan',
+        avatarUrl: null,
+        isFollowing: true,
+      };
+      mockRepo.searchUsers.mockResolvedValue({
+        items: [user],
+        nextCursor: 'next',
+      });
+      const result = await service.searchUsers('juan');
+      expect(result).toEqual({ items: [user], nextCursor: 'next' });
     });
   });
 

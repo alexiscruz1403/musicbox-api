@@ -97,13 +97,6 @@ let ReviewsRepository = class ReviewsRepository {
             },
         });
     }
-    findReactionBreakdown(reviewId) {
-        return this.prisma.reviewReaction.groupBy({
-            by: ['type'],
-            where: { reviewId },
-            _count: true,
-        });
-    }
     updateTrackReview(id, data) {
         return this.prisma.review.update({
             where: { id },

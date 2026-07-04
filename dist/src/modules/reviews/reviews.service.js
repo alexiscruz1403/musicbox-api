@@ -12,16 +12,19 @@ import sanitizeHtml from 'sanitize-html';
 import { Prisma } from '../../../generated/prisma/client.js';
 import { CatalogService } from '../catalog/catalog.service.js';
 import { ReviewEventsProducer } from '../events/review-events.producer.js';
+import { SocialService } from '../social/social.service.js';
 import { ReviewsRepository } from './reviews.repository.js';
 const SANITIZE_OPTIONS = { allowedTags: [], allowedAttributes: {} };
 let ReviewsService = class ReviewsService {
     repo;
     catalog;
     events;
-    constructor(repo, catalog, events) {
+    social;
+    constructor(repo, catalog, events, social) {
         this.repo = repo;
         this.catalog = catalog;
         this.events = events;
+        this.social = social;
     }
     async create(userId, dto) {
         const description = sanitizeHtml(dto.description, SANITIZE_OPTIONS);
@@ -109,14 +112,10 @@ let ReviewsService = class ReviewsService {
             };
         });
     }
-    async findById(id) {
+    async findById(id, viewerId) {
         const review = await this.getActiveReview(id);
-        const reactionGroups = await this.repo.findReactionBreakdown(id);
-        const reactionStats = {
-            likes: reactionGroups.find((g) => g.type === 'LIKE')?._count ?? 0,
-            dislikes: reactionGroups.find((g) => g.type === 'DISLIKE')?._count ?? 0,
-        };
-        return { ...review, reactionStats };
+        const stats = await this.social.getReviewStats([id], viewerId);
+        return { ...review, ...stats.get(id) };
     }
     async update(userId, id, dto) {
         const review = await this.getOwnedActiveReview(userId, id);
@@ -181,13 +180,22 @@ let ReviewsService = class ReviewsService {
             trackId: review.trackId,
         });
     }
-    async listByAlbum(deezerId, query) {
+    async listByAlbum(deezerId, query, viewerId) {
         const album = await this.findAlbumOrThrow(deezerId);
-        return this.repo.listByAlbum(album.id, query.cursor, query.limit, query.sort);
+        const result = await this.repo.listByAlbum(album.id, query.cursor, query.limit, query.sort);
+        return this.withReviewStats(result, viewerId);
     }
-    async listByTrack(deezerId, query) {
+    async listByTrack(deezerId, query, viewerId) {
         const track = await this.findTrackOrThrow(deezerId);
-        return this.repo.listByTrack(track.id, query.cursor, query.limit, query.sort);
+        const result = await this.repo.listByTrack(track.id, query.cursor, query.limit, query.sort);
+        return this.withReviewStats(result, viewerId);
+    }
+    async withReviewStats(result, viewerId) {
+        const stats = await this.social.getReviewStats(result.items.map((r) => r.id), viewerId);
+        return {
+            items: result.items.map((r) => ({ ...r, ...stats.get(r.id) })),
+            nextCursor: result.nextCursor,
+        };
     }
     async listByUserHandle(handle, query) {
         const user = await this.repo.findUserIdByHandle(handle).catch(() => {
@@ -260,7 +268,8 @@ ReviewsService = __decorate([
     Injectable(),
     __metadata("design:paramtypes", [ReviewsRepository,
         CatalogService,
-        ReviewEventsProducer])
+        ReviewEventsProducer,
+        SocialService])
 ], ReviewsService);
 export { ReviewsService };
 //# sourceMappingURL=reviews.service.js.map

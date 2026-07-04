@@ -8,11 +8,15 @@ import {
   Param,
   Patch,
   Post,
+  Req,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
+import type { Request } from 'express';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
+import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { CreateReviewDto } from './dto/create-review.dto.js';
@@ -32,8 +36,12 @@ export class ReviewsController {
 
   @Public()
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return { data: await this.reviews.findById(id) };
+  @UseGuards(OptionalJwtAuthGuard)
+  async findOne(
+    @Param('id') id: string,
+    @Req() req: Request & { user?: JwtPayload },
+  ) {
+    return { data: await this.reviews.findById(id, req.user?.sub) };
   }
 
   @Patch(':id')

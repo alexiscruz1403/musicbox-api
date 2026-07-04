@@ -17,7 +17,10 @@ import { JwtAuthGuard } from './modules/common/guards/jwt-auth.guard.js';
 import { UsersModule } from './modules/users/users.module.js';
 import { CatalogModule } from './modules/catalog/catalog.module.js';
 import { EventsModule } from './modules/events/events.module.js';
+import { FeedModule } from './modules/feed/feed.module.js';
+import { FollowSuggestionsModule } from './modules/follow-suggestions/follow-suggestions.module.js';
 import { ReviewsModule } from './modules/reviews/reviews.module.js';
+import { SocialModule } from './modules/social/social.module.js';
 
 @Module({
   imports: [
@@ -49,6 +52,9 @@ import { ReviewsModule } from './modules/reviews/reviews.module.js';
     CatalogModule,
     EventsModule,
     ReviewsModule,
+    SocialModule,
+    FeedModule,
+    FollowSuggestionsModule,
   ],
   controllers: [AppController],
   providers: [

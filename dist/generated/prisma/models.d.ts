@@ -12,4 +12,5 @@ export type * from './models/Notification.js';
 export type * from './models/NotificationPreference.js';
 export type * from './models/Report.js';
 export type * from './models/RecommendationSnapshot.js';
+export type * from './models/FollowSuggestionSnapshot.js';
 export type * from './commonInputTypes.js';

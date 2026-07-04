@@ -7,6 +7,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
 import sanitizeHtml from 'sanitize-html';
+import { SocialEventsProducer } from '../events/social-events.producer.js';
 import type { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import type { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersRepository } from './users.repository.js';
@@ -16,6 +17,7 @@ export class UsersService {
   constructor(
     private readonly repo: UsersRepository,
     private readonly config: ConfigService,
+    private readonly events: SocialEventsProducer,
   ) {
     cloudinary.config({
       cloud_name: config.getOrThrow<string>('CLOUDINARY_CLOUD_NAME'),
@@ -149,6 +151,15 @@ export class UsersService {
     };
   }
 
+  async searchUsers(
+    q: string,
+    cursor?: string,
+    limit?: number,
+    viewerId?: string,
+  ) {
+    return this.repo.searchUsers(q.trim(), cursor, limit, viewerId);
+  }
+
   async getFollowers(handle: string, cursor?: string, limit?: number) {
     return this.repo.getFollowers(handle, cursor, limit);
   }
@@ -179,6 +190,7 @@ export class UsersService {
       });
 
     await this.repo.createFollow(followerId, target.id);
+    await this.events.emitFollowCreated({ followerId, followeeId: target.id });
   }
 
   async unfollow(followerId: string, handle: string) {

@@ -10,6 +10,7 @@ import { Prisma } from '../../../generated/prisma/client.js';
 import { CatalogService } from '../catalog/catalog.service.js';
 import type { CatalogAlbum } from '../catalog/providers/music-catalog.provider.js';
 import { ReviewEventsProducer } from '../events/review-events.producer.js';
+import { SocialService } from '../social/social.service.js';
 import type { CreateReviewDto } from './dto/create-review.dto.js';
 import type { ListReviewsQueryDto } from './dto/list-reviews-query.dto.js';
 import type { ListUserReviewsQueryDto } from './dto/list-user-reviews-query.dto.js';
@@ -26,6 +27,7 @@ export class ReviewsService {
     private readonly repo: ReviewsRepository,
     private readonly catalog: CatalogService,
     private readonly events: ReviewEventsProducer,
+    private readonly social: SocialService,
   ) {}
 
   async create(userId: string, dto: CreateReviewDto) {
@@ -150,14 +152,10 @@ export class ReviewsService {
     });
   }
 
-  async findById(id: string) {
+  async findById(id: string, viewerId?: string) {
     const review = await this.getActiveReview(id);
-    const reactionGroups = await this.repo.findReactionBreakdown(id);
-    const reactionStats = {
-      likes: reactionGroups.find((g) => g.type === 'LIKE')?._count ?? 0,
-      dislikes: reactionGroups.find((g) => g.type === 'DISLIKE')?._count ?? 0,
-    };
-    return { ...review, reactionStats };
+    const stats = await this.social.getReviewStats([id], viewerId);
+    return { ...review, ...stats.get(id)! };
   }
 
   async update(userId: string, id: string, dto: UpdateReviewDto) {
@@ -228,24 +226,48 @@ export class ReviewsService {
     });
   }
 
-  async listByAlbum(deezerId: string, query: ListReviewsQueryDto) {
+  async listByAlbum(
+    deezerId: string,
+    query: ListReviewsQueryDto,
+    viewerId?: string,
+  ) {
     const album = await this.findAlbumOrThrow(deezerId);
-    return this.repo.listByAlbum(
+    const result = await this.repo.listByAlbum(
       album.id,
       query.cursor,
       query.limit,
       query.sort,
     );
+    return this.withReviewStats(result, viewerId);
   }
 
-  async listByTrack(deezerId: string, query: ListReviewsQueryDto) {
+  async listByTrack(
+    deezerId: string,
+    query: ListReviewsQueryDto,
+    viewerId?: string,
+  ) {
     const track = await this.findTrackOrThrow(deezerId);
-    return this.repo.listByTrack(
+    const result = await this.repo.listByTrack(
       track.id,
       query.cursor,
       query.limit,
       query.sort,
     );
+    return this.withReviewStats(result, viewerId);
+  }
+
+  private async withReviewStats<T extends { id: string }>(
+    result: { items: T[]; nextCursor: string | null },
+    viewerId?: string,
+  ) {
+    const stats = await this.social.getReviewStats(
+      result.items.map((r) => r.id),
+      viewerId,
+    );
+    return {
+      items: result.items.map((r) => ({ ...r, ...stats.get(r.id)! })),
+      nextCursor: result.nextCursor,
+    };
   }
 
   async listByUserHandle(handle: string, query: ListUserReviewsQueryDto) {

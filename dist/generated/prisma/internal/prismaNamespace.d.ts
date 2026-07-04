@@ -171,6 +171,7 @@ export declare const ModelName: {
     readonly NotificationPreference: "NotificationPreference";
     readonly Report: "Report";
     readonly RecommendationSnapshot: "RecommendationSnapshot";
+    readonly FollowSuggestionSnapshot: "FollowSuggestionSnapshot";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
@@ -183,7 +184,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "follow" | "refreshToken" | "artist" | "album" | "track" | "review" | "trackReviewItem" | "reviewReaction" | "comment" | "notification" | "notificationPreference" | "report" | "recommendationSnapshot";
+        modelProps: "user" | "follow" | "refreshToken" | "artist" | "album" | "track" | "review" | "trackReviewItem" | "reviewReaction" | "comment" | "notification" | "notificationPreference" | "report" | "recommendationSnapshot" | "followSuggestionSnapshot";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -1223,6 +1224,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        FollowSuggestionSnapshot: {
+            payload: Prisma.$FollowSuggestionSnapshotPayload<ExtArgs>;
+            fields: Prisma.FollowSuggestionSnapshotFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.FollowSuggestionSnapshotFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowSuggestionSnapshotPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.FollowSuggestionSnapshotFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowSuggestionSnapshotPayload>;
+                };
+                findFirst: {
+                    args: Prisma.FollowSuggestionSnapshotFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowSuggestionSnapshotPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.FollowSuggestionSnapshotFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowSuggestionSnapshotPayload>;
+                };
+                findMany: {
+                    args: Prisma.FollowSuggestionSnapshotFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowSuggestionSnapshotPayload>[];
+                };
+                create: {
+                    args: Prisma.FollowSuggestionSnapshotCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowSuggestionSnapshotPayload>;
+                };
+                createMany: {
+                    args: Prisma.FollowSuggestionSnapshotCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.FollowSuggestionSnapshotCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowSuggestionSnapshotPayload>[];
+                };
+                delete: {
+                    args: Prisma.FollowSuggestionSnapshotDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowSuggestionSnapshotPayload>;
+                };
+                update: {
+                    args: Prisma.FollowSuggestionSnapshotUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowSuggestionSnapshotPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.FollowSuggestionSnapshotDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.FollowSuggestionSnapshotUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.FollowSuggestionSnapshotUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowSuggestionSnapshotPayload>[];
+                };
+                upsert: {
+                    args: Prisma.FollowSuggestionSnapshotUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowSuggestionSnapshotPayload>;
+                };
+                aggregate: {
+                    args: Prisma.FollowSuggestionSnapshotAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateFollowSuggestionSnapshot>;
+                };
+                groupBy: {
+                    args: Prisma.FollowSuggestionSnapshotGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.FollowSuggestionSnapshotGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.FollowSuggestionSnapshotCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.FollowSuggestionSnapshotCountAggregateOutputType> | number;
+                };
+            };
+        };
     };
 } & {
     other: {
@@ -1402,6 +1477,12 @@ export declare const RecommendationSnapshotScalarFieldEnum: {
     readonly generatedAt: "generatedAt";
 };
 export type RecommendationSnapshotScalarFieldEnum = (typeof RecommendationSnapshotScalarFieldEnum)[keyof typeof RecommendationSnapshotScalarFieldEnum];
+export declare const FollowSuggestionSnapshotScalarFieldEnum: {
+    readonly userId: "userId";
+    readonly payload: "payload";
+    readonly generatedAt: "generatedAt";
+};
+export type FollowSuggestionSnapshotScalarFieldEnum = (typeof FollowSuggestionSnapshotScalarFieldEnum)[keyof typeof FollowSuggestionSnapshotScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
@@ -1493,6 +1574,7 @@ export type GlobalOmitConfig = {
     notificationPreference?: Prisma.NotificationPreferenceOmit;
     report?: Prisma.ReportOmit;
     recommendationSnapshot?: Prisma.RecommendationSnapshotOmit;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';
 export type LogDefinition = {

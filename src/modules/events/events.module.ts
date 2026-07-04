@@ -2,8 +2,13 @@ import { BullModule } from '@nestjs/bullmq';
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Redis } from 'ioredis';
-import { DEFAULT_JOB_OPTIONS, REVIEWS_QUEUE } from './events.constants.js';
+import {
+  DEFAULT_JOB_OPTIONS,
+  REVIEWS_QUEUE,
+  SOCIAL_QUEUE,
+} from './events.constants.js';
 import { ReviewEventsProducer } from './review-events.producer.js';
+import { SocialEventsProducer } from './social-events.producer.js';
 
 @Global()
 @Module({
@@ -19,12 +24,12 @@ import { ReviewEventsProducer } from './review-events.producer.js';
         }),
       }),
     }),
-    BullModule.registerQueue({
-      name: REVIEWS_QUEUE,
-      defaultJobOptions: DEFAULT_JOB_OPTIONS,
-    }),
+    BullModule.registerQueue(
+      { name: REVIEWS_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS },
+      { name: SOCIAL_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS },
+    ),
   ],
-  providers: [ReviewEventsProducer],
-  exports: [ReviewEventsProducer],
+  providers: [ReviewEventsProducer, SocialEventsProducer],
+  exports: [ReviewEventsProducer, SocialEventsProducer],
 })
 export class EventsModule {}

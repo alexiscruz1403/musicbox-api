@@ -1,11 +1,13 @@
 import { ConfigService } from '@nestjs/config';
+import { SocialEventsProducer } from '../events/social-events.producer.js';
 import type { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import type { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersRepository } from './users.repository.js';
 export declare class UsersService {
     private readonly repo;
     private readonly config;
-    constructor(repo: UsersRepository, config: ConfigService);
+    private readonly events;
+    constructor(repo: UsersRepository, config: ConfigService, events: SocialEventsProducer);
     getMe(userId: string): Promise<{
         user: {
             handle: string;
@@ -83,6 +85,16 @@ export declare class UsersService {
             followingCount: number;
         };
         isFollowing: boolean;
+    }>;
+    searchUsers(q: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
+        items: {
+            isFollowing: boolean;
+            handle: string;
+            displayName: string;
+            id: string;
+            avatarUrl: string | null;
+        }[];
+        nextCursor: string | null;
     }>;
     getFollowers(handle: string, cursor?: string, limit?: number): Promise<{
         items: {

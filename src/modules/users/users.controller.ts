@@ -23,6 +23,7 @@ import { Public } from '../common/decorators/public.decorator.js';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
 import { ReviewsService } from '../reviews/reviews.service.js';
+import { SearchUsersQueryDto } from './dto/search-users-query.dto.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersService } from './users.service.js';
@@ -85,6 +86,22 @@ export class UsersController {
     @Body() dto: UpdateNotifPrefsDto,
   ) {
     return { data: await this.users.updateNotifPrefs(user.sub, dto) };
+  }
+
+  @Public()
+  @Get('search')
+  @UseGuards(OptionalJwtAuthGuard)
+  async searchUsers(
+    @Query() query: SearchUsersQueryDto,
+    @Req() req: Request & { user?: JwtPayload },
+  ) {
+    const result = await this.users.searchUsers(
+      query.q,
+      query.cursor,
+      query.limit,
+      req.user?.sub,
+    );
+    return { data: result.items, meta: { cursor: result.nextCursor } };
   }
 
   @Public()

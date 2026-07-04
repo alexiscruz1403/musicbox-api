@@ -22,7 +22,8 @@ export const ModelName = {
     Notification: 'Notification',
     NotificationPreference: 'NotificationPreference',
     Report: 'Report',
-    RecommendationSnapshot: 'RecommendationSnapshot'
+    RecommendationSnapshot: 'RecommendationSnapshot',
+    FollowSuggestionSnapshot: 'FollowSuggestionSnapshot'
 };
 export const TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -160,6 +161,11 @@ export const ReportScalarFieldEnum = {
     createdAt: 'createdAt'
 };
 export const RecommendationSnapshotScalarFieldEnum = {
+    userId: 'userId',
+    payload: 'payload',
+    generatedAt: 'generatedAt'
+};
+export const FollowSuggestionSnapshotScalarFieldEnum = {
     userId: 'userId',
     payload: 'payload',
     generatedAt: 'generatedAt'

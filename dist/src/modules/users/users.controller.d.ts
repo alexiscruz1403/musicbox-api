@@ -2,6 +2,7 @@ import type { Request } from 'express';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
 import { ReviewsService } from '../reviews/reviews.service.js';
+import { SearchUsersQueryDto } from './dto/search-users-query.dto.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersService } from './users.service.js';
@@ -12,12 +13,12 @@ export declare class UsersController {
     getMe(user: JwtPayload): Promise<{
         data: {
             user: {
-                id: string;
                 handle: string;
-                email: string;
-                googleId: string | null;
                 displayName: string;
+                email: string;
+                id: string;
                 passwordHash: string | null;
+                googleId: string | null;
                 avatarUrl: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
@@ -36,12 +37,12 @@ export declare class UsersController {
     }>;
     updateMe(user: JwtPayload, dto: UpdateProfileDto): Promise<{
         data: {
-            id: string;
             handle: string;
-            email: string;
-            googleId: string | null;
             displayName: string;
+            email: string;
+            id: string;
             passwordHash: string | null;
+            googleId: string | null;
             avatarUrl: string | null;
             bio: string | null;
             notifEnabled: boolean;
@@ -76,6 +77,20 @@ export declare class UsersController {
             followsEnabled: boolean;
         };
     }>;
+    searchUsers(query: SearchUsersQueryDto, req: Request & {
+        user?: JwtPayload;
+    }): Promise<{
+        data: {
+            isFollowing: boolean;
+            handle: string;
+            displayName: string;
+            id: string;
+            avatarUrl: string | null;
+        }[];
+        meta: {
+            cursor: string | null;
+        };
+    }>;
     checkHandle(handle: string, req: Request & {
         user?: JwtPayload;
     }): Promise<{
@@ -88,9 +103,9 @@ export declare class UsersController {
     }): Promise<{
         data: {
             user: {
-                id: string;
                 handle: string;
                 displayName: string;
+                id: string;
                 avatarUrl: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
@@ -110,9 +125,9 @@ export declare class UsersController {
     getFollowers(handle: string, cursor?: string, limit?: string): Promise<{
         data: {
             items: {
-                id: string;
                 handle: string;
                 displayName: string;
+                id: string;
                 avatarUrl: string | null;
             }[];
             nextCursor: string | null;
@@ -121,9 +136,9 @@ export declare class UsersController {
     getFollowing(handle: string, cursor?: string, limit?: string): Promise<{
         data: {
             items: {
-                id: string;
                 handle: string;
                 displayName: string;
+                id: string;
                 avatarUrl: string | null;
             }[];
             nextCursor: string | null;
@@ -132,15 +147,15 @@ export declare class UsersController {
     getReviews(handle: string, query: ListUserReviewsQueryDto): Promise<{
         data: {
             avatarUrl: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            type: import("../../../generated/prisma/enums.js").ReviewType;
-            trackId: string | null;
             albumId: string | null;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
