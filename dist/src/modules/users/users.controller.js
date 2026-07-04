@@ -18,6 +18,7 @@ import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
 import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
 import { ReviewsService } from '../reviews/reviews.service.js';
+import { SearchUsersQueryDto } from './dto/search-users-query.dto.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersService } from './users.service.js';
@@ -46,6 +47,10 @@ let UsersController = class UsersController {
     }
     async updateNotifPrefs(user, dto) {
         return { data: await this.users.updateNotifPrefs(user.sub, dto) };
+    }
+    async searchUsers(query, req) {
+        const result = await this.users.searchUsers(query.q, query.cursor, query.limit, req.user?.sub);
+        return { data: result.items, meta: { cursor: result.nextCursor } };
     }
     async checkHandle(handle, req) {
         return { data: await this.users.checkHandle(handle, req.user?.sub) };
@@ -130,6 +135,16 @@ __decorate([
     __metadata("design:paramtypes", [Object, UpdateNotifPrefsDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateNotifPrefs", null);
+__decorate([
+    Public(),
+    Get('search'),
+    UseGuards(OptionalJwtAuthGuard),
+    __param(0, Query()),
+    __param(1, Req()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [SearchUsersQueryDto, Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "searchUsers", null);
 __decorate([
     Public(),
     Get('check-handle'),

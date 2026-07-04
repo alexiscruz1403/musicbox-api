@@ -180,6 +180,7 @@ export type UserWhereInput = {
     refreshTokens?: Prisma.RefreshTokenListRelationFilter;
     reports?: Prisma.ReportListRelationFilter;
     recommendationSnapshot?: Prisma.XOR<Prisma.RecommendationSnapshotNullableScalarRelationFilter, Prisma.RecommendationSnapshotWhereInput> | null;
+    followSuggestionSnapshot?: Prisma.XOR<Prisma.FollowSuggestionSnapshotNullableScalarRelationFilter, Prisma.FollowSuggestionSnapshotWhereInput> | null;
 };
 export type UserOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -207,6 +208,7 @@ export type UserOrderByWithRelationInput = {
     refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput;
     reports?: Prisma.ReportOrderByRelationAggregateInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotOrderByWithRelationInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotOrderByWithRelationInput;
 };
 export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -237,6 +239,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     refreshTokens?: Prisma.RefreshTokenListRelationFilter;
     reports?: Prisma.ReportListRelationFilter;
     recommendationSnapshot?: Prisma.XOR<Prisma.RecommendationSnapshotNullableScalarRelationFilter, Prisma.RecommendationSnapshotWhereInput> | null;
+    followSuggestionSnapshot?: Prisma.XOR<Prisma.FollowSuggestionSnapshotNullableScalarRelationFilter, Prisma.FollowSuggestionSnapshotWhereInput> | null;
 }, "id" | "handle" | "email" | "googleId">;
 export type UserOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -302,6 +305,7 @@ export type UserCreateInput = {
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateInput = {
     id?: string;
@@ -329,6 +333,7 @@ export type UserUncheckedCreateInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -356,6 +361,7 @@ export type UserUpdateInput = {
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -383,6 +389,7 @@ export type UserUncheckedUpdateInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCreateManyInput = {
     id?: string;
@@ -634,6 +641,18 @@ export type UserUpdateOneRequiredWithoutRecommendationSnapshotNestedInput = {
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRecommendationSnapshotInput, Prisma.UserUpdateWithoutRecommendationSnapshotInput>, Prisma.UserUncheckedUpdateWithoutRecommendationSnapshotInput>;
 };
+export type UserCreateNestedOneWithoutFollowSuggestionSnapshotInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutFollowSuggestionSnapshotInput, Prisma.UserUncheckedCreateWithoutFollowSuggestionSnapshotInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowSuggestionSnapshotInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutFollowSuggestionSnapshotNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutFollowSuggestionSnapshotInput, Prisma.UserUncheckedCreateWithoutFollowSuggestionSnapshotInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowSuggestionSnapshotInput;
+    upsert?: Prisma.UserUpsertWithoutFollowSuggestionSnapshotInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFollowSuggestionSnapshotInput, Prisma.UserUpdateWithoutFollowSuggestionSnapshotInput>, Prisma.UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput>;
+};
 export type UserCreateWithoutFollowingInput = {
     id?: string;
     handle: string;
@@ -659,6 +678,7 @@ export type UserCreateWithoutFollowingInput = {
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutFollowingInput = {
     id?: string;
@@ -685,6 +705,7 @@ export type UserUncheckedCreateWithoutFollowingInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutFollowingInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -715,6 +736,7 @@ export type UserCreateWithoutFollowersInput = {
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutFollowersInput = {
     id?: string;
@@ -741,6 +763,7 @@ export type UserUncheckedCreateWithoutFollowersInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutFollowersInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -780,6 +803,7 @@ export type UserUpdateWithoutFollowingInput = {
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutFollowingInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -806,6 +830,7 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserUpsertWithoutFollowersInput = {
     update: Prisma.XOR<Prisma.UserUpdateWithoutFollowersInput, Prisma.UserUncheckedUpdateWithoutFollowersInput>;
@@ -841,6 +866,7 @@ export type UserUpdateWithoutFollowersInput = {
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutFollowersInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -867,6 +893,7 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCreateWithoutRefreshTokensInput = {
     id?: string;
@@ -893,6 +920,7 @@ export type UserCreateWithoutRefreshTokensInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutRefreshTokensInput = {
     id?: string;
@@ -919,6 +947,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutRefreshTokensInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -958,6 +987,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutRefreshTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -984,6 +1014,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCreateWithoutReviewsInput = {
     id?: string;
@@ -1010,6 +1041,7 @@ export type UserCreateWithoutReviewsInput = {
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutReviewsInput = {
     id?: string;
@@ -1036,6 +1068,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutReviewsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1075,6 +1108,7 @@ export type UserUpdateWithoutReviewsInput = {
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutReviewsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1101,6 +1135,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCreateWithoutReactionsInput = {
     id?: string;
@@ -1127,6 +1162,7 @@ export type UserCreateWithoutReactionsInput = {
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutReactionsInput = {
     id?: string;
@@ -1153,6 +1189,7 @@ export type UserUncheckedCreateWithoutReactionsInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutReactionsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1192,6 +1229,7 @@ export type UserUpdateWithoutReactionsInput = {
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutReactionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1218,6 +1256,7 @@ export type UserUncheckedUpdateWithoutReactionsInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCreateWithoutCommentsInput = {
     id?: string;
@@ -1244,6 +1283,7 @@ export type UserCreateWithoutCommentsInput = {
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutCommentsInput = {
     id?: string;
@@ -1270,6 +1310,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutCommentsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1309,6 +1350,7 @@ export type UserUpdateWithoutCommentsInput = {
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutCommentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1335,6 +1377,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCreateWithoutNotificationsReceivedInput = {
     id?: string;
@@ -1361,6 +1404,7 @@ export type UserCreateWithoutNotificationsReceivedInput = {
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutNotificationsReceivedInput = {
     id?: string;
@@ -1387,6 +1431,7 @@ export type UserUncheckedCreateWithoutNotificationsReceivedInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutNotificationsReceivedInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1417,6 +1462,7 @@ export type UserCreateWithoutNotificationsActedInput = {
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutNotificationsActedInput = {
     id?: string;
@@ -1443,6 +1489,7 @@ export type UserUncheckedCreateWithoutNotificationsActedInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutNotificationsActedInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1482,6 +1529,7 @@ export type UserUpdateWithoutNotificationsReceivedInput = {
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutNotificationsReceivedInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1508,6 +1556,7 @@ export type UserUncheckedUpdateWithoutNotificationsReceivedInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserUpsertWithoutNotificationsActedInput = {
     update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsActedInput, Prisma.UserUncheckedUpdateWithoutNotificationsActedInput>;
@@ -1543,6 +1592,7 @@ export type UserUpdateWithoutNotificationsActedInput = {
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutNotificationsActedInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1569,6 +1619,7 @@ export type UserUncheckedUpdateWithoutNotificationsActedInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCreateWithoutNotifPreferenceInput = {
     id?: string;
@@ -1595,6 +1646,7 @@ export type UserCreateWithoutNotifPreferenceInput = {
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutNotifPreferenceInput = {
     id?: string;
@@ -1621,6 +1673,7 @@ export type UserUncheckedCreateWithoutNotifPreferenceInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutNotifPreferenceInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1660,6 +1713,7 @@ export type UserUpdateWithoutNotifPreferenceInput = {
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutNotifPreferenceInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1686,6 +1740,7 @@ export type UserUncheckedUpdateWithoutNotifPreferenceInput = {
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCreateWithoutReportsInput = {
     id?: string;
@@ -1712,6 +1767,7 @@ export type UserCreateWithoutReportsInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutReportsInput = {
     id?: string;
@@ -1738,6 +1794,7 @@ export type UserUncheckedCreateWithoutReportsInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutReportsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1777,6 +1834,7 @@ export type UserUpdateWithoutReportsInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutReportsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1803,6 +1861,7 @@ export type UserUncheckedUpdateWithoutReportsInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCreateWithoutRecommendationSnapshotInput = {
     id?: string;
@@ -1829,6 +1888,7 @@ export type UserCreateWithoutRecommendationSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutRecommendationSnapshotInput = {
     id?: string;
@@ -1855,6 +1915,7 @@ export type UserUncheckedCreateWithoutRecommendationSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutRecommendationSnapshotInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1894,6 +1955,7 @@ export type UserUpdateWithoutRecommendationSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutRecommendationSnapshotInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1920,6 +1982,128 @@ export type UserUncheckedUpdateWithoutRecommendationSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+};
+export type UserCreateWithoutFollowSuggestionSnapshotInput = {
+    id?: string;
+    handle: string;
+    displayName: string;
+    email: string;
+    passwordHash?: string | null;
+    googleId?: string | null;
+    avatarUrl?: string | null;
+    bio?: string | null;
+    notifEnabled?: boolean;
+    status?: $Enums.UserStatus;
+    emailVerifiedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
+    followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
+    reactions?: Prisma.ReviewReactionCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentCreateNestedManyWithoutUserInput;
+    notificationsReceived?: Prisma.NotificationCreateNestedManyWithoutRecipientInput;
+    notificationsActed?: Prisma.NotificationCreateNestedManyWithoutActorInput;
+    notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
+    refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
+    reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutFollowSuggestionSnapshotInput = {
+    id?: string;
+    handle: string;
+    displayName: string;
+    email: string;
+    passwordHash?: string | null;
+    googleId?: string | null;
+    avatarUrl?: string | null;
+    bio?: string | null;
+    notifEnabled?: boolean;
+    status?: $Enums.UserStatus;
+    emailVerifiedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
+    followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
+    reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput;
+    notificationsReceived?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientInput;
+    notificationsActed?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput;
+    notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
+    refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
+    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutFollowSuggestionSnapshotInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutFollowSuggestionSnapshotInput, Prisma.UserUncheckedCreateWithoutFollowSuggestionSnapshotInput>;
+};
+export type UserUpsertWithoutFollowSuggestionSnapshotInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutFollowSuggestionSnapshotInput, Prisma.UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutFollowSuggestionSnapshotInput, Prisma.UserUncheckedCreateWithoutFollowSuggestionSnapshotInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutFollowSuggestionSnapshotInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutFollowSuggestionSnapshotInput, Prisma.UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput>;
+};
+export type UserUpdateWithoutFollowSuggestionSnapshotInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    handle?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
+    followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
+    reactions?: Prisma.ReviewReactionUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUpdateManyWithoutUserNestedInput;
+    notificationsReceived?: Prisma.NotificationUpdateManyWithoutRecipientNestedInput;
+    notificationsActed?: Prisma.NotificationUpdateManyWithoutActorNestedInput;
+    notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
+    refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
+    reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    handle?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
+    followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
+    reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput;
+    notificationsReceived?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientNestedInput;
+    notificationsActed?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput;
+    notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
+    refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
+    reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCountOutputType = {
     following: number;
@@ -1999,6 +2183,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>;
     reports?: boolean | Prisma.User$reportsArgs<ExtArgs>;
     recommendationSnapshot?: boolean | Prisma.User$recommendationSnapshotArgs<ExtArgs>;
+    followSuggestionSnapshot?: boolean | Prisma.User$followSuggestionSnapshotArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2062,6 +2247,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>;
     reports?: boolean | Prisma.User$reportsArgs<ExtArgs>;
     recommendationSnapshot?: boolean | Prisma.User$recommendationSnapshotArgs<ExtArgs>;
+    followSuggestionSnapshot?: boolean | Prisma.User$followSuggestionSnapshotArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -2080,6 +2266,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[];
         reports: Prisma.$ReportPayload<ExtArgs>[];
         recommendationSnapshot: Prisma.$RecommendationSnapshotPayload<ExtArgs> | null;
+        followSuggestionSnapshot: Prisma.$FollowSuggestionSnapshotPayload<ExtArgs> | null;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -2159,6 +2346,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
     refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     reports<T extends Prisma.User$reportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     recommendationSnapshot<T extends Prisma.User$recommendationSnapshotArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recommendationSnapshotArgs<ExtArgs>>): Prisma.Prisma__RecommendationSnapshotClient<runtime.Types.Result.GetResult<Prisma.$RecommendationSnapshotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    followSuggestionSnapshot<T extends Prisma.User$followSuggestionSnapshotArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followSuggestionSnapshotArgs<ExtArgs>>): Prisma.Prisma__FollowSuggestionSnapshotClient<runtime.Types.Result.GetResult<Prisma.$FollowSuggestionSnapshotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -2387,6 +2575,12 @@ export type User$recommendationSnapshotArgs<ExtArgs extends runtime.Types.Extens
     omit?: Prisma.RecommendationSnapshotOmit<ExtArgs> | null;
     include?: Prisma.RecommendationSnapshotInclude<ExtArgs> | null;
     where?: Prisma.RecommendationSnapshotWhereInput;
+};
+export type User$followSuggestionSnapshotArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.FollowSuggestionSnapshotSelect<ExtArgs> | null;
+    omit?: Prisma.FollowSuggestionSnapshotOmit<ExtArgs> | null;
+    include?: Prisma.FollowSuggestionSnapshotInclude<ExtArgs> | null;
+    where?: Prisma.FollowSuggestionSnapshotWhereInput;
 };
 export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserSelect<ExtArgs> | null;

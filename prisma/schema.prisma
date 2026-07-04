@@ -68,17 +68,18 @@ model User {
   updatedAt       DateTime   @updatedAt
   deletedAt       DateTime?
 
-  following              Follow[]                @relation("Follower")
-  followers              Follow[]                @relation("Followee")
-  reviews                Review[]
-  reactions              ReviewReaction[]
-  comments               Comment[]
-  notificationsReceived  Notification[]          @relation("Recipient")
-  notificationsActed     Notification[]          @relation("Actor")
-  notifPreference        NotificationPreference?
-  refreshTokens          RefreshToken[]
-  reports                Report[]
-  recommendationSnapshot RecommendationSnapshot?
+  following                Follow[]                   @relation("Follower")
+  followers                Follow[]                   @relation("Followee")
+  reviews                  Review[]
+  reactions                ReviewReaction[]
+  comments                 Comment[]
+  notificationsReceived    Notification[]             @relation("Recipient")
+  notificationsActed       Notification[]             @relation("Actor")
+  notifPreference          NotificationPreference?
+  refreshTokens            RefreshToken[]
+  reports                  Report[]
+  recommendationSnapshot   RecommendationSnapshot?
+  followSuggestionSnapshot FollowSuggestionSnapshot?
 
   @@map("users")
 }
@@ -302,4 +303,16 @@ model RecommendationSnapshot {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("recommendation_snapshots")
+}
+
+// ─── Follow suggestions ───────────────────────────────────────────
+
+model FollowSuggestionSnapshot {
+  userId      String   @id
+  payload     Json
+  generatedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("follow_suggestion_snapshots")
 }

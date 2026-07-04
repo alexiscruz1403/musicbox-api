@@ -11,13 +11,16 @@ import { BadRequestException, ConflictException, Injectable, NotFoundException, 
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
 import sanitizeHtml from 'sanitize-html';
+import { SocialEventsProducer } from '../events/social-events.producer.js';
 import { UsersRepository } from './users.repository.js';
 let UsersService = class UsersService {
     repo;
     config;
-    constructor(repo, config) {
+    events;
+    constructor(repo, config, events) {
         this.repo = repo;
         this.config = config;
+        this.events = events;
         cloudinary.config({
             cloud_name: config.getOrThrow('CLOUDINARY_CLOUD_NAME'),
             api_key: config.getOrThrow('CLOUDINARY_API_KEY'),
@@ -118,6 +121,9 @@ let UsersService = class UsersService {
             isFollowing,
         };
     }
+    async searchUsers(q, cursor, limit, viewerId) {
+        return this.repo.searchUsers(q.trim(), cursor, limit, viewerId);
+    }
     async getFollowers(handle, cursor, limit) {
         return this.repo.getFollowers(handle, cursor, limit);
     }
@@ -145,6 +151,7 @@ let UsersService = class UsersService {
                 message: 'Ya sigues a este usuario.',
             });
         await this.repo.createFollow(followerId, target.id);
+        await this.events.emitFollowCreated({ followerId, followeeId: target.id });
     }
     async unfollow(followerId, handle) {
         const target = await this.repo.findByHandle(handle);
@@ -165,7 +172,8 @@ let UsersService = class UsersService {
 UsersService = __decorate([
     Injectable(),
     __metadata("design:paramtypes", [UsersRepository,
-        ConfigService])
+        ConfigService,
+        SocialEventsProducer])
 ], UsersService);
 export { UsersService };
 //# sourceMappingURL=users.service.js.map

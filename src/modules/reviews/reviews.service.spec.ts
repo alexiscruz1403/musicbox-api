@@ -13,6 +13,7 @@ import type {
   CatalogTrack,
 } from '../catalog/providers/music-catalog.provider.js';
 import { ReviewEventsProducer } from '../events/review-events.producer.js';
+import { SocialService } from '../social/social.service.js';
 import { ReviewsRepository } from './reviews.repository.js';
 import { ReviewsService } from './reviews.service.js';
 
@@ -66,7 +67,6 @@ const mockRepo = {
   createTrackReview: vi.fn(),
   createAlbumReview: vi.fn(),
   findById: vi.fn(),
-  findReactionBreakdown: vi.fn(),
   updateTrackReview: vi.fn(),
   updateAlbumReviewItems: vi.fn(),
   updateAlbumReviewDescription: vi.fn(),
@@ -87,6 +87,17 @@ const mockEvents = {
   emitDeleted: vi.fn(),
 };
 
+const mockSocial = {
+  getReviewStats: vi.fn(),
+};
+
+const defaultStats = {
+  likesCount: 0,
+  dislikesCount: 0,
+  commentsCount: 0,
+  userReaction: null,
+};
+
 describe('ReviewsService', () => {
   let service: ReviewsService;
 
@@ -97,11 +108,15 @@ describe('ReviewsService', () => {
         { provide: ReviewsRepository, useValue: mockRepo },
         { provide: CatalogService, useValue: mockCatalog },
         { provide: ReviewEventsProducer, useValue: mockEvents },
+        { provide: SocialService, useValue: mockSocial },
       ],
     }).compile();
 
     service = module.get(ReviewsService);
     vi.clearAllMocks();
+    mockSocial.getReviewStats.mockImplementation((ids: string[]) =>
+      Promise.resolve(new Map(ids.map((id) => [id, { ...defaultStats }]))),
+    );
   });
 
   describe('create — TRACK', () => {
@@ -297,16 +312,49 @@ describe('ReviewsService', () => {
   });
 
   describe('findById', () => {
-    it('returns the review with reactionStats defaulted to zero when there are no reactions', async () => {
+    it('returns the review with likes/dislikes/comments defaulted to zero when there are none', async () => {
       mockRepo.findById.mockResolvedValue({
         id: 'review-1',
         status: 'ACTIVE',
         deletedAt: null,
       });
-      mockRepo.findReactionBreakdown.mockResolvedValue([]);
 
       const result = await service.findById('review-1');
-      expect(result.reactionStats).toEqual({ likes: 0, dislikes: 0 });
+      expect(result).toMatchObject(defaultStats);
+    });
+
+    it('merges stats from SocialService, forwarding the viewer id', async () => {
+      mockRepo.findById.mockResolvedValue({
+        id: 'review-1',
+        status: 'ACTIVE',
+        deletedAt: null,
+      });
+      mockSocial.getReviewStats.mockResolvedValue(
+        new Map([
+          [
+            'review-1',
+            {
+              likesCount: 3,
+              dislikesCount: 1,
+              commentsCount: 2,
+              userReaction: 'LIKE',
+            },
+          ],
+        ]),
+      );
+
+      const result = await service.findById('review-1', 'viewer-1');
+
+      expect(mockSocial.getReviewStats).toHaveBeenCalledWith(
+        ['review-1'],
+        'viewer-1',
+      );
+      expect(result).toMatchObject({
+        likesCount: 3,
+        dislikesCount: 1,
+        commentsCount: 2,
+        userReaction: 'LIKE',
+      });
     });
 
     it('throws NotFoundException for a missing review', async () => {
@@ -465,6 +513,61 @@ describe('ReviewsService', () => {
         20,
         'recent',
       );
+    });
+
+    it('merges stats onto each album review item and forwards the viewer id', async () => {
+      mockRepo.findAlbumByDeezerId.mockResolvedValue({ id: 'album-uuid-1' });
+      mockRepo.listByAlbum.mockResolvedValue({
+        items: [{ id: 'review-1' }, { id: 'review-2' }],
+        nextCursor: 'cursor-1',
+      });
+      mockSocial.getReviewStats.mockResolvedValue(
+        new Map([
+          ['review-1', { ...defaultStats, likesCount: 2 }],
+          ['review-2', { ...defaultStats, commentsCount: 1 }],
+        ]),
+      );
+
+      const result = await service.listByAlbum(
+        '302127',
+        { limit: 20, sort: 'recent' },
+        'viewer-1',
+      );
+
+      expect(mockSocial.getReviewStats).toHaveBeenCalledWith(
+        ['review-1', 'review-2'],
+        'viewer-1',
+      );
+      expect(result.items).toEqual([
+        { id: 'review-1', ...defaultStats, likesCount: 2 },
+        { id: 'review-2', ...defaultStats, commentsCount: 1 },
+      ]);
+      expect(result.nextCursor).toBe('cursor-1');
+    });
+
+    it('merges stats onto each track review item and forwards the viewer id', async () => {
+      mockRepo.findTrackByDeezerId.mockResolvedValue({ id: 'track-uuid-1' });
+      mockRepo.listByTrack.mockResolvedValue({
+        items: [{ id: 'review-3' }],
+        nextCursor: null,
+      });
+      mockSocial.getReviewStats.mockResolvedValue(
+        new Map([['review-3', { ...defaultStats, dislikesCount: 1 }]]),
+      );
+
+      const result = await service.listByTrack(
+        '3135556',
+        { limit: 20, sort: 'recent' },
+        'viewer-2',
+      );
+
+      expect(mockSocial.getReviewStats).toHaveBeenCalledWith(
+        ['review-3'],
+        'viewer-2',
+      );
+      expect(result.items).toEqual([
+        { id: 'review-3', ...defaultStats, dislikesCount: 1 },
+      ]);
     });
 
     it('throws NotFoundException for an unknown album deezerId', async () => {

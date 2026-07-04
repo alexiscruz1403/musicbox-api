@@ -10,10 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseInterceptors, } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Req, UseGuards, UseInterceptors, } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
+import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import { CreateReviewDto } from './dto/create-review.dto.js';
 import { UpdateReviewDto } from './dto/update-review.dto.js';
@@ -26,8 +27,8 @@ let ReviewsController = class ReviewsController {
     async create(user, dto) {
         return { data: await this.reviews.create(user.sub, dto) };
     }
-    async findOne(id) {
-        return { data: await this.reviews.findById(id) };
+    async findOne(id, req) {
+        return { data: await this.reviews.findById(id, req.user?.sub) };
     }
     async update(user, id, dto) {
         return { data: await this.reviews.update(user.sub, id, dto) };
@@ -49,9 +50,11 @@ __decorate([
 __decorate([
     Public(),
     Get(':id'),
+    UseGuards(OptionalJwtAuthGuard),
     __param(0, Param('id')),
+    __param(1, Req()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], ReviewsController.prototype, "findOne", null);
 __decorate([

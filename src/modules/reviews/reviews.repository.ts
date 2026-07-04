@@ -121,14 +121,6 @@ export class ReviewsRepository {
     });
   }
 
-  findReactionBreakdown(reviewId: string) {
-    return this.prisma.reviewReaction.groupBy({
-      by: ['type'],
-      where: { reviewId },
-      _count: true,
-    });
-  }
-
   updateTrackReview(
     id: string,
     data: { description?: string; rating?: number },

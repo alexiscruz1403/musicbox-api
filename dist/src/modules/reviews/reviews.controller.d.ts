@@ -1,3 +1,4 @@
+import type { Request } from 'express';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { CreateReviewDto } from './dto/create-review.dto.js';
 import { UpdateReviewDto } from './dto/update-review.dto.js';
@@ -7,38 +8,40 @@ export declare class ReviewsController {
     constructor(reviews: ReviewsService);
     create(user: JwtPayload, dto: CreateReviewDto): Promise<{
         data: {
-            id: string;
             type: import("../../../generated/prisma/enums.js").ReviewType;
-            description: string;
-            rating: import("@prisma/client-runtime-utils").Decimal;
+            id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
+            userId: string;
+            albumId: string | null;
+            trackId: string | null;
+            description: string;
+            rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;
-            userId: string;
-            trackId: string | null;
-            albumId: string | null;
         };
     }>;
-    findOne(id: string): Promise<{
+    findOne(id: string, req: Request & {
+        user?: JwtPayload;
+    }): Promise<{
         data: {
-            reactionStats: {
-                likes: number;
-                dislikes: number;
-            };
+            likesCount: number;
+            dislikesCount: number;
+            commentsCount: number;
+            userReaction: "LIKE" | "DISLIKE" | null;
             user: {
-                id: string;
                 handle: string;
                 displayName: string;
+                id: string;
                 avatarUrl: string | null;
             };
-            track: {
+            album: {
                 deezerId: string;
             } | null;
-            album: {
+            track: {
                 deezerId: string;
             } | null;
             trackReviewItems: ({
@@ -49,40 +52,40 @@ export declare class ReviewsController {
                 };
             } & {
                 id: string;
+                reviewId: string;
+                trackId: string;
                 description: string | null;
                 rating: number;
-                trackId: string;
                 position: number;
-                reviewId: string;
             })[];
-            id: string;
             type: import("../../../generated/prisma/enums.js").ReviewType;
-            description: string;
-            rating: import("@prisma/client-runtime-utils").Decimal;
+            id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
+            userId: string;
+            albumId: string | null;
+            trackId: string | null;
+            description: string;
+            rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;
-            userId: string;
-            trackId: string | null;
-            albumId: string | null;
         };
     }>;
     update(user: JwtPayload, id: string, dto: UpdateReviewDto): Promise<{
         data: ({
             user: {
-                id: string;
                 handle: string;
                 displayName: string;
+                id: string;
                 avatarUrl: string | null;
             };
-            track: {
+            album: {
                 deezerId: string;
             } | null;
-            album: {
+            track: {
                 deezerId: string;
             } | null;
             trackReviewItems: ({
@@ -93,27 +96,27 @@ export declare class ReviewsController {
                 };
             } & {
                 id: string;
+                reviewId: string;
+                trackId: string;
                 description: string | null;
                 rating: number;
-                trackId: string;
                 position: number;
-                reviewId: string;
             })[];
         } & {
-            id: string;
             type: import("../../../generated/prisma/enums.js").ReviewType;
-            description: string;
-            rating: import("@prisma/client-runtime-utils").Decimal;
+            id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
+            userId: string;
+            albumId: string | null;
+            trackId: string | null;
+            description: string;
+            rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;
-            userId: string;
-            trackId: string | null;
-            albumId: string | null;
         }) | null;
     }>;
     remove(user: JwtPayload, id: string): Promise<void>;

@@ -135,6 +135,44 @@ let UsersRepository = class UsersRepository {
             : null;
         return { items: items.map((f) => f.followee), nextCursor };
     }
+    async searchUsers(query, cursor, limit = 10, viewerId) {
+        const take = Math.min(limit, 50);
+        const cursorId = cursor
+            ? Buffer.from(cursor, 'base64').toString('utf8')
+            : undefined;
+        const users = await this.prisma.user.findMany({
+            where: {
+                status: 'ACTIVE',
+                OR: [
+                    { handle: { contains: query, mode: 'insensitive' } },
+                    { displayName: { contains: query, mode: 'insensitive' } },
+                ],
+            },
+            orderBy: [{ handle: 'asc' }, { id: 'asc' }],
+            take: take + 1,
+            ...(cursorId && { cursor: { id: cursorId }, skip: 1 }),
+            select: { id: true, handle: true, displayName: true, avatarUrl: true },
+        });
+        const hasMore = users.length > take;
+        const rows = hasMore ? users.slice(0, take) : users;
+        const nextCursor = hasMore
+            ? Buffer.from(rows[rows.length - 1].id).toString('base64')
+            : null;
+        const followedIds = viewerId && rows.length > 0
+            ? new Set((await this.prisma.follow.findMany({
+                where: {
+                    followerId: viewerId,
+                    followeeId: { in: rows.map((r) => r.id) },
+                },
+                select: { followeeId: true },
+            })).map((f) => f.followeeId))
+            : new Set();
+        const items = rows.map((r) => ({
+            ...r,
+            isFollowing: followedIds.has(r.id),
+        }));
+        return { items, nextCursor };
+    }
     followExists(followerId, followeeId) {
         return this.prisma.follow.findUnique({
             where: { followerId_followeeId: { followerId, followeeId } },

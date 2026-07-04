@@ -10,8 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
 import { Public } from '../common/decorators/public.decorator.js';
+import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { ListReviewsQueryDto } from './dto/list-reviews-query.dto.js';
 import { ReviewsService } from './reviews.service.js';
 let AlbumTrackReviewsController = class AlbumTrackReviewsController {
@@ -19,12 +20,12 @@ let AlbumTrackReviewsController = class AlbumTrackReviewsController {
     constructor(reviews) {
         this.reviews = reviews;
     }
-    async listByAlbum(deezerId, query) {
-        const result = await this.reviews.listByAlbum(deezerId, query);
+    async listByAlbum(deezerId, query, req) {
+        const result = await this.reviews.listByAlbum(deezerId, query, req.user?.sub);
         return { data: result.items, meta: { cursor: result.nextCursor } };
     }
-    async listByTrack(deezerId, query) {
-        const result = await this.reviews.listByTrack(deezerId, query);
+    async listByTrack(deezerId, query, req) {
+        const result = await this.reviews.listByTrack(deezerId, query, req.user?.sub);
         return { data: result.items, meta: { cursor: result.nextCursor } };
     }
 };
@@ -32,20 +33,23 @@ __decorate([
     Get('albums/:deezerId/reviews'),
     __param(0, Param('deezerId')),
     __param(1, Query()),
+    __param(2, Req()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, ListReviewsQueryDto]),
+    __metadata("design:paramtypes", [String, ListReviewsQueryDto, Object]),
     __metadata("design:returntype", Promise)
 ], AlbumTrackReviewsController.prototype, "listByAlbum", null);
 __decorate([
     Get('tracks/:deezerId/reviews'),
     __param(0, Param('deezerId')),
     __param(1, Query()),
+    __param(2, Req()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, ListReviewsQueryDto]),
+    __metadata("design:paramtypes", [String, ListReviewsQueryDto, Object]),
     __metadata("design:returntype", Promise)
 ], AlbumTrackReviewsController.prototype, "listByTrack", null);
 AlbumTrackReviewsController = __decorate([
     Public(),
+    UseGuards(OptionalJwtAuthGuard),
     Controller(),
     __metadata("design:paramtypes", [ReviewsService])
 ], AlbumTrackReviewsController);

@@ -127,6 +127,16 @@ export declare class UsersRepository {
         }[];
         nextCursor: string | null;
     }>;
+    searchUsers(query: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
+        items: {
+            isFollowing: boolean;
+            handle: string;
+            displayName: string;
+            id: string;
+            avatarUrl: string | null;
+        }[];
+        nextCursor: string | null;
+    }>;
     followExists(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
         createdAt: Date;
         followeeId: string;
