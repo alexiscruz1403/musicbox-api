@@ -23,7 +23,8 @@ export const ModelName = {
     NotificationPreference: 'NotificationPreference',
     Report: 'Report',
     RecommendationSnapshot: 'RecommendationSnapshot',
-    FollowSuggestionSnapshot: 'FollowSuggestionSnapshot'
+    FollowSuggestionSnapshot: 'FollowSuggestionSnapshot',
+    TrendingSnapshot: 'TrendingSnapshot'
 };
 export const TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -141,6 +142,7 @@ export const NotificationScalarFieldEnum = {
     type: 'type',
     reviewId: 'reviewId',
     commentId: 'commentId',
+    actorCount: 'actorCount',
     readAt: 'readAt',
     createdAt: 'createdAt'
 };
@@ -169,6 +171,11 @@ export const FollowSuggestionSnapshotScalarFieldEnum = {
     userId: 'userId',
     payload: 'payload',
     generatedAt: 'generatedAt'
+};
+export const TrendingSnapshotScalarFieldEnum = {
+    id: 'id',
+    payload: 'payload',
+    snapshotAt: 'snapshotAt'
 };
 export const SortOrder = {
     asc: 'asc',

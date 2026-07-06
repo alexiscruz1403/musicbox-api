@@ -68,13 +68,13 @@ model User {
   updatedAt       DateTime   @updatedAt
   deletedAt       DateTime?
 
-  following                Follow[]                   @relation("Follower")
-  followers                Follow[]                   @relation("Followee")
+  following                Follow[]                  @relation("Follower")
+  followers                Follow[]                  @relation("Followee")
   reviews                  Review[]
   reactions                ReviewReaction[]
   comments                 Comment[]
-  notificationsReceived    Notification[]             @relation("Recipient")
-  notificationsActed       Notification[]             @relation("Actor")
+  notificationsReceived    Notification[]            @relation("Recipient")
+  notificationsActed       Notification[]            @relation("Actor")
   notifPreference          NotificationPreference?
   refreshTokens            RefreshToken[]
   reports                  Report[]
@@ -253,6 +253,7 @@ model Notification {
   type        NotificationType
   reviewId    String?
   commentId   String?
+  actorCount  Int?
   readAt      DateTime?
   createdAt   DateTime         @default(now())
 
@@ -315,4 +316,14 @@ model FollowSuggestionSnapshot {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("follow_suggestion_snapshots")
+}
+
+// ─── Trending ──────────────────────────────────────────────────────
+
+model TrendingSnapshot {
+  id         String   @id @default(uuid())
+  payload    Json
+  snapshotAt DateTime @default(now())
+
+  @@map("trending_snapshots")
 }

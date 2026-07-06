@@ -15,9 +15,5 @@ export class UpdateNotifPrefsDto {
 
   @IsOptional()
   @IsBoolean()
-  followersEnabled?: boolean;
-
-  @IsOptional()
-  @IsBoolean()
-  reviewsEnabled?: boolean;
+  followsEnabled?: boolean;
 }
