@@ -19,8 +19,10 @@ import { CatalogModule } from './modules/catalog/catalog.module.js';
 import { EventsModule } from './modules/events/events.module.js';
 import { FeedModule } from './modules/feed/feed.module.js';
 import { FollowSuggestionsModule } from './modules/follow-suggestions/follow-suggestions.module.js';
+import { NotificationsModule } from './modules/notifications/notifications.module.js';
 import { ReviewsModule } from './modules/reviews/reviews.module.js';
 import { SocialModule } from './modules/social/social.module.js';
+import { TrendingModule } from './modules/trending/trending.module.js';
 
 @Module({
   imports: [
@@ -55,6 +57,8 @@ import { SocialModule } from './modules/social/social.module.js';
     SocialModule,
     FeedModule,
     FollowSuggestionsModule,
+    TrendingModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [

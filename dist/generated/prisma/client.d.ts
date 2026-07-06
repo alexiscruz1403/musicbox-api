@@ -21,3 +21,4 @@ export type NotificationPreference = Prisma.NotificationPreferenceModel;
 export type Report = Prisma.ReportModel;
 export type RecommendationSnapshot = Prisma.RecommendationSnapshotModel;
 export type FollowSuggestionSnapshot = Prisma.FollowSuggestionSnapshotModel;
+export type TrendingSnapshot = Prisma.TrendingSnapshotModel;

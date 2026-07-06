@@ -172,6 +172,7 @@ export declare const ModelName: {
     readonly Report: "Report";
     readonly RecommendationSnapshot: "RecommendationSnapshot";
     readonly FollowSuggestionSnapshot: "FollowSuggestionSnapshot";
+    readonly TrendingSnapshot: "TrendingSnapshot";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
@@ -184,7 +185,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "follow" | "refreshToken" | "artist" | "album" | "track" | "review" | "trackReviewItem" | "reviewReaction" | "comment" | "notification" | "notificationPreference" | "report" | "recommendationSnapshot" | "followSuggestionSnapshot";
+        modelProps: "user" | "follow" | "refreshToken" | "artist" | "album" | "track" | "review" | "trackReviewItem" | "reviewReaction" | "comment" | "notification" | "notificationPreference" | "report" | "recommendationSnapshot" | "followSuggestionSnapshot" | "trendingSnapshot";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -1298,6 +1299,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        TrendingSnapshot: {
+            payload: Prisma.$TrendingSnapshotPayload<ExtArgs>;
+            fields: Prisma.TrendingSnapshotFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.TrendingSnapshotFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TrendingSnapshotPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.TrendingSnapshotFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TrendingSnapshotPayload>;
+                };
+                findFirst: {
+                    args: Prisma.TrendingSnapshotFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TrendingSnapshotPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.TrendingSnapshotFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TrendingSnapshotPayload>;
+                };
+                findMany: {
+                    args: Prisma.TrendingSnapshotFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TrendingSnapshotPayload>[];
+                };
+                create: {
+                    args: Prisma.TrendingSnapshotCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TrendingSnapshotPayload>;
+                };
+                createMany: {
+                    args: Prisma.TrendingSnapshotCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.TrendingSnapshotCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TrendingSnapshotPayload>[];
+                };
+                delete: {
+                    args: Prisma.TrendingSnapshotDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TrendingSnapshotPayload>;
+                };
+                update: {
+                    args: Prisma.TrendingSnapshotUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TrendingSnapshotPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.TrendingSnapshotDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.TrendingSnapshotUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.TrendingSnapshotUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TrendingSnapshotPayload>[];
+                };
+                upsert: {
+                    args: Prisma.TrendingSnapshotUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TrendingSnapshotPayload>;
+                };
+                aggregate: {
+                    args: Prisma.TrendingSnapshotAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateTrendingSnapshot>;
+                };
+                groupBy: {
+                    args: Prisma.TrendingSnapshotGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.TrendingSnapshotGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.TrendingSnapshotCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.TrendingSnapshotCountAggregateOutputType> | number;
+                };
+            };
+        };
     };
 } & {
     other: {
@@ -1449,6 +1524,7 @@ export declare const NotificationScalarFieldEnum: {
     readonly type: "type";
     readonly reviewId: "reviewId";
     readonly commentId: "commentId";
+    readonly actorCount: "actorCount";
     readonly readAt: "readAt";
     readonly createdAt: "createdAt";
 };
@@ -1483,6 +1559,12 @@ export declare const FollowSuggestionSnapshotScalarFieldEnum: {
     readonly generatedAt: "generatedAt";
 };
 export type FollowSuggestionSnapshotScalarFieldEnum = (typeof FollowSuggestionSnapshotScalarFieldEnum)[keyof typeof FollowSuggestionSnapshotScalarFieldEnum];
+export declare const TrendingSnapshotScalarFieldEnum: {
+    readonly id: "id";
+    readonly payload: "payload";
+    readonly snapshotAt: "snapshotAt";
+};
+export type TrendingSnapshotScalarFieldEnum = (typeof TrendingSnapshotScalarFieldEnum)[keyof typeof TrendingSnapshotScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
@@ -1575,6 +1657,7 @@ export type GlobalOmitConfig = {
     report?: Prisma.ReportOmit;
     recommendationSnapshot?: Prisma.RecommendationSnapshotOmit;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotOmit;
+    trendingSnapshot?: Prisma.TrendingSnapshotOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';
 export type LogDefinition = {

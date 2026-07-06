@@ -26,6 +26,7 @@ export declare const ModelName: {
     readonly Report: "Report";
     readonly RecommendationSnapshot: "RecommendationSnapshot";
     readonly FollowSuggestionSnapshot: "FollowSuggestionSnapshot";
+    readonly TrendingSnapshot: "TrendingSnapshot";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -155,6 +156,7 @@ export declare const NotificationScalarFieldEnum: {
     readonly type: "type";
     readonly reviewId: "reviewId";
     readonly commentId: "commentId";
+    readonly actorCount: "actorCount";
     readonly readAt: "readAt";
     readonly createdAt: "createdAt";
 };
@@ -189,6 +191,12 @@ export declare const FollowSuggestionSnapshotScalarFieldEnum: {
     readonly generatedAt: "generatedAt";
 };
 export type FollowSuggestionSnapshotScalarFieldEnum = (typeof FollowSuggestionSnapshotScalarFieldEnum)[keyof typeof FollowSuggestionSnapshotScalarFieldEnum];
+export declare const TrendingSnapshotScalarFieldEnum: {
+    readonly id: "id";
+    readonly payload: "payload";
+    readonly snapshotAt: "snapshotAt";
+};
+export type TrendingSnapshotScalarFieldEnum = (typeof TrendingSnapshotScalarFieldEnum)[keyof typeof TrendingSnapshotScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

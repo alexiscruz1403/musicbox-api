@@ -12,8 +12,7 @@ export class UpdateNotifPrefsDto {
     likesEnabled;
     dislikesEnabled;
     commentsEnabled;
-    followersEnabled;
-    reviewsEnabled;
+    followsEnabled;
 }
 __decorate([
     IsOptional(),
@@ -34,10 +33,5 @@ __decorate([
     IsOptional(),
     IsBoolean(),
     __metadata("design:type", Boolean)
-], UpdateNotifPrefsDto.prototype, "followersEnabled", void 0);
-__decorate([
-    IsOptional(),
-    IsBoolean(),
-    __metadata("design:type", Boolean)
-], UpdateNotifPrefsDto.prototype, "reviewsEnabled", void 0);
+], UpdateNotifPrefsDto.prototype, "followsEnabled", void 0);
 //# sourceMappingURL=update-notif-prefs.dto.js.map

@@ -75,5 +75,8 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get followSuggestionSnapshot(): Prisma.FollowSuggestionSnapshotDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get trendingSnapshot(): Prisma.TrendingSnapshotDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;
