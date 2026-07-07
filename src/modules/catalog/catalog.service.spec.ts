@@ -17,6 +17,7 @@ const artistFixture: CatalogArtist = {
   deezerId: '27',
   name: 'Daft Punk',
   imageUrl: 'https://example.com/daft-punk.jpg',
+  fans: 1000,
 };
 
 const trackFixture: CatalogTrack = {
@@ -24,6 +25,8 @@ const trackFixture: CatalogTrack = {
   title: 'One More Time',
   artist: artistFixture,
   albumDeezerId: '302127',
+  coverUrl: 'https://example.com/discovery.jpg',
+  releaseDate: '2001-03-07',
   durationMs: 320000,
   trackNumber: 1,
   previewUrl: 'https://example.com/preview.mp3',
@@ -37,6 +40,7 @@ const albumFixture: CatalogAlbum = {
   releaseDate: '2001-03-07',
   genreLabel: 'Electronica',
   tracks: [trackFixture],
+  fans: 50000,
 };
 
 const searchPageFixture: CatalogPage<CatalogSearchResult> = {

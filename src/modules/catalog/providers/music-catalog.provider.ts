@@ -6,6 +6,7 @@ export interface CatalogArtist {
   deezerId: string;
   name: string;
   imageUrl: string | null;
+  fans: number;
 }
 
 export interface CatalogTrack {
@@ -28,6 +29,7 @@ export interface CatalogAlbum {
   releaseDate: string | null;
   genreLabel: string | null;
   tracks: CatalogTrack[];
+  fans: number;
 }
 
 export type CatalogSearchResult =

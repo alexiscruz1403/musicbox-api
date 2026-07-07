@@ -1,0 +1,12 @@
+export const MIN_REVIEWS_FOR_RECOMMENDATIONS = 3;
+export const MIN_FAVORITE_ARTIST_RATING = 7;
+export const MAX_FAVORITE_ARTISTS = 5;
+export const SIMILAR_ARTISTS_PER_FAVORITE = 5;
+export const MAX_PER_ARTIST = 2;
+export const RECOMMENDATIONS_TOP_N = 20;
+export const RECOMMENDATIONS_JOB_NAME = 'generate-recommendations';
+export const RECOMMENDATIONS_SCHEDULER_ID = 'recommendations-generate-scheduler';
+export const RECOMMENDATIONS_CRON_PATTERN = '0 3 * * *';
+export const INSUFFICIENT_REVIEWS_HEADER = 'X-Recommendation-Status';
+export const INSUFFICIENT_REVIEWS_STATUS = 'INSUFFICIENT_REVIEWS';
+//# sourceMappingURL=recommendations.constants.js.map

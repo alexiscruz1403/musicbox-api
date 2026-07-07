@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
-import { NOTIFICATIONS_QUEUE } from '../events/events.constants.js';
+import { NOTIFICATIONS_QUEUE, RECOMMENDATIONS_QUEUE, } from '../events/events.constants.js';
 import { FollowSuggestionsController } from './follow-suggestions.controller.js';
 import { FollowSuggestionsRepository } from './follow-suggestions.repository.js';
 import { FollowSuggestionsService } from './follow-suggestions.service.js';
@@ -16,7 +16,9 @@ let FollowSuggestionsModule = class FollowSuggestionsModule {
 };
 FollowSuggestionsModule = __decorate([
     Module({
-        imports: [BullModule.registerQueue({ name: NOTIFICATIONS_QUEUE })],
+        imports: [
+            BullModule.registerQueue({ name: NOTIFICATIONS_QUEUE }, { name: RECOMMENDATIONS_QUEUE }),
+        ],
         controllers: [FollowSuggestionsController],
         providers: [
             FollowSuggestionsService,

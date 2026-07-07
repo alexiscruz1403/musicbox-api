@@ -5,6 +5,7 @@ import { Redis } from 'ioredis';
 import {
   DEFAULT_JOB_OPTIONS,
   NOTIFICATIONS_QUEUE,
+  RECOMMENDATIONS_QUEUE,
   REVIEWS_QUEUE,
   SOCIAL_QUEUE,
   TRENDING_QUEUE,
@@ -31,6 +32,7 @@ import { SocialEventsProducer } from './social-events.producer.js';
       { name: SOCIAL_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS },
       { name: NOTIFICATIONS_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS },
       { name: TRENDING_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS },
+      { name: RECOMMENDATIONS_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS },
     ),
   ],
   providers: [ReviewEventsProducer, SocialEventsProducer],

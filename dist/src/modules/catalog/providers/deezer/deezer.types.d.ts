@@ -2,6 +2,7 @@ export interface DeezerArtist {
     id: number;
     name: string;
     picture_medium: string;
+    nb_fan?: number;
 }
 export interface DeezerTrack {
     id: number;
@@ -31,6 +32,7 @@ export interface DeezerAlbum {
     tracks?: {
         data: DeezerTrack[];
     };
+    fans?: number;
 }
 export interface DeezerSearchResponse<T> {
     data: T[];

@@ -26,6 +26,7 @@ import { EventsModule } from './modules/events/events.module.js';
 import { FeedModule } from './modules/feed/feed.module.js';
 import { FollowSuggestionsModule } from './modules/follow-suggestions/follow-suggestions.module.js';
 import { NotificationsModule } from './modules/notifications/notifications.module.js';
+import { RecommendationsModule } from './modules/recommendations/recommendations.module.js';
 import { ReviewsModule } from './modules/reviews/reviews.module.js';
 import { SocialModule } from './modules/social/social.module.js';
 import { TrendingModule } from './modules/trending/trending.module.js';
@@ -66,6 +67,7 @@ AppModule = __decorate([
             FollowSuggestionsModule,
             TrendingModule,
             NotificationsModule,
+            RecommendationsModule,
         ],
         controllers: [AppController],
         providers: [
