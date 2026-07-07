@@ -7,26 +7,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Processor, WorkerHost } from '@nestjs/bullmq';
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+import { InjectQueue, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
-import { REVIEWS_QUEUE } from '../../events/events.constants.js';
+import { RECOMMENDATIONS_QUEUE, REVIEWS_QUEUE, } from '../../events/events.constants.js';
 import { FollowSuggestionsService } from '../follow-suggestions.service.js';
 let ReviewsQueueProcessor = class ReviewsQueueProcessor extends WorkerHost {
     followSuggestions;
-    constructor(followSuggestions) {
+    recommendations;
+    constructor(followSuggestions, recommendations) {
         super();
         this.followSuggestions = followSuggestions;
+        this.recommendations = recommendations;
     }
     async process(job) {
         if (job.name !== 'review.created')
             return;
-        await this.followSuggestions.recompute(job.data.userId);
+        await Promise.all([
+            this.recommendations.add(job.name, job.data),
+            this.followSuggestions.recompute(job.data.userId),
+        ]);
     }
 };
 ReviewsQueueProcessor = __decorate([
     Injectable(),
     Processor(REVIEWS_QUEUE),
-    __metadata("design:paramtypes", [FollowSuggestionsService])
+    __param(1, InjectQueue(RECOMMENDATIONS_QUEUE)),
+    __metadata("design:paramtypes", [FollowSuggestionsService, Function])
 ], ReviewsQueueProcessor);
 export { ReviewsQueueProcessor };
 //# sourceMappingURL=reviews-queue.processor.js.map

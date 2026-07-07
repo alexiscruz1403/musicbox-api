@@ -1,11 +1,17 @@
+import { getQueueToken } from '@nestjs/bullmq';
 import { Test, TestingModule } from '@nestjs/testing';
 import type { Job } from 'bullmq';
+import { RECOMMENDATIONS_QUEUE } from '../../events/events.constants.js';
 import type { ReviewEventPayload } from '../../events/review-events.producer.js';
 import { FollowSuggestionsService } from '../follow-suggestions.service.js';
 import { ReviewsQueueProcessor } from './reviews-queue.processor.js';
 
 const mockService = {
   recompute: vi.fn(),
+};
+
+const mockRecommendationsQueue = {
+  add: vi.fn(),
 };
 
 describe('ReviewsQueueProcessor', () => {
@@ -16,6 +22,10 @@ describe('ReviewsQueueProcessor', () => {
       providers: [
         ReviewsQueueProcessor,
         { provide: FollowSuggestionsService, useValue: mockService },
+        {
+          provide: getQueueToken(RECOMMENDATIONS_QUEUE),
+          useValue: mockRecommendationsQueue,
+        },
       ],
     }).compile();
 
@@ -42,5 +52,24 @@ describe('ReviewsQueueProcessor', () => {
   it('no-ops for review.deleted', async () => {
     await processor.process(buildJob('review.deleted'));
     expect(mockService.recompute).not.toHaveBeenCalled();
+  });
+
+  it('relays review.created to the recommendations queue', async () => {
+    const job = buildJob('review.created');
+    await processor.process(job);
+    expect(mockRecommendationsQueue.add).toHaveBeenCalledWith(
+      'review.created',
+      job.data,
+    );
+  });
+
+  it('does not relay review.updated to the recommendations queue', async () => {
+    await processor.process(buildJob('review.updated'));
+    expect(mockRecommendationsQueue.add).not.toHaveBeenCalled();
+  });
+
+  it('does not relay review.deleted to the recommendations queue', async () => {
+    await processor.process(buildJob('review.deleted'));
+    expect(mockRecommendationsQueue.add).not.toHaveBeenCalled();
   });
 });

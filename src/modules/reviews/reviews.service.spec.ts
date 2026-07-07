@@ -21,6 +21,7 @@ const artistFixture = {
   deezerId: '27',
   name: 'Daft Punk',
   imageUrl: 'https://example.com/daft-punk.jpg',
+  fans: 1000,
 };
 
 const trackFixture: CatalogTrack = {
@@ -57,6 +58,7 @@ const albumFixture: CatalogAlbum = {
       trackNumber: 3,
     },
   ],
+  fans: 50000,
 };
 
 const mockRepo = {

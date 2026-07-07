@@ -31,6 +31,9 @@ export const configValidationSchema = Joi.object({
   FRONTEND_URL: Joi.string().uri().required(),
 
   DEEZER_BASE_URL: Joi.string().uri().default('https://api.deezer.com'),
+  LASTFM_BASE_URL: Joi.string()
+    .uri()
+    .default('http://ws.audioscrobbler.com/2.0'),
   LASTFM_API_KEY: Joi.string().optional(),
   MUSICBRAINZ_CONTACT_EMAIL: Joi.string().email().optional(),
 

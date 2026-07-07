@@ -2,6 +2,7 @@ export interface DeezerArtist {
   id: number;
   name: string;
   picture_medium: string;
+  nb_fan?: number;
 }
 
 export interface DeezerTrack {
@@ -23,6 +24,7 @@ export interface DeezerAlbum {
   release_date: string;
   genres?: { data: Array<{ name: string }> };
   tracks?: { data: DeezerTrack[] };
+  fans?: number;
 }
 
 export interface DeezerSearchResponse<T> {

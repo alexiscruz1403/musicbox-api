@@ -68,6 +68,7 @@ export class DeezerMusicCatalogProvider
       deezerId: String(raw.id),
       name: raw.name,
       imageUrl: raw.picture_medium ?? null,
+      fans: raw.nb_fan ?? 0,
     };
   }
 
@@ -86,16 +87,21 @@ export class DeezerMusicCatalogProvider
     };
   }
 
-  private mapAlbum(raw: DeezerAlbum): CatalogAlbum {
+  // `artistOverride` covers Deezer's /artist/:id/albums list endpoint, whose
+  // album items omit the nested `artist` object entirely (redundant with the
+  // URL) — getArtistAlbums() fetches that artist once and passes it in here
+  // instead of mapArtist() crashing on `raw.artist` being undefined.
+  private mapAlbum(raw: DeezerAlbum, artistOverride?: CatalogArtist): CatalogAlbum {
     return {
       deezerId: String(raw.id),
       title: raw.title,
-      artist: this.mapArtist(raw.artist),
+      artist: artistOverride ?? this.mapArtist(raw.artist),
       coverUrl: raw.cover_medium ?? null,
       releaseDate: raw.release_date ?? null,
       genreLabel: raw.genres?.data[0]?.name ?? null,
       tracks:
         raw.tracks?.data.map((t) => this.mapTrack(t, raw.release_date)) ?? [],
+      fans: raw.fans ?? 0,
     };
   }
 
@@ -176,12 +182,15 @@ export class DeezerMusicCatalogProvider
     cursor: string | null,
   ): Promise<CatalogPage<CatalogAlbum>> {
     const index = cursor ? this.decodeCursor(cursor) : 0;
-    const { data } = await firstValueFrom(
-      this.http.get<DeezerSearchResponse<DeezerAlbum>>(
-        `${this.baseUrl}/artist/${deezerId}/albums`,
-        { params: { limit, index } },
+    const [artist, { data }] = await Promise.all([
+      this.getArtist(deezerId),
+      firstValueFrom(
+        this.http.get<DeezerSearchResponse<DeezerAlbum>>(
+          `${this.baseUrl}/artist/${deezerId}/albums`,
+          { params: { limit, index } },
+        ),
       ),
-    );
+    ]);
     this.assertNoError(data);
 
     const nextOffset = index + data.data.length;
@@ -189,7 +198,7 @@ export class DeezerMusicCatalogProvider
       nextOffset < data.total ? this.encodeCursor(nextOffset) : null;
 
     return {
-      items: data.data.map((a) => this.mapAlbum(a)),
+      items: data.data.map((a) => this.mapAlbum(a, artist)),
       nextCursor,
       total: data.total,
     };
