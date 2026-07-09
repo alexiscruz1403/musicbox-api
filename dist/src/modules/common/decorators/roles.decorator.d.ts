@@ -1,3 +1,3 @@
-import type { UserStatus } from '../../../../generated/prisma/client.js';
+import type { UserRole } from '../../../../generated/prisma/client.js';
 export declare const ROLES_KEY = "roles";
-export declare const Roles: (...roles: UserStatus[]) => import("@nestjs/common").CustomDecorator<string>;
+export declare const Roles: (...roles: UserRole[]) => import("@nestjs/common").CustomDecorator<string>;

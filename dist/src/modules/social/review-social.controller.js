@@ -10,10 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query, UseInterceptors, } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards, UseInterceptors, } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
+import { NotPenalizedGuard } from '../common/guards/not-penalized.guard.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { CreateReactionDto } from './dto/create-reaction.dto.js';
@@ -69,6 +70,7 @@ __decorate([
 __decorate([
     Post(':id/comments'),
     Throttle({ default: { limit: 30, ttl: 3600 } }),
+    UseGuards(NotPenalizedGuard),
     UseInterceptors(IdempotencyInterceptor),
     __param(0, CurrentUser()),
     __param(1, Param('id')),

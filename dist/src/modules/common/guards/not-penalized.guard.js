@@ -1,0 +1,51 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+import { ForbiddenException, Injectable, } from '@nestjs/common';
+import { PrismaService } from '../../../prisma/prisma.service.js';
+let NotPenalizedGuard = class NotPenalizedGuard {
+    prisma;
+    constructor(prisma) {
+        this.prisma = prisma;
+    }
+    async canActivate(context) {
+        const request = context
+            .switchToHttp()
+            .getRequest();
+        const userId = request.user?.sub;
+        if (!userId)
+            return true;
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: { status: true, penalizedUntil: true },
+        });
+        if (!user)
+            return true;
+        if (user.status === 'SUSPENDED') {
+            throw new ForbiddenException({
+                code: 'ACCOUNT_SUSPENDED',
+                message: 'Tu cuenta está suspendida.',
+            });
+        }
+        if (user.penalizedUntil && user.penalizedUntil > new Date()) {
+            throw new ForbiddenException({
+                code: 'USER_PENALIZED',
+                message: 'No podés publicar reviews ni comentarios mientras tengas una penalización activa.',
+                penalizedUntil: user.penalizedUntil,
+            });
+        }
+        return true;
+    }
+};
+NotPenalizedGuard = __decorate([
+    Injectable(),
+    __metadata("design:paramtypes", [PrismaService])
+], NotPenalizedGuard);
+export { NotPenalizedGuard };
+//# sourceMappingURL=not-penalized.guard.js.map

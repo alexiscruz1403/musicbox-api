@@ -79,6 +79,28 @@ let UsersService = class UsersService {
     async deleteAccount(userId) {
         await this.repo.anonimize(userId);
     }
+    async exportAccountData(userId) {
+        const user = await this.repo.findById(userId);
+        if (!user)
+            throw new NotFoundException({
+                code: 'USER_NOT_FOUND',
+                message: 'Usuario no encontrado.',
+            });
+        const { passwordHash: _pw, googleId: _gid, ...profile } = user;
+        const data = await this.repo.getExportData(userId);
+        return {
+            profile,
+            reviews: data.reviews,
+            comments: data.comments,
+            reactions: data.reactions,
+            follows: {
+                followers: data.followers.map((f) => f.follower),
+                following: data.following.map((f) => f.followee),
+            },
+            notificationPreferences: data.notifPrefs,
+            exportedAt: new Date().toISOString(),
+        };
+    }
     async getNotifPrefs(userId) {
         const prefs = await this.repo.getNotifPrefs(userId);
         if (!prefs)

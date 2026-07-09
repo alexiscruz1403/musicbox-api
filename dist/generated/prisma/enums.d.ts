@@ -4,6 +4,11 @@ export declare const UserStatus: {
     readonly DELETED: "DELETED";
 };
 export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus];
+export declare const UserRole: {
+    readonly USER: "USER";
+    readonly ADMIN: "ADMIN";
+};
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 export declare const ReviewType: {
     readonly TRACK: "TRACK";
     readonly ALBUM: "ALBUM";
@@ -25,6 +30,7 @@ export declare const NotificationType: {
     readonly DISLIKE: "DISLIKE";
     readonly COMMENT: "COMMENT";
     readonly FOLLOW: "FOLLOW";
+    readonly MODERATION: "MODERATION";
 };
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
 export declare const ReportTargetType: {

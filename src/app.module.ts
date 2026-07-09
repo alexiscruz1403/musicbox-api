@@ -19,6 +19,7 @@ import { CatalogModule } from './modules/catalog/catalog.module.js';
 import { EventsModule } from './modules/events/events.module.js';
 import { FeedModule } from './modules/feed/feed.module.js';
 import { FollowSuggestionsModule } from './modules/follow-suggestions/follow-suggestions.module.js';
+import { ModerationModule } from './modules/moderation/moderation.module.js';
 import { NotificationsModule } from './modules/notifications/notifications.module.js';
 import { RecommendationsModule } from './modules/recommendations/recommendations.module.js';
 import { ReviewsModule } from './modules/reviews/reviews.module.js';
@@ -61,6 +62,7 @@ import { TrendingModule } from './modules/trending/trending.module.js';
     TrendingModule,
     NotificationsModule,
     RecommendationsModule,
+    ModerationModule,
   ],
   controllers: [AppController],
   providers: [

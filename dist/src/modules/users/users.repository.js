@@ -15,10 +15,10 @@ let UsersRepository = class UsersRepository {
         this.prisma = prisma;
     }
     findById(id) {
-        return this.prisma.user.findUnique({ where: { id } });
+        return this.prisma.user.findFirst({ where: { id, deletedAt: null } });
     }
     findByHandle(handle) {
-        return this.prisma.user.findUnique({ where: { handle } });
+        return this.prisma.user.findFirst({ where: { handle, deletedAt: null } });
     }
     getStats(userId) {
         return Promise.all([
@@ -51,6 +51,43 @@ let UsersRepository = class UsersRepository {
                 data: { revokedAt: new Date() },
             }),
         ]);
+    }
+    async getExportData(userId) {
+        const [reviews, comments, reactions, followers, following, notifPrefs] = await Promise.all([
+            this.prisma.review.findMany({
+                where: { userId },
+                include: { trackReviewItems: true },
+                orderBy: { createdAt: 'desc' },
+            }),
+            this.prisma.comment.findMany({
+                where: { userId },
+                orderBy: { createdAt: 'desc' },
+            }),
+            this.prisma.reviewReaction.findMany({
+                where: { userId },
+                orderBy: { createdAt: 'desc' },
+            }),
+            this.prisma.follow.findMany({
+                where: { followeeId: userId },
+                include: {
+                    follower: {
+                        select: { id: true, handle: true, displayName: true },
+                    },
+                },
+            }),
+            this.prisma.follow.findMany({
+                where: { followerId: userId },
+                include: {
+                    followee: {
+                        select: { id: true, handle: true, displayName: true },
+                    },
+                },
+            }),
+            this.prisma.notificationPreference.findUnique({
+                where: { userId },
+            }),
+        ]);
+        return { reviews, comments, reactions, followers, following, notifPrefs };
     }
     updateAvatarUrl(userId, avatarUrl) {
         return this.prisma.user.update({

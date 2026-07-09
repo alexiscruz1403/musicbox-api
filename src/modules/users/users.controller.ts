@@ -75,6 +75,11 @@ export class UsersController {
     await this.users.deleteAccount(user.sub);
   }
 
+  @Get('me/export')
+  async exportMe(@CurrentUser() user: JwtPayload) {
+    return { data: await this.users.exportAccountData(user.sub) };
+  }
+
   @Get('me/notifications-prefs')
   async getNotifPrefs(@CurrentUser() user: JwtPayload) {
     return { data: await this.users.getNotifPrefs(user.sub) };

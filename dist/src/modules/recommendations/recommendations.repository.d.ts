@@ -5,58 +5,58 @@ export declare class RecommendationsRepository {
     constructor(prisma: PrismaService);
     countActiveReviews(userId: string): Promise<number>;
     getFavoriteArtistSignals(userId: string): Prisma.PrismaPromise<{
-        track: {
-            artistId: string;
-            artist: {
-                name: string;
-            };
-        } | null;
         album: {
-            artistId: string;
             artist: {
                 name: string;
             };
+            artistId: string;
+        } | null;
+        track: {
+            artist: {
+                name: string;
+            };
+            artistId: string;
         } | null;
     }[]>;
     getGenreSignals(userId: string): Prisma.PrismaPromise<{
+        album: {
+            genreLabel: string | null;
+        } | null;
         track: {
             album: {
                 genreLabel: string | null;
             } | null;
         } | null;
-        album: {
-            genreLabel: string | null;
-        } | null;
     }[]>;
     getReviewedAlbumDeezerIds(userId: string): Prisma.PrismaPromise<{
+        album: {
+            deezerId: string;
+        } | null;
         track: {
             album: {
                 deezerId: string;
             } | null;
         } | null;
-        album: {
-            deezerId: string;
-        } | null;
     }[]>;
     findAlbumsByGenres(genres: string[], excludeDeezerIds: string[], limit: number): Promise<never[]> | Prisma.PrismaPromise<({
         artist: {
+            name: string;
             id: string;
             deezerId: string;
             mbid: string | null;
-            lastSyncedAt: Date;
-            name: string;
             imageUrl: string | null;
+            lastSyncedAt: Date;
         };
     } & {
         id: string;
         deezerId: string;
         mbid: string | null;
+        lastSyncedAt: Date;
         title: string;
         artistId: string;
         coverUrl: string | null;
         releaseDate: Date | null;
         genreLabel: string | null;
-        lastSyncedAt: Date;
     })[]>;
     listUserIdsWithSnapshot(): Promise<{
         userId: string;

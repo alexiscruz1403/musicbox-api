@@ -17,14 +17,14 @@ export declare class NotificationsService {
                 handle: string;
                 displayName: string;
                 avatarUrl: string | null;
-            };
+            } | null;
         } & {
             type: import("../../../generated/prisma/enums.js").NotificationType;
             id: string;
             createdAt: Date;
             reviewId: string | null;
             recipientId: string;
-            actorId: string;
+            actorId: string | null;
             commentId: string | null;
             actorCount: number | null;
             readAt: Date | null;
@@ -37,12 +37,16 @@ export declare class NotificationsService {
         createdAt: Date;
         reviewId: string | null;
         recipientId: string;
-        actorId: string;
+        actorId: string | null;
         commentId: string | null;
         actorCount: number | null;
         readAt: Date | null;
     }>;
     markAllRead(userId: string): Promise<void>;
+    notifyModeration(recipientId: string, payload: {
+        reviewId?: string;
+        commentId?: string;
+    }): Promise<void>;
     createFromEvent(jobName: string, payload: unknown): Promise<void>;
     private buildInput;
     private isTypeEnabled;

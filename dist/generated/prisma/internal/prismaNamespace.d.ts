@@ -1415,10 +1415,15 @@ export declare const UserScalarFieldEnum: {
     readonly bio: "bio";
     readonly notifEnabled: "notifEnabled";
     readonly status: "status";
+    readonly role: "role";
     readonly emailVerifiedAt: "emailVerifiedAt";
+    readonly consentedAt: "consentedAt";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
     readonly deletedAt: "deletedAt";
+    readonly acceptedReportsCount: "acceptedReportsCount";
+    readonly penaltyLevel: "penaltyLevel";
+    readonly penalizedUntil: "penalizedUntil";
 };
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
 export declare const FollowScalarFieldEnum: {
@@ -1544,6 +1549,8 @@ export declare const ReportScalarFieldEnum: {
     readonly targetId: "targetId";
     readonly reason: "reason";
     readonly status: "status";
+    readonly reviewedById: "reviewedById";
+    readonly reviewedAt: "reviewedAt";
     readonly createdAt: "createdAt";
 };
 export type ReportScalarFieldEnum = (typeof ReportScalarFieldEnum)[keyof typeof ReportScalarFieldEnum];
@@ -1595,6 +1602,8 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>;
 export type EnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserStatus'>;
 export type ListEnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserStatus[]'>;
+export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>;
+export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>;
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;

@@ -8,12 +8,14 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
+import { NotPenalizedGuard } from '../common/guards/not-penalized.guard.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { CreateReactionDto } from './dto/create-reaction.dto.js';
@@ -55,6 +57,7 @@ export class ReviewSocialController {
 
   @Post(':id/comments')
   @Throttle({ default: { limit: 30, ttl: 3600 } })
+  @UseGuards(NotPenalizedGuard)
   @UseInterceptors(IdempotencyInterceptor)
   async createComment(
     @CurrentUser() user: JwtPayload,
