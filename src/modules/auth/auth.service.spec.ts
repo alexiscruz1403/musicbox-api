@@ -1,6 +1,8 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -49,8 +51,8 @@ const mockPrisma = {
 const mockJwt = { sign: vi.fn().mockReturnValue('access_token') };
 const mockRedis = { get: vi.fn(), set: vi.fn(), del: vi.fn() };
 const mockEmail = {
-  sendVerificationEmail: vi.fn(),
   sendPasswordResetEmail: vi.fn(),
+  sendChangeEmailConfirmation: vi.fn(),
 };
 const mockConfig = {
   getOrThrow: vi.fn((key: string) => {
@@ -129,7 +131,7 @@ describe('AuthService', () => {
       ).rejects.toThrow(ConflictException);
     });
 
-    it('creates user, sends verification email, and returns tokens on success', async () => {
+    it('creates user and returns tokens on success', async () => {
       mockPrisma.user.findFirst.mockResolvedValue(null);
       const createdUser = {
         id: 'user-1',
@@ -161,11 +163,6 @@ describe('AuthService', () => {
         mockReq,
       );
 
-      expect(mockEmail.sendVerificationEmail).toHaveBeenCalledWith(
-        'new@b.com',
-        'user-1',
-        'test-uuid',
-      );
       expect(result).toMatchObject({
         accessToken: 'access_token',
         refreshToken: 'test-uuid',
@@ -355,6 +352,8 @@ describe('AuthService', () => {
       mockPrisma.user.findUnique.mockResolvedValue({
         id: 'u1',
         email: 'a@a.com',
+        googleId: null,
+        passwordHash: 'existing_hash',
       });
       await service.forgotPassword('a@a.com');
       expect(mockRedis.set).toHaveBeenCalledWith(
@@ -367,6 +366,20 @@ describe('AuthService', () => {
         'u1',
         'test-uuid',
       );
+    });
+
+    it('does not create a reset token or send an email for Google-only accounts', async () => {
+      mockPrisma.user.findUnique.mockResolvedValue({
+        id: 'u1',
+        email: 'google@a.com',
+        googleId: 'google-123',
+        passwordHash: null,
+      });
+      await expect(
+        service.forgotPassword('google@a.com'),
+      ).resolves.toBeUndefined();
+      expect(mockRedis.set).not.toHaveBeenCalled();
+      expect(mockEmail.sendPasswordResetEmail).not.toHaveBeenCalled();
     });
   });
 
@@ -389,6 +402,11 @@ describe('AuthService', () => {
     it('updates password, revokes all tokens, and deletes Redis key on success', async () => {
       mockRedis.get.mockResolvedValue('stored-hash');
       vi.mocked(argon2.verify).mockResolvedValue(true);
+      mockPrisma.user.findUnique.mockResolvedValue({
+        id: 'u1',
+        googleId: null,
+        passwordHash: 'existing_hash',
+      });
       mockPrisma.$transaction.mockResolvedValue([{}, {}]);
 
       await service.resetPassword('u1', 'valid-token', 'newpass123');
@@ -396,64 +414,168 @@ describe('AuthService', () => {
       expect(mockPrisma.$transaction).toHaveBeenCalled();
       expect(mockRedis.del).toHaveBeenCalledWith('pw-reset:u1');
     });
+
+    it('throws ForbiddenException for Google-only accounts even with a valid token', async () => {
+      mockRedis.get.mockResolvedValue('stored-hash');
+      vi.mocked(argon2.verify).mockResolvedValue(true);
+      mockPrisma.user.findUnique.mockResolvedValue({
+        id: 'u1',
+        googleId: 'google-123',
+        passwordHash: null,
+      });
+
+      await expect(
+        service.resetPassword('u1', 'valid-token', 'newpass123'),
+      ).rejects.toThrow(ForbiddenException);
+      expect(mockPrisma.$transaction).not.toHaveBeenCalled();
+    });
   });
 
-  describe('verifyEmail', () => {
-    it('throws if token not in Redis', async () => {
+  describe('changeEmail', () => {
+    it('throws NotFoundException if user does not exist', async () => {
+      mockPrisma.user.findUnique.mockResolvedValue(null);
+      await expect(service.changeEmail('u1', 'new@a.com')).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
+    it('throws ForbiddenException for Google-only accounts', async () => {
+      mockPrisma.user.findUnique.mockResolvedValue({
+        id: 'u1',
+        email: 'old@a.com',
+        googleId: 'google-123',
+        passwordHash: null,
+      });
+      await expect(service.changeEmail('u1', 'new@a.com')).rejects.toThrow(
+        ForbiddenException,
+      );
+    });
+
+    it('throws BadRequestException if newEmail equals current email', async () => {
+      mockPrisma.user.findUnique.mockResolvedValue({
+        id: 'u1',
+        email: 'same@a.com',
+        googleId: null,
+        passwordHash: 'hash',
+      });
+      await expect(service.changeEmail('u1', 'same@a.com')).rejects.toThrow(
+        BadRequestException,
+      );
+    });
+
+    it('throws ConflictException if newEmail is already taken', async () => {
+      mockPrisma.user.findUnique
+        .mockResolvedValueOnce({
+          id: 'u1',
+          email: 'old@a.com',
+          googleId: null,
+          passwordHash: 'hash',
+        })
+        .mockResolvedValueOnce({ id: 'u2', email: 'new@a.com' });
+
+      await expect(service.changeEmail('u1', 'new@a.com')).rejects.toThrow(
+        ConflictException,
+      );
+    });
+
+    it('stores hashed token + newEmail in Redis and sends confirmation email', async () => {
+      mockPrisma.user.findUnique
+        .mockResolvedValueOnce({
+          id: 'u1',
+          email: 'old@a.com',
+          googleId: null,
+          passwordHash: 'hash',
+        })
+        .mockResolvedValueOnce(null);
+
+      await service.changeEmail('u1', 'new@a.com');
+
+      expect(mockRedis.set).toHaveBeenCalledWith(
+        'change-email:u1',
+        JSON.stringify({ tokenHash: 'hashed_value', newEmail: 'new@a.com' }),
+        3600,
+      );
+      expect(mockEmail.sendChangeEmailConfirmation).toHaveBeenCalledWith(
+        'new@a.com',
+        'u1',
+        'test-uuid',
+      );
+    });
+  });
+
+  describe('confirmChangeEmail', () => {
+    it('throws if no token in Redis', async () => {
       mockRedis.get.mockResolvedValue(null);
-      await expect(service.verifyEmail('u1', 'token')).rejects.toThrow(
+      await expect(service.confirmChangeEmail('u1', 'token')).rejects.toThrow(
         UnauthorizedException,
       );
     });
 
-    it('marks email as verified and deletes Redis key on success', async () => {
-      mockRedis.get.mockResolvedValue('stored-hash');
+    it('throws if token hash does not match', async () => {
+      mockRedis.get.mockResolvedValue(
+        JSON.stringify({ tokenHash: 'stored-hash', newEmail: 'new@a.com' }),
+      );
+      vi.mocked(argon2.verify).mockResolvedValue(false);
+      await expect(
+        service.confirmChangeEmail('u1', 'wrong-token'),
+      ).rejects.toThrow(UnauthorizedException);
+    });
+
+    it('throws ForbiddenException for Google-only accounts even with a valid token', async () => {
+      mockRedis.get.mockResolvedValue(
+        JSON.stringify({ tokenHash: 'stored-hash', newEmail: 'new@a.com' }),
+      );
       vi.mocked(argon2.verify).mockResolvedValue(true);
+      mockPrisma.user.findUnique.mockResolvedValue({
+        id: 'u1',
+        googleId: 'google-123',
+        passwordHash: null,
+      });
+
+      await expect(
+        service.confirmChangeEmail('u1', 'valid-token'),
+      ).rejects.toThrow(ForbiddenException);
+    });
+
+    it('throws ConflictException if newEmail was taken in the meantime', async () => {
+      mockRedis.get.mockResolvedValue(
+        JSON.stringify({ tokenHash: 'stored-hash', newEmail: 'new@a.com' }),
+      );
+      vi.mocked(argon2.verify).mockResolvedValue(true);
+      mockPrisma.user.findUnique
+        .mockResolvedValueOnce({
+          id: 'u1',
+          googleId: null,
+          passwordHash: 'hash',
+        })
+        .mockResolvedValueOnce({ id: 'u2', email: 'new@a.com' });
+
+      await expect(
+        service.confirmChangeEmail('u1', 'valid-token'),
+      ).rejects.toThrow(ConflictException);
+    });
+
+    it('updates email and deletes Redis key on success', async () => {
+      mockRedis.get.mockResolvedValue(
+        JSON.stringify({ tokenHash: 'stored-hash', newEmail: 'new@a.com' }),
+      );
+      vi.mocked(argon2.verify).mockResolvedValue(true);
+      mockPrisma.user.findUnique
+        .mockResolvedValueOnce({
+          id: 'u1',
+          googleId: null,
+          passwordHash: 'hash',
+        })
+        .mockResolvedValueOnce(null);
       mockPrisma.user.update.mockResolvedValue({});
 
-      await service.verifyEmail('u1', 'valid-token');
+      await service.confirmChangeEmail('u1', 'valid-token');
 
-      expect(mockPrisma.user.update).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: { emailVerifiedAt: expect.any(Date) as Date },
-        }),
-      );
-      expect(mockRedis.del).toHaveBeenCalledWith('email-verify:u1');
-    });
-  });
-
-  describe('resendVerification', () => {
-    it('does nothing if user not found', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue(null);
-      await service.resendVerification('u1', 'e@e.com');
-      expect(mockEmail.sendVerificationEmail).not.toHaveBeenCalled();
-    });
-
-    it('does nothing if email already verified', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        id: 'u1',
-        emailVerifiedAt: new Date(),
+      expect(mockPrisma.user.update).toHaveBeenCalledWith({
+        where: { id: 'u1' },
+        data: { email: 'new@a.com' },
       });
-      await service.resendVerification('u1', 'e@e.com');
-      expect(mockEmail.sendVerificationEmail).not.toHaveBeenCalled();
-    });
-
-    it('stores new token in Redis and sends verification email', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        id: 'u1',
-        emailVerifiedAt: null,
-      });
-      await service.resendVerification('u1', 'e@e.com');
-      expect(mockRedis.set).toHaveBeenCalledWith(
-        'email-verify:u1',
-        'hashed_value',
-        86400,
-      );
-      expect(mockEmail.sendVerificationEmail).toHaveBeenCalledWith(
-        'e@e.com',
-        'u1',
-        'test-uuid',
-      );
+      expect(mockRedis.del).toHaveBeenCalledWith('change-email:u1');
     });
   });
 

@@ -15,13 +15,14 @@ import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import { AuthService } from './auth.service.js';
+import { ChangeEmailDto } from './dto/change-email.dto.js';
+import { ConfirmChangeEmailDto } from './dto/confirm-change-email.dto.js';
 import { ForgotPasswordDto } from './dto/forgot-password.dto.js';
 import { GoogleAuthDto } from './dto/google-auth.dto.js';
 import { LogoutDto } from './dto/logout.dto.js';
 import { RefreshTokenDto } from './dto/refresh-token.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
 import { ResetPasswordDto } from './dto/reset-password.dto.js';
-import { VerifyEmailDto } from './dto/verify-email.dto.js';
 import type { JwtPayload } from './strategies/jwt.strategy.js';
 
 @Throttle({ default: { limit: 10, ttl: 900 } })
@@ -84,18 +85,23 @@ export class AuthController {
     return { data: { message: 'Contraseña actualizada correctamente.' } };
   }
 
-  @Public()
-  @Post('verify-email')
+  @Post('change-email')
   @HttpCode(HttpStatus.OK)
-  async verifyEmail(@Body() dto: VerifyEmailDto) {
-    await this.auth.verifyEmail(dto.userId, dto.token);
-    return { data: { message: 'Email verificado correctamente.' } };
+  async changeEmail(
+    @CurrentUser() user: JwtPayload,
+    @Body() dto: ChangeEmailDto,
+  ) {
+    await this.auth.changeEmail(user.sub, dto.newEmail);
+    return {
+      data: { message: 'Email de confirmación enviado al nuevo correo.' },
+    };
   }
 
-  @Post('resend-verification')
+  @Public()
+  @Post('confirm-change-email')
   @HttpCode(HttpStatus.OK)
-  async resendVerification(@CurrentUser() user: JwtPayload) {
-    await this.auth.resendVerification(user.sub, user.email);
-    return { data: { message: 'Email de verificación reenviado.' } };
+  async confirmChangeEmail(@Body() dto: ConfirmChangeEmailDto) {
+    await this.auth.confirmChangeEmail(dto.userId, dto.token);
+    return { data: { message: 'Email actualizado correctamente.' } };
   }
 }

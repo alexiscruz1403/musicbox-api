@@ -29,7 +29,8 @@ export class RegisterDto {
 
   @IsBoolean()
   @Equals(true, {
-    message: 'Debés aceptar los Términos de Servicio y la Política de Privacidad.',
+    message:
+      'Debés aceptar los Términos de Servicio y la Política de Privacidad.',
   })
   consent!: boolean;
 }

@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { ConflictException, ForbiddenException, Injectable, UnauthorizedException, } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException, } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
@@ -72,9 +72,6 @@ let AuthService = class AuthService {
             await tx.notificationPreference.create({ data: { userId: created.id } });
             return created;
         });
-        const verifyToken = uuidv4();
-        await this.redis.set(`email-verify:${user.id}`, await argon2.hash(verifyToken, ARGON2_OPTIONS), 86400);
-        await this.email.sendVerificationEmail(user.email, user.id, verifyToken);
         const tokens = await this.issueTokens(user.id, req);
         return {
             ...tokens,
@@ -187,10 +184,7 @@ let AuthService = class AuthService {
             if (byEmail) {
                 user = await this.prisma.user.update({
                     where: { id: byEmail.id },
-                    data: {
-                        googleId,
-                        emailVerifiedAt: byEmail.emailVerifiedAt ?? new Date(),
-                    },
+                    data: { googleId },
                 });
             }
             else {
@@ -202,7 +196,6 @@ let AuthService = class AuthService {
                             displayName: name ?? handle,
                             email,
                             googleId,
-                            emailVerifiedAt: new Date(),
                             consentedAt: new Date(),
                         },
                     });
@@ -230,6 +223,8 @@ let AuthService = class AuthService {
         const user = await this.prisma.user.findUnique({ where: { email } });
         if (!user)
             return;
+        if (user.googleId && !user.passwordHash)
+            return;
         const token = uuidv4();
         await this.redis.set(`pw-reset:${user.id}`, await argon2.hash(token, ARGON2_OPTIONS), 3600);
         await this.email.sendPasswordResetEmail(user.email, user.id, token);
@@ -247,6 +242,13 @@ let AuthService = class AuthService {
                 code: 'INVALID_RESET_TOKEN',
                 message: 'Token de reset inválido o expirado.',
             });
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (user?.googleId && !user?.passwordHash) {
+            throw new ForbiddenException({
+                code: 'OAUTH_ACCOUNT_NO_PASSWORD',
+                message: 'Esta cuenta usa Google Sign-In y no tiene contraseña que restablecer.',
+            });
+        }
         const passwordHash = await argon2.hash(newPassword, ARGON2_OPTIONS);
         await this.prisma.$transaction([
             this.prisma.user.update({
@@ -260,32 +262,77 @@ let AuthService = class AuthService {
         ]);
         await this.redis.del(`pw-reset:${userId}`);
     }
-    async verifyEmail(userId, token) {
-        const stored = await this.redis.get(`email-verify:${userId}`);
+    async changeEmail(userId, newEmail) {
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            throw new NotFoundException({
+                code: 'USER_NOT_FOUND',
+                message: 'Usuario no encontrado.',
+            });
+        }
+        if (user.googleId && !user.passwordHash) {
+            throw new ForbiddenException({
+                code: 'OAUTH_ACCOUNT_EMAIL_LOCKED',
+                message: 'Esta cuenta usa Google Sign-In y no puede cambiar su email desde aquí.',
+            });
+        }
+        if (newEmail === user.email) {
+            throw new BadRequestException({
+                code: 'SAME_EMAIL',
+                message: 'El nuevo email debe ser diferente al actual.',
+            });
+        }
+        const taken = await this.prisma.user.findUnique({
+            where: { email: newEmail },
+        });
+        if (taken) {
+            throw new ConflictException({
+                code: 'EMAIL_TAKEN',
+                message: 'El email ya está en uso.',
+            });
+        }
+        const token = uuidv4();
+        await this.redis.set(`change-email:${userId}`, JSON.stringify({
+            tokenHash: await argon2.hash(token, ARGON2_OPTIONS),
+            newEmail,
+        }), 3600);
+        await this.email.sendChangeEmailConfirmation(newEmail, userId, token);
+    }
+    async confirmChangeEmail(userId, token) {
+        const stored = await this.redis.get(`change-email:${userId}`);
         if (!stored)
             throw new UnauthorizedException({
-                code: 'INVALID_VERIFY_TOKEN',
-                message: 'Token de verificación inválido o expirado.',
+                code: 'INVALID_CHANGE_EMAIL_TOKEN',
+                message: 'Token inválido o expirado.',
             });
-        const valid = await argon2.verify(stored, token);
+        const { tokenHash, newEmail } = JSON.parse(stored);
+        const valid = await argon2.verify(tokenHash, token);
         if (!valid)
             throw new UnauthorizedException({
-                code: 'INVALID_VERIFY_TOKEN',
-                message: 'Token de verificación inválido o expirado.',
+                code: 'INVALID_CHANGE_EMAIL_TOKEN',
+                message: 'Token inválido o expirado.',
             });
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (user?.googleId && !user?.passwordHash) {
+            throw new ForbiddenException({
+                code: 'OAUTH_ACCOUNT_EMAIL_LOCKED',
+                message: 'Esta cuenta usa Google Sign-In y no puede cambiar su email desde aquí.',
+            });
+        }
+        const taken = await this.prisma.user.findUnique({
+            where: { email: newEmail },
+        });
+        if (taken && taken.id !== userId) {
+            throw new ConflictException({
+                code: 'EMAIL_TAKEN',
+                message: 'El email ya está en uso.',
+            });
+        }
         await this.prisma.user.update({
             where: { id: userId },
-            data: { emailVerifiedAt: new Date() },
+            data: { email: newEmail },
         });
-        await this.redis.del(`email-verify:${userId}`);
-    }
-    async resendVerification(userId, email) {
-        const user = await this.prisma.user.findUnique({ where: { id: userId } });
-        if (!user || user.emailVerifiedAt)
-            return;
-        const token = uuidv4();
-        await this.redis.set(`email-verify:${userId}`, await argon2.hash(token, ARGON2_OPTIONS), 86400);
-        await this.email.sendVerificationEmail(email, userId, token);
+        await this.redis.del(`change-email:${userId}`);
     }
     async issueTokens(userId, req) {
         const user = await this.prisma.user.findUniqueOrThrow({

@@ -32,8 +32,8 @@ export declare class AuthService {
     }>;
     forgotPassword(email: string): Promise<void>;
     resetPassword(userId: string, token: string, newPassword: string): Promise<void>;
-    verifyEmail(userId: string, token: string): Promise<void>;
-    resendVerification(userId: string, email: string): Promise<void>;
+    changeEmail(userId: string, newEmail: string): Promise<void>;
+    confirmChangeEmail(userId: string, token: string): Promise<void>;
     private issueTokens;
     private parseRefreshExpiry;
     private generateUniqueHandle;
