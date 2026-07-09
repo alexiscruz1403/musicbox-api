@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator.js';
 let RolesGuard = class RolesGuard {
@@ -23,9 +23,13 @@ let RolesGuard = class RolesGuard {
             .switchToHttp()
             .getRequest();
         const user = request.user;
-        if (!user)
-            return false;
-        return requiredRoles.includes(user.status);
+        if (!user || !requiredRoles.includes(user.role)) {
+            throw new ForbiddenException({
+                code: 'ADMIN_ONLY',
+                message: 'Requiere permisos de administrador.',
+            });
+        }
+        return true;
     }
 };
 RolesGuard = __decorate([

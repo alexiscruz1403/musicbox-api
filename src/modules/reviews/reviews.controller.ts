@@ -16,6 +16,7 @@ import { Throttle } from '@nestjs/throttler';
 import type { Request } from 'express';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
+import { NotPenalizedGuard } from '../common/guards/not-penalized.guard.js';
 import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
@@ -29,6 +30,7 @@ export class ReviewsController {
 
   @Post()
   @Throttle({ default: { limit: 10, ttl: 3600 } })
+  @UseGuards(NotPenalizedGuard)
   @UseInterceptors(IdempotencyInterceptor)
   async create(@CurrentUser() user: JwtPayload, @Body() dto: CreateReviewDto) {
     return { data: await this.reviews.create(user.sub, dto) };

@@ -306,4 +306,23 @@ describe('NotificationsService', () => {
 
     expect(mockRepo.list).toHaveBeenCalledWith('u1', 'c', 10, true);
   });
+
+  describe('notifyModeration', () => {
+    it('creates a MODERATION notification without gating and pushes it over SSE', async () => {
+      mockRepo.create.mockResolvedValue({ id: 'n1', type: 'MODERATION' });
+
+      await service.notifyModeration('owner1', { reviewId: 'rev1' });
+
+      expect(mockRepo.getRecipientGate).not.toHaveBeenCalled();
+      expect(mockRepo.create).toHaveBeenCalledWith({
+        recipientId: 'owner1',
+        type: 'MODERATION',
+        reviewId: 'rev1',
+      });
+      expect(mockSse.push).toHaveBeenCalledWith('owner1', {
+        id: 'n1',
+        type: 'MODERATION',
+      });
+    });
+  });
 });

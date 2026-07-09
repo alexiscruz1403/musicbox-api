@@ -59,6 +59,19 @@ let EmailService = EmailService_1 = class EmailService {
             this.logger.error(`Failed to send password reset email to ${to}`, err);
         }
     }
+    async sendAccountSuspendedEmail(to) {
+        try {
+            await this.transporter.sendMail({
+                from: this.from,
+                to,
+                subject: 'Tu cuenta de MusicBox fue suspendida',
+                html: `<p>Tu cuenta fue suspendida por incumplir reiteradamente las normas de la comunidad (reportes validados por nuestro equipo de moderación).</p>`,
+            });
+        }
+        catch (err) {
+            this.logger.error(`Failed to send suspension email to ${to}`, err);
+        }
+    }
 };
 EmailService = EmailService_1 = __decorate([
     Injectable(),

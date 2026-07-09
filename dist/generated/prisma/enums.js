@@ -3,6 +3,10 @@ export const UserStatus = {
     SUSPENDED: 'SUSPENDED',
     DELETED: 'DELETED'
 };
+export const UserRole = {
+    USER: 'USER',
+    ADMIN: 'ADMIN'
+};
 export const ReviewType = {
     TRACK: 'TRACK',
     ALBUM: 'ALBUM'
@@ -20,7 +24,8 @@ export const NotificationType = {
     LIKE: 'LIKE',
     DISLIKE: 'DISLIKE',
     COMMENT: 'COMMENT',
-    FOLLOW: 'FOLLOW'
+    FOLLOW: 'FOLLOW',
+    MODERATION: 'MODERATION'
 };
 export const ReportTargetType = {
     REVIEW: 'REVIEW',

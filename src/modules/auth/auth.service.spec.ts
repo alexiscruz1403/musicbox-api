@@ -1,4 +1,8 @@
-import { ConflictException, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -99,6 +103,7 @@ describe('AuthService', () => {
             handle: 'new',
             displayName: 'Name',
             password: 'pass',
+            consent: true,
           },
           mockReq,
         ),
@@ -117,6 +122,7 @@ describe('AuthService', () => {
             handle: 'taken',
             displayName: 'Name',
             password: 'pass',
+            consent: true,
           },
           mockReq,
         ),
@@ -131,11 +137,13 @@ describe('AuthService', () => {
         displayName: 'Name',
         email: 'new@b.com',
         status: 'ACTIVE',
+        role: 'USER',
       };
+      const createUser = vi.fn().mockResolvedValue(createdUser);
       mockPrisma.$transaction.mockImplementation(
         (fn: (tx: unknown) => unknown) =>
           fn({
-            user: { create: vi.fn().mockResolvedValue(createdUser) },
+            user: { create: createUser },
             notificationPreference: { create: vi.fn() },
           }),
       );
@@ -148,6 +156,7 @@ describe('AuthService', () => {
           handle: 'newuser',
           displayName: 'Name',
           password: 'pass12345',
+          consent: true,
         },
         mockReq,
       );
@@ -161,6 +170,13 @@ describe('AuthService', () => {
         accessToken: 'access_token',
         refreshToken: 'test-uuid',
       });
+      expect(createUser).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            consentedAt: expect.any(Date) as Date,
+          }),
+        }),
+      );
     });
   });
 
@@ -176,6 +192,7 @@ describe('AuthService', () => {
         handle: 'h',
         email: 'a@a.com',
         status: 'ACTIVE',
+        role: 'USER',
         passwordHash: 'hash',
       });
       vi.mocked(argon2.verify).mockResolvedValue(false);
@@ -188,6 +205,7 @@ describe('AuthService', () => {
         handle: 'h',
         email: 'a@a.com',
         status: 'ACTIVE',
+        role: 'USER',
         passwordHash: 'hash',
       };
       mockPrisma.user.findUnique.mockResolvedValue(user);
@@ -197,6 +215,7 @@ describe('AuthService', () => {
         handle: 'h',
         email: 'a@a.com',
         status: 'ACTIVE',
+        role: 'USER',
       });
     });
   });
@@ -208,12 +227,14 @@ describe('AuthService', () => {
         handle: 'h',
         email: 'e@e.com',
         status: 'ACTIVE' as const,
+        role: 'USER' as const,
       };
       mockPrisma.user.findUniqueOrThrow.mockResolvedValue({
         id: 'u1',
         handle: 'h',
         email: 'e@e.com',
         status: 'ACTIVE',
+        role: 'USER',
       });
       mockPrisma.refreshToken.create.mockResolvedValue({});
 
@@ -257,6 +278,7 @@ describe('AuthService', () => {
         handle: 'h',
         email: 'e@e.com',
         status: 'ACTIVE',
+        role: 'USER',
       });
       mockPrisma.refreshToken.create.mockResolvedValue({});
 
@@ -270,6 +292,29 @@ describe('AuthService', () => {
         expect.objectContaining({
           data: { revokedAt: expect.any(Date) as Date },
         }),
+      );
+    });
+
+    it('rejects issuing tokens for a suspended user', async () => {
+      const token = {
+        id: 't1',
+        tokenHash: 'hash',
+        userId: 'u1',
+        revokedAt: null,
+      };
+      mockPrisma.refreshToken.findMany.mockResolvedValue([token]);
+      vi.mocked(argon2.verify).mockResolvedValue(true);
+      mockPrisma.refreshToken.update.mockResolvedValue({});
+      mockPrisma.user.findUniqueOrThrow.mockResolvedValue({
+        id: 'u1',
+        handle: 'h',
+        email: 'e@e.com',
+        status: 'SUSPENDED',
+        role: 'USER',
+      });
+
+      await expect(service.refresh('valid-token', mockReq)).rejects.toThrow(
+        ForbiddenException,
       );
     });
   });
@@ -420,6 +465,7 @@ describe('AuthService', () => {
         displayName: 'Existing User',
         email: 'google@test.com',
         status: 'ACTIVE',
+        role: 'USER',
       };
       mockPrisma.user.findUnique.mockResolvedValue(existingUser);
       mockPrisma.user.findUniqueOrThrow.mockResolvedValue(existingUser);
@@ -441,6 +487,7 @@ describe('AuthService', () => {
         displayName: 'Google User',
         email: 'google@test.com',
         status: 'ACTIVE',
+        role: 'USER',
       };
       mockPrisma.user.findUnique
         .mockResolvedValueOnce(null)

@@ -15,10 +15,15 @@ export declare class UsersRepository {
         bio: string | null;
         notifEnabled: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
+        role: import("../../../generated/prisma/enums.js").UserRole;
         emailVerifiedAt: Date | null;
+        consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
+        acceptedReportsCount: number;
+        penaltyLevel: number;
+        penalizedUntil: Date | null;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -33,10 +38,15 @@ export declare class UsersRepository {
         bio: string | null;
         notifEnabled: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
+        role: import("../../../generated/prisma/enums.js").UserRole;
         emailVerifiedAt: Date | null;
+        consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
+        acceptedReportsCount: number;
+        penaltyLevel: number;
+        penalizedUntil: Date | null;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -52,10 +62,15 @@ export declare class UsersRepository {
         bio: string | null;
         notifEnabled: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
+        role: import("../../../generated/prisma/enums.js").UserRole;
         emailVerifiedAt: Date | null;
+        consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
+        acceptedReportsCount: number;
+        penaltyLevel: number;
+        penalizedUntil: Date | null;
     }>;
     anonimize(userId: string): Promise<[{
         handle: string;
@@ -68,11 +83,89 @@ export declare class UsersRepository {
         bio: string | null;
         notifEnabled: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
+        role: import("../../../generated/prisma/enums.js").UserRole;
         emailVerifiedAt: Date | null;
+        consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
+        acceptedReportsCount: number;
+        penaltyLevel: number;
+        penalizedUntil: Date | null;
     }, import("../../../generated/prisma/internal/prismaNamespace.js").BatchPayload]>;
+    getExportData(userId: string): Promise<{
+        reviews: ({
+            trackReviewItems: {
+                id: string;
+                reviewId: string;
+                trackId: string;
+                description: string | null;
+                rating: number;
+                position: number;
+            }[];
+        } & {
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            id: string;
+            status: import("../../../generated/prisma/enums.js").ContentStatus;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt: Date | null;
+            userId: string;
+            albumId: string | null;
+            trackId: string | null;
+            description: string;
+            rating: import("@prisma/client-runtime-utils").Decimal;
+            externalTitle: string;
+            externalArtistName: string;
+            externalCoverUrl: string | null;
+        })[];
+        comments: {
+            id: string;
+            status: import("../../../generated/prisma/enums.js").ContentStatus;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt: Date | null;
+            userId: string;
+            content: string;
+            reviewId: string;
+        }[];
+        reactions: {
+            type: import("../../../generated/prisma/enums.js").ReactionType;
+            id: string;
+            createdAt: Date;
+            userId: string;
+            reviewId: string;
+        }[];
+        followers: ({
+            follower: {
+                handle: string;
+                displayName: string;
+                id: string;
+            };
+        } & {
+            createdAt: Date;
+            followeeId: string;
+            followerId: string;
+        })[];
+        following: ({
+            followee: {
+                handle: string;
+                displayName: string;
+                id: string;
+            };
+        } & {
+            createdAt: Date;
+            followeeId: string;
+            followerId: string;
+        })[];
+        notifPrefs: {
+            userId: string;
+            likesEnabled: boolean;
+            dislikesEnabled: boolean;
+            commentsEnabled: boolean;
+            followsEnabled: boolean;
+        } | null;
+    }>;
     updateAvatarUrl(userId: string, avatarUrl: string): import("../../../generated/prisma/models.js").Prisma__UserClient<{
         handle: string;
         displayName: string;
@@ -84,10 +177,15 @@ export declare class UsersRepository {
         bio: string | null;
         notifEnabled: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
+        role: import("../../../generated/prisma/enums.js").UserRole;
         emailVerifiedAt: Date | null;
+        consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
+        acceptedReportsCount: number;
+        penaltyLevel: number;
+        penalizedUntil: Date | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;

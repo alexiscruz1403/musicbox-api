@@ -13,5 +13,6 @@ import { NotificationsQueueProcessor } from './processors/notifications-queue.pr
     NotificationsSseService,
     NotificationsQueueProcessor,
   ],
+  exports: [NotificationsService],
 })
 export class NotificationsModule {}

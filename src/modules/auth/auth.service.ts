@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -77,6 +78,7 @@ export class AuthService {
           displayName,
           email: dto.email,
           passwordHash,
+          consentedAt: new Date(),
         },
       });
       await tx.notificationPreference.create({ data: { userId: created.id } });
@@ -100,6 +102,7 @@ export class AuthService {
         displayName: user.displayName,
         email: user.email,
         status: user.status,
+        role: user.role,
       },
     };
   }
@@ -117,6 +120,7 @@ export class AuthService {
       handle: user.handle,
       email: user.email,
       status: user.status,
+      role: user.role,
     };
   }
 
@@ -132,6 +136,7 @@ export class AuthService {
         handle: payload.handle,
         email: payload.email,
         status: payload.status,
+        role: payload.role,
       },
     };
   }
@@ -232,6 +237,7 @@ export class AuthService {
               email,
               googleId,
               emailVerifiedAt: new Date(),
+              consentedAt: new Date(),
             },
           });
           await tx.notificationPreference.create({
@@ -251,6 +257,7 @@ export class AuthService {
         displayName: user.displayName,
         email: user.email,
         status: user.status,
+        role: user.role,
       },
     };
   }
@@ -339,14 +346,28 @@ export class AuthService {
   private async issueTokens(userId: string, req: Request): Promise<TokenPair> {
     const user = await this.prisma.user.findUniqueOrThrow({
       where: { id: userId },
-      select: { id: true, handle: true, email: true, status: true },
+      select: {
+        id: true,
+        handle: true,
+        email: true,
+        status: true,
+        role: true,
+      },
     });
+
+    if (user.status === 'SUSPENDED') {
+      throw new ForbiddenException({
+        code: 'ACCOUNT_SUSPENDED',
+        message: 'Tu cuenta está suspendida.',
+      });
+    }
 
     const jwtPayload: JwtPayload = {
       sub: user.id,
       handle: user.handle,
       email: user.email,
       status: user.status,
+      role: user.role,
     };
     const accessToken = this.jwt.sign(jwtPayload);
 

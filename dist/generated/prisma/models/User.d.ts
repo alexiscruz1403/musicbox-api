@@ -4,8 +4,18 @@ import type * as Prisma from "../internal/prismaNamespace.js";
 export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayload>;
 export type AggregateUser = {
     _count: UserCountAggregateOutputType | null;
+    _avg: UserAvgAggregateOutputType | null;
+    _sum: UserSumAggregateOutputType | null;
     _min: UserMinAggregateOutputType | null;
     _max: UserMaxAggregateOutputType | null;
+};
+export type UserAvgAggregateOutputType = {
+    acceptedReportsCount: number | null;
+    penaltyLevel: number | null;
+};
+export type UserSumAggregateOutputType = {
+    acceptedReportsCount: number | null;
+    penaltyLevel: number | null;
 };
 export type UserMinAggregateOutputType = {
     id: string | null;
@@ -18,10 +28,15 @@ export type UserMinAggregateOutputType = {
     bio: string | null;
     notifEnabled: boolean | null;
     status: $Enums.UserStatus | null;
+    role: $Enums.UserRole | null;
     emailVerifiedAt: Date | null;
+    consentedAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
     deletedAt: Date | null;
+    acceptedReportsCount: number | null;
+    penaltyLevel: number | null;
+    penalizedUntil: Date | null;
 };
 export type UserMaxAggregateOutputType = {
     id: string | null;
@@ -34,10 +49,15 @@ export type UserMaxAggregateOutputType = {
     bio: string | null;
     notifEnabled: boolean | null;
     status: $Enums.UserStatus | null;
+    role: $Enums.UserRole | null;
     emailVerifiedAt: Date | null;
+    consentedAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
     deletedAt: Date | null;
+    acceptedReportsCount: number | null;
+    penaltyLevel: number | null;
+    penalizedUntil: Date | null;
 };
 export type UserCountAggregateOutputType = {
     id: number;
@@ -50,11 +70,24 @@ export type UserCountAggregateOutputType = {
     bio: number;
     notifEnabled: number;
     status: number;
+    role: number;
     emailVerifiedAt: number;
+    consentedAt: number;
     createdAt: number;
     updatedAt: number;
     deletedAt: number;
+    acceptedReportsCount: number;
+    penaltyLevel: number;
+    penalizedUntil: number;
     _all: number;
+};
+export type UserAvgAggregateInputType = {
+    acceptedReportsCount?: true;
+    penaltyLevel?: true;
+};
+export type UserSumAggregateInputType = {
+    acceptedReportsCount?: true;
+    penaltyLevel?: true;
 };
 export type UserMinAggregateInputType = {
     id?: true;
@@ -67,10 +100,15 @@ export type UserMinAggregateInputType = {
     bio?: true;
     notifEnabled?: true;
     status?: true;
+    role?: true;
     emailVerifiedAt?: true;
+    consentedAt?: true;
     createdAt?: true;
     updatedAt?: true;
     deletedAt?: true;
+    acceptedReportsCount?: true;
+    penaltyLevel?: true;
+    penalizedUntil?: true;
 };
 export type UserMaxAggregateInputType = {
     id?: true;
@@ -83,10 +121,15 @@ export type UserMaxAggregateInputType = {
     bio?: true;
     notifEnabled?: true;
     status?: true;
+    role?: true;
     emailVerifiedAt?: true;
+    consentedAt?: true;
     createdAt?: true;
     updatedAt?: true;
     deletedAt?: true;
+    acceptedReportsCount?: true;
+    penaltyLevel?: true;
+    penalizedUntil?: true;
 };
 export type UserCountAggregateInputType = {
     id?: true;
@@ -99,10 +142,15 @@ export type UserCountAggregateInputType = {
     bio?: true;
     notifEnabled?: true;
     status?: true;
+    role?: true;
     emailVerifiedAt?: true;
+    consentedAt?: true;
     createdAt?: true;
     updatedAt?: true;
     deletedAt?: true;
+    acceptedReportsCount?: true;
+    penaltyLevel?: true;
+    penalizedUntil?: true;
     _all?: true;
 };
 export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -112,6 +160,8 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
     take?: number;
     skip?: number;
     _count?: true | UserCountAggregateInputType;
+    _avg?: UserAvgAggregateInputType;
+    _sum?: UserSumAggregateInputType;
     _min?: UserMinAggregateInputType;
     _max?: UserMaxAggregateInputType;
 };
@@ -126,6 +176,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
     take?: number;
     skip?: number;
     _count?: UserCountAggregateInputType | true;
+    _avg?: UserAvgAggregateInputType;
+    _sum?: UserSumAggregateInputType;
     _min?: UserMinAggregateInputType;
     _max?: UserMaxAggregateInputType;
 };
@@ -140,11 +192,18 @@ export type UserGroupByOutputType = {
     bio: string | null;
     notifEnabled: boolean;
     status: $Enums.UserStatus;
+    role: $Enums.UserRole;
     emailVerifiedAt: Date | null;
+    consentedAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;
+    acceptedReportsCount: number;
+    penaltyLevel: number;
+    penalizedUntil: Date | null;
     _count: UserCountAggregateOutputType | null;
+    _avg: UserAvgAggregateOutputType | null;
+    _sum: UserSumAggregateOutputType | null;
     _min: UserMinAggregateOutputType | null;
     _max: UserMaxAggregateOutputType | null;
 };
@@ -165,10 +224,15 @@ export type UserWhereInput = {
     bio?: Prisma.StringNullableFilter<"User"> | string | null;
     notifEnabled?: Prisma.BoolFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole;
     emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
+    consentedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFilter<"User"> | number;
+    penaltyLevel?: Prisma.IntFilter<"User"> | number;
+    penalizedUntil?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     following?: Prisma.FollowListRelationFilter;
     followers?: Prisma.FollowListRelationFilter;
     reviews?: Prisma.ReviewListRelationFilter;
@@ -179,6 +243,7 @@ export type UserWhereInput = {
     notifPreference?: Prisma.XOR<Prisma.NotificationPreferenceNullableScalarRelationFilter, Prisma.NotificationPreferenceWhereInput> | null;
     refreshTokens?: Prisma.RefreshTokenListRelationFilter;
     reports?: Prisma.ReportListRelationFilter;
+    reportsReviewed?: Prisma.ReportListRelationFilter;
     recommendationSnapshot?: Prisma.XOR<Prisma.RecommendationSnapshotNullableScalarRelationFilter, Prisma.RecommendationSnapshotWhereInput> | null;
     followSuggestionSnapshot?: Prisma.XOR<Prisma.FollowSuggestionSnapshotNullableScalarRelationFilter, Prisma.FollowSuggestionSnapshotWhereInput> | null;
 };
@@ -193,10 +258,15 @@ export type UserOrderByWithRelationInput = {
     bio?: Prisma.SortOrderInput | Prisma.SortOrder;
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
+    role?: Prisma.SortOrder;
     emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    consentedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    acceptedReportsCount?: Prisma.SortOrder;
+    penaltyLevel?: Prisma.SortOrder;
+    penalizedUntil?: Prisma.SortOrderInput | Prisma.SortOrder;
     following?: Prisma.FollowOrderByRelationAggregateInput;
     followers?: Prisma.FollowOrderByRelationAggregateInput;
     reviews?: Prisma.ReviewOrderByRelationAggregateInput;
@@ -207,6 +277,7 @@ export type UserOrderByWithRelationInput = {
     notifPreference?: Prisma.NotificationPreferenceOrderByWithRelationInput;
     refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput;
     reports?: Prisma.ReportOrderByRelationAggregateInput;
+    reportsReviewed?: Prisma.ReportOrderByRelationAggregateInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotOrderByWithRelationInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotOrderByWithRelationInput;
 };
@@ -224,10 +295,15 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     bio?: Prisma.StringNullableFilter<"User"> | string | null;
     notifEnabled?: Prisma.BoolFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole;
     emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
+    consentedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFilter<"User"> | number;
+    penaltyLevel?: Prisma.IntFilter<"User"> | number;
+    penalizedUntil?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     following?: Prisma.FollowListRelationFilter;
     followers?: Prisma.FollowListRelationFilter;
     reviews?: Prisma.ReviewListRelationFilter;
@@ -238,6 +314,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     notifPreference?: Prisma.XOR<Prisma.NotificationPreferenceNullableScalarRelationFilter, Prisma.NotificationPreferenceWhereInput> | null;
     refreshTokens?: Prisma.RefreshTokenListRelationFilter;
     reports?: Prisma.ReportListRelationFilter;
+    reportsReviewed?: Prisma.ReportListRelationFilter;
     recommendationSnapshot?: Prisma.XOR<Prisma.RecommendationSnapshotNullableScalarRelationFilter, Prisma.RecommendationSnapshotWhereInput> | null;
     followSuggestionSnapshot?: Prisma.XOR<Prisma.FollowSuggestionSnapshotNullableScalarRelationFilter, Prisma.FollowSuggestionSnapshotWhereInput> | null;
 }, "id" | "handle" | "email" | "googleId">;
@@ -252,13 +329,20 @@ export type UserOrderByWithAggregationInput = {
     bio?: Prisma.SortOrderInput | Prisma.SortOrder;
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
+    role?: Prisma.SortOrder;
     emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    consentedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    acceptedReportsCount?: Prisma.SortOrder;
+    penaltyLevel?: Prisma.SortOrder;
+    penalizedUntil?: Prisma.SortOrderInput | Prisma.SortOrder;
     _count?: Prisma.UserCountOrderByAggregateInput;
+    _avg?: Prisma.UserAvgOrderByAggregateInput;
     _max?: Prisma.UserMaxOrderByAggregateInput;
     _min?: Prisma.UserMinOrderByAggregateInput;
+    _sum?: Prisma.UserSumOrderByAggregateInput;
 };
 export type UserScalarWhereWithAggregatesInput = {
     AND?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[];
@@ -274,10 +358,15 @@ export type UserScalarWhereWithAggregatesInput = {
     bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     notifEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole;
     emailVerifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
+    consentedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
     deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
+    acceptedReportsCount?: Prisma.IntWithAggregatesFilter<"User"> | number;
+    penaltyLevel?: Prisma.IntWithAggregatesFilter<"User"> | number;
+    penalizedUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
 };
 export type UserCreateInput = {
     id?: string;
@@ -290,10 +379,15 @@ export type UserCreateInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
@@ -304,6 +398,7 @@ export type UserCreateInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
@@ -318,10 +413,15 @@ export type UserUncheckedCreateInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
@@ -332,6 +432,7 @@ export type UserUncheckedCreateInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -346,10 +447,15 @@ export type UserUpdateInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
@@ -360,6 +466,7 @@ export type UserUpdateInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
@@ -374,10 +481,15 @@ export type UserUncheckedUpdateInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
@@ -388,6 +500,7 @@ export type UserUncheckedUpdateInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -402,10 +515,15 @@ export type UserCreateManyInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
 };
 export type UserUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -418,10 +536,15 @@ export type UserUpdateManyMutationInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type UserUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -434,10 +557,15 @@ export type UserUncheckedUpdateManyInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type UserCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -450,10 +578,19 @@ export type UserCountOrderByAggregateInput = {
     bio?: Prisma.SortOrder;
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
+    role?: Prisma.SortOrder;
     emailVerifiedAt?: Prisma.SortOrder;
+    consentedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     deletedAt?: Prisma.SortOrder;
+    acceptedReportsCount?: Prisma.SortOrder;
+    penaltyLevel?: Prisma.SortOrder;
+    penalizedUntil?: Prisma.SortOrder;
+};
+export type UserAvgOrderByAggregateInput = {
+    acceptedReportsCount?: Prisma.SortOrder;
+    penaltyLevel?: Prisma.SortOrder;
 };
 export type UserMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -466,10 +603,15 @@ export type UserMaxOrderByAggregateInput = {
     bio?: Prisma.SortOrder;
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
+    role?: Prisma.SortOrder;
     emailVerifiedAt?: Prisma.SortOrder;
+    consentedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     deletedAt?: Prisma.SortOrder;
+    acceptedReportsCount?: Prisma.SortOrder;
+    penaltyLevel?: Prisma.SortOrder;
+    penalizedUntil?: Prisma.SortOrder;
 };
 export type UserMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -482,14 +624,27 @@ export type UserMinOrderByAggregateInput = {
     bio?: Prisma.SortOrder;
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
+    role?: Prisma.SortOrder;
     emailVerifiedAt?: Prisma.SortOrder;
+    consentedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     deletedAt?: Prisma.SortOrder;
+    acceptedReportsCount?: Prisma.SortOrder;
+    penaltyLevel?: Prisma.SortOrder;
+    penalizedUntil?: Prisma.SortOrder;
+};
+export type UserSumOrderByAggregateInput = {
+    acceptedReportsCount?: Prisma.SortOrder;
+    penaltyLevel?: Prisma.SortOrder;
 };
 export type UserScalarRelationFilter = {
     is?: Prisma.UserWhereInput;
     isNot?: Prisma.UserWhereInput;
+};
+export type UserNullableScalarRelationFilter = {
+    is?: Prisma.UserWhereInput | null;
+    isNot?: Prisma.UserWhereInput | null;
 };
 export type StringFieldUpdateOperationsInput = {
     set?: string;
@@ -503,11 +658,21 @@ export type BoolFieldUpdateOperationsInput = {
 export type EnumUserStatusFieldUpdateOperationsInput = {
     set?: $Enums.UserStatus;
 };
+export type EnumUserRoleFieldUpdateOperationsInput = {
+    set?: $Enums.UserRole;
+};
 export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null;
 };
 export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string;
+};
+export type IntFieldUpdateOperationsInput = {
+    set?: number;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
 };
 export type UserCreateNestedOneWithoutFollowingInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutFollowingInput, Prisma.UserUncheckedCreateWithoutFollowingInput>;
@@ -598,10 +763,12 @@ export type UserUpdateOneRequiredWithoutNotificationsReceivedNestedInput = {
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsReceivedInput, Prisma.UserUpdateWithoutNotificationsReceivedInput>, Prisma.UserUncheckedUpdateWithoutNotificationsReceivedInput>;
 };
-export type UserUpdateOneRequiredWithoutNotificationsActedNestedInput = {
+export type UserUpdateOneWithoutNotificationsActedNestedInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsActedInput, Prisma.UserUncheckedCreateWithoutNotificationsActedInput>;
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsActedInput;
     upsert?: Prisma.UserUpsertWithoutNotificationsActedInput;
+    disconnect?: Prisma.UserWhereInput | boolean;
+    delete?: Prisma.UserWhereInput | boolean;
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsActedInput, Prisma.UserUpdateWithoutNotificationsActedInput>, Prisma.UserUncheckedUpdateWithoutNotificationsActedInput>;
 };
@@ -622,12 +789,26 @@ export type UserCreateNestedOneWithoutReportsInput = {
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsInput;
     connect?: Prisma.UserWhereUniqueInput;
 };
+export type UserCreateNestedOneWithoutReportsReviewedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutReportsReviewedInput, Prisma.UserUncheckedCreateWithoutReportsReviewedInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsReviewedInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
 export type UserUpdateOneRequiredWithoutReportsNestedInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutReportsInput, Prisma.UserUncheckedCreateWithoutReportsInput>;
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsInput;
     upsert?: Prisma.UserUpsertWithoutReportsInput;
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReportsInput, Prisma.UserUpdateWithoutReportsInput>, Prisma.UserUncheckedUpdateWithoutReportsInput>;
+};
+export type UserUpdateOneWithoutReportsReviewedNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutReportsReviewedInput, Prisma.UserUncheckedCreateWithoutReportsReviewedInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsReviewedInput;
+    upsert?: Prisma.UserUpsertWithoutReportsReviewedInput;
+    disconnect?: Prisma.UserWhereInput | boolean;
+    delete?: Prisma.UserWhereInput | boolean;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReportsReviewedInput, Prisma.UserUpdateWithoutReportsReviewedInput>, Prisma.UserUncheckedUpdateWithoutReportsReviewedInput>;
 };
 export type UserCreateNestedOneWithoutRecommendationSnapshotInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutRecommendationSnapshotInput, Prisma.UserUncheckedCreateWithoutRecommendationSnapshotInput>;
@@ -664,10 +845,15 @@ export type UserCreateWithoutFollowingInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
     reactions?: Prisma.ReviewReactionCreateNestedManyWithoutUserInput;
@@ -677,6 +863,7 @@ export type UserCreateWithoutFollowingInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
@@ -691,10 +878,15 @@ export type UserUncheckedCreateWithoutFollowingInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
     reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutUserInput;
@@ -704,6 +896,7 @@ export type UserUncheckedCreateWithoutFollowingInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -722,10 +915,15 @@ export type UserCreateWithoutFollowersInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
     reactions?: Prisma.ReviewReactionCreateNestedManyWithoutUserInput;
@@ -735,6 +933,7 @@ export type UserCreateWithoutFollowersInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
@@ -749,10 +948,15 @@ export type UserUncheckedCreateWithoutFollowersInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
     reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutUserInput;
@@ -762,6 +966,7 @@ export type UserUncheckedCreateWithoutFollowersInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -789,10 +994,15 @@ export type UserUpdateWithoutFollowingInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
     reactions?: Prisma.ReviewReactionUpdateManyWithoutUserNestedInput;
@@ -802,6 +1012,7 @@ export type UserUpdateWithoutFollowingInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
@@ -816,10 +1027,15 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
     reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutUserNestedInput;
@@ -829,6 +1045,7 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -852,10 +1069,15 @@ export type UserUpdateWithoutFollowersInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
     reactions?: Prisma.ReviewReactionUpdateManyWithoutUserNestedInput;
@@ -865,6 +1087,7 @@ export type UserUpdateWithoutFollowersInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
@@ -879,10 +1102,15 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
     reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutUserNestedInput;
@@ -892,6 +1120,7 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -906,10 +1135,15 @@ export type UserCreateWithoutRefreshTokensInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
@@ -919,6 +1153,7 @@ export type UserCreateWithoutRefreshTokensInput = {
     notificationsActed?: Prisma.NotificationCreateNestedManyWithoutActorInput;
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
@@ -933,10 +1168,15 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
@@ -946,6 +1186,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
     notificationsActed?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput;
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -973,10 +1214,15 @@ export type UserUpdateWithoutRefreshTokensInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
@@ -986,6 +1232,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
     notificationsActed?: Prisma.NotificationUpdateManyWithoutActorNestedInput;
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
@@ -1000,10 +1247,15 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
@@ -1013,6 +1265,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
     notificationsActed?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput;
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -1027,10 +1280,15 @@ export type UserCreateWithoutReviewsInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reactions?: Prisma.ReviewReactionCreateNestedManyWithoutUserInput;
@@ -1040,6 +1298,7 @@ export type UserCreateWithoutReviewsInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
@@ -1054,10 +1313,15 @@ export type UserUncheckedCreateWithoutReviewsInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutUserInput;
@@ -1067,6 +1331,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -1094,10 +1359,15 @@ export type UserUpdateWithoutReviewsInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reactions?: Prisma.ReviewReactionUpdateManyWithoutUserNestedInput;
@@ -1107,6 +1377,7 @@ export type UserUpdateWithoutReviewsInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
@@ -1121,10 +1392,15 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutUserNestedInput;
@@ -1134,6 +1410,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -1148,10 +1425,15 @@ export type UserCreateWithoutReactionsInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
@@ -1161,6 +1443,7 @@ export type UserCreateWithoutReactionsInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
@@ -1175,10 +1458,15 @@ export type UserUncheckedCreateWithoutReactionsInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
@@ -1188,6 +1476,7 @@ export type UserUncheckedCreateWithoutReactionsInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -1215,10 +1504,15 @@ export type UserUpdateWithoutReactionsInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
@@ -1228,6 +1522,7 @@ export type UserUpdateWithoutReactionsInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
@@ -1242,10 +1537,15 @@ export type UserUncheckedUpdateWithoutReactionsInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
@@ -1255,6 +1555,7 @@ export type UserUncheckedUpdateWithoutReactionsInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -1269,10 +1570,15 @@ export type UserCreateWithoutCommentsInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
@@ -1282,6 +1588,7 @@ export type UserCreateWithoutCommentsInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
@@ -1296,10 +1603,15 @@ export type UserUncheckedCreateWithoutCommentsInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
@@ -1309,6 +1621,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -1336,10 +1649,15 @@ export type UserUpdateWithoutCommentsInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
@@ -1349,6 +1667,7 @@ export type UserUpdateWithoutCommentsInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
@@ -1363,10 +1682,15 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
@@ -1376,6 +1700,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -1390,10 +1715,15 @@ export type UserCreateWithoutNotificationsReceivedInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
@@ -1403,6 +1733,7 @@ export type UserCreateWithoutNotificationsReceivedInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
@@ -1417,10 +1748,15 @@ export type UserUncheckedCreateWithoutNotificationsReceivedInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
@@ -1430,6 +1766,7 @@ export type UserUncheckedCreateWithoutNotificationsReceivedInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -1448,10 +1785,15 @@ export type UserCreateWithoutNotificationsActedInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
@@ -1461,6 +1803,7 @@ export type UserCreateWithoutNotificationsActedInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
@@ -1475,10 +1818,15 @@ export type UserUncheckedCreateWithoutNotificationsActedInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
@@ -1488,6 +1836,7 @@ export type UserUncheckedCreateWithoutNotificationsActedInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -1515,10 +1864,15 @@ export type UserUpdateWithoutNotificationsReceivedInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
@@ -1528,6 +1882,7 @@ export type UserUpdateWithoutNotificationsReceivedInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
@@ -1542,10 +1897,15 @@ export type UserUncheckedUpdateWithoutNotificationsReceivedInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
@@ -1555,6 +1915,7 @@ export type UserUncheckedUpdateWithoutNotificationsReceivedInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -1578,10 +1939,15 @@ export type UserUpdateWithoutNotificationsActedInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
@@ -1591,6 +1957,7 @@ export type UserUpdateWithoutNotificationsActedInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
@@ -1605,10 +1972,15 @@ export type UserUncheckedUpdateWithoutNotificationsActedInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
@@ -1618,6 +1990,7 @@ export type UserUncheckedUpdateWithoutNotificationsActedInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -1632,10 +2005,15 @@ export type UserCreateWithoutNotifPreferenceInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
@@ -1645,6 +2023,7 @@ export type UserCreateWithoutNotifPreferenceInput = {
     notificationsActed?: Prisma.NotificationCreateNestedManyWithoutActorInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
@@ -1659,10 +2038,15 @@ export type UserUncheckedCreateWithoutNotifPreferenceInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
@@ -1672,6 +2056,7 @@ export type UserUncheckedCreateWithoutNotifPreferenceInput = {
     notificationsActed?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
@@ -1699,10 +2084,15 @@ export type UserUpdateWithoutNotifPreferenceInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
@@ -1712,6 +2102,7 @@ export type UserUpdateWithoutNotifPreferenceInput = {
     notificationsActed?: Prisma.NotificationUpdateManyWithoutActorNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
@@ -1726,10 +2117,15 @@ export type UserUncheckedUpdateWithoutNotifPreferenceInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
@@ -1739,6 +2135,7 @@ export type UserUncheckedUpdateWithoutNotifPreferenceInput = {
     notificationsActed?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -1753,10 +2150,15 @@ export type UserCreateWithoutReportsInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
@@ -1766,6 +2168,7 @@ export type UserCreateWithoutReportsInput = {
     notificationsActed?: Prisma.NotificationCreateNestedManyWithoutActorInput;
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
@@ -1780,10 +2183,15 @@ export type UserUncheckedCreateWithoutReportsInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
@@ -1793,12 +2201,83 @@ export type UserUncheckedCreateWithoutReportsInput = {
     notificationsActed?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput;
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutReportsInput = {
     where: Prisma.UserWhereUniqueInput;
     create: Prisma.XOR<Prisma.UserCreateWithoutReportsInput, Prisma.UserUncheckedCreateWithoutReportsInput>;
+};
+export type UserCreateWithoutReportsReviewedInput = {
+    id?: string;
+    handle: string;
+    displayName: string;
+    email: string;
+    passwordHash?: string | null;
+    googleId?: string | null;
+    avatarUrl?: string | null;
+    bio?: string | null;
+    notifEnabled?: boolean;
+    status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
+    emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
+    following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
+    followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
+    reactions?: Prisma.ReviewReactionCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentCreateNestedManyWithoutUserInput;
+    notificationsReceived?: Prisma.NotificationCreateNestedManyWithoutRecipientInput;
+    notificationsActed?: Prisma.NotificationCreateNestedManyWithoutActorInput;
+    notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
+    refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
+    reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutReportsReviewedInput = {
+    id?: string;
+    handle: string;
+    displayName: string;
+    email: string;
+    passwordHash?: string | null;
+    googleId?: string | null;
+    avatarUrl?: string | null;
+    bio?: string | null;
+    notifEnabled?: boolean;
+    status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
+    emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
+    following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
+    followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
+    reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput;
+    notificationsReceived?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientInput;
+    notificationsActed?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput;
+    notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
+    refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
+    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutReportsReviewedInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutReportsReviewedInput, Prisma.UserUncheckedCreateWithoutReportsReviewedInput>;
 };
 export type UserUpsertWithoutReportsInput = {
     update: Prisma.XOR<Prisma.UserUpdateWithoutReportsInput, Prisma.UserUncheckedUpdateWithoutReportsInput>;
@@ -1820,10 +2299,15 @@ export type UserUpdateWithoutReportsInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
@@ -1833,6 +2317,7 @@ export type UserUpdateWithoutReportsInput = {
     notificationsActed?: Prisma.NotificationUpdateManyWithoutActorNestedInput;
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
@@ -1847,10 +2332,15 @@ export type UserUncheckedUpdateWithoutReportsInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
@@ -1860,6 +2350,82 @@ export type UserUncheckedUpdateWithoutReportsInput = {
     notificationsActed?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput;
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+};
+export type UserUpsertWithoutReportsReviewedInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutReportsReviewedInput, Prisma.UserUncheckedUpdateWithoutReportsReviewedInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutReportsReviewedInput, Prisma.UserUncheckedCreateWithoutReportsReviewedInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutReportsReviewedInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutReportsReviewedInput, Prisma.UserUncheckedUpdateWithoutReportsReviewedInput>;
+};
+export type UserUpdateWithoutReportsReviewedInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    handle?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
+    followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
+    reactions?: Prisma.ReviewReactionUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUpdateManyWithoutUserNestedInput;
+    notificationsReceived?: Prisma.NotificationUpdateManyWithoutRecipientNestedInput;
+    notificationsActed?: Prisma.NotificationUpdateManyWithoutActorNestedInput;
+    notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
+    refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
+    reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutReportsReviewedInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    handle?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
+    followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
+    reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput;
+    notificationsReceived?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientNestedInput;
+    notificationsActed?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput;
+    notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
+    refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
+    reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
@@ -1874,10 +2440,15 @@ export type UserCreateWithoutRecommendationSnapshotInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
@@ -1888,6 +2459,7 @@ export type UserCreateWithoutRecommendationSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutRecommendationSnapshotInput = {
@@ -1901,10 +2473,15 @@ export type UserUncheckedCreateWithoutRecommendationSnapshotInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
@@ -1915,6 +2492,7 @@ export type UserUncheckedCreateWithoutRecommendationSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutRecommendationSnapshotInput = {
@@ -1941,10 +2519,15 @@ export type UserUpdateWithoutRecommendationSnapshotInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
@@ -1955,6 +2538,7 @@ export type UserUpdateWithoutRecommendationSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutRecommendationSnapshotInput = {
@@ -1968,10 +2552,15 @@ export type UserUncheckedUpdateWithoutRecommendationSnapshotInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
@@ -1982,6 +2571,7 @@ export type UserUncheckedUpdateWithoutRecommendationSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCreateWithoutFollowSuggestionSnapshotInput = {
@@ -1995,10 +2585,15 @@ export type UserCreateWithoutFollowSuggestionSnapshotInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
@@ -2009,6 +2604,7 @@ export type UserCreateWithoutFollowSuggestionSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutFollowSuggestionSnapshotInput = {
@@ -2022,10 +2618,15 @@ export type UserUncheckedCreateWithoutFollowSuggestionSnapshotInput = {
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
     emailVerifiedAt?: Date | string | null;
+    consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
     following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
     followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
@@ -2036,6 +2637,7 @@ export type UserUncheckedCreateWithoutFollowSuggestionSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
     reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutFollowSuggestionSnapshotInput = {
@@ -2062,10 +2664,15 @@ export type UserUpdateWithoutFollowSuggestionSnapshotInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
@@ -2076,6 +2683,7 @@ export type UserUpdateWithoutFollowSuggestionSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput = {
@@ -2089,10 +2697,15 @@ export type UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput = {
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
     emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
     followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
@@ -2103,6 +2716,7 @@ export type UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput = {
     notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
     refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
     reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
 };
 export type UserCountOutputType = {
@@ -2115,6 +2729,7 @@ export type UserCountOutputType = {
     notificationsActed: number;
     refreshTokens: number;
     reports: number;
+    reportsReviewed: number;
 };
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     following?: boolean | UserCountOutputTypeCountFollowingArgs;
@@ -2126,6 +2741,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
     notificationsActed?: boolean | UserCountOutputTypeCountNotificationsActedArgs;
     refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs;
     reports?: boolean | UserCountOutputTypeCountReportsArgs;
+    reportsReviewed?: boolean | UserCountOutputTypeCountReportsReviewedArgs;
 };
 export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null;
@@ -2157,6 +2773,9 @@ export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Ty
 export type UserCountOutputTypeCountReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.ReportWhereInput;
 };
+export type UserCountOutputTypeCountReportsReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ReportWhereInput;
+};
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     handle?: boolean;
@@ -2168,10 +2787,15 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     bio?: boolean;
     notifEnabled?: boolean;
     status?: boolean;
+    role?: boolean;
     emailVerifiedAt?: boolean;
+    consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     deletedAt?: boolean;
+    acceptedReportsCount?: boolean;
+    penaltyLevel?: boolean;
+    penalizedUntil?: boolean;
     following?: boolean | Prisma.User$followingArgs<ExtArgs>;
     followers?: boolean | Prisma.User$followersArgs<ExtArgs>;
     reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>;
@@ -2182,6 +2806,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     notifPreference?: boolean | Prisma.User$notifPreferenceArgs<ExtArgs>;
     refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>;
     reports?: boolean | Prisma.User$reportsArgs<ExtArgs>;
+    reportsReviewed?: boolean | Prisma.User$reportsReviewedArgs<ExtArgs>;
     recommendationSnapshot?: boolean | Prisma.User$recommendationSnapshotArgs<ExtArgs>;
     followSuggestionSnapshot?: boolean | Prisma.User$followSuggestionSnapshotArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
@@ -2197,10 +2822,15 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     bio?: boolean;
     notifEnabled?: boolean;
     status?: boolean;
+    role?: boolean;
     emailVerifiedAt?: boolean;
+    consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     deletedAt?: boolean;
+    acceptedReportsCount?: boolean;
+    penaltyLevel?: boolean;
+    penalizedUntil?: boolean;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -2213,10 +2843,15 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     bio?: boolean;
     notifEnabled?: boolean;
     status?: boolean;
+    role?: boolean;
     emailVerifiedAt?: boolean;
+    consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     deletedAt?: boolean;
+    acceptedReportsCount?: boolean;
+    penaltyLevel?: boolean;
+    penalizedUntil?: boolean;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectScalar = {
     id?: boolean;
@@ -2229,12 +2864,17 @@ export type UserSelectScalar = {
     bio?: boolean;
     notifEnabled?: boolean;
     status?: boolean;
+    role?: boolean;
     emailVerifiedAt?: boolean;
+    consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     deletedAt?: boolean;
+    acceptedReportsCount?: boolean;
+    penaltyLevel?: boolean;
+    penalizedUntil?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "handle" | "displayName" | "email" | "passwordHash" | "googleId" | "avatarUrl" | "bio" | "notifEnabled" | "status" | "emailVerifiedAt" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "handle" | "displayName" | "email" | "passwordHash" | "googleId" | "avatarUrl" | "bio" | "notifEnabled" | "status" | "role" | "emailVerifiedAt" | "consentedAt" | "createdAt" | "updatedAt" | "deletedAt" | "acceptedReportsCount" | "penaltyLevel" | "penalizedUntil", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     following?: boolean | Prisma.User$followingArgs<ExtArgs>;
     followers?: boolean | Prisma.User$followersArgs<ExtArgs>;
@@ -2246,6 +2886,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     notifPreference?: boolean | Prisma.User$notifPreferenceArgs<ExtArgs>;
     refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>;
     reports?: boolean | Prisma.User$reportsArgs<ExtArgs>;
+    reportsReviewed?: boolean | Prisma.User$reportsReviewedArgs<ExtArgs>;
     recommendationSnapshot?: boolean | Prisma.User$recommendationSnapshotArgs<ExtArgs>;
     followSuggestionSnapshot?: boolean | Prisma.User$followSuggestionSnapshotArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
@@ -2265,6 +2906,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         notifPreference: Prisma.$NotificationPreferencePayload<ExtArgs> | null;
         refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[];
         reports: Prisma.$ReportPayload<ExtArgs>[];
+        reportsReviewed: Prisma.$ReportPayload<ExtArgs>[];
         recommendationSnapshot: Prisma.$RecommendationSnapshotPayload<ExtArgs> | null;
         followSuggestionSnapshot: Prisma.$FollowSuggestionSnapshotPayload<ExtArgs> | null;
     };
@@ -2279,10 +2921,15 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         bio: string | null;
         notifEnabled: boolean;
         status: $Enums.UserStatus;
+        role: $Enums.UserRole;
         emailVerifiedAt: Date | null;
+        consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
+        acceptedReportsCount: number;
+        penaltyLevel: number;
+        penalizedUntil: Date | null;
     }, ExtArgs["result"]["user"]>;
     composites: {};
 };
@@ -2345,6 +2992,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
     notifPreference<T extends Prisma.User$notifPreferenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notifPreferenceArgs<ExtArgs>>): Prisma.Prisma__NotificationPreferenceClient<runtime.Types.Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     reports<T extends Prisma.User$reportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    reportsReviewed<T extends Prisma.User$reportsReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     recommendationSnapshot<T extends Prisma.User$recommendationSnapshotArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recommendationSnapshotArgs<ExtArgs>>): Prisma.Prisma__RecommendationSnapshotClient<runtime.Types.Result.GetResult<Prisma.$RecommendationSnapshotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     followSuggestionSnapshot<T extends Prisma.User$followSuggestionSnapshotArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followSuggestionSnapshotArgs<ExtArgs>>): Prisma.Prisma__FollowSuggestionSnapshotClient<runtime.Types.Result.GetResult<Prisma.$FollowSuggestionSnapshotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
@@ -2362,10 +3010,15 @@ export interface UserFieldRefs {
     readonly bio: Prisma.FieldRef<"User", 'String'>;
     readonly notifEnabled: Prisma.FieldRef<"User", 'Boolean'>;
     readonly status: Prisma.FieldRef<"User", 'UserStatus'>;
+    readonly role: Prisma.FieldRef<"User", 'UserRole'>;
     readonly emailVerifiedAt: Prisma.FieldRef<"User", 'DateTime'>;
+    readonly consentedAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly deletedAt: Prisma.FieldRef<"User", 'DateTime'>;
+    readonly acceptedReportsCount: Prisma.FieldRef<"User", 'Int'>;
+    readonly penaltyLevel: Prisma.FieldRef<"User", 'Int'>;
+    readonly penalizedUntil: Prisma.FieldRef<"User", 'DateTime'>;
 }
 export type UserFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserSelect<ExtArgs> | null;
@@ -2560,6 +3213,17 @@ export type User$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.Inte
     distinct?: Prisma.RefreshTokenScalarFieldEnum | Prisma.RefreshTokenScalarFieldEnum[];
 };
 export type User$reportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.ReportSelect<ExtArgs> | null;
+    omit?: Prisma.ReportOmit<ExtArgs> | null;
+    include?: Prisma.ReportInclude<ExtArgs> | null;
+    where?: Prisma.ReportWhereInput;
+    orderBy?: Prisma.ReportOrderByWithRelationInput | Prisma.ReportOrderByWithRelationInput[];
+    cursor?: Prisma.ReportWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ReportScalarFieldEnum | Prisma.ReportScalarFieldEnum[];
+};
+export type User$reportsReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.ReportSelect<ExtArgs> | null;
     omit?: Prisma.ReportOmit<ExtArgs> | null;
     include?: Prisma.ReportInclude<ExtArgs> | null;

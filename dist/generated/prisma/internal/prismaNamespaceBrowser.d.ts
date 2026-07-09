@@ -47,10 +47,15 @@ export declare const UserScalarFieldEnum: {
     readonly bio: "bio";
     readonly notifEnabled: "notifEnabled";
     readonly status: "status";
+    readonly role: "role";
     readonly emailVerifiedAt: "emailVerifiedAt";
+    readonly consentedAt: "consentedAt";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
     readonly deletedAt: "deletedAt";
+    readonly acceptedReportsCount: "acceptedReportsCount";
+    readonly penaltyLevel: "penaltyLevel";
+    readonly penalizedUntil: "penalizedUntil";
 };
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
 export declare const FollowScalarFieldEnum: {
@@ -176,6 +181,8 @@ export declare const ReportScalarFieldEnum: {
     readonly targetId: "targetId";
     readonly reason: "reason";
     readonly status: "status";
+    readonly reviewedById: "reviewedById";
+    readonly reviewedAt: "reviewedAt";
     readonly createdAt: "createdAt";
 };
 export type ReportScalarFieldEnum = (typeof ReportScalarFieldEnum)[keyof typeof ReportScalarFieldEnum];

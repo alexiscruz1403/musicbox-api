@@ -1,8 +1,8 @@
 import { PrismaService } from '../../prisma/prisma.service.js';
 export interface CreateNotificationInput {
     recipientId: string;
-    actorId: string;
-    type: 'LIKE' | 'DISLIKE' | 'COMMENT' | 'FOLLOW';
+    actorId?: string;
+    type: 'LIKE' | 'DISLIKE' | 'COMMENT' | 'FOLLOW' | 'MODERATION';
     reviewId?: string;
     commentId?: string;
 }
@@ -27,7 +27,7 @@ export declare class NotificationsRepository {
         createdAt: Date;
         reviewId: string | null;
         recipientId: string;
-        actorId: string;
+        actorId: string | null;
         commentId: string | null;
         actorCount: number | null;
         readAt: Date | null;
@@ -45,14 +45,14 @@ export declare class NotificationsRepository {
             handle: string;
             displayName: string;
             avatarUrl: string | null;
-        };
+        } | null;
     } & {
         type: import("../../../generated/prisma/enums.js").NotificationType;
         id: string;
         createdAt: Date;
         reviewId: string | null;
         recipientId: string;
-        actorId: string;
+        actorId: string | null;
         commentId: string | null;
         actorCount: number | null;
         readAt: Date | null;
@@ -68,14 +68,14 @@ export declare class NotificationsRepository {
             handle: string;
             displayName: string;
             avatarUrl: string | null;
-        };
+        } | null;
     } & {
         type: import("../../../generated/prisma/enums.js").NotificationType;
         id: string;
         createdAt: Date;
         reviewId: string | null;
         recipientId: string;
-        actorId: string;
+        actorId: string | null;
         commentId: string | null;
         actorCount: number | null;
         readAt: Date | null;
@@ -91,14 +91,14 @@ export declare class NotificationsRepository {
             handle: string;
             displayName: string;
             avatarUrl: string | null;
-        };
+        } | null;
     } & {
         type: import("../../../generated/prisma/enums.js").NotificationType;
         id: string;
         createdAt: Date;
         reviewId: string | null;
         recipientId: string;
-        actorId: string;
+        actorId: string | null;
         commentId: string | null;
         actorCount: number | null;
         readAt: Date | null;
@@ -111,7 +111,7 @@ export declare class NotificationsRepository {
         createdAt: Date;
         reviewId: string | null;
         recipientId: string;
-        actorId: string;
+        actorId: string | null;
         commentId: string | null;
         actorCount: number | null;
         readAt: Date | null;
@@ -130,14 +130,14 @@ export declare class NotificationsRepository {
                 handle: string;
                 displayName: string;
                 avatarUrl: string | null;
-            };
+            } | null;
         } & {
             type: import("../../../generated/prisma/enums.js").NotificationType;
             id: string;
             createdAt: Date;
             reviewId: string | null;
             recipientId: string;
-            actorId: string;
+            actorId: string | null;
             commentId: string | null;
             actorCount: number | null;
             readAt: Date | null;
@@ -150,7 +150,7 @@ export declare class NotificationsRepository {
         createdAt: Date;
         reviewId: string | null;
         recipientId: string;
-        actorId: string;
+        actorId: string | null;
         commentId: string | null;
         actorCount: number | null;
         readAt: Date | null;

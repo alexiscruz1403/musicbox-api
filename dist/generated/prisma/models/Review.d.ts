@@ -196,7 +196,6 @@ export type ReviewWhereInput = {
     reactions?: Prisma.ReviewReactionListRelationFilter;
     comments?: Prisma.CommentListRelationFilter;
     notifications?: Prisma.NotificationListRelationFilter;
-    reports?: Prisma.ReportListRelationFilter;
 };
 export type ReviewOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -220,7 +219,6 @@ export type ReviewOrderByWithRelationInput = {
     reactions?: Prisma.ReviewReactionOrderByRelationAggregateInput;
     comments?: Prisma.CommentOrderByRelationAggregateInput;
     notifications?: Prisma.NotificationOrderByRelationAggregateInput;
-    reports?: Prisma.ReportOrderByRelationAggregateInput;
 };
 export type ReviewWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -247,7 +245,6 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
     reactions?: Prisma.ReviewReactionListRelationFilter;
     comments?: Prisma.CommentListRelationFilter;
     notifications?: Prisma.NotificationListRelationFilter;
-    reports?: Prisma.ReportListRelationFilter;
 }, "id">;
 export type ReviewOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -308,7 +305,6 @@ export type ReviewCreateInput = {
     reactions?: Prisma.ReviewReactionCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportCreateNestedManyWithoutReviewInput;
 };
 export type ReviewUncheckedCreateInput = {
     id?: string;
@@ -329,7 +325,6 @@ export type ReviewUncheckedCreateInput = {
     reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewInput;
 };
 export type ReviewUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -350,7 +345,6 @@ export type ReviewUpdateInput = {
     reactions?: Prisma.ReviewReactionUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -371,7 +365,6 @@ export type ReviewUncheckedUpdateInput = {
     reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUncheckedUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewCreateManyInput = {
     id?: string;
@@ -665,20 +658,6 @@ export type ReviewUpdateOneWithoutNotificationsNestedInput = {
     connect?: Prisma.ReviewWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewUpdateToOneWithWhereWithoutNotificationsInput, Prisma.ReviewUpdateWithoutNotificationsInput>, Prisma.ReviewUncheckedUpdateWithoutNotificationsInput>;
 };
-export type ReviewCreateNestedOneWithoutReportsInput = {
-    create?: Prisma.XOR<Prisma.ReviewCreateWithoutReportsInput, Prisma.ReviewUncheckedCreateWithoutReportsInput>;
-    connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutReportsInput;
-    connect?: Prisma.ReviewWhereUniqueInput;
-};
-export type ReviewUpdateOneWithoutReportsNestedInput = {
-    create?: Prisma.XOR<Prisma.ReviewCreateWithoutReportsInput, Prisma.ReviewUncheckedCreateWithoutReportsInput>;
-    connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutReportsInput;
-    upsert?: Prisma.ReviewUpsertWithoutReportsInput;
-    disconnect?: Prisma.ReviewWhereInput | boolean;
-    delete?: Prisma.ReviewWhereInput | boolean;
-    connect?: Prisma.ReviewWhereUniqueInput;
-    update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewUpdateToOneWithWhereWithoutReportsInput, Prisma.ReviewUpdateWithoutReportsInput>, Prisma.ReviewUncheckedUpdateWithoutReportsInput>;
-};
 export type ReviewCreateWithoutUserInput = {
     id?: string;
     type: $Enums.ReviewType;
@@ -697,7 +676,6 @@ export type ReviewCreateWithoutUserInput = {
     reactions?: Prisma.ReviewReactionCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportCreateNestedManyWithoutReviewInput;
 };
 export type ReviewUncheckedCreateWithoutUserInput = {
     id?: string;
@@ -717,7 +695,6 @@ export type ReviewUncheckedCreateWithoutUserInput = {
     reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewInput;
 };
 export type ReviewCreateOrConnectWithoutUserInput = {
     where: Prisma.ReviewWhereUniqueInput;
@@ -777,7 +754,6 @@ export type ReviewCreateWithoutAlbumInput = {
     reactions?: Prisma.ReviewReactionCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportCreateNestedManyWithoutReviewInput;
 };
 export type ReviewUncheckedCreateWithoutAlbumInput = {
     id?: string;
@@ -797,7 +773,6 @@ export type ReviewUncheckedCreateWithoutAlbumInput = {
     reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewInput;
 };
 export type ReviewCreateOrConnectWithoutAlbumInput = {
     where: Prisma.ReviewWhereUniqueInput;
@@ -838,7 +813,6 @@ export type ReviewCreateWithoutTrackInput = {
     reactions?: Prisma.ReviewReactionCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportCreateNestedManyWithoutReviewInput;
 };
 export type ReviewUncheckedCreateWithoutTrackInput = {
     id?: string;
@@ -858,7 +832,6 @@ export type ReviewUncheckedCreateWithoutTrackInput = {
     reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewInput;
 };
 export type ReviewCreateOrConnectWithoutTrackInput = {
     where: Prisma.ReviewWhereUniqueInput;
@@ -899,7 +872,6 @@ export type ReviewCreateWithoutTrackReviewItemsInput = {
     reactions?: Prisma.ReviewReactionCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportCreateNestedManyWithoutReviewInput;
 };
 export type ReviewUncheckedCreateWithoutTrackReviewItemsInput = {
     id?: string;
@@ -919,7 +891,6 @@ export type ReviewUncheckedCreateWithoutTrackReviewItemsInput = {
     reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewInput;
 };
 export type ReviewCreateOrConnectWithoutTrackReviewItemsInput = {
     where: Prisma.ReviewWhereUniqueInput;
@@ -952,7 +923,6 @@ export type ReviewUpdateWithoutTrackReviewItemsInput = {
     reactions?: Prisma.ReviewReactionUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUncheckedUpdateWithoutTrackReviewItemsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -972,7 +942,6 @@ export type ReviewUncheckedUpdateWithoutTrackReviewItemsInput = {
     reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUncheckedUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewCreateWithoutReactionsInput = {
     id?: string;
@@ -992,7 +961,6 @@ export type ReviewCreateWithoutReactionsInput = {
     trackReviewItems?: Prisma.TrackReviewItemCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportCreateNestedManyWithoutReviewInput;
 };
 export type ReviewUncheckedCreateWithoutReactionsInput = {
     id?: string;
@@ -1012,7 +980,6 @@ export type ReviewUncheckedCreateWithoutReactionsInput = {
     trackReviewItems?: Prisma.TrackReviewItemUncheckedCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewInput;
 };
 export type ReviewCreateOrConnectWithoutReactionsInput = {
     where: Prisma.ReviewWhereUniqueInput;
@@ -1045,7 +1012,6 @@ export type ReviewUpdateWithoutReactionsInput = {
     trackReviewItems?: Prisma.TrackReviewItemUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUncheckedUpdateWithoutReactionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1065,7 +1031,6 @@ export type ReviewUncheckedUpdateWithoutReactionsInput = {
     trackReviewItems?: Prisma.TrackReviewItemUncheckedUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUncheckedUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewCreateWithoutCommentsInput = {
     id?: string;
@@ -1085,7 +1050,6 @@ export type ReviewCreateWithoutCommentsInput = {
     trackReviewItems?: Prisma.TrackReviewItemCreateNestedManyWithoutReviewInput;
     reactions?: Prisma.ReviewReactionCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportCreateNestedManyWithoutReviewInput;
 };
 export type ReviewUncheckedCreateWithoutCommentsInput = {
     id?: string;
@@ -1105,7 +1069,6 @@ export type ReviewUncheckedCreateWithoutCommentsInput = {
     trackReviewItems?: Prisma.TrackReviewItemUncheckedCreateNestedManyWithoutReviewInput;
     reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutReviewInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewInput;
 };
 export type ReviewCreateOrConnectWithoutCommentsInput = {
     where: Prisma.ReviewWhereUniqueInput;
@@ -1138,7 +1101,6 @@ export type ReviewUpdateWithoutCommentsInput = {
     trackReviewItems?: Prisma.TrackReviewItemUpdateManyWithoutReviewNestedInput;
     reactions?: Prisma.ReviewReactionUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUncheckedUpdateWithoutCommentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1158,7 +1120,6 @@ export type ReviewUncheckedUpdateWithoutCommentsInput = {
     trackReviewItems?: Prisma.TrackReviewItemUncheckedUpdateManyWithoutReviewNestedInput;
     reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUncheckedUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewCreateWithoutNotificationsInput = {
     id?: string;
@@ -1178,7 +1139,6 @@ export type ReviewCreateWithoutNotificationsInput = {
     trackReviewItems?: Prisma.TrackReviewItemCreateNestedManyWithoutReviewInput;
     reactions?: Prisma.ReviewReactionCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportCreateNestedManyWithoutReviewInput;
 };
 export type ReviewUncheckedCreateWithoutNotificationsInput = {
     id?: string;
@@ -1198,7 +1158,6 @@ export type ReviewUncheckedCreateWithoutNotificationsInput = {
     trackReviewItems?: Prisma.TrackReviewItemUncheckedCreateNestedManyWithoutReviewInput;
     reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutReviewInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutReviewInput;
-    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewInput;
 };
 export type ReviewCreateOrConnectWithoutNotificationsInput = {
     where: Prisma.ReviewWhereUniqueInput;
@@ -1231,7 +1190,6 @@ export type ReviewUpdateWithoutNotificationsInput = {
     trackReviewItems?: Prisma.TrackReviewItemUpdateManyWithoutReviewNestedInput;
     reactions?: Prisma.ReviewReactionUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUncheckedUpdateWithoutNotificationsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1251,100 +1209,6 @@ export type ReviewUncheckedUpdateWithoutNotificationsInput = {
     trackReviewItems?: Prisma.TrackReviewItemUncheckedUpdateManyWithoutReviewNestedInput;
     reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUncheckedUpdateManyWithoutReviewNestedInput;
-};
-export type ReviewCreateWithoutReportsInput = {
-    id?: string;
-    type: $Enums.ReviewType;
-    description: string;
-    rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
-    status?: $Enums.ContentStatus;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    deletedAt?: Date | string | null;
-    externalTitle: string;
-    externalArtistName: string;
-    externalCoverUrl?: string | null;
-    user: Prisma.UserCreateNestedOneWithoutReviewsInput;
-    track?: Prisma.TrackCreateNestedOneWithoutReviewsInput;
-    album?: Prisma.AlbumCreateNestedOneWithoutReviewsInput;
-    trackReviewItems?: Prisma.TrackReviewItemCreateNestedManyWithoutReviewInput;
-    reactions?: Prisma.ReviewReactionCreateNestedManyWithoutReviewInput;
-    comments?: Prisma.CommentCreateNestedManyWithoutReviewInput;
-    notifications?: Prisma.NotificationCreateNestedManyWithoutReviewInput;
-};
-export type ReviewUncheckedCreateWithoutReportsInput = {
-    id?: string;
-    userId: string;
-    type: $Enums.ReviewType;
-    trackId?: string | null;
-    albumId?: string | null;
-    description: string;
-    rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
-    status?: $Enums.ContentStatus;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    deletedAt?: Date | string | null;
-    externalTitle: string;
-    externalArtistName: string;
-    externalCoverUrl?: string | null;
-    trackReviewItems?: Prisma.TrackReviewItemUncheckedCreateNestedManyWithoutReviewInput;
-    reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutReviewInput;
-    comments?: Prisma.CommentUncheckedCreateNestedManyWithoutReviewInput;
-    notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutReviewInput;
-};
-export type ReviewCreateOrConnectWithoutReportsInput = {
-    where: Prisma.ReviewWhereUniqueInput;
-    create: Prisma.XOR<Prisma.ReviewCreateWithoutReportsInput, Prisma.ReviewUncheckedCreateWithoutReportsInput>;
-};
-export type ReviewUpsertWithoutReportsInput = {
-    update: Prisma.XOR<Prisma.ReviewUpdateWithoutReportsInput, Prisma.ReviewUncheckedUpdateWithoutReportsInput>;
-    create: Prisma.XOR<Prisma.ReviewCreateWithoutReportsInput, Prisma.ReviewUncheckedCreateWithoutReportsInput>;
-    where?: Prisma.ReviewWhereInput;
-};
-export type ReviewUpdateToOneWithWhereWithoutReportsInput = {
-    where?: Prisma.ReviewWhereInput;
-    data: Prisma.XOR<Prisma.ReviewUpdateWithoutReportsInput, Prisma.ReviewUncheckedUpdateWithoutReportsInput>;
-};
-export type ReviewUpdateWithoutReportsInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
-    status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
-    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    externalTitle?: Prisma.StringFieldUpdateOperationsInput | string;
-    externalArtistName?: Prisma.StringFieldUpdateOperationsInput | string;
-    externalCoverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput;
-    track?: Prisma.TrackUpdateOneWithoutReviewsNestedInput;
-    album?: Prisma.AlbumUpdateOneWithoutReviewsNestedInput;
-    trackReviewItems?: Prisma.TrackReviewItemUpdateManyWithoutReviewNestedInput;
-    reactions?: Prisma.ReviewReactionUpdateManyWithoutReviewNestedInput;
-    comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput;
-    notifications?: Prisma.NotificationUpdateManyWithoutReviewNestedInput;
-};
-export type ReviewUncheckedUpdateWithoutReportsInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    userId?: Prisma.StringFieldUpdateOperationsInput | string;
-    type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
-    trackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
-    status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
-    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    externalTitle?: Prisma.StringFieldUpdateOperationsInput | string;
-    externalArtistName?: Prisma.StringFieldUpdateOperationsInput | string;
-    externalCoverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    trackReviewItems?: Prisma.TrackReviewItemUncheckedUpdateManyWithoutReviewNestedInput;
-    reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutReviewNestedInput;
-    comments?: Prisma.CommentUncheckedUpdateManyWithoutReviewNestedInput;
-    notifications?: Prisma.NotificationUncheckedUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewCreateManyUserInput = {
     id?: string;
@@ -1379,7 +1243,6 @@ export type ReviewUpdateWithoutUserInput = {
     reactions?: Prisma.ReviewReactionUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUncheckedUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1399,7 +1262,6 @@ export type ReviewUncheckedUpdateWithoutUserInput = {
     reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUncheckedUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUncheckedUpdateManyWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1449,7 +1311,6 @@ export type ReviewUpdateWithoutAlbumInput = {
     reactions?: Prisma.ReviewReactionUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUncheckedUpdateWithoutAlbumInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1469,7 +1330,6 @@ export type ReviewUncheckedUpdateWithoutAlbumInput = {
     reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUncheckedUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUncheckedUpdateManyWithoutAlbumInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1519,7 +1379,6 @@ export type ReviewUpdateWithoutTrackInput = {
     reactions?: Prisma.ReviewReactionUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUncheckedUpdateWithoutTrackInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1539,7 +1398,6 @@ export type ReviewUncheckedUpdateWithoutTrackInput = {
     reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutReviewNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutReviewNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutReviewNestedInput;
-    reports?: Prisma.ReportUncheckedUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUncheckedUpdateManyWithoutTrackInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1561,14 +1419,12 @@ export type ReviewCountOutputType = {
     reactions: number;
     comments: number;
     notifications: number;
-    reports: number;
 };
 export type ReviewCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     trackReviewItems?: boolean | ReviewCountOutputTypeCountTrackReviewItemsArgs;
     reactions?: boolean | ReviewCountOutputTypeCountReactionsArgs;
     comments?: boolean | ReviewCountOutputTypeCountCommentsArgs;
     notifications?: boolean | ReviewCountOutputTypeCountNotificationsArgs;
-    reports?: boolean | ReviewCountOutputTypeCountReportsArgs;
 };
 export type ReviewCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.ReviewCountOutputTypeSelect<ExtArgs> | null;
@@ -1584,9 +1440,6 @@ export type ReviewCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types
 };
 export type ReviewCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.NotificationWhereInput;
-};
-export type ReviewCountOutputTypeCountReportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.ReportWhereInput;
 };
 export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -1610,7 +1463,6 @@ export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     reactions?: boolean | Prisma.Review$reactionsArgs<ExtArgs>;
     comments?: boolean | Prisma.Review$commentsArgs<ExtArgs>;
     notifications?: boolean | Prisma.Review$notificationsArgs<ExtArgs>;
-    reports?: boolean | Prisma.Review$reportsArgs<ExtArgs>;
     _count?: boolean | Prisma.ReviewCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["review"]>;
 export type ReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1676,7 +1528,6 @@ export type ReviewInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     reactions?: boolean | Prisma.Review$reactionsArgs<ExtArgs>;
     comments?: boolean | Prisma.Review$commentsArgs<ExtArgs>;
     notifications?: boolean | Prisma.Review$notificationsArgs<ExtArgs>;
-    reports?: boolean | Prisma.Review$reportsArgs<ExtArgs>;
     _count?: boolean | Prisma.ReviewCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type ReviewIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1699,7 +1550,6 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         reactions: Prisma.$ReviewReactionPayload<ExtArgs>[];
         comments: Prisma.$CommentPayload<ExtArgs>[];
         notifications: Prisma.$NotificationPayload<ExtArgs>[];
-        reports: Prisma.$ReportPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1775,7 +1625,6 @@ export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends runtime.T
     reactions<T extends Prisma.Review$reactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$reactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     comments<T extends Prisma.Review$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     notifications<T extends Prisma.Review$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    reports<T extends Prisma.Review$reportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -1951,17 +1800,6 @@ export type Review$notificationsArgs<ExtArgs extends runtime.Types.Extensions.In
     take?: number;
     skip?: number;
     distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[];
-};
-export type Review$reportsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    select?: Prisma.ReportSelect<ExtArgs> | null;
-    omit?: Prisma.ReportOmit<ExtArgs> | null;
-    include?: Prisma.ReportInclude<ExtArgs> | null;
-    where?: Prisma.ReportWhereInput;
-    orderBy?: Prisma.ReportOrderByWithRelationInput | Prisma.ReportOrderByWithRelationInput[];
-    cursor?: Prisma.ReportWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.ReportScalarFieldEnum | Prisma.ReportScalarFieldEnum[];
 };
 export type ReviewDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.ReviewSelect<ExtArgs> | null;

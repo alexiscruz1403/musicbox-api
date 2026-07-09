@@ -20,14 +20,14 @@ export declare class NotificationsController {
                 handle: string;
                 displayName: string;
                 avatarUrl: string | null;
-            };
+            } | null;
         } & {
             type: import("../../../generated/prisma/enums.js").NotificationType;
             id: string;
             createdAt: Date;
             reviewId: string | null;
             recipientId: string;
-            actorId: string;
+            actorId: string | null;
             commentId: string | null;
             actorCount: number | null;
             readAt: Date | null;
@@ -43,7 +43,7 @@ export declare class NotificationsController {
             createdAt: Date;
             reviewId: string | null;
             recipientId: string;
-            actorId: string;
+            actorId: string | null;
             commentId: string | null;
             actorCount: number | null;
             readAt: Date | null;

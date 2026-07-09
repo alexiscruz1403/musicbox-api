@@ -15,8 +15,8 @@ const HYDRATE_INCLUDE = {
 
 export interface CreateNotificationInput {
   recipientId: string;
-  actorId: string;
-  type: 'LIKE' | 'DISLIKE' | 'COMMENT' | 'FOLLOW';
+  actorId?: string;
+  type: 'LIKE' | 'DISLIKE' | 'COMMENT' | 'FOLLOW' | 'MODERATION';
   reviewId?: string;
   commentId?: string;
 }

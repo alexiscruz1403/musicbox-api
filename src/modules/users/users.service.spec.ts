@@ -28,6 +28,7 @@ const mockRepo = {
   createFollow: vi.fn(),
   deleteFollow: vi.fn(),
   searchUsers: vi.fn(),
+  getExportData: vi.fn(),
 };
 
 const mockConfig = {
@@ -114,6 +115,51 @@ describe('UsersService', () => {
       mockRepo.anonimize.mockResolvedValue([{}, {}]);
       await service.deleteAccount('u1');
       expect(mockRepo.anonimize).toHaveBeenCalledWith('u1');
+    });
+  });
+
+  describe('exportAccountData', () => {
+    it('throws NotFoundException if user does not exist', async () => {
+      mockRepo.findById.mockResolvedValue(null);
+      await expect(service.exportAccountData('u1')).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
+    it('excludes sensitive fields and returns the aggregated export shape', async () => {
+      const user = {
+        id: 'u1',
+        handle: 'h',
+        email: 'a@a.com',
+        status: 'ACTIVE',
+        passwordHash: 'secret-hash',
+        googleId: 'gid',
+      };
+      mockRepo.findById.mockResolvedValue(user);
+      mockRepo.getExportData.mockResolvedValue({
+        reviews: [{ id: 'r1' }],
+        comments: [{ id: 'c1' }],
+        reactions: [{ id: 'react1' }],
+        followers: [{ follower: { id: 'f1' } }],
+        following: [{ followee: { id: 'f2' } }],
+        notifPrefs: { userId: 'u1' },
+      });
+
+      const result = await service.exportAccountData('u1');
+
+      expect(mockRepo.getExportData).toHaveBeenCalledWith('u1');
+      expect(result.profile).not.toHaveProperty('passwordHash');
+      expect(result.profile).not.toHaveProperty('googleId');
+      expect(result.profile).toMatchObject({ id: 'u1', handle: 'h' });
+      expect(result.reviews).toEqual([{ id: 'r1' }]);
+      expect(result.comments).toEqual([{ id: 'c1' }]);
+      expect(result.reactions).toEqual([{ id: 'react1' }]);
+      expect(result.follows).toEqual({
+        followers: [{ id: 'f1' }],
+        following: [{ id: 'f2' }],
+      });
+      expect(result.notificationPreferences).toEqual({ userId: 'u1' });
+      expect(typeof result.exportedAt).toBe('string');
     });
   });
 

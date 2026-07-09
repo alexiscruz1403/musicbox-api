@@ -52,6 +52,22 @@ export class NotificationsService {
     await this.repo.markAllRead(userId);
   }
 
+  // Aviso de moderación (contenido ocultado por un admin) — creado directo
+  // por ModerationModule, sin pasar por la cola BullMQ (acción de bajo
+  // volumen) y sin gating por notifEnabled/notifPreference: es un aviso de
+  // política, no un opt-out social.
+  async notifyModeration(
+    recipientId: string,
+    payload: { reviewId?: string; commentId?: string },
+  ): Promise<void> {
+    const notification = await this.repo.create({
+      recipientId,
+      type: 'MODERATION',
+      ...payload,
+    });
+    this.sse.push(recipientId, notification);
+  }
+
   // Entry point for NotificationsQueueProcessor — fed by the relay in
   // FollowSuggestionsModule's SocialQueueProcessor (see docs/musicbox-backend-guide.md:2066
   // for why NotificationsModule can't register its own @Processor(SOCIAL_QUEUE)).
@@ -124,6 +140,8 @@ export class NotificationsService {
         return prefs.commentsEnabled;
       case 'FOLLOW':
         return prefs.followsEnabled;
+      case 'MODERATION':
+        return true;
     }
   }
 
@@ -143,7 +161,7 @@ export class NotificationsService {
     if (!existing) return this.repo.create(input);
 
     const nextCount = (existing.actorCount ?? 1) + 1;
-    return this.repo.incrementGroup(existing.id, input.actorId, nextCount);
+    return this.repo.incrementGroup(existing.id, input.actorId!, nextCount);
   }
 
   private async getOwnedNotification(userId: string, id: string) {

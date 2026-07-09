@@ -14,6 +14,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post
 import { Throttle } from '@nestjs/throttler';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
+import { NotPenalizedGuard } from '../common/guards/not-penalized.guard.js';
 import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import { CreateReviewDto } from './dto/create-review.dto.js';
@@ -40,6 +41,7 @@ let ReviewsController = class ReviewsController {
 __decorate([
     Post(),
     Throttle({ default: { limit: 10, ttl: 3600 } }),
+    UseGuards(NotPenalizedGuard),
     UseInterceptors(IdempotencyInterceptor),
     __param(0, CurrentUser()),
     __param(1, Body()),

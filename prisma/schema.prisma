@@ -15,6 +15,11 @@ enum UserStatus {
   DELETED
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
 enum ReviewType {
   TRACK
   ALBUM
@@ -36,6 +41,7 @@ enum NotificationType {
   DISLIKE
   COMMENT
   FOLLOW
+  MODERATION
 }
 
 enum ReportTargetType {
@@ -63,10 +69,17 @@ model User {
   bio             String?
   notifEnabled    Boolean    @default(true)
   status          UserStatus @default(ACTIVE)
+  role            UserRole   @default(USER)
   emailVerifiedAt DateTime?
+  consentedAt     DateTime?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
   deletedAt       DateTime?
+
+  // Sistema de penalización escalonada (docs/musicbox.md §15)
+  acceptedReportsCount Int       @default(0)
+  penaltyLevel         Int       @default(0)
+  penalizedUntil       DateTime?
 
   following                Follow[]                  @relation("Follower")
   followers                Follow[]                  @relation("Followee")
@@ -78,6 +91,7 @@ model User {
   notifPreference          NotificationPreference?
   refreshTokens            RefreshToken[]
   reports                  Report[]
+  reportsReviewed          Report[]                  @relation("ReportReviewer")
   recommendationSnapshot   RecommendationSnapshot?
   followSuggestionSnapshot FollowSuggestionSnapshot?
 
@@ -191,7 +205,6 @@ model Review {
   reactions        ReviewReaction[]
   comments         Comment[]
   notifications    Notification[]
-  reports          Report[]
 
   @@map("reviews")
 }
@@ -249,7 +262,7 @@ model Comment {
 model Notification {
   id          String           @id @default(uuid())
   recipientId String
-  actorId     String
+  actorId     String?
   type        NotificationType
   reviewId    String?
   commentId   String?
@@ -258,7 +271,7 @@ model Notification {
   createdAt   DateTime         @default(now())
 
   recipient User     @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
-  actor     User     @relation("Actor", fields: [actorId], references: [id])
+  actor     User?    @relation("Actor", fields: [actorId], references: [id])
   review    Review?  @relation(fields: [reviewId], references: [id], onDelete: SetNull)
   comment   Comment? @relation(fields: [commentId], references: [id], onDelete: SetNull)
 
@@ -280,16 +293,18 @@ model NotificationPreference {
 // ─── Moderación ───────────────────────────────────────────────────
 
 model Report {
-  id         String           @id @default(uuid())
-  reporterId String
-  targetType ReportTargetType
-  targetId   String
-  reason     String
-  status     ReportStatus     @default(PENDING)
-  createdAt  DateTime         @default(now())
+  id           String           @id @default(uuid())
+  reporterId   String
+  targetType   ReportTargetType
+  targetId     String
+  reason       String
+  status       ReportStatus     @default(PENDING)
+  reviewedById String?
+  reviewedAt   DateTime?
+  createdAt    DateTime         @default(now())
 
-  reporter User    @relation(fields: [reporterId], references: [id])
-  review   Review? @relation(fields: [targetId], references: [id], map: "report_review_fk")
+  reporter User  @relation(fields: [reporterId], references: [id])
+  reviewer User? @relation("ReportReviewer", fields: [reviewedById], references: [id])
 
   @@map("reports")
 }

@@ -7,12 +7,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { IsEmail, IsString, Length, Matches, MinLength } from 'class-validator';
+import { Equals, IsBoolean, IsEmail, IsString, Length, Matches, MinLength, } from 'class-validator';
 export class RegisterDto {
     handle;
     displayName;
     email;
     password;
+    consent;
 }
 __decorate([
     IsString(),
@@ -36,4 +37,11 @@ __decorate([
     MinLength(8),
     __metadata("design:type", String)
 ], RegisterDto.prototype, "password", void 0);
+__decorate([
+    IsBoolean(),
+    Equals(true, {
+        message: 'Debés aceptar los Términos de Servicio y la Política de Privacidad.',
+    }),
+    __metadata("design:type", Boolean)
+], RegisterDto.prototype, "consent", void 0);
 //# sourceMappingURL=register.dto.js.map

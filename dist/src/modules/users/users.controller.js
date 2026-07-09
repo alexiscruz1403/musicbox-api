@@ -42,6 +42,9 @@ let UsersController = class UsersController {
     async deleteMe(user) {
         await this.users.deleteAccount(user.sub);
     }
+    async exportMe(user) {
+        return { data: await this.users.exportAccountData(user.sub) };
+    }
     async getNotifPrefs(user) {
         return { data: await this.users.getNotifPrefs(user.sub) };
     }
@@ -120,6 +123,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "deleteMe", null);
+__decorate([
+    Get('me/export'),
+    __param(0, CurrentUser()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "exportMe", null);
 __decorate([
     Get('me/notifications-prefs'),
     __param(0, CurrentUser()),

@@ -30,6 +30,14 @@ let NotificationsService = class NotificationsService {
     async markAllRead(userId) {
         await this.repo.markAllRead(userId);
     }
+    async notifyModeration(recipientId, payload) {
+        const notification = await this.repo.create({
+            recipientId,
+            type: 'MODERATION',
+            ...payload,
+        });
+        this.sse.push(recipientId, notification);
+    }
     async createFromEvent(jobName, payload) {
         const input = this.buildInput(jobName, payload);
         if (!input)
@@ -90,6 +98,8 @@ let NotificationsService = class NotificationsService {
                 return prefs.commentsEnabled;
             case 'FOLLOW':
                 return prefs.followsEnabled;
+            case 'MODERATION':
+                return true;
         }
     }
     async createOrGroupReaction(input) {

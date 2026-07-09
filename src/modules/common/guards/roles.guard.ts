@@ -1,7 +1,12 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import type { Request } from 'express';
-import type { UserStatus } from '../../../../generated/prisma/client.js';
+import type { UserRole } from '../../../../generated/prisma/client.js';
 import type { JwtPayload } from '../../auth/strategies/jwt.strategy.js';
 import { ROLES_KEY } from '../decorators/roles.decorator.js';
 
@@ -10,7 +15,7 @@ export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<UserStatus[]>(
+    const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(
       ROLES_KEY,
       [context.getHandler(), context.getClass()],
     );
@@ -20,8 +25,13 @@ export class RolesGuard implements CanActivate {
       .switchToHttp()
       .getRequest<Request & { user?: JwtPayload }>();
     const user = request.user;
-    if (!user) return false;
+    if (!user || !requiredRoles.includes(user.role)) {
+      throw new ForbiddenException({
+        code: 'ADMIN_ONLY',
+        message: 'Requiere permisos de administrador.',
+      });
+    }
 
-    return requiredRoles.includes(user.status);
+    return true;
   }
 }

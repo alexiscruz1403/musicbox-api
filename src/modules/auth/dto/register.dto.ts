@@ -1,4 +1,12 @@
-import { IsEmail, IsString, Length, Matches, MinLength } from 'class-validator';
+import {
+  Equals,
+  IsBoolean,
+  IsEmail,
+  IsString,
+  Length,
+  Matches,
+  MinLength,
+} from 'class-validator';
 
 export class RegisterDto {
   @IsString()
@@ -18,4 +26,10 @@ export class RegisterDto {
   @IsString()
   @MinLength(8)
   password: string;
+
+  @IsBoolean()
+  @Equals(true, {
+    message: 'Debés aceptar los Términos de Servicio y la Política de Privacidad.',
+  })
+  consent!: boolean;
 }

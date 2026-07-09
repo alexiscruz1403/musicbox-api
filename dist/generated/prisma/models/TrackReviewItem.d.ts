@@ -353,13 +353,6 @@ export type TrackReviewItemUncheckedUpdateManyWithoutReviewNestedInput = {
     updateMany?: Prisma.TrackReviewItemUpdateManyWithWhereWithoutReviewInput | Prisma.TrackReviewItemUpdateManyWithWhereWithoutReviewInput[];
     deleteMany?: Prisma.TrackReviewItemScalarWhereInput | Prisma.TrackReviewItemScalarWhereInput[];
 };
-export type IntFieldUpdateOperationsInput = {
-    set?: number;
-    increment?: number;
-    decrement?: number;
-    multiply?: number;
-    divide?: number;
-};
 export type TrackReviewItemCreateWithoutTrackInput = {
     id?: string;
     rating: number;

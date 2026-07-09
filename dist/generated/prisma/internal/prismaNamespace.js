@@ -58,10 +58,15 @@ export const UserScalarFieldEnum = {
     bio: 'bio',
     notifEnabled: 'notifEnabled',
     status: 'status',
+    role: 'role',
     emailVerifiedAt: 'emailVerifiedAt',
+    consentedAt: 'consentedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    acceptedReportsCount: 'acceptedReportsCount',
+    penaltyLevel: 'penaltyLevel',
+    penalizedUntil: 'penalizedUntil'
 };
 export const FollowScalarFieldEnum = {
     followerId: 'followerId',
@@ -175,6 +180,8 @@ export const ReportScalarFieldEnum = {
     targetId: 'targetId',
     reason: 'reason',
     status: 'status',
+    reviewedById: 'reviewedById',
+    reviewedAt: 'reviewedAt',
     createdAt: 'createdAt'
 };
 export const RecommendationSnapshotScalarFieldEnum = {

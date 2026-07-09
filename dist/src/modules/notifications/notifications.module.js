@@ -21,6 +21,7 @@ NotificationsModule = __decorate([
             NotificationsSseService,
             NotificationsQueueProcessor,
         ],
+        exports: [NotificationsService],
     })
 ], NotificationsModule);
 export { NotificationsModule };
