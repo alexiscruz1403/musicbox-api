@@ -29,7 +29,6 @@ export type UserMinAggregateOutputType = {
     notifEnabled: boolean | null;
     status: $Enums.UserStatus | null;
     role: $Enums.UserRole | null;
-    emailVerifiedAt: Date | null;
     consentedAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -50,7 +49,6 @@ export type UserMaxAggregateOutputType = {
     notifEnabled: boolean | null;
     status: $Enums.UserStatus | null;
     role: $Enums.UserRole | null;
-    emailVerifiedAt: Date | null;
     consentedAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -71,7 +69,6 @@ export type UserCountAggregateOutputType = {
     notifEnabled: number;
     status: number;
     role: number;
-    emailVerifiedAt: number;
     consentedAt: number;
     createdAt: number;
     updatedAt: number;
@@ -101,7 +98,6 @@ export type UserMinAggregateInputType = {
     notifEnabled?: true;
     status?: true;
     role?: true;
-    emailVerifiedAt?: true;
     consentedAt?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -122,7 +118,6 @@ export type UserMaxAggregateInputType = {
     notifEnabled?: true;
     status?: true;
     role?: true;
-    emailVerifiedAt?: true;
     consentedAt?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -143,7 +138,6 @@ export type UserCountAggregateInputType = {
     notifEnabled?: true;
     status?: true;
     role?: true;
-    emailVerifiedAt?: true;
     consentedAt?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -193,7 +187,6 @@ export type UserGroupByOutputType = {
     notifEnabled: boolean;
     status: $Enums.UserStatus;
     role: $Enums.UserRole;
-    emailVerifiedAt: Date | null;
     consentedAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
@@ -225,7 +218,6 @@ export type UserWhereInput = {
     notifEnabled?: Prisma.BoolFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     consentedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
@@ -259,7 +251,6 @@ export type UserOrderByWithRelationInput = {
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
-    emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     consentedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -296,7 +287,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     notifEnabled?: Prisma.BoolFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     consentedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
@@ -330,7 +320,6 @@ export type UserOrderByWithAggregationInput = {
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
-    emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     consentedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -359,7 +348,6 @@ export type UserScalarWhereWithAggregatesInput = {
     notifEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
     consentedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
@@ -380,7 +368,6 @@ export type UserCreateInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -414,7 +401,6 @@ export type UserUncheckedCreateInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -448,7 +434,6 @@ export type UserUpdateInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -482,7 +467,6 @@ export type UserUncheckedUpdateInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -516,7 +500,6 @@ export type UserCreateManyInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -537,7 +520,6 @@ export type UserUpdateManyMutationInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -558,7 +540,6 @@ export type UserUncheckedUpdateManyInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -579,7 +560,6 @@ export type UserCountOrderByAggregateInput = {
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
-    emailVerifiedAt?: Prisma.SortOrder;
     consentedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -604,7 +584,6 @@ export type UserMaxOrderByAggregateInput = {
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
-    emailVerifiedAt?: Prisma.SortOrder;
     consentedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -625,7 +604,6 @@ export type UserMinOrderByAggregateInput = {
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
-    emailVerifiedAt?: Prisma.SortOrder;
     consentedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -846,7 +824,6 @@ export type UserCreateWithoutFollowingInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -879,7 +856,6 @@ export type UserUncheckedCreateWithoutFollowingInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -916,7 +892,6 @@ export type UserCreateWithoutFollowersInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -949,7 +924,6 @@ export type UserUncheckedCreateWithoutFollowersInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -995,7 +969,6 @@ export type UserUpdateWithoutFollowingInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1028,7 +1001,6 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1070,7 +1042,6 @@ export type UserUpdateWithoutFollowersInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1103,7 +1074,6 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1136,7 +1106,6 @@ export type UserCreateWithoutRefreshTokensInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1169,7 +1138,6 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1215,7 +1183,6 @@ export type UserUpdateWithoutRefreshTokensInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1248,7 +1215,6 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1281,7 +1247,6 @@ export type UserCreateWithoutReviewsInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1314,7 +1279,6 @@ export type UserUncheckedCreateWithoutReviewsInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1360,7 +1324,6 @@ export type UserUpdateWithoutReviewsInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1393,7 +1356,6 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1426,7 +1388,6 @@ export type UserCreateWithoutReactionsInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1459,7 +1420,6 @@ export type UserUncheckedCreateWithoutReactionsInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1505,7 +1465,6 @@ export type UserUpdateWithoutReactionsInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1538,7 +1497,6 @@ export type UserUncheckedUpdateWithoutReactionsInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1571,7 +1529,6 @@ export type UserCreateWithoutCommentsInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1604,7 +1561,6 @@ export type UserUncheckedCreateWithoutCommentsInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1650,7 +1606,6 @@ export type UserUpdateWithoutCommentsInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1683,7 +1638,6 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1716,7 +1670,6 @@ export type UserCreateWithoutNotificationsReceivedInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1749,7 +1702,6 @@ export type UserUncheckedCreateWithoutNotificationsReceivedInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1786,7 +1738,6 @@ export type UserCreateWithoutNotificationsActedInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1819,7 +1770,6 @@ export type UserUncheckedCreateWithoutNotificationsActedInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1865,7 +1815,6 @@ export type UserUpdateWithoutNotificationsReceivedInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1898,7 +1847,6 @@ export type UserUncheckedUpdateWithoutNotificationsReceivedInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1940,7 +1888,6 @@ export type UserUpdateWithoutNotificationsActedInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1973,7 +1920,6 @@ export type UserUncheckedUpdateWithoutNotificationsActedInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2006,7 +1952,6 @@ export type UserCreateWithoutNotifPreferenceInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2039,7 +1984,6 @@ export type UserUncheckedCreateWithoutNotifPreferenceInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2085,7 +2029,6 @@ export type UserUpdateWithoutNotifPreferenceInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2118,7 +2061,6 @@ export type UserUncheckedUpdateWithoutNotifPreferenceInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2151,7 +2093,6 @@ export type UserCreateWithoutReportsInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2184,7 +2125,6 @@ export type UserUncheckedCreateWithoutReportsInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2221,7 +2161,6 @@ export type UserCreateWithoutReportsReviewedInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2254,7 +2193,6 @@ export type UserUncheckedCreateWithoutReportsReviewedInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2300,7 +2238,6 @@ export type UserUpdateWithoutReportsInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2333,7 +2270,6 @@ export type UserUncheckedUpdateWithoutReportsInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2375,7 +2311,6 @@ export type UserUpdateWithoutReportsReviewedInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2408,7 +2343,6 @@ export type UserUncheckedUpdateWithoutReportsReviewedInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2441,7 +2375,6 @@ export type UserCreateWithoutRecommendationSnapshotInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2474,7 +2407,6 @@ export type UserUncheckedCreateWithoutRecommendationSnapshotInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2520,7 +2452,6 @@ export type UserUpdateWithoutRecommendationSnapshotInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2553,7 +2484,6 @@ export type UserUncheckedUpdateWithoutRecommendationSnapshotInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2586,7 +2516,6 @@ export type UserCreateWithoutFollowSuggestionSnapshotInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2619,7 +2548,6 @@ export type UserUncheckedCreateWithoutFollowSuggestionSnapshotInput = {
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
-    emailVerifiedAt?: Date | string | null;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2665,7 +2593,6 @@ export type UserUpdateWithoutFollowSuggestionSnapshotInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2698,7 +2625,6 @@ export type UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput = {
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
-    emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2788,7 +2714,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     notifEnabled?: boolean;
     status?: boolean;
     role?: boolean;
-    emailVerifiedAt?: boolean;
     consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -2823,7 +2748,6 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     notifEnabled?: boolean;
     status?: boolean;
     role?: boolean;
-    emailVerifiedAt?: boolean;
     consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -2844,7 +2768,6 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     notifEnabled?: boolean;
     status?: boolean;
     role?: boolean;
-    emailVerifiedAt?: boolean;
     consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -2865,7 +2788,6 @@ export type UserSelectScalar = {
     notifEnabled?: boolean;
     status?: boolean;
     role?: boolean;
-    emailVerifiedAt?: boolean;
     consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -2874,7 +2796,7 @@ export type UserSelectScalar = {
     penaltyLevel?: boolean;
     penalizedUntil?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "handle" | "displayName" | "email" | "passwordHash" | "googleId" | "avatarUrl" | "bio" | "notifEnabled" | "status" | "role" | "emailVerifiedAt" | "consentedAt" | "createdAt" | "updatedAt" | "deletedAt" | "acceptedReportsCount" | "penaltyLevel" | "penalizedUntil", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "handle" | "displayName" | "email" | "passwordHash" | "googleId" | "avatarUrl" | "bio" | "notifEnabled" | "status" | "role" | "consentedAt" | "createdAt" | "updatedAt" | "deletedAt" | "acceptedReportsCount" | "penaltyLevel" | "penalizedUntil", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     following?: boolean | Prisma.User$followingArgs<ExtArgs>;
     followers?: boolean | Prisma.User$followersArgs<ExtArgs>;
@@ -2922,7 +2844,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         notifEnabled: boolean;
         status: $Enums.UserStatus;
         role: $Enums.UserRole;
-        emailVerifiedAt: Date | null;
         consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
@@ -3011,7 +2932,6 @@ export interface UserFieldRefs {
     readonly notifEnabled: Prisma.FieldRef<"User", 'Boolean'>;
     readonly status: Prisma.FieldRef<"User", 'UserStatus'>;
     readonly role: Prisma.FieldRef<"User", 'UserRole'>;
-    readonly emailVerifiedAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly consentedAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>;

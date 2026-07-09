@@ -48,7 +48,6 @@ export declare const UserScalarFieldEnum: {
     readonly notifEnabled: "notifEnabled";
     readonly status: "status";
     readonly role: "role";
-    readonly emailVerifiedAt: "emailVerifiedAt";
     readonly consentedAt: "consentedAt";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";

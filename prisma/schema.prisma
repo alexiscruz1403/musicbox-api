@@ -70,7 +70,6 @@ model User {
   notifEnabled    Boolean    @default(true)
   status          UserStatus @default(ACTIVE)
   role            UserRole   @default(USER)
-  emailVerifiedAt DateTime?
   consentedAt     DateTime?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt

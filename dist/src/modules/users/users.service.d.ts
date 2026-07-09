@@ -21,7 +21,6 @@ export declare class UsersService {
             notifEnabled: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
-            emailVerifiedAt: Date | null;
             consentedAt: Date | null;
             createdAt: Date;
             updatedAt: Date;
@@ -48,7 +47,6 @@ export declare class UsersService {
         notifEnabled: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
         role: import("../../../generated/prisma/enums.js").UserRole;
-        emailVerifiedAt: Date | null;
         consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
@@ -70,7 +68,6 @@ export declare class UsersService {
             notifEnabled: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
-            emailVerifiedAt: Date | null;
             consentedAt: Date | null;
             createdAt: Date;
             updatedAt: Date;
@@ -169,7 +166,6 @@ export declare class UsersService {
             notifEnabled: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
-            emailVerifiedAt: Date | null;
             consentedAt: Date | null;
             createdAt: Date;
             updatedAt: Date;

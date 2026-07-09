@@ -31,20 +31,6 @@ let EmailService = EmailService_1 = class EmailService {
             },
         });
     }
-    async sendVerificationEmail(to, userId, token) {
-        const link = `${this.frontendUrl}/verify-email?userId=${userId}&token=${token}`;
-        try {
-            await this.transporter.sendMail({
-                from: this.from,
-                to,
-                subject: 'Verifica tu cuenta en MusicBox',
-                html: `<p>Haz clic en el siguiente enlace para verificar tu cuenta:</p><p><a href="${link}">${link}</a></p><p>El enlace expira en 24 horas.</p>`,
-            });
-        }
-        catch (err) {
-            this.logger.error(`Failed to send verification email to ${to}`, err);
-        }
-    }
     async sendPasswordResetEmail(to, userId, token) {
         const link = `${this.frontendUrl}/reset-password?userId=${userId}&token=${token}`;
         try {
@@ -57,6 +43,20 @@ let EmailService = EmailService_1 = class EmailService {
         }
         catch (err) {
             this.logger.error(`Failed to send password reset email to ${to}`, err);
+        }
+    }
+    async sendChangeEmailConfirmation(to, userId, token) {
+        const link = `${this.frontendUrl}/confirm-change-email?userId=${userId}&token=${token}`;
+        try {
+            await this.transporter.sendMail({
+                from: this.from,
+                to,
+                subject: 'Confirma tu nuevo email en MusicBox',
+                html: `<p>Haz clic en el siguiente enlace para confirmar tu nuevo email:</p><p><a href="${link}">${link}</a></p><p>El enlace expira en 1 hora.</p>`,
+            });
+        }
+        catch (err) {
+            this.logger.error(`Failed to send change-email confirmation to ${to}`, err);
         }
     }
     async sendAccountSuspendedEmail(to) {

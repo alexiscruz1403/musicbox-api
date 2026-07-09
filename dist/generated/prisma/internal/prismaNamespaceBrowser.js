@@ -44,7 +44,6 @@ export const UserScalarFieldEnum = {
     notifEnabled: 'notifEnabled',
     status: 'status',
     role: 'role',
-    emailVerifiedAt: 'emailVerifiedAt',
     consentedAt: 'consentedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',

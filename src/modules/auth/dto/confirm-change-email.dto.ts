@@ -1,6 +1,6 @@
 import { IsString, IsUUID } from 'class-validator';
 
-export class VerifyEmailDto {
+export class ConfirmChangeEmailDto {
   @IsUUID()
   userId: string;
 

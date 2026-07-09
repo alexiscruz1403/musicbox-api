@@ -7,17 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { IsString, IsUUID } from 'class-validator';
-export class VerifyEmailDto {
-    userId;
-    token;
+import { IsEmail } from 'class-validator';
+export class ChangeEmailDto {
+    newEmail;
 }
 __decorate([
-    IsUUID(),
+    IsEmail(),
     __metadata("design:type", String)
-], VerifyEmailDto.prototype, "userId", void 0);
-__decorate([
-    IsString(),
-    __metadata("design:type", String)
-], VerifyEmailDto.prototype, "token", void 0);
-//# sourceMappingURL=verify-email.dto.js.map
+], ChangeEmailDto.prototype, "newEmail", void 0);
+//# sourceMappingURL=change-email.dto.js.map
