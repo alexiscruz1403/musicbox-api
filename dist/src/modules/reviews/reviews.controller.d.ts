@@ -32,18 +32,18 @@ export declare class ReviewsController {
             dislikesCount: number;
             commentsCount: number;
             userReaction: "LIKE" | "DISLIKE" | null;
-            user: {
-                id: string;
-                handle: string;
-                displayName: string;
-                avatarUrl: string | null;
-            };
             album: {
                 deezerId: string;
             } | null;
             track: {
                 deezerId: string;
             } | null;
+            user: {
+                id: string;
+                handle: string;
+                displayName: string;
+                avatarUrl: string | null;
+            };
             trackReviewItems: ({
                 track: {
                     deezerId: string;
@@ -76,18 +76,18 @@ export declare class ReviewsController {
     }>;
     update(user: JwtPayload, id: string, dto: UpdateReviewDto): Promise<{
         data: ({
-            user: {
-                id: string;
-                handle: string;
-                displayName: string;
-                avatarUrl: string | null;
-            };
             album: {
                 deezerId: string;
             } | null;
             track: {
                 deezerId: string;
             } | null;
+            user: {
+                id: string;
+                handle: string;
+                displayName: string;
+                avatarUrl: string | null;
+            };
             trackReviewItems: ({
                 track: {
                     deezerId: string;

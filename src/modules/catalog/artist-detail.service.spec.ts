@@ -40,10 +40,26 @@ const trackRow = {
   album: { deezerId: '302127', coverUrl: 'https://example.com/discovery.jpg' },
 };
 
-const reviewedAlbumGroup = { id: 'uuid-album-1', reviewCount: 42, avgRating: 4.5 };
-const reviewedTrackGroup = { id: 'uuid-track-1', reviewCount: 30, avgRating: 4.2 };
-const trendingAlbumGroup = { id: 'uuid-album-1', reviewCount: 10, avgRating: 4.8 };
-const trendingTrackGroup = { id: 'uuid-track-1', reviewCount: 8, avgRating: 4.6 };
+const reviewedAlbumGroup = {
+  id: 'uuid-album-1',
+  reviewCount: 42,
+  avgRating: 4.5,
+};
+const reviewedTrackGroup = {
+  id: 'uuid-track-1',
+  reviewCount: 30,
+  avgRating: 4.2,
+};
+const trendingAlbumGroup = {
+  id: 'uuid-album-1',
+  reviewCount: 10,
+  avgRating: 4.8,
+};
+const trendingTrackGroup = {
+  id: 'uuid-track-1',
+  reviewCount: 8,
+  avgRating: 4.6,
+};
 
 describe('ArtistDetailService', () => {
   let service: ArtistDetailService;
@@ -97,7 +113,10 @@ describe('ArtistDetailService', () => {
 
     const result = await service.getDetail('27');
 
-    expect(mockRepo.topReviewedAlbumIds).toHaveBeenCalledWith('uuid-artist-1', 5);
+    expect(mockRepo.topReviewedAlbumIds).toHaveBeenCalledWith(
+      'uuid-artist-1',
+      5,
+    );
     expect(mockRepo.trendingAlbumIds).toHaveBeenCalledWith(
       'uuid-artist-1',
       5,

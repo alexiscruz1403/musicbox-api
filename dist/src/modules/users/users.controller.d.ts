@@ -1,8 +1,9 @@
-import type { Request } from 'express';
+import type { Request, Response } from 'express';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
 import { ReviewsService } from '../reviews/reviews.service.js';
 import { SearchUsersQueryDto } from './dto/search-users-query.dto.js';
+import { UpdateFollowRequestStatusDto } from './dto/update-follow-request-status.dto.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersService } from './users.service.js';
@@ -21,6 +22,7 @@ export declare class UsersController {
                 coverUrl: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
+                isPrivate: boolean;
                 status: import("../../../generated/prisma/enums.js").UserStatus;
                 role: import("../../../generated/prisma/enums.js").UserRole;
                 consentedAt: Date | null;
@@ -52,6 +54,7 @@ export declare class UsersController {
             coverPublicId: string | null;
             bio: string | null;
             notifEnabled: boolean;
+            isPrivate: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
             consentedAt: Date | null;
@@ -87,6 +90,7 @@ export declare class UsersController {
                 coverPublicId: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
+                isPrivate: boolean;
                 status: import("../../../generated/prisma/enums.js").UserStatus;
                 role: import("../../../generated/prisma/enums.js").UserRole;
                 consentedAt: Date | null;
@@ -157,26 +161,76 @@ export declare class UsersController {
                 dislikesEnabled: boolean;
                 commentsEnabled: boolean;
                 followsEnabled: boolean;
+                followRequestsEnabled: boolean;
             } | null;
             exportedAt: string;
         };
     }>;
     getNotifPrefs(user: JwtPayload): Promise<{
-        data: {
+        data: (Omit<{
             userId: string;
             likesEnabled: boolean;
             dislikesEnabled: boolean;
             commentsEnabled: boolean;
             followsEnabled: boolean;
-        };
+            followRequestsEnabled: boolean;
+        }, "followsEnabled" | "followRequestsEnabled"> & {
+            followRequestsEnabled: boolean;
+        }) | (Omit<{
+            userId: string;
+            likesEnabled: boolean;
+            dislikesEnabled: boolean;
+            commentsEnabled: boolean;
+            followsEnabled: boolean;
+            followRequestsEnabled: boolean;
+        }, "followsEnabled" | "followRequestsEnabled"> & {
+            followsEnabled: boolean;
+        });
     }>;
     updateNotifPrefs(user: JwtPayload, dto: UpdateNotifPrefsDto): Promise<{
-        data: {
+        data: (Omit<{
             userId: string;
             likesEnabled: boolean;
             dislikesEnabled: boolean;
             commentsEnabled: boolean;
             followsEnabled: boolean;
+            followRequestsEnabled: boolean;
+        }, "followsEnabled" | "followRequestsEnabled"> & {
+            followRequestsEnabled: boolean;
+        }) | (Omit<{
+            userId: string;
+            likesEnabled: boolean;
+            dislikesEnabled: boolean;
+            commentsEnabled: boolean;
+            followsEnabled: boolean;
+            followRequestsEnabled: boolean;
+        }, "followsEnabled" | "followRequestsEnabled"> & {
+            followsEnabled: boolean;
+        });
+    }>;
+    listFollowRequests(user: JwtPayload, cursor?: string, limit?: string): Promise<{
+        data: {
+            id: string;
+            createdAt: Date;
+            requester: {
+                id: string;
+                handle: string;
+                displayName: string;
+                avatarUrl: string | null;
+            };
+        }[];
+        meta: {
+            cursor: string | null;
+        };
+    }>;
+    respondFollowRequest(user: JwtPayload, id: string, dto: UpdateFollowRequestStatusDto): Promise<{
+        data: {
+            id: string;
+            status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
+            createdAt: Date;
+            requesterId: string;
+            targetId: string;
+            respondedAt: Date | null;
         };
     }>;
     searchUsers(query: SearchUsersQueryDto, req: Request & {
@@ -212,6 +266,7 @@ export declare class UsersController {
                 coverUrl: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
+                isPrivate: boolean;
                 status: import("../../../generated/prisma/enums.js").UserStatus;
                 role: import("../../../generated/prisma/enums.js").UserRole;
                 consentedAt: Date | null;
@@ -227,6 +282,7 @@ export declare class UsersController {
                 followingCount: number;
             };
             isFollowing: boolean;
+            followRequestPending: boolean;
         };
     }>;
     getFollowers(handle: string, cursor?: string, limit?: string): Promise<{
@@ -251,7 +307,9 @@ export declare class UsersController {
             nextCursor: string | null;
         };
     }>;
-    getReviews(handle: string, query: ListUserReviewsQueryDto): Promise<{
+    getReviews(handle: string, query: ListUserReviewsQueryDto, req: Request & {
+        user?: JwtPayload;
+    }): Promise<{
         data: {
             avatarUrl: string | null;
             id: string;
@@ -273,6 +331,11 @@ export declare class UsersController {
             cursor: string | null;
         };
     }>;
-    follow(user: JwtPayload, handle: string): Promise<void>;
+    follow(user: JwtPayload, handle: string, res: Response): Promise<{
+        data: {
+            status: "PENDING";
+            followRequestId: string;
+        };
+    } | undefined>;
     unfollow(user: JwtPayload, handle: string): Promise<void>;
 }

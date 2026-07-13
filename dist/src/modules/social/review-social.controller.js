@@ -10,11 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards, UseInterceptors, } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query, Req, UseGuards, UseInterceptors, } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
 import { NotPenalizedGuard } from '../common/guards/not-penalized.guard.js';
+import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { CreateReactionDto } from './dto/create-reaction.dto.js';
@@ -31,8 +32,8 @@ let ReviewSocialController = class ReviewSocialController {
     async removeReaction(user, id) {
         await this.social.removeReaction(user.sub, id);
     }
-    async listComments(id, query) {
-        const result = await this.social.listComments(id, query);
+    async listComments(id, query, req) {
+        const result = await this.social.listComments(id, query, req.user?.sub);
         return { data: result.items, meta: { cursor: result.nextCursor } };
     }
     async createComment(user, id, dto) {
@@ -61,10 +62,12 @@ __decorate([
 __decorate([
     Public(),
     Get(':id/comments'),
+    UseGuards(OptionalJwtAuthGuard),
     __param(0, Param('id')),
     __param(1, Query()),
+    __param(2, Req()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, ListCommentsQueryDto]),
+    __metadata("design:paramtypes", [String, ListCommentsQueryDto, Object]),
     __metadata("design:returntype", Promise)
 ], ReviewSocialController.prototype, "listComments", null);
 __decorate([

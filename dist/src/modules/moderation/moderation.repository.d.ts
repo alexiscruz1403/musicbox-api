@@ -26,9 +26,9 @@ export declare class ModerationRepository {
         id: string;
         status: import("../../../generated/prisma/enums.js").ReportStatus;
         createdAt: Date;
+        targetId: string;
         reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
-        targetId: string;
         reason: string;
         reviewedById: string | null;
         reviewedAt: Date | null;
@@ -40,9 +40,9 @@ export declare class ModerationRepository {
         id: string;
         status: import("../../../generated/prisma/enums.js").ReportStatus;
         createdAt: Date;
+        targetId: string;
         reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
-        targetId: string;
         reason: string;
         reviewedById: string | null;
         reviewedAt: Date | null;
@@ -60,9 +60,9 @@ export declare class ModerationRepository {
             id: string;
             status: import("../../../generated/prisma/enums.js").ReportStatus;
             createdAt: Date;
+            targetId: string;
             reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
-            targetId: string;
             reason: string;
             reviewedById: string | null;
             reviewedAt: Date | null;
@@ -77,9 +77,9 @@ export declare class ModerationRepository {
         id: string;
         status: import("../../../generated/prisma/enums.js").ReportStatus;
         createdAt: Date;
+        targetId: string;
         reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
-        targetId: string;
         reason: string;
         reviewedById: string | null;
         reviewedAt: Date | null;
@@ -145,6 +145,7 @@ export declare class ModerationRepository {
         coverPublicId: string | null;
         bio: string | null;
         notifEnabled: boolean;
+        isPrivate: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
         role: import("../../../generated/prisma/enums.js").UserRole;
         consentedAt: Date | null;
@@ -171,6 +172,7 @@ export declare class ModerationRepository {
         coverPublicId: string | null;
         bio: string | null;
         notifEnabled: boolean;
+        isPrivate: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
         role: import("../../../generated/prisma/enums.js").UserRole;
         consentedAt: Date | null;
@@ -196,6 +198,7 @@ export declare class ModerationRepository {
         coverPublicId: string | null;
         bio: string | null;
         notifEnabled: boolean;
+        isPrivate: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
         role: import("../../../generated/prisma/enums.js").UserRole;
         consentedAt: Date | null;

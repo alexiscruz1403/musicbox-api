@@ -154,6 +154,7 @@ export class ReviewsService {
 
   async findById(id: string, viewerId?: string) {
     const review = await this.getActiveReview(id);
+    await this.assertOwnerVisible(review.userId, viewerId);
     const stats = await this.social.getReviewStats([id], viewerId);
     return { ...review, ...stats.get(id)! };
   }
@@ -237,6 +238,7 @@ export class ReviewsService {
       query.cursor,
       query.limit,
       query.sort,
+      viewerId,
     );
     return this.withReviewStats(result, viewerId);
   }
@@ -252,6 +254,7 @@ export class ReviewsService {
       query.cursor,
       query.limit,
       query.sort,
+      viewerId,
     );
     return this.withReviewStats(result, viewerId);
   }
@@ -270,13 +273,18 @@ export class ReviewsService {
     };
   }
 
-  async listByUserHandle(handle: string, query: ListUserReviewsQueryDto) {
+  async listByUserHandle(
+    handle: string,
+    query: ListUserReviewsQueryDto,
+    viewerId?: string,
+  ) {
     const user = await this.repo.findUserIdByHandle(handle).catch(() => {
       throw new NotFoundException({
         code: 'USER_NOT_FOUND',
         message: 'Usuario no encontrado.',
       });
     });
+    await this.assertOwnerVisible(user.id, viewerId);
     const result = await this.repo.listByUserId(
       user.id,
       query.cursor,
@@ -329,6 +337,18 @@ export class ReviewsService {
       });
     }
     return review;
+  }
+
+  // Perfil privado: solo el dueño o un seguidor aprobado pueden ver su
+  // historial/detalle de reseñas (docs/fase-7-features.md, perfiles privados).
+  private async assertOwnerVisible(ownerId: string, viewerId?: string) {
+    const visible = await this.repo.isOwnerVisibleTo(ownerId, viewerId);
+    if (!visible) {
+      throw new ForbiddenException({
+        code: 'PRIVATE_PROFILE',
+        message: 'Este perfil es privado.',
+      });
+    }
   }
 
   /** Rounds half-away-from-zero to 1 decimal, matching the Review.rating Decimal(3,1) column. */

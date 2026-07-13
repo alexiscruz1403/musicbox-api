@@ -31,6 +31,8 @@ export declare const NotificationType: {
     readonly COMMENT: "COMMENT";
     readonly FOLLOW: "FOLLOW";
     readonly MODERATION: "MODERATION";
+    readonly FOLLOW_REQUEST: "FOLLOW_REQUEST";
+    readonly FOLLOW_REQUEST_ACCEPTED: "FOLLOW_REQUEST_ACCEPTED";
 };
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
 export declare const ReportTargetType: {
@@ -45,3 +47,9 @@ export declare const ReportStatus: {
     readonly DISMISSED: "DISMISSED";
 };
 export type ReportStatus = (typeof ReportStatus)[keyof typeof ReportStatus];
+export declare const FollowRequestStatus: {
+    readonly PENDING: "PENDING";
+    readonly ACCEPTED: "ACCEPTED";
+    readonly REJECTED: "REJECTED";
+};
+export type FollowRequestStatus = (typeof FollowRequestStatus)[keyof typeof FollowRequestStatus];

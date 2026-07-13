@@ -27,7 +27,9 @@ let AdminModerationController = class AdminModerationController {
         return { data: result.items, meta: { cursor: result.nextCursor } };
     }
     async updateStatus(admin, id, dto) {
-        return { data: await this.moderation.updateReportStatus(admin.sub, id, dto) };
+        return {
+            data: await this.moderation.updateReportStatus(admin.sub, id, dto),
+        };
     }
     async hideContent(type, id) {
         await this.moderation.hideContent(type, id);

@@ -42,6 +42,8 @@ enum NotificationType {
   COMMENT
   FOLLOW
   MODERATION
+  FOLLOW_REQUEST
+  FOLLOW_REQUEST_ACCEPTED
 }
 
 enum ReportTargetType {
@@ -54,6 +56,12 @@ enum ReportStatus {
   PENDING
   REVIEWED
   DISMISSED
+}
+
+enum FollowRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
 
 // ─── User & Auth ─────────────────────────────────────────────────
@@ -71,6 +79,7 @@ model User {
   coverPublicId   String?
   bio             String?
   notifEnabled    Boolean    @default(true)
+  isPrivate       Boolean    @default(false)
   status          UserStatus @default(ACTIVE)
   role            UserRole   @default(USER)
   consentedAt     DateTime?
@@ -96,6 +105,8 @@ model User {
   reportsReviewed          Report[]                  @relation("ReportReviewer")
   recommendationSnapshot   RecommendationSnapshot?
   followSuggestionSnapshot FollowSuggestionSnapshot?
+  followRequestsSent       FollowRequest[]           @relation("FollowRequester")
+  followRequestsReceived   FollowRequest[]           @relation("FollowRequestTarget")
 
   @@map("users")
 }
@@ -110,6 +121,25 @@ model Follow {
 
   @@id([followerId, followeeId])
   @@map("follows")
+}
+
+// Máquina de estados por par (requester, target) — una sola fila que se
+// resetea a PENDING si se vuelve a pedir seguir tras un rechazo, en vez de
+// acumular filas históricas (ver docs/fase-7-features.md, sección de
+// perfiles privados).
+model FollowRequest {
+  id          String              @id @default(uuid())
+  requesterId String
+  targetId    String
+  status      FollowRequestStatus @default(PENDING)
+  createdAt   DateTime            @default(now())
+  respondedAt DateTime?
+
+  requester User @relation("FollowRequester", fields: [requesterId], references: [id])
+  target    User @relation("FollowRequestTarget", fields: [targetId], references: [id])
+
+  @@unique([requesterId, targetId])
+  @@map("follow_requests")
 }
 
 model RefreshToken {
@@ -285,11 +315,16 @@ model Notification {
 }
 
 model NotificationPreference {
-  userId          String  @id
-  likesEnabled    Boolean @default(true)
-  dislikesEnabled Boolean @default(true)
-  commentsEnabled Boolean @default(true)
-  followsEnabled  Boolean @default(true)
+  userId                 String  @id
+  likesEnabled           Boolean @default(true)
+  dislikesEnabled        Boolean @default(true)
+  commentsEnabled        Boolean @default(true)
+  followsEnabled         Boolean @default(true)
+  // Perfiles privados (post-Fase 7) — distinta de followsEnabled: gatea
+  // FOLLOW_REQUEST (solicitud entrante) y FOLLOW_REQUEST_ACCEPTED (tu
+  // solicitud saliente fue aceptada). Solo una de las dos es configurable
+  // por usuario según User.isPrivate (ver UsersService).
+  followRequestsEnabled  Boolean @default(true)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

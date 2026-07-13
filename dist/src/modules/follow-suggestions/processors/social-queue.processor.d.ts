@@ -1,8 +1,8 @@
 import { WorkerHost } from '@nestjs/bullmq';
 import type { Job, Queue } from 'bullmq';
-import type { CommentEventPayload, FollowEventPayload, ReactionEventPayload } from '../../events/social-events.producer.js';
+import type { CommentEventPayload, FollowEventPayload, FollowRequestAcceptedEventPayload, FollowRequestEventPayload, ReactionEventPayload } from '../../events/social-events.producer.js';
 import { FollowSuggestionsService } from '../follow-suggestions.service.js';
-type SocialJobPayload = ReactionEventPayload | CommentEventPayload | FollowEventPayload;
+type SocialJobPayload = ReactionEventPayload | CommentEventPayload | FollowEventPayload | FollowRequestEventPayload | FollowRequestAcceptedEventPayload;
 export declare class SocialQueueProcessor extends WorkerHost {
     private readonly followSuggestions;
     private readonly notifications;

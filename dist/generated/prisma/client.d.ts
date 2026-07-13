@@ -8,6 +8,7 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma };
 export type User = Prisma.UserModel;
 export type Follow = Prisma.FollowModel;
+export type FollowRequest = Prisma.FollowRequestModel;
 export type RefreshToken = Prisma.RefreshTokenModel;
 export type Artist = Prisma.ArtistModel;
 export type Album = Prisma.AlbumModel;

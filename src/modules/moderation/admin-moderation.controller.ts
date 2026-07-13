@@ -35,7 +35,9 @@ export class AdminModerationController {
     @Param('id') id: string,
     @Body() dto: UpdateReportStatusDto,
   ) {
-    return { data: await this.moderation.updateReportStatus(admin.sub, id, dto) };
+    return {
+      data: await this.moderation.updateReportStatus(admin.sub, id, dto),
+    };
   }
 
   @Patch('content/:type/:id/hide')

@@ -25,7 +25,9 @@ export const NotificationType = {
     DISLIKE: 'DISLIKE',
     COMMENT: 'COMMENT',
     FOLLOW: 'FOLLOW',
-    MODERATION: 'MODERATION'
+    MODERATION: 'MODERATION',
+    FOLLOW_REQUEST: 'FOLLOW_REQUEST',
+    FOLLOW_REQUEST_ACCEPTED: 'FOLLOW_REQUEST_ACCEPTED'
 };
 export const ReportTargetType = {
     REVIEW: 'REVIEW',
@@ -36,5 +38,10 @@ export const ReportStatus = {
     PENDING: 'PENDING',
     REVIEWED: 'REVIEWED',
     DISMISSED: 'DISMISSED'
+};
+export const FollowRequestStatus = {
+    PENDING: 'PENDING',
+    ACCEPTED: 'ACCEPTED',
+    REJECTED: 'REJECTED'
 };
 //# sourceMappingURL=enums.js.map

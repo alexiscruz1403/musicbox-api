@@ -1,5 +1,6 @@
 export type * from './models/User.js';
 export type * from './models/Follow.js';
+export type * from './models/FollowRequest.js';
 export type * from './models/RefreshToken.js';
 export type * from './models/Artist.js';
 export type * from './models/Album.js';

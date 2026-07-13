@@ -1,4 +1,10 @@
-import { IsOptional, IsString, Length, Matches } from 'class-validator';
+import {
+  IsBoolean,
+  IsOptional,
+  IsString,
+  Length,
+  Matches,
+} from 'class-validator';
 
 export class UpdateProfileDto {
   @IsOptional()
@@ -18,4 +24,8 @@ export class UpdateProfileDto {
   @IsString()
   @Length(0, 300)
   bio?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isPrivate?: boolean;
 }

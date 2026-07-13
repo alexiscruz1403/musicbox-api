@@ -30,6 +30,12 @@ let SocialEventsProducer = class SocialEventsProducer {
     emitFollowCreated(payload) {
         return this.queue.add('follow.created', payload);
     }
+    emitFollowRequested(payload) {
+        return this.queue.add('follow.requested', payload);
+    }
+    emitFollowRequestAccepted(payload) {
+        return this.queue.add('follow.request.accepted', payload);
+    }
 };
 SocialEventsProducer = __decorate([
     Injectable(),

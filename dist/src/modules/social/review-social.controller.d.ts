@@ -1,3 +1,4 @@
+import type { Request } from 'express';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { CreateReactionDto } from './dto/create-reaction.dto.js';
@@ -16,7 +17,9 @@ export declare class ReviewSocialController {
         };
     }>;
     removeReaction(user: JwtPayload, id: string): Promise<void>;
-    listComments(id: string, query: ListCommentsQueryDto): Promise<{
+    listComments(id: string, query: ListCommentsQueryDto, req: Request & {
+        user?: JwtPayload;
+    }): Promise<{
         data: ({
             user: {
                 id: string;

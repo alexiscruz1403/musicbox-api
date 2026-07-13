@@ -54,6 +54,7 @@ export declare class ReviewsRepository {
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: Prisma.GlobalOmitConfig | undefined;
     }>;
+    isOwnerVisibleTo(ownerId: string, viewerId?: string): Promise<boolean>;
     createTrackReview(data: {
         userId: string;
         trackId: string;
@@ -106,18 +107,18 @@ export declare class ReviewsRepository {
         externalCoverUrl: string | null;
     }>;
     findById(id: string): Prisma.Prisma__ReviewClient<({
-        user: {
-            id: string;
-            handle: string;
-            displayName: string;
-            avatarUrl: string | null;
-        };
         album: {
             deezerId: string;
         } | null;
         track: {
             deezerId: string;
         } | null;
+        user: {
+            id: string;
+            handle: string;
+            displayName: string;
+            avatarUrl: string | null;
+        };
         trackReviewItems: ({
             track: {
                 deezerId: string;
@@ -223,7 +224,7 @@ export declare class ReviewsRepository {
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: Prisma.GlobalOmitConfig | undefined;
     }>;
-    listByAlbum(albumId: string, cursor: string | undefined, limit: number, sort: SortMode): Promise<{
+    listByAlbum(albumId: string, cursor: string | undefined, limit: number, sort: SortMode, viewerId?: string): Promise<{
         items: ({
             user: {
                 id: string;
@@ -249,7 +250,7 @@ export declare class ReviewsRepository {
         })[];
         nextCursor: string | null;
     }>;
-    listByTrack(trackId: string, cursor: string | undefined, limit: number, sort: SortMode): Promise<{
+    listByTrack(trackId: string, cursor: string | undefined, limit: number, sort: SortMode, viewerId?: string): Promise<{
         items: ({
             user: {
                 id: string;
@@ -275,6 +276,7 @@ export declare class ReviewsRepository {
         })[];
         nextCursor: string | null;
     }>;
+    private buildVisibilityFilter;
     listByUserId(userId: string, cursor: string | undefined, limit: number): Promise<{
         items: ({
             user: {

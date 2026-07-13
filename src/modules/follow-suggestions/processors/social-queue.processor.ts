@@ -8,12 +8,18 @@ import {
 import type {
   CommentEventPayload,
   FollowEventPayload,
+  FollowRequestAcceptedEventPayload,
+  FollowRequestEventPayload,
   ReactionEventPayload,
 } from '../../events/social-events.producer.js';
 import { FollowSuggestionsService } from '../follow-suggestions.service.js';
 
 type SocialJobPayload =
-  ReactionEventPayload | CommentEventPayload | FollowEventPayload;
+  | ReactionEventPayload
+  | CommentEventPayload
+  | FollowEventPayload
+  | FollowRequestEventPayload
+  | FollowRequestAcceptedEventPayload;
 
 // Notification-relevant job names relayed to NOTIFICATIONS_QUEUE — literal
 // reading of the event list in musicbox.md §11 (reaction.changed excluded,
@@ -22,6 +28,8 @@ const NOTIFIABLE_JOB_NAMES = new Set([
   'reaction.added',
   'comment.created',
   'follow.created',
+  'follow.requested',
+  'follow.request.accepted',
 ]);
 
 @Injectable()

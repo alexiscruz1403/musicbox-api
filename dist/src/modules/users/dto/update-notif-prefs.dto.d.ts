@@ -3,4 +3,5 @@ export declare class UpdateNotifPrefsDto {
     dislikesEnabled?: boolean;
     commentsEnabled?: boolean;
     followsEnabled?: boolean;
+    followRequestsEnabled?: boolean;
 }

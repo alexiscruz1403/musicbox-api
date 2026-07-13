@@ -91,7 +91,10 @@ export class DeezerMusicCatalogProvider
   // album items omit the nested `artist` object entirely (redundant with the
   // URL) — getArtistAlbums() fetches that artist once and passes it in here
   // instead of mapArtist() crashing on `raw.artist` being undefined.
-  private mapAlbum(raw: DeezerAlbum, artistOverride?: CatalogArtist): CatalogAlbum {
+  private mapAlbum(
+    raw: DeezerAlbum,
+    artistOverride?: CatalogArtist,
+  ): CatalogAlbum {
     return {
       deezerId: String(raw.id),
       title: raw.title,

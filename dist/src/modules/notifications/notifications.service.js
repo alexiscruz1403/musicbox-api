@@ -81,6 +81,22 @@ let NotificationsService = class NotificationsService {
                     type: 'FOLLOW',
                 };
             }
+            case 'follow.requested': {
+                const p = payload;
+                return {
+                    recipientId: p.targetId,
+                    actorId: p.requesterId,
+                    type: 'FOLLOW_REQUEST',
+                };
+            }
+            case 'follow.request.accepted': {
+                const p = payload;
+                return {
+                    recipientId: p.requesterId,
+                    actorId: p.accepterId,
+                    type: 'FOLLOW_REQUEST_ACCEPTED',
+                };
+            }
             default:
                 return null;
         }
@@ -98,6 +114,9 @@ let NotificationsService = class NotificationsService {
                 return prefs.commentsEnabled;
             case 'FOLLOW':
                 return prefs.followsEnabled;
+            case 'FOLLOW_REQUEST':
+            case 'FOLLOW_REQUEST_ACCEPTED':
+                return prefs.followRequestsEnabled;
             case 'MODERATION':
                 return true;
         }

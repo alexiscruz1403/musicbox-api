@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -26,6 +27,14 @@ const mockRepo = {
   deleteFollow: vi.fn(),
   searchUsers: vi.fn(),
   getExportData: vi.fn(),
+  findFollowRequest: vi.fn(),
+  createOrResetFollowRequest: vi.fn(),
+  deleteFollowRequest: vi.fn(),
+  findFollowRequestById: vi.fn(),
+  listIncomingFollowRequests: vi.fn(),
+  acceptFollowRequest: vi.fn(),
+  rejectFollowRequest: vi.fn(),
+  acceptAllPendingFollowRequests: vi.fn(),
 };
 
 const mockCloudinary = {
@@ -35,6 +44,8 @@ const mockCloudinary = {
 
 const mockEvents = {
   emitFollowCreated: vi.fn(),
+  emitFollowRequested: vi.fn(),
+  emitFollowRequestAccepted: vi.fn(),
 };
 
 describe('UsersService', () => {
@@ -125,6 +136,38 @@ describe('UsersService', () => {
         'u1',
         expect.objectContaining({ displayName: 'Name', bio: 'bold' }),
       );
+    });
+
+    it('auto-accepts pending follow requests when isPrivate goes true -> false', async () => {
+      mockRepo.findById.mockResolvedValue({ id: 'u1', isPrivate: true });
+      mockRepo.updateProfile.mockResolvedValue({ id: 'u1', isPrivate: false });
+      mockRepo.acceptAllPendingFollowRequests.mockResolvedValue([
+        'req1',
+        'req2',
+      ]);
+
+      await service.updateProfile('u1', { isPrivate: false });
+
+      expect(mockRepo.acceptAllPendingFollowRequests).toHaveBeenCalledWith(
+        'u1',
+      );
+      expect(mockEvents.emitFollowRequestAccepted).toHaveBeenCalledWith({
+        requesterId: 'req1',
+        accepterId: 'u1',
+      });
+      expect(mockEvents.emitFollowRequestAccepted).toHaveBeenCalledWith({
+        requesterId: 'req2',
+        accepterId: 'u1',
+      });
+    });
+
+    it('does not touch follow requests when isPrivate goes false -> true', async () => {
+      mockRepo.findById.mockResolvedValue({ id: 'u1', isPrivate: false });
+      mockRepo.updateProfile.mockResolvedValue({ id: 'u1', isPrivate: true });
+
+      await service.updateProfile('u1', { isPrivate: true });
+
+      expect(mockRepo.acceptAllPendingFollowRequests).not.toHaveBeenCalled();
     });
   });
 
@@ -322,6 +365,7 @@ describe('UsersService', () => {
         followingCount: 5,
       });
       expect(result.isFollowing).toBe(false);
+      expect(result.followRequestPending).toBe(false);
     });
 
     it('sets isFollowing when viewer is provided and follows', async () => {
@@ -346,28 +390,147 @@ describe('UsersService', () => {
 
       expect(result.isFollowing).toBe(true);
       expect(mockRepo.followExists).toHaveBeenCalledWith('u1', 'u2');
+      expect(mockRepo.findFollowRequest).not.toHaveBeenCalled();
+    });
+
+    it('sets followRequestPending when a PENDING request exists and viewer is not following', async () => {
+      const user = {
+        id: 'u2',
+        handle: 'private_user',
+        status: 'ACTIVE',
+        email: 'x@x.com',
+        passwordHash: null,
+        googleId: null,
+        deletedAt: null,
+        isPrivate: true,
+      };
+      mockRepo.findByHandle.mockResolvedValue(user);
+      mockRepo.getStats.mockResolvedValue([0, 0, 0]);
+      mockRepo.followExists.mockResolvedValue(null);
+      mockRepo.findFollowRequest.mockResolvedValue({ status: 'PENDING' });
+
+      const result = await service.getPublicProfile('private_user', 'u1');
+
+      expect(result.isFollowing).toBe(false);
+      expect(result.followRequestPending).toBe(true);
     });
   });
 
   describe('getNotifPrefs', () => {
+    it('throws NotFoundException if the user does not exist', async () => {
+      mockRepo.findById.mockResolvedValue(null);
+      await expect(service.getNotifPrefs('u1')).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
     it('throws NotFoundException if prefs not found', async () => {
+      mockRepo.findById.mockResolvedValue({ id: 'u1', isPrivate: false });
       mockRepo.getNotifPrefs.mockResolvedValue(null);
       await expect(service.getNotifPrefs('u1')).rejects.toThrow(
         NotFoundException,
       );
     });
 
-    it('returns notification preferences', async () => {
-      const prefs = {
+    it('returns followsEnabled (not followRequestsEnabled) for a public account', async () => {
+      mockRepo.findById.mockResolvedValue({ id: 'u1', isPrivate: false });
+      mockRepo.getNotifPrefs.mockResolvedValue({
         userId: 'u1',
         likesEnabled: true,
         dislikesEnabled: false,
         commentsEnabled: true,
         followsEnabled: true,
-      };
-      mockRepo.getNotifPrefs.mockResolvedValue(prefs);
+        followRequestsEnabled: true,
+      });
+
       const result = await service.getNotifPrefs('u1');
-      expect(result).toEqual(prefs);
+
+      expect(result).toEqual({
+        userId: 'u1',
+        likesEnabled: true,
+        dislikesEnabled: false,
+        commentsEnabled: true,
+        followsEnabled: true,
+      });
+      expect(result).not.toHaveProperty('followRequestsEnabled');
+    });
+
+    it('returns followRequestsEnabled (not followsEnabled) for a private account', async () => {
+      mockRepo.findById.mockResolvedValue({ id: 'u1', isPrivate: true });
+      mockRepo.getNotifPrefs.mockResolvedValue({
+        userId: 'u1',
+        likesEnabled: true,
+        dislikesEnabled: false,
+        commentsEnabled: true,
+        followsEnabled: true,
+        followRequestsEnabled: false,
+      });
+
+      const result = await service.getNotifPrefs('u1');
+
+      expect(result).toEqual({
+        userId: 'u1',
+        likesEnabled: true,
+        dislikesEnabled: false,
+        commentsEnabled: true,
+        followRequestsEnabled: false,
+      });
+      expect(result).not.toHaveProperty('followsEnabled');
+    });
+  });
+
+  describe('updateNotifPrefs', () => {
+    it('throws NotFoundException if the user does not exist', async () => {
+      mockRepo.findById.mockResolvedValue(null);
+      await expect(
+        service.updateNotifPrefs('u1', { followsEnabled: false }),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('ignores followRequestsEnabled for a public account', async () => {
+      mockRepo.findById.mockResolvedValue({ id: 'u1', isPrivate: false });
+      mockRepo.updateNotifPrefs.mockResolvedValue({
+        userId: 'u1',
+        likesEnabled: true,
+        dislikesEnabled: true,
+        commentsEnabled: true,
+        followsEnabled: false,
+        followRequestsEnabled: true,
+      });
+
+      const result = await service.updateNotifPrefs('u1', {
+        followsEnabled: false,
+        followRequestsEnabled: false,
+      });
+
+      expect(mockRepo.updateNotifPrefs).toHaveBeenCalledWith('u1', {
+        followsEnabled: false,
+        followRequestsEnabled: undefined,
+      });
+      expect(result).not.toHaveProperty('followRequestsEnabled');
+    });
+
+    it('ignores followsEnabled for a private account', async () => {
+      mockRepo.findById.mockResolvedValue({ id: 'u1', isPrivate: true });
+      mockRepo.updateNotifPrefs.mockResolvedValue({
+        userId: 'u1',
+        likesEnabled: true,
+        dislikesEnabled: true,
+        commentsEnabled: true,
+        followsEnabled: true,
+        followRequestsEnabled: false,
+      });
+
+      const result = await service.updateNotifPrefs('u1', {
+        followsEnabled: false,
+        followRequestsEnabled: false,
+      });
+
+      expect(mockRepo.updateNotifPrefs).toHaveBeenCalledWith('u1', {
+        followsEnabled: undefined,
+        followRequestsEnabled: false,
+      });
+      expect(result).not.toHaveProperty('followsEnabled');
     });
   });
 
@@ -401,12 +564,71 @@ describe('UsersService', () => {
       mockRepo.findByHandle.mockResolvedValue({ id: 'u2', status: 'ACTIVE' });
       mockRepo.followExists.mockResolvedValue(null);
       mockRepo.createFollow.mockResolvedValue({});
-      await service.follow('u1', 'u2handle');
+      const result = await service.follow('u1', 'u2handle');
       expect(mockRepo.createFollow).toHaveBeenCalledWith('u1', 'u2');
       expect(mockEvents.emitFollowCreated).toHaveBeenCalledWith({
         followerId: 'u1',
         followeeId: 'u2',
       });
+      expect(result).toEqual({ status: 'FOLLOWING' });
+    });
+
+    it('creates a FollowRequest instead of a Follow when the target is private', async () => {
+      mockRepo.findByHandle.mockResolvedValue({
+        id: 'u2',
+        status: 'ACTIVE',
+        isPrivate: true,
+      });
+      mockRepo.followExists.mockResolvedValue(null);
+      mockRepo.findFollowRequest.mockResolvedValue(null);
+      mockRepo.createOrResetFollowRequest.mockResolvedValue({ id: 'req1' });
+
+      const result = await service.follow('u1', 'u2handle');
+
+      expect(mockRepo.createFollow).not.toHaveBeenCalled();
+      expect(mockRepo.createOrResetFollowRequest).toHaveBeenCalledWith(
+        'u1',
+        'u2',
+      );
+      expect(mockEvents.emitFollowRequested).toHaveBeenCalledWith({
+        requesterId: 'u1',
+        targetId: 'u2',
+      });
+      expect(result).toEqual({ status: 'PENDING', followRequestId: 'req1' });
+    });
+
+    it('throws ConflictException when a follow request to a private target is already pending', async () => {
+      mockRepo.findByHandle.mockResolvedValue({
+        id: 'u2',
+        status: 'ACTIVE',
+        isPrivate: true,
+      });
+      mockRepo.followExists.mockResolvedValue(null);
+      mockRepo.findFollowRequest.mockResolvedValue({ status: 'PENDING' });
+
+      await expect(service.follow('u1', 'u2handle')).rejects.toThrow(
+        ConflictException,
+      );
+      expect(mockRepo.createOrResetFollowRequest).not.toHaveBeenCalled();
+    });
+
+    it('resets a REJECTED follow request back to PENDING on re-request', async () => {
+      mockRepo.findByHandle.mockResolvedValue({
+        id: 'u2',
+        status: 'ACTIVE',
+        isPrivate: true,
+      });
+      mockRepo.followExists.mockResolvedValue(null);
+      mockRepo.findFollowRequest.mockResolvedValue({ status: 'REJECTED' });
+      mockRepo.createOrResetFollowRequest.mockResolvedValue({ id: 'req1' });
+
+      const result = await service.follow('u1', 'u2handle');
+
+      expect(mockRepo.createOrResetFollowRequest).toHaveBeenCalledWith(
+        'u1',
+        'u2',
+      );
+      expect(result).toEqual({ status: 'PENDING', followRequestId: 'req1' });
     });
   });
 
@@ -447,9 +669,10 @@ describe('UsersService', () => {
       );
     });
 
-    it('throws NotFoundException if not following', async () => {
+    it('throws NotFoundException if not following and no pending request', async () => {
       mockRepo.findByHandle.mockResolvedValue({ id: 'u2' });
       mockRepo.followExists.mockResolvedValue(null);
+      mockRepo.findFollowRequest.mockResolvedValue(null);
       await expect(service.unfollow('u1', 'u2handle')).rejects.toThrow(
         NotFoundException,
       );
@@ -464,6 +687,106 @@ describe('UsersService', () => {
       mockRepo.deleteFollow.mockResolvedValue({});
       await service.unfollow('u1', 'u2handle');
       expect(mockRepo.deleteFollow).toHaveBeenCalledWith('u1', 'u2');
+    });
+
+    it('cancels a pending outgoing follow request when there is no Follow yet', async () => {
+      mockRepo.findByHandle.mockResolvedValue({ id: 'u2' });
+      mockRepo.followExists.mockResolvedValue(null);
+      mockRepo.findFollowRequest.mockResolvedValue({ status: 'PENDING' });
+      mockRepo.deleteFollowRequest.mockResolvedValue({});
+
+      await service.unfollow('u1', 'u2handle');
+
+      expect(mockRepo.deleteFollowRequest).toHaveBeenCalledWith('u1', 'u2');
+      expect(mockRepo.deleteFollow).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('listFollowRequests', () => {
+    it('forwards cursor/limit to the repository', async () => {
+      mockRepo.listIncomingFollowRequests.mockResolvedValue({
+        items: [],
+        nextCursor: null,
+      });
+      await service.listFollowRequests('u1', 'cursor-1', 10);
+      expect(mockRepo.listIncomingFollowRequests).toHaveBeenCalledWith(
+        'u1',
+        'cursor-1',
+        10,
+      );
+    });
+  });
+
+  describe('respondToFollowRequest', () => {
+    it('throws NotFoundException if the request does not exist', async () => {
+      mockRepo.findFollowRequestById.mockResolvedValue(null);
+      await expect(
+        service.respondToFollowRequest('u2', 'req1', 'ACCEPTED'),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('throws ForbiddenException if the caller is not the target', async () => {
+      mockRepo.findFollowRequestById.mockResolvedValue({
+        id: 'req1',
+        targetId: 'someone-else',
+        status: 'PENDING',
+      });
+      await expect(
+        service.respondToFollowRequest('u2', 'req1', 'ACCEPTED'),
+      ).rejects.toThrow(ForbiddenException);
+    });
+
+    it('throws ConflictException if the request was already resolved', async () => {
+      mockRepo.findFollowRequestById.mockResolvedValue({
+        id: 'req1',
+        targetId: 'u2',
+        status: 'ACCEPTED',
+      });
+      await expect(
+        service.respondToFollowRequest('u2', 'req1', 'ACCEPTED'),
+      ).rejects.toThrow(ConflictException);
+    });
+
+    it('accepts the request, creates the Follow and notifies the requester', async () => {
+      mockRepo.findFollowRequestById.mockResolvedValue({
+        id: 'req1',
+        targetId: 'u2',
+        requesterId: 'u1',
+        status: 'PENDING',
+      });
+      mockRepo.acceptFollowRequest.mockResolvedValue({
+        id: 'req1',
+        requesterId: 'u1',
+        targetId: 'u2',
+        status: 'ACCEPTED',
+      });
+
+      await service.respondToFollowRequest('u2', 'req1', 'ACCEPTED');
+
+      expect(mockRepo.acceptFollowRequest).toHaveBeenCalledWith('req1');
+      expect(mockEvents.emitFollowRequestAccepted).toHaveBeenCalledWith({
+        requesterId: 'u1',
+        accepterId: 'u2',
+      });
+    });
+
+    it('rejects the request without emitting any notification', async () => {
+      mockRepo.findFollowRequestById.mockResolvedValue({
+        id: 'req1',
+        targetId: 'u2',
+        requesterId: 'u1',
+        status: 'PENDING',
+      });
+      mockRepo.rejectFollowRequest.mockResolvedValue({
+        id: 'req1',
+        status: 'REJECTED',
+      });
+
+      await service.respondToFollowRequest('u2', 'req1', 'REJECTED');
+
+      expect(mockRepo.rejectFollowRequest).toHaveBeenCalledWith('req1');
+      expect(mockRepo.acceptFollowRequest).not.toHaveBeenCalled();
+      expect(mockEvents.emitFollowRequestAccepted).not.toHaveBeenCalled();
     });
   });
 });

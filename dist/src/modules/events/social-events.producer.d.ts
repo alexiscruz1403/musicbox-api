@@ -16,6 +16,14 @@ export interface FollowEventPayload {
     followerId: string;
     followeeId: string;
 }
+export interface FollowRequestEventPayload {
+    requesterId: string;
+    targetId: string;
+}
+export interface FollowRequestAcceptedEventPayload {
+    requesterId: string;
+    accepterId: string;
+}
 export declare class SocialEventsProducer {
     private readonly queue;
     constructor(queue: Queue);
@@ -23,4 +31,6 @@ export declare class SocialEventsProducer {
     emitReactionChanged(payload: ReactionEventPayload): Promise<import("bullmq").Job<any, any, string>>;
     emitCommentCreated(payload: CommentEventPayload): Promise<import("bullmq").Job<any, any, string>>;
     emitFollowCreated(payload: FollowEventPayload): Promise<import("bullmq").Job<any, any, string>>;
+    emitFollowRequested(payload: FollowRequestEventPayload): Promise<import("bullmq").Job<any, any, string>>;
+    emitFollowRequestAccepted(payload: FollowRequestAcceptedEventPayload): Promise<import("bullmq").Job<any, any, string>>;
 }

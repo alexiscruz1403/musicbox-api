@@ -12,6 +12,7 @@ export type NotificationPreferenceMinAggregateOutputType = {
     dislikesEnabled: boolean | null;
     commentsEnabled: boolean | null;
     followsEnabled: boolean | null;
+    followRequestsEnabled: boolean | null;
 };
 export type NotificationPreferenceMaxAggregateOutputType = {
     userId: string | null;
@@ -19,6 +20,7 @@ export type NotificationPreferenceMaxAggregateOutputType = {
     dislikesEnabled: boolean | null;
     commentsEnabled: boolean | null;
     followsEnabled: boolean | null;
+    followRequestsEnabled: boolean | null;
 };
 export type NotificationPreferenceCountAggregateOutputType = {
     userId: number;
@@ -26,6 +28,7 @@ export type NotificationPreferenceCountAggregateOutputType = {
     dislikesEnabled: number;
     commentsEnabled: number;
     followsEnabled: number;
+    followRequestsEnabled: number;
     _all: number;
 };
 export type NotificationPreferenceMinAggregateInputType = {
@@ -34,6 +37,7 @@ export type NotificationPreferenceMinAggregateInputType = {
     dislikesEnabled?: true;
     commentsEnabled?: true;
     followsEnabled?: true;
+    followRequestsEnabled?: true;
 };
 export type NotificationPreferenceMaxAggregateInputType = {
     userId?: true;
@@ -41,6 +45,7 @@ export type NotificationPreferenceMaxAggregateInputType = {
     dislikesEnabled?: true;
     commentsEnabled?: true;
     followsEnabled?: true;
+    followRequestsEnabled?: true;
 };
 export type NotificationPreferenceCountAggregateInputType = {
     userId?: true;
@@ -48,6 +53,7 @@ export type NotificationPreferenceCountAggregateInputType = {
     dislikesEnabled?: true;
     commentsEnabled?: true;
     followsEnabled?: true;
+    followRequestsEnabled?: true;
     _all?: true;
 };
 export type NotificationPreferenceAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -80,6 +86,7 @@ export type NotificationPreferenceGroupByOutputType = {
     dislikesEnabled: boolean;
     commentsEnabled: boolean;
     followsEnabled: boolean;
+    followRequestsEnabled: boolean;
     _count: NotificationPreferenceCountAggregateOutputType | null;
     _min: NotificationPreferenceMinAggregateOutputType | null;
     _max: NotificationPreferenceMaxAggregateOutputType | null;
@@ -96,6 +103,7 @@ export type NotificationPreferenceWhereInput = {
     dislikesEnabled?: Prisma.BoolFilter<"NotificationPreference"> | boolean;
     commentsEnabled?: Prisma.BoolFilter<"NotificationPreference"> | boolean;
     followsEnabled?: Prisma.BoolFilter<"NotificationPreference"> | boolean;
+    followRequestsEnabled?: Prisma.BoolFilter<"NotificationPreference"> | boolean;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 };
 export type NotificationPreferenceOrderByWithRelationInput = {
@@ -104,6 +112,7 @@ export type NotificationPreferenceOrderByWithRelationInput = {
     dislikesEnabled?: Prisma.SortOrder;
     commentsEnabled?: Prisma.SortOrder;
     followsEnabled?: Prisma.SortOrder;
+    followRequestsEnabled?: Prisma.SortOrder;
     user?: Prisma.UserOrderByWithRelationInput;
 };
 export type NotificationPreferenceWhereUniqueInput = Prisma.AtLeast<{
@@ -115,6 +124,7 @@ export type NotificationPreferenceWhereUniqueInput = Prisma.AtLeast<{
     dislikesEnabled?: Prisma.BoolFilter<"NotificationPreference"> | boolean;
     commentsEnabled?: Prisma.BoolFilter<"NotificationPreference"> | boolean;
     followsEnabled?: Prisma.BoolFilter<"NotificationPreference"> | boolean;
+    followRequestsEnabled?: Prisma.BoolFilter<"NotificationPreference"> | boolean;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
 }, "userId">;
 export type NotificationPreferenceOrderByWithAggregationInput = {
@@ -123,6 +133,7 @@ export type NotificationPreferenceOrderByWithAggregationInput = {
     dislikesEnabled?: Prisma.SortOrder;
     commentsEnabled?: Prisma.SortOrder;
     followsEnabled?: Prisma.SortOrder;
+    followRequestsEnabled?: Prisma.SortOrder;
     _count?: Prisma.NotificationPreferenceCountOrderByAggregateInput;
     _max?: Prisma.NotificationPreferenceMaxOrderByAggregateInput;
     _min?: Prisma.NotificationPreferenceMinOrderByAggregateInput;
@@ -136,12 +147,14 @@ export type NotificationPreferenceScalarWhereWithAggregatesInput = {
     dislikesEnabled?: Prisma.BoolWithAggregatesFilter<"NotificationPreference"> | boolean;
     commentsEnabled?: Prisma.BoolWithAggregatesFilter<"NotificationPreference"> | boolean;
     followsEnabled?: Prisma.BoolWithAggregatesFilter<"NotificationPreference"> | boolean;
+    followRequestsEnabled?: Prisma.BoolWithAggregatesFilter<"NotificationPreference"> | boolean;
 };
 export type NotificationPreferenceCreateInput = {
     likesEnabled?: boolean;
     dislikesEnabled?: boolean;
     commentsEnabled?: boolean;
     followsEnabled?: boolean;
+    followRequestsEnabled?: boolean;
     user: Prisma.UserCreateNestedOneWithoutNotifPreferenceInput;
 };
 export type NotificationPreferenceUncheckedCreateInput = {
@@ -150,12 +163,14 @@ export type NotificationPreferenceUncheckedCreateInput = {
     dislikesEnabled?: boolean;
     commentsEnabled?: boolean;
     followsEnabled?: boolean;
+    followRequestsEnabled?: boolean;
 };
 export type NotificationPreferenceUpdateInput = {
     likesEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dislikesEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     followsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    followRequestsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     user?: Prisma.UserUpdateOneRequiredWithoutNotifPreferenceNestedInput;
 };
 export type NotificationPreferenceUncheckedUpdateInput = {
@@ -164,6 +179,7 @@ export type NotificationPreferenceUncheckedUpdateInput = {
     dislikesEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     followsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    followRequestsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 export type NotificationPreferenceCreateManyInput = {
     userId: string;
@@ -171,12 +187,14 @@ export type NotificationPreferenceCreateManyInput = {
     dislikesEnabled?: boolean;
     commentsEnabled?: boolean;
     followsEnabled?: boolean;
+    followRequestsEnabled?: boolean;
 };
 export type NotificationPreferenceUpdateManyMutationInput = {
     likesEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dislikesEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     followsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    followRequestsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 export type NotificationPreferenceUncheckedUpdateManyInput = {
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -184,6 +202,7 @@ export type NotificationPreferenceUncheckedUpdateManyInput = {
     dislikesEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     followsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    followRequestsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 export type NotificationPreferenceNullableScalarRelationFilter = {
     is?: Prisma.NotificationPreferenceWhereInput | null;
@@ -195,6 +214,7 @@ export type NotificationPreferenceCountOrderByAggregateInput = {
     dislikesEnabled?: Prisma.SortOrder;
     commentsEnabled?: Prisma.SortOrder;
     followsEnabled?: Prisma.SortOrder;
+    followRequestsEnabled?: Prisma.SortOrder;
 };
 export type NotificationPreferenceMaxOrderByAggregateInput = {
     userId?: Prisma.SortOrder;
@@ -202,6 +222,7 @@ export type NotificationPreferenceMaxOrderByAggregateInput = {
     dislikesEnabled?: Prisma.SortOrder;
     commentsEnabled?: Prisma.SortOrder;
     followsEnabled?: Prisma.SortOrder;
+    followRequestsEnabled?: Prisma.SortOrder;
 };
 export type NotificationPreferenceMinOrderByAggregateInput = {
     userId?: Prisma.SortOrder;
@@ -209,6 +230,7 @@ export type NotificationPreferenceMinOrderByAggregateInput = {
     dislikesEnabled?: Prisma.SortOrder;
     commentsEnabled?: Prisma.SortOrder;
     followsEnabled?: Prisma.SortOrder;
+    followRequestsEnabled?: Prisma.SortOrder;
 };
 export type NotificationPreferenceCreateNestedOneWithoutUserInput = {
     create?: Prisma.XOR<Prisma.NotificationPreferenceCreateWithoutUserInput, Prisma.NotificationPreferenceUncheckedCreateWithoutUserInput>;
@@ -243,12 +265,14 @@ export type NotificationPreferenceCreateWithoutUserInput = {
     dislikesEnabled?: boolean;
     commentsEnabled?: boolean;
     followsEnabled?: boolean;
+    followRequestsEnabled?: boolean;
 };
 export type NotificationPreferenceUncheckedCreateWithoutUserInput = {
     likesEnabled?: boolean;
     dislikesEnabled?: boolean;
     commentsEnabled?: boolean;
     followsEnabled?: boolean;
+    followRequestsEnabled?: boolean;
 };
 export type NotificationPreferenceCreateOrConnectWithoutUserInput = {
     where: Prisma.NotificationPreferenceWhereUniqueInput;
@@ -268,12 +292,14 @@ export type NotificationPreferenceUpdateWithoutUserInput = {
     dislikesEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     followsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    followRequestsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 export type NotificationPreferenceUncheckedUpdateWithoutUserInput = {
     likesEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     dislikesEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     followsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    followRequestsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 export type NotificationPreferenceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     userId?: boolean;
@@ -281,6 +307,7 @@ export type NotificationPreferenceSelect<ExtArgs extends runtime.Types.Extension
     dislikesEnabled?: boolean;
     commentsEnabled?: boolean;
     followsEnabled?: boolean;
+    followRequestsEnabled?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["notificationPreference"]>;
 export type NotificationPreferenceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -289,6 +316,7 @@ export type NotificationPreferenceSelectCreateManyAndReturn<ExtArgs extends runt
     dislikesEnabled?: boolean;
     commentsEnabled?: boolean;
     followsEnabled?: boolean;
+    followRequestsEnabled?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["notificationPreference"]>;
 export type NotificationPreferenceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -297,6 +325,7 @@ export type NotificationPreferenceSelectUpdateManyAndReturn<ExtArgs extends runt
     dislikesEnabled?: boolean;
     commentsEnabled?: boolean;
     followsEnabled?: boolean;
+    followRequestsEnabled?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["notificationPreference"]>;
 export type NotificationPreferenceSelectScalar = {
@@ -305,8 +334,9 @@ export type NotificationPreferenceSelectScalar = {
     dislikesEnabled?: boolean;
     commentsEnabled?: boolean;
     followsEnabled?: boolean;
+    followRequestsEnabled?: boolean;
 };
-export type NotificationPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "likesEnabled" | "dislikesEnabled" | "commentsEnabled" | "followsEnabled", ExtArgs["result"]["notificationPreference"]>;
+export type NotificationPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "likesEnabled" | "dislikesEnabled" | "commentsEnabled" | "followsEnabled" | "followRequestsEnabled", ExtArgs["result"]["notificationPreference"]>;
 export type NotificationPreferenceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
 };
@@ -327,6 +357,7 @@ export type $NotificationPreferencePayload<ExtArgs extends runtime.Types.Extensi
         dislikesEnabled: boolean;
         commentsEnabled: boolean;
         followsEnabled: boolean;
+        followRequestsEnabled: boolean;
     }, ExtArgs["result"]["notificationPreference"]>;
     composites: {};
 };
@@ -390,6 +421,7 @@ export interface NotificationPreferenceFieldRefs {
     readonly dislikesEnabled: Prisma.FieldRef<"NotificationPreference", 'Boolean'>;
     readonly commentsEnabled: Prisma.FieldRef<"NotificationPreference", 'Boolean'>;
     readonly followsEnabled: Prisma.FieldRef<"NotificationPreference", 'Boolean'>;
+    readonly followRequestsEnabled: Prisma.FieldRef<"NotificationPreference", 'Boolean'>;
 }
 export type NotificationPreferenceFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.NotificationPreferenceSelect<ExtArgs> | null;

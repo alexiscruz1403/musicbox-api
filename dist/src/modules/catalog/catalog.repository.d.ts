@@ -65,6 +65,12 @@ export declare class CatalogRepository {
     }>;
     findTracksByArtist(artistId: string, cursor: string | null, limit: number): Promise<{
         items: ({
+            album: {
+                coverUrl: string | null;
+                deezerId: string;
+                title: string;
+                releaseDate: Date | null;
+            } | null;
             artist: {
                 id: string;
                 deezerId: string;
@@ -74,12 +80,6 @@ export declare class CatalogRepository {
                 lastSyncedAt: Date;
                 catalogSyncedAt: Date | null;
             };
-            album: {
-                coverUrl: string | null;
-                deezerId: string;
-                title: string;
-                releaseDate: Date | null;
-            } | null;
         } & {
             id: string;
             deezerId: string;
@@ -121,6 +121,10 @@ export declare class CatalogRepository {
         genreLabel: string | null;
     })[]>;
     hydrateTrackSummaries(ids: string[]): Promise<never[]> | import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<({
+        album: {
+            coverUrl: string | null;
+            deezerId: string;
+        } | null;
         artist: {
             id: string;
             deezerId: string;
@@ -130,10 +134,6 @@ export declare class CatalogRepository {
             lastSyncedAt: Date;
             catalogSyncedAt: Date | null;
         };
-        album: {
-            coverUrl: string | null;
-            deezerId: string;
-        } | null;
     } & {
         id: string;
         deezerId: string;

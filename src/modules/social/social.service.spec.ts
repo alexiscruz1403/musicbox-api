@@ -6,6 +6,7 @@ import { SocialService } from './social.service.js';
 
 const mockRepo = {
   getActiveReviewOwner: vi.fn(),
+  isOwnerVisibleTo: vi.fn(),
   findReaction: vi.fn(),
   upsertReaction: vi.fn(),
   deleteReaction: vi.fn(),
@@ -37,6 +38,7 @@ describe('SocialService', () => {
 
     service = module.get(SocialService);
     vi.clearAllMocks();
+    mockRepo.isOwnerVisibleTo.mockResolvedValue(true);
   });
 
   describe('react', () => {
@@ -115,6 +117,19 @@ describe('SocialService', () => {
       expect(mockEvents.emitReactionAdded).not.toHaveBeenCalled();
       expect(mockEvents.emitReactionChanged).not.toHaveBeenCalled();
     });
+
+    it('throws ForbiddenException when the review owner is private and not visible', async () => {
+      mockRepo.getActiveReviewOwner.mockResolvedValue({
+        id: 'r1',
+        userId: 'owner1',
+      });
+      mockRepo.isOwnerVisibleTo.mockResolvedValue(false);
+
+      await expect(service.react('u1', 'r1', { type: 'LIKE' })).rejects.toThrow(
+        ForbiddenException,
+      );
+      expect(mockRepo.findReaction).not.toHaveBeenCalled();
+    });
   });
 
   describe('removeReaction', () => {
@@ -146,6 +161,19 @@ describe('SocialService', () => {
       await service.removeReaction('u1', 'r1');
       expect(mockRepo.deleteReaction).toHaveBeenCalledWith('u1', 'r1');
     });
+
+    it('throws ForbiddenException when the review owner is private and not visible', async () => {
+      mockRepo.getActiveReviewOwner.mockResolvedValue({
+        id: 'r1',
+        userId: 'owner1',
+      });
+      mockRepo.isOwnerVisibleTo.mockResolvedValue(false);
+
+      await expect(service.removeReaction('u1', 'r1')).rejects.toThrow(
+        ForbiddenException,
+      );
+      expect(mockRepo.findReaction).not.toHaveBeenCalled();
+    });
   });
 
   describe('listComments', () => {
@@ -171,6 +199,19 @@ describe('SocialService', () => {
       });
       expect(result).toEqual({ items: [{ id: 'c1' }], nextCursor: null });
       expect(mockRepo.listComments).toHaveBeenCalledWith('r1', undefined, 10);
+    });
+
+    it('throws ForbiddenException when the review owner is private and not visible to the viewer', async () => {
+      mockRepo.getActiveReviewOwner.mockResolvedValue({
+        id: 'r1',
+        userId: 'owner1',
+      });
+      mockRepo.isOwnerVisibleTo.mockResolvedValue(false);
+
+      await expect(
+        service.listComments('r1', { limit: 10 }, 'stranger'),
+      ).rejects.toThrow(ForbiddenException);
+      expect(mockRepo.listComments).not.toHaveBeenCalled();
     });
   });
 
@@ -204,6 +245,19 @@ describe('SocialService', () => {
         reviewOwnerId: 'owner1',
         userId: 'u1',
       });
+    });
+
+    it('throws ForbiddenException when the review owner is private and not visible', async () => {
+      mockRepo.getActiveReviewOwner.mockResolvedValue({
+        id: 'r1',
+        userId: 'owner1',
+      });
+      mockRepo.isOwnerVisibleTo.mockResolvedValue(false);
+
+      await expect(
+        service.createComment('u1', 'r1', { content: 'hi' }),
+      ).rejects.toThrow(ForbiddenException);
+      expect(mockRepo.createComment).not.toHaveBeenCalled();
     });
   });
 

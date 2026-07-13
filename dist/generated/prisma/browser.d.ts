@@ -4,6 +4,7 @@ export * as $Enums from './enums.js';
 export * from './enums.js';
 export type User = Prisma.UserModel;
 export type Follow = Prisma.FollowModel;
+export type FollowRequest = Prisma.FollowRequestModel;
 export type RefreshToken = Prisma.RefreshTokenModel;
 export type Artist = Prisma.ArtistModel;
 export type Album = Prisma.AlbumModel;
