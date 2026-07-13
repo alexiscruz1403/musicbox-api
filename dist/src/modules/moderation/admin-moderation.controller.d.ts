@@ -8,20 +8,20 @@ export declare class AdminModerationController {
     list(query: ListReportsQueryDto): Promise<{
         data: ({
             reporter: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
             };
         } & {
             id: string;
             status: import("../../../generated/prisma/enums.js").ReportStatus;
             createdAt: Date;
+            reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
             targetId: string;
             reason: string;
-            reviewedAt: Date | null;
-            reporterId: string;
             reviewedById: string | null;
+            reviewedAt: Date | null;
         } & {
             reportedContent: import("./moderation.repository.js").ReportedContent;
         })[];
@@ -34,12 +34,12 @@ export declare class AdminModerationController {
             id: string;
             status: import("../../../generated/prisma/enums.js").ReportStatus;
             createdAt: Date;
+            reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
             targetId: string;
             reason: string;
-            reviewedAt: Date | null;
-            reporterId: string;
             reviewedById: string | null;
+            reviewedAt: Date | null;
         };
     }>;
     hideContent(type: string, id: string): Promise<void>;

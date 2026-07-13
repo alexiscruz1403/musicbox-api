@@ -30,21 +30,21 @@ export declare class FeedRepository {
     listFeed(userId: string, cursor: string | undefined, limit: number): Promise<{
         items: ({
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             };
         } & {
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -56,14 +56,14 @@ export declare class FeedRepository {
     private paginate;
     getFollowedIds(userId: string): Promise<string[]>;
     getOwnReviewSignals(userId: string): Prisma.PrismaPromise<{
+        albumId: string | null;
+        trackId: string | null;
         album: {
             artistId: string;
         } | null;
         track: {
             artistId: string;
         } | null;
-        trackId: string | null;
-        albumId: string | null;
     }[]>;
     getTodaysCandidateIds(excludeUserIds: string[], since: Date): Promise<string[]>;
     countLikesByReviewIds(reviewIds: string[]): Promise<never[]> | Prisma.GetReviewReactionGroupByPayload<{

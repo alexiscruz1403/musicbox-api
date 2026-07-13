@@ -22,9 +22,9 @@ export declare class NotificationsController {
                 avatarUrl: string | null;
             } | null;
         } & {
-            type: import("../../../generated/prisma/enums.js").NotificationType;
             id: string;
             createdAt: Date;
+            type: import("../../../generated/prisma/enums.js").NotificationType;
             reviewId: string | null;
             recipientId: string;
             actorId: string | null;
@@ -38,9 +38,9 @@ export declare class NotificationsController {
     }>;
     markRead(user: JwtPayload, id: string): Promise<{
         data: {
-            type: import("../../../generated/prisma/enums.js").NotificationType;
             id: string;
             createdAt: Date;
+            type: import("../../../generated/prisma/enums.js").NotificationType;
             reviewId: string | null;
             recipientId: string;
             actorId: string | null;

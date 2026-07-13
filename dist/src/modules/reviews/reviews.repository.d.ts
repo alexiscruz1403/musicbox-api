@@ -12,25 +12,25 @@ export declare class ReviewsRepository {
     constructor(prisma: PrismaService);
     findAlbumByDeezerId(deezerId: string): Prisma.Prisma__AlbumClient<{
         id: string;
+        coverUrl: string | null;
         deezerId: string;
         mbid: string | null;
+        lastSyncedAt: Date;
         title: string;
         artistId: string;
-        coverUrl: string | null;
         releaseDate: Date | null;
         genreLabel: string | null;
-        lastSyncedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: Prisma.GlobalOmitConfig | undefined;
     }>;
     findTrackByDeezerId(deezerId: string): Prisma.Prisma__TrackClient<{
         id: string;
-        albumId: string | null;
         deezerId: string;
         mbid: string | null;
+        lastSyncedAt: Date;
         title: string;
         artistId: string;
-        lastSyncedAt: Date;
+        albumId: string | null;
         durationMs: number | null;
         trackNumber: number | null;
         previewUrl: string | null;
@@ -39,12 +39,12 @@ export declare class ReviewsRepository {
     }>;
     findTracksByDeezerIds(deezerIds: string[]): Prisma.PrismaPromise<{
         id: string;
-        albumId: string | null;
         deezerId: string;
         mbid: string | null;
+        lastSyncedAt: Date;
         title: string;
         artistId: string;
-        lastSyncedAt: Date;
+        albumId: string | null;
         durationMs: number | null;
         trackNumber: number | null;
         previewUrl: string | null;
@@ -63,15 +63,15 @@ export declare class ReviewsRepository {
         externalArtistName: string;
         externalCoverUrl: string | null;
     }): Prisma.Prisma__ReviewClient<{
-        type: import("../../../generated/prisma/enums.js").ReviewType;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        trackId: string | null;
         albumId: string | null;
+        type: import("../../../generated/prisma/enums.js").ReviewType;
+        trackId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -90,15 +90,15 @@ export declare class ReviewsRepository {
         externalCoverUrl: string | null;
         items: AlbumReviewItemInput[];
     }): Promise<{
-        type: import("../../../generated/prisma/enums.js").ReviewType;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        trackId: string | null;
         albumId: string | null;
+        type: import("../../../generated/prisma/enums.js").ReviewType;
+        trackId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -107,9 +107,9 @@ export declare class ReviewsRepository {
     }>;
     findById(id: string): Prisma.Prisma__ReviewClient<({
         user: {
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
         };
         album: {
@@ -133,15 +133,15 @@ export declare class ReviewsRepository {
             position: number;
         })[];
     } & {
-        type: import("../../../generated/prisma/enums.js").ReviewType;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        trackId: string | null;
         albumId: string | null;
+        type: import("../../../generated/prisma/enums.js").ReviewType;
+        trackId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -154,15 +154,15 @@ export declare class ReviewsRepository {
         description?: string;
         rating?: number;
     }): Prisma.Prisma__ReviewClient<{
-        type: import("../../../generated/prisma/enums.js").ReviewType;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        trackId: string | null;
         albumId: string | null;
+        type: import("../../../generated/prisma/enums.js").ReviewType;
+        trackId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -172,15 +172,15 @@ export declare class ReviewsRepository {
         omit: Prisma.GlobalOmitConfig | undefined;
     }>;
     updateAlbumReviewItems(reviewId: string, description: string | undefined, rating: number, items: AlbumReviewItemInput[]): Promise<{
-        type: import("../../../generated/prisma/enums.js").ReviewType;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        trackId: string | null;
         albumId: string | null;
+        type: import("../../../generated/prisma/enums.js").ReviewType;
+        trackId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -188,15 +188,15 @@ export declare class ReviewsRepository {
         externalCoverUrl: string | null;
     }>;
     updateAlbumReviewDescription(id: string, description: string): Prisma.Prisma__ReviewClient<{
-        type: import("../../../generated/prisma/enums.js").ReviewType;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        trackId: string | null;
         albumId: string | null;
+        type: import("../../../generated/prisma/enums.js").ReviewType;
+        trackId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -206,15 +206,15 @@ export declare class ReviewsRepository {
         omit: Prisma.GlobalOmitConfig | undefined;
     }>;
     softDelete(id: string): Prisma.Prisma__ReviewClient<{
-        type: import("../../../generated/prisma/enums.js").ReviewType;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        trackId: string | null;
         albumId: string | null;
+        type: import("../../../generated/prisma/enums.js").ReviewType;
+        trackId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -226,21 +226,21 @@ export declare class ReviewsRepository {
     listByAlbum(albumId: string, cursor: string | undefined, limit: number, sort: SortMode): Promise<{
         items: ({
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             };
         } & {
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -252,21 +252,21 @@ export declare class ReviewsRepository {
     listByTrack(trackId: string, cursor: string | undefined, limit: number, sort: SortMode): Promise<{
         items: ({
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             };
         } & {
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -281,15 +281,15 @@ export declare class ReviewsRepository {
                 avatarUrl: string | null;
             };
         } & {
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;

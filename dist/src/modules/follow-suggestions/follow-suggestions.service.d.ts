@@ -3,9 +3,9 @@ export declare class FollowSuggestionsService {
     private readonly repo;
     constructor(repo: FollowSuggestionsRepository);
     getSuggestions(userId: string): Promise<{
+        id: string;
         handle: string;
         displayName: string;
-        id: string;
         avatarUrl: string | null;
     }[]>;
     recompute(userId: string): Promise<{

@@ -16,28 +16,28 @@ export declare class SocialRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findReaction(userId: string, reviewId: string): import("../../../generated/prisma/models.js").Prisma__ReviewReactionClient<{
-        type: import("../../../generated/prisma/enums.js").ReactionType;
         id: string;
         createdAt: Date;
         userId: string;
+        type: import("../../../generated/prisma/enums.js").ReactionType;
         reviewId: string;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     upsertReaction(userId: string, reviewId: string, type: 'LIKE' | 'DISLIKE'): import("../../../generated/prisma/models.js").Prisma__ReviewReactionClient<{
-        type: import("../../../generated/prisma/enums.js").ReactionType;
         id: string;
         createdAt: Date;
         userId: string;
+        type: import("../../../generated/prisma/enums.js").ReactionType;
         reviewId: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     deleteReaction(userId: string, reviewId: string): import("../../../generated/prisma/models.js").Prisma__ReviewReactionClient<{
-        type: import("../../../generated/prisma/enums.js").ReactionType;
         id: string;
         createdAt: Date;
         userId: string;
+        type: import("../../../generated/prisma/enums.js").ReactionType;
         reviewId: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
@@ -53,8 +53,8 @@ export declare class SocialRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        content: string;
         reviewId: string;
+        content: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -65,8 +65,8 @@ export declare class SocialRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        content: string;
         reviewId: string;
+        content: string;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -77,8 +77,8 @@ export declare class SocialRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        content: string;
         reviewId: string;
+        content: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -89,17 +89,17 @@ export declare class SocialRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        content: string;
         reviewId: string;
+        content: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     listComments(reviewId: string, cursor: string | undefined, limit: number): Promise<{
         items: ({
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             };
         } & {
@@ -109,8 +109,8 @@ export declare class SocialRepository {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            content: string;
             reviewId: string;
+            content: string;
         })[];
         nextCursor: string | null;
     }>;

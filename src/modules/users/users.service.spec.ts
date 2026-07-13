@@ -3,15 +3,11 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { CloudinaryService } from '../../cloudinary/cloudinary.service.js';
 import { SocialEventsProducer } from '../events/social-events.producer.js';
 import { UsersRepository } from './users.repository.js';
 import { UsersService } from './users.service.js';
-
-vi.mock('cloudinary', () => ({
-  v2: { config: vi.fn(), uploader: { upload_stream: vi.fn() } },
-}));
 
 const mockRepo = {
   findById: vi.fn(),
@@ -19,7 +15,8 @@ const mockRepo = {
   getStats: vi.fn(),
   updateProfile: vi.fn(),
   anonimize: vi.fn(),
-  updateAvatarUrl: vi.fn(),
+  updateAvatar: vi.fn(),
+  updateCover: vi.fn(),
   getNotifPrefs: vi.fn(),
   updateNotifPrefs: vi.fn(),
   getFollowers: vi.fn(),
@@ -31,9 +28,9 @@ const mockRepo = {
   getExportData: vi.fn(),
 };
 
-const mockConfig = {
-  getOrThrow: vi.fn().mockReturnValue('mock-value'),
-  get: vi.fn().mockReturnValue('mock-value'),
+const mockCloudinary = {
+  upload: vi.fn(),
+  destroy: vi.fn(),
 };
 
 const mockEvents = {
@@ -48,8 +45,8 @@ describe('UsersService', () => {
       providers: [
         UsersService,
         { provide: UsersRepository, useValue: mockRepo },
-        { provide: ConfigService, useValue: mockConfig },
         { provide: SocialEventsProducer, useValue: mockEvents },
+        { provide: CloudinaryService, useValue: mockCloudinary },
       ],
     }).compile();
 
@@ -77,6 +74,27 @@ describe('UsersService', () => {
         user,
         stats: { reviewCount: 5, followersCount: 10, followingCount: 3 },
       });
+    });
+
+    it('strips passwordHash, googleId and internal Cloudinary public_ids', async () => {
+      const user = {
+        id: 'u1',
+        handle: 'h',
+        email: 'a@a.com',
+        status: 'ACTIVE',
+        passwordHash: 'secret-hash',
+        googleId: 'gid',
+        avatarPublicId: 'avatars/abc',
+        coverPublicId: 'covers/xyz',
+      };
+      mockRepo.findById.mockResolvedValue(user);
+      mockRepo.getStats.mockResolvedValue([0, 0, 0]);
+      const result = await service.getMe('u1');
+      expect(result.user).not.toHaveProperty('passwordHash');
+      expect(result.user).not.toHaveProperty('googleId');
+      expect(result.user).not.toHaveProperty('avatarPublicId');
+      expect(result.user).not.toHaveProperty('coverPublicId');
+      expect(result.user).toMatchObject({ id: 'u1', handle: 'h' });
     });
   });
 
@@ -111,10 +129,107 @@ describe('UsersService', () => {
   });
 
   describe('deleteAccount', () => {
-    it('delegates to repository anonimize', async () => {
-      mockRepo.anonimize.mockResolvedValue([{}, {}]);
+    it('delegates to repository anonimize and destroys the old Cloudinary assets', async () => {
+      mockRepo.anonimize.mockResolvedValue({
+        avatarPublicId: 'avatars/old',
+        coverPublicId: 'covers/old',
+      });
       await service.deleteAccount('u1');
       expect(mockRepo.anonimize).toHaveBeenCalledWith('u1');
+      expect(mockCloudinary.destroy).toHaveBeenCalledWith('avatars/old');
+      expect(mockCloudinary.destroy).toHaveBeenCalledWith('covers/old');
+    });
+
+    it('does not throw when there were no previous images', async () => {
+      mockRepo.anonimize.mockResolvedValue({
+        avatarPublicId: null,
+        coverPublicId: null,
+      });
+      await expect(service.deleteAccount('u1')).resolves.toBeUndefined();
+      expect(mockCloudinary.destroy).toHaveBeenCalledWith(null);
+    });
+  });
+
+  describe('uploadAvatar', () => {
+    it('throws NotFoundException if user does not exist', async () => {
+      mockRepo.findById.mockResolvedValue(null);
+      await expect(
+        service.uploadAvatar('u1', Buffer.from('img')),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('uploads, persists the new avatar and destroys the previous one', async () => {
+      mockRepo.findById.mockResolvedValue({
+        id: 'u1',
+        avatarPublicId: 'avatars/old',
+      });
+      mockCloudinary.upload.mockResolvedValue({
+        secureUrl: 'https://cloudinary/avatars/new.jpg',
+        publicId: 'avatars/new',
+      });
+      mockRepo.updateAvatar.mockResolvedValue({});
+
+      const url = await service.uploadAvatar('u1', Buffer.from('img'));
+
+      expect(mockCloudinary.upload).toHaveBeenCalledWith(
+        Buffer.from('img'),
+        'avatars',
+      );
+      expect(mockRepo.updateAvatar).toHaveBeenCalledWith(
+        'u1',
+        'https://cloudinary/avatars/new.jpg',
+        'avatars/new',
+      );
+      expect(mockCloudinary.destroy).toHaveBeenCalledWith('avatars/old');
+      expect(url).toBe('https://cloudinary/avatars/new.jpg');
+    });
+
+    it('does not attempt to destroy anything when there was no previous avatar', async () => {
+      mockRepo.findById.mockResolvedValue({ id: 'u1', avatarPublicId: null });
+      mockCloudinary.upload.mockResolvedValue({
+        secureUrl: 'https://cloudinary/avatars/new.jpg',
+        publicId: 'avatars/new',
+      });
+      mockRepo.updateAvatar.mockResolvedValue({});
+
+      await service.uploadAvatar('u1', Buffer.from('img'));
+
+      expect(mockCloudinary.destroy).toHaveBeenCalledWith(null);
+    });
+  });
+
+  describe('uploadCover', () => {
+    it('throws NotFoundException if user does not exist', async () => {
+      mockRepo.findById.mockResolvedValue(null);
+      await expect(
+        service.uploadCover('u1', Buffer.from('img')),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('uploads, persists the new cover and destroys the previous one', async () => {
+      mockRepo.findById.mockResolvedValue({
+        id: 'u1',
+        coverPublicId: 'covers/old',
+      });
+      mockCloudinary.upload.mockResolvedValue({
+        secureUrl: 'https://cloudinary/covers/new.jpg',
+        publicId: 'covers/new',
+      });
+      mockRepo.updateCover.mockResolvedValue({});
+
+      const url = await service.uploadCover('u1', Buffer.from('img'));
+
+      expect(mockCloudinary.upload).toHaveBeenCalledWith(
+        Buffer.from('img'),
+        'covers',
+      );
+      expect(mockRepo.updateCover).toHaveBeenCalledWith(
+        'u1',
+        'https://cloudinary/covers/new.jpg',
+        'covers/new',
+      );
+      expect(mockCloudinary.destroy).toHaveBeenCalledWith('covers/old');
+      expect(url).toBe('https://cloudinary/covers/new.jpg');
     });
   });
 
@@ -188,6 +303,8 @@ describe('UsersService', () => {
         passwordHash: 'secret',
         googleId: 'gid',
         deletedAt: null,
+        avatarPublicId: 'avatars/abc',
+        coverPublicId: 'covers/xyz',
       };
       mockRepo.findByHandle.mockResolvedValue(user);
       mockRepo.getStats.mockResolvedValue([3, 10, 5]);
@@ -197,6 +314,8 @@ describe('UsersService', () => {
       expect(result.user).not.toHaveProperty('email');
       expect(result.user).not.toHaveProperty('passwordHash');
       expect(result.user).not.toHaveProperty('googleId');
+      expect(result.user).not.toHaveProperty('avatarPublicId');
+      expect(result.user).not.toHaveProperty('coverPublicId');
       expect(result.stats).toEqual({
         reviewCount: 3,
         followersCount: 10,

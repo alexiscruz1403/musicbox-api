@@ -5,13 +5,16 @@ export declare class UsersRepository {
     private readonly prisma;
     constructor(prisma: PrismaService);
     findById(id: string): import("../../../generated/prisma/models.js").Prisma__UserClient<{
+        id: string;
         handle: string;
         displayName: string;
         email: string;
-        id: string;
         passwordHash: string | null;
         googleId: string | null;
         avatarUrl: string | null;
+        avatarPublicId: string | null;
+        coverUrl: string | null;
+        coverPublicId: string | null;
         bio: string | null;
         notifEnabled: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -27,13 +30,16 @@ export declare class UsersRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findByHandle(handle: string): import("../../../generated/prisma/models.js").Prisma__UserClient<{
+        id: string;
         handle: string;
         displayName: string;
         email: string;
-        id: string;
         passwordHash: string | null;
         googleId: string | null;
         avatarUrl: string | null;
+        avatarPublicId: string | null;
+        coverUrl: string | null;
+        coverPublicId: string | null;
         bio: string | null;
         notifEnabled: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -50,13 +56,16 @@ export declare class UsersRepository {
     }>;
     getStats(userId: string): Promise<[number, number, number]>;
     updateProfile(userId: string, data: UpdateProfileDto): Promise<{
+        id: string;
         handle: string;
         displayName: string;
         email: string;
-        id: string;
         passwordHash: string | null;
         googleId: string | null;
         avatarUrl: string | null;
+        avatarPublicId: string | null;
+        coverUrl: string | null;
+        coverPublicId: string | null;
         bio: string | null;
         notifEnabled: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -69,26 +78,10 @@ export declare class UsersRepository {
         penaltyLevel: number;
         penalizedUntil: Date | null;
     }>;
-    anonimize(userId: string): Promise<[{
-        handle: string;
-        displayName: string;
-        email: string;
-        id: string;
-        passwordHash: string | null;
-        googleId: string | null;
-        avatarUrl: string | null;
-        bio: string | null;
-        notifEnabled: boolean;
-        status: import("../../../generated/prisma/enums.js").UserStatus;
-        role: import("../../../generated/prisma/enums.js").UserRole;
-        consentedAt: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
-        deletedAt: Date | null;
-        acceptedReportsCount: number;
-        penaltyLevel: number;
-        penalizedUntil: Date | null;
-    }, import("../../../generated/prisma/internal/prismaNamespace.js").BatchPayload]>;
+    anonimize(userId: string): Promise<{
+        avatarPublicId: string | null;
+        coverPublicId: string | null;
+    } | null>;
     getExportData(userId: string): Promise<{
         reviews: ({
             trackReviewItems: {
@@ -100,15 +93,15 @@ export declare class UsersRepository {
                 position: number;
             }[];
         } & {
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -122,37 +115,37 @@ export declare class UsersRepository {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            content: string;
             reviewId: string;
+            content: string;
         }[];
         reactions: {
-            type: import("../../../generated/prisma/enums.js").ReactionType;
             id: string;
             createdAt: Date;
             userId: string;
+            type: import("../../../generated/prisma/enums.js").ReactionType;
             reviewId: string;
         }[];
         followers: ({
             follower: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
             };
         } & {
             createdAt: Date;
-            followeeId: string;
             followerId: string;
+            followeeId: string;
         })[];
         following: ({
             followee: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
             };
         } & {
             createdAt: Date;
-            followeeId: string;
             followerId: string;
+            followeeId: string;
         })[];
         notifPrefs: {
             userId: string;
@@ -162,14 +155,42 @@ export declare class UsersRepository {
             followsEnabled: boolean;
         } | null;
     }>;
-    updateAvatarUrl(userId: string, avatarUrl: string): import("../../../generated/prisma/models.js").Prisma__UserClient<{
+    updateAvatar(userId: string, avatarUrl: string, avatarPublicId: string): import("../../../generated/prisma/models.js").Prisma__UserClient<{
+        id: string;
         handle: string;
         displayName: string;
         email: string;
-        id: string;
         passwordHash: string | null;
         googleId: string | null;
         avatarUrl: string | null;
+        avatarPublicId: string | null;
+        coverUrl: string | null;
+        coverPublicId: string | null;
+        bio: string | null;
+        notifEnabled: boolean;
+        status: import("../../../generated/prisma/enums.js").UserStatus;
+        role: import("../../../generated/prisma/enums.js").UserRole;
+        consentedAt: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+        acceptedReportsCount: number;
+        penaltyLevel: number;
+        penalizedUntil: Date | null;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, {
+        omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
+    }>;
+    updateCover(userId: string, coverUrl: string, coverPublicId: string): import("../../../generated/prisma/models.js").Prisma__UserClient<{
+        id: string;
+        handle: string;
+        displayName: string;
+        email: string;
+        passwordHash: string | null;
+        googleId: string | null;
+        avatarUrl: string | null;
+        avatarPublicId: string | null;
+        coverUrl: string | null;
+        coverPublicId: string | null;
         bio: string | null;
         notifEnabled: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -204,18 +225,18 @@ export declare class UsersRepository {
     }>;
     getFollowers(handle: string, cursor?: string, limit?: number): Promise<{
         items: {
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
         }[];
         nextCursor: string | null;
     }>;
     getFollowing(handle: string, cursor?: string, limit?: number): Promise<{
         items: {
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
         }[];
         nextCursor: string | null;
@@ -223,31 +244,31 @@ export declare class UsersRepository {
     searchUsers(query: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
         items: {
             isFollowing: boolean;
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
         }[];
         nextCursor: string | null;
     }>;
     followExists(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
         createdAt: Date;
-        followeeId: string;
         followerId: string;
+        followeeId: string;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     createFollow(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
         createdAt: Date;
-        followeeId: string;
         followerId: string;
+        followeeId: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     deleteFollow(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
         createdAt: Date;
-        followeeId: string;
         followerId: string;
+        followeeId: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;

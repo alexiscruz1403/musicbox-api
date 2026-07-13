@@ -10,19 +10,19 @@ export declare class SocialService {
     constructor(repo: SocialRepository, events: SocialEventsProducer);
     getReviewStats(reviewIds: string[], viewerId?: string): Promise<Map<string, import("./social.repository.js").ReviewStats>>;
     react(userId: string, reviewId: string, dto: CreateReactionDto): Promise<{
-        type: import("../../../generated/prisma/enums.js").ReactionType;
         id: string;
         createdAt: Date;
         userId: string;
+        type: import("../../../generated/prisma/enums.js").ReactionType;
         reviewId: string;
     }>;
     removeReaction(userId: string, reviewId: string): Promise<void>;
     listComments(reviewId: string, query: ListCommentsQueryDto): Promise<{
         items: ({
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             };
         } & {
@@ -32,8 +32,8 @@ export declare class SocialService {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            content: string;
             reviewId: string;
+            content: string;
         })[];
         nextCursor: string | null;
     }>;
@@ -44,8 +44,8 @@ export declare class SocialService {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        content: string;
         reviewId: string;
+        content: string;
     }>;
     updateComment(userId: string, id: string, dto: UpdateCommentDto): Promise<{
         id: string;
@@ -54,8 +54,8 @@ export declare class SocialService {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        content: string;
         reviewId: string;
+        content: string;
     }>;
     removeComment(userId: string, id: string): Promise<void>;
     private getActiveReviewOrThrow;

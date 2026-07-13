@@ -39,6 +39,10 @@ let UsersController = class UsersController {
         const url = await this.users.uploadAvatar(user.sub, file.buffer);
         return { data: { avatarUrl: url } };
     }
+    async uploadCover(user, file) {
+        const url = await this.users.uploadCover(user.sub, file.buffer);
+        return { data: { coverUrl: url } };
+    }
     async deleteMe(user) {
         await this.users.deleteAccount(user.sub);
     }
@@ -115,6 +119,24 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "uploadAvatar", null);
+__decorate([
+    Post('me/cover'),
+    UseInterceptors(FileInterceptor('file', {
+        storage: memoryStorage(),
+        limits: { fileSize: 5 * 1024 * 1024 },
+        fileFilter: (_req, file, cb) => {
+            if (!file.mimetype.startsWith('image/')) {
+                return cb(new Error('Solo se permiten imágenes.'), false);
+            }
+            cb(null, true);
+        },
+    })),
+    __param(0, CurrentUser()),
+    __param(1, UploadedFile()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "uploadCover", null);
 __decorate([
     Delete('me'),
     HttpCode(HttpStatus.NO_CONTENT),

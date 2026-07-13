@@ -8,24 +8,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { BadRequestException, ConflictException, Injectable, NotFoundException, } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { v2 as cloudinary } from 'cloudinary';
 import sanitizeHtml from 'sanitize-html';
+import { CloudinaryService } from '../../cloudinary/cloudinary.service.js';
 import { SocialEventsProducer } from '../events/social-events.producer.js';
 import { UsersRepository } from './users.repository.js';
 let UsersService = class UsersService {
     repo;
-    config;
     events;
-    constructor(repo, config, events) {
+    cloudinaryService;
+    constructor(repo, events, cloudinaryService) {
         this.repo = repo;
-        this.config = config;
         this.events = events;
-        cloudinary.config({
-            cloud_name: config.getOrThrow('CLOUDINARY_CLOUD_NAME'),
-            api_key: config.getOrThrow('CLOUDINARY_API_KEY'),
-            api_secret: config.getOrThrow('CLOUDINARY_API_SECRET'),
-        });
+        this.cloudinaryService = cloudinaryService;
     }
     async getMe(userId) {
         const user = await this.repo.findById(userId);
@@ -34,8 +28,12 @@ let UsersService = class UsersService {
                 code: 'USER_NOT_FOUND',
                 message: 'Usuario no encontrado.',
             });
+        const { passwordHash: _pw, googleId: _gid, avatarPublicId: _api, coverPublicId: _cpi, ...safeUser } = user;
         const [reviewCount, followersCount, followingCount] = await this.repo.getStats(userId);
-        return { user, stats: { reviewCount, followersCount, followingCount } };
+        return {
+            user: safeUser,
+            stats: { reviewCount, followersCount, followingCount },
+        };
     }
     async updateProfile(userId, dto) {
         if (dto.handle) {
@@ -62,22 +60,35 @@ let UsersService = class UsersService {
         return this.repo.updateProfile(userId, sanitized);
     }
     async uploadAvatar(userId, buffer) {
-        return new Promise((resolve, reject) => {
-            const stream = cloudinary.uploader.upload_stream({ folder: 'avatars', resource_type: 'image' }, (error, result) => {
-                if (error || !result)
-                    return reject(new Error(error?.message ?? 'Upload failed'));
-                this.repo
-                    .updateAvatarUrl(userId, result.secure_url)
-                    .then(() => {
-                    resolve(result.secure_url);
-                })
-                    .catch((err) => reject(err instanceof Error ? err : new Error(String(err))));
+        const current = await this.repo.findById(userId);
+        if (!current)
+            throw new NotFoundException({
+                code: 'USER_NOT_FOUND',
+                message: 'Usuario no encontrado.',
             });
-            stream.end(buffer);
-        });
+        const { secureUrl, publicId } = await this.cloudinaryService.upload(buffer, 'avatars');
+        await this.repo.updateAvatar(userId, secureUrl, publicId);
+        await this.cloudinaryService.destroy(current.avatarPublicId);
+        return secureUrl;
+    }
+    async uploadCover(userId, buffer) {
+        const current = await this.repo.findById(userId);
+        if (!current)
+            throw new NotFoundException({
+                code: 'USER_NOT_FOUND',
+                message: 'Usuario no encontrado.',
+            });
+        const { secureUrl, publicId } = await this.cloudinaryService.upload(buffer, 'covers');
+        await this.repo.updateCover(userId, secureUrl, publicId);
+        await this.cloudinaryService.destroy(current.coverPublicId);
+        return secureUrl;
     }
     async deleteAccount(userId) {
-        await this.repo.anonimize(userId);
+        const before = await this.repo.anonimize(userId);
+        await Promise.all([
+            this.cloudinaryService.destroy(before?.avatarPublicId),
+            this.cloudinaryService.destroy(before?.coverPublicId),
+        ]);
     }
     async exportAccountData(userId) {
         const user = await this.repo.findById(userId);
@@ -136,7 +147,7 @@ let UsersService = class UsersService {
         if (viewerId) {
             isFollowing = !!(await this.repo.followExists(viewerId, user.id));
         }
-        const { email: _email, passwordHash: _pw, googleId: _gid, deletedAt: _da, ...publicFields } = user;
+        const { email: _email, passwordHash: _pw, googleId: _gid, deletedAt: _da, avatarPublicId: _api, coverPublicId: _cpi, ...publicFields } = user;
         return {
             user: publicFields,
             stats: { reviewCount, followersCount, followingCount },
@@ -194,8 +205,8 @@ let UsersService = class UsersService {
 UsersService = __decorate([
     Injectable(),
     __metadata("design:paramtypes", [UsersRepository,
-        ConfigService,
-        SocialEventsProducer])
+        SocialEventsProducer,
+        CloudinaryService])
 ], UsersService);
 export { UsersService };
 //# sourceMappingURL=users.service.js.map

@@ -19,9 +19,9 @@ export declare class NotificationsService {
                 avatarUrl: string | null;
             } | null;
         } & {
-            type: import("../../../generated/prisma/enums.js").NotificationType;
             id: string;
             createdAt: Date;
+            type: import("../../../generated/prisma/enums.js").NotificationType;
             reviewId: string | null;
             recipientId: string;
             actorId: string | null;
@@ -32,9 +32,9 @@ export declare class NotificationsService {
         nextCursor: string | null;
     }>;
     markRead(userId: string, id: string): Promise<{
-        type: import("../../../generated/prisma/enums.js").NotificationType;
         id: string;
         createdAt: Date;
+        type: import("../../../generated/prisma/enums.js").NotificationType;
         reviewId: string | null;
         recipientId: string;
         actorId: string | null;
