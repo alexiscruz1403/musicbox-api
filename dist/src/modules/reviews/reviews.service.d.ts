@@ -13,15 +13,15 @@ export declare class ReviewsService {
     private readonly social;
     constructor(repo: ReviewsRepository, catalog: CatalogService, events: ReviewEventsProducer, social: SocialService);
     create(userId: string, dto: CreateReviewDto): Promise<{
-        type: import("../../../generated/prisma/enums.js").ReviewType;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        trackId: string | null;
         albumId: string | null;
+        type: import("../../../generated/prisma/enums.js").ReviewType;
+        trackId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -37,9 +37,9 @@ export declare class ReviewsService {
         commentsCount: number;
         userReaction: "LIKE" | "DISLIKE" | null;
         user: {
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
         };
         album: {
@@ -62,15 +62,15 @@ export declare class ReviewsService {
             reviewId: string;
             position: number;
         })[];
-        type: import("../../../generated/prisma/enums.js").ReviewType;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        trackId: string | null;
         albumId: string | null;
+        type: import("../../../generated/prisma/enums.js").ReviewType;
+        trackId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -79,9 +79,9 @@ export declare class ReviewsService {
     }>;
     update(userId: string, id: string, dto: UpdateReviewDto): Promise<({
         user: {
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
         };
         album: {
@@ -105,15 +105,15 @@ export declare class ReviewsService {
             position: number;
         })[];
     } & {
-        type: import("../../../generated/prisma/enums.js").ReviewType;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        trackId: string | null;
         albumId: string | null;
+        type: import("../../../generated/prisma/enums.js").ReviewType;
+        trackId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -124,21 +124,21 @@ export declare class ReviewsService {
     listByAlbum(deezerId: string, query: ListReviewsQueryDto, viewerId?: string): Promise<{
         items: ({
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             };
         } & {
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -150,21 +150,21 @@ export declare class ReviewsService {
     listByTrack(deezerId: string, query: ListReviewsQueryDto, viewerId?: string): Promise<{
         items: ({
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             };
         } & {
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -177,15 +177,15 @@ export declare class ReviewsService {
     listByUserHandle(handle: string, query: ListUserReviewsQueryDto): Promise<{
         items: {
             avatarUrl: string | null;
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;

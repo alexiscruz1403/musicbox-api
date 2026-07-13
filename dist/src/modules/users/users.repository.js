@@ -31,7 +31,11 @@ let UsersRepository = class UsersRepository {
         return this.prisma.user.update({ where: { id: userId }, data });
     }
     async anonimize(userId) {
-        return this.prisma.$transaction([
+        const before = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: { avatarPublicId: true, coverPublicId: true },
+        });
+        await this.prisma.$transaction([
             this.prisma.user.update({
                 where: { id: userId },
                 data: {
@@ -41,6 +45,9 @@ let UsersRepository = class UsersRepository {
                     passwordHash: null,
                     googleId: null,
                     avatarUrl: null,
+                    avatarPublicId: null,
+                    coverUrl: null,
+                    coverPublicId: null,
                     bio: null,
                     status: 'DELETED',
                     deletedAt: new Date(),
@@ -51,6 +58,7 @@ let UsersRepository = class UsersRepository {
                 data: { revokedAt: new Date() },
             }),
         ]);
+        return before;
     }
     async getExportData(userId) {
         const [reviews, comments, reactions, followers, following, notifPrefs] = await Promise.all([
@@ -89,10 +97,16 @@ let UsersRepository = class UsersRepository {
         ]);
         return { reviews, comments, reactions, followers, following, notifPrefs };
     }
-    updateAvatarUrl(userId, avatarUrl) {
+    updateAvatar(userId, avatarUrl, avatarPublicId) {
         return this.prisma.user.update({
             where: { id: userId },
-            data: { avatarUrl },
+            data: { avatarUrl, avatarPublicId },
+        });
+    }
+    updateCover(userId, coverUrl, coverPublicId) {
+        return this.prisma.user.update({
+            where: { id: userId },
+            data: { coverUrl, coverPublicId },
         });
     }
     getNotifPrefs(userId) {

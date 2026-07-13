@@ -8,10 +8,10 @@ export declare class ReviewSocialController {
     constructor(social: SocialService);
     react(user: JwtPayload, id: string, dto: CreateReactionDto): Promise<{
         data: {
-            type: import("../../../generated/prisma/enums.js").ReactionType;
             id: string;
             createdAt: Date;
             userId: string;
+            type: import("../../../generated/prisma/enums.js").ReactionType;
             reviewId: string;
         };
     }>;
@@ -19,9 +19,9 @@ export declare class ReviewSocialController {
     listComments(id: string, query: ListCommentsQueryDto): Promise<{
         data: ({
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             };
         } & {
@@ -31,8 +31,8 @@ export declare class ReviewSocialController {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            content: string;
             reviewId: string;
+            content: string;
         })[];
         meta: {
             cursor: string | null;
@@ -46,8 +46,8 @@ export declare class ReviewSocialController {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            content: string;
             reviewId: string;
+            content: string;
         };
     }>;
 }

@@ -25,6 +25,9 @@ export type UserMinAggregateOutputType = {
     passwordHash: string | null;
     googleId: string | null;
     avatarUrl: string | null;
+    avatarPublicId: string | null;
+    coverUrl: string | null;
+    coverPublicId: string | null;
     bio: string | null;
     notifEnabled: boolean | null;
     status: $Enums.UserStatus | null;
@@ -45,6 +48,9 @@ export type UserMaxAggregateOutputType = {
     passwordHash: string | null;
     googleId: string | null;
     avatarUrl: string | null;
+    avatarPublicId: string | null;
+    coverUrl: string | null;
+    coverPublicId: string | null;
     bio: string | null;
     notifEnabled: boolean | null;
     status: $Enums.UserStatus | null;
@@ -65,6 +71,9 @@ export type UserCountAggregateOutputType = {
     passwordHash: number;
     googleId: number;
     avatarUrl: number;
+    avatarPublicId: number;
+    coverUrl: number;
+    coverPublicId: number;
     bio: number;
     notifEnabled: number;
     status: number;
@@ -94,6 +103,9 @@ export type UserMinAggregateInputType = {
     passwordHash?: true;
     googleId?: true;
     avatarUrl?: true;
+    avatarPublicId?: true;
+    coverUrl?: true;
+    coverPublicId?: true;
     bio?: true;
     notifEnabled?: true;
     status?: true;
@@ -114,6 +126,9 @@ export type UserMaxAggregateInputType = {
     passwordHash?: true;
     googleId?: true;
     avatarUrl?: true;
+    avatarPublicId?: true;
+    coverUrl?: true;
+    coverPublicId?: true;
     bio?: true;
     notifEnabled?: true;
     status?: true;
@@ -134,6 +149,9 @@ export type UserCountAggregateInputType = {
     passwordHash?: true;
     googleId?: true;
     avatarUrl?: true;
+    avatarPublicId?: true;
+    coverUrl?: true;
+    coverPublicId?: true;
     bio?: true;
     notifEnabled?: true;
     status?: true;
@@ -183,6 +201,9 @@ export type UserGroupByOutputType = {
     passwordHash: string | null;
     googleId: string | null;
     avatarUrl: string | null;
+    avatarPublicId: string | null;
+    coverUrl: string | null;
+    coverPublicId: string | null;
     bio: string | null;
     notifEnabled: boolean;
     status: $Enums.UserStatus;
@@ -214,6 +235,9 @@ export type UserWhereInput = {
     passwordHash?: Prisma.StringNullableFilter<"User"> | string | null;
     googleId?: Prisma.StringNullableFilter<"User"> | string | null;
     avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null;
+    avatarPublicId?: Prisma.StringNullableFilter<"User"> | string | null;
+    coverUrl?: Prisma.StringNullableFilter<"User"> | string | null;
+    coverPublicId?: Prisma.StringNullableFilter<"User"> | string | null;
     bio?: Prisma.StringNullableFilter<"User"> | string | null;
     notifEnabled?: Prisma.BoolFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
@@ -247,6 +271,9 @@ export type UserOrderByWithRelationInput = {
     passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder;
     googleId?: Prisma.SortOrderInput | Prisma.SortOrder;
     avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    avatarPublicId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    coverUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    coverPublicId?: Prisma.SortOrderInput | Prisma.SortOrder;
     bio?: Prisma.SortOrderInput | Prisma.SortOrder;
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -283,6 +310,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     displayName?: Prisma.StringFilter<"User"> | string;
     passwordHash?: Prisma.StringNullableFilter<"User"> | string | null;
     avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null;
+    avatarPublicId?: Prisma.StringNullableFilter<"User"> | string | null;
+    coverUrl?: Prisma.StringNullableFilter<"User"> | string | null;
+    coverPublicId?: Prisma.StringNullableFilter<"User"> | string | null;
     bio?: Prisma.StringNullableFilter<"User"> | string | null;
     notifEnabled?: Prisma.BoolFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
@@ -316,6 +346,9 @@ export type UserOrderByWithAggregationInput = {
     passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder;
     googleId?: Prisma.SortOrderInput | Prisma.SortOrder;
     avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    avatarPublicId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    coverUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    coverPublicId?: Prisma.SortOrderInput | Prisma.SortOrder;
     bio?: Prisma.SortOrderInput | Prisma.SortOrder;
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -344,6 +377,9 @@ export type UserScalarWhereWithAggregatesInput = {
     passwordHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
+    avatarPublicId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
+    coverUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
+    coverPublicId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     notifEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus;
@@ -364,6 +400,9 @@ export type UserCreateInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -397,6 +436,9 @@ export type UserUncheckedCreateInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -430,6 +472,9 @@ export type UserUpdateInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -463,6 +508,9 @@ export type UserUncheckedUpdateInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -496,6 +544,9 @@ export type UserCreateManyInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -516,6 +567,9 @@ export type UserUpdateManyMutationInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -536,6 +590,9 @@ export type UserUncheckedUpdateManyInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -556,6 +613,9 @@ export type UserCountOrderByAggregateInput = {
     passwordHash?: Prisma.SortOrder;
     googleId?: Prisma.SortOrder;
     avatarUrl?: Prisma.SortOrder;
+    avatarPublicId?: Prisma.SortOrder;
+    coverUrl?: Prisma.SortOrder;
+    coverPublicId?: Prisma.SortOrder;
     bio?: Prisma.SortOrder;
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -580,6 +640,9 @@ export type UserMaxOrderByAggregateInput = {
     passwordHash?: Prisma.SortOrder;
     googleId?: Prisma.SortOrder;
     avatarUrl?: Prisma.SortOrder;
+    avatarPublicId?: Prisma.SortOrder;
+    coverUrl?: Prisma.SortOrder;
+    coverPublicId?: Prisma.SortOrder;
     bio?: Prisma.SortOrder;
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -600,6 +663,9 @@ export type UserMinOrderByAggregateInput = {
     passwordHash?: Prisma.SortOrder;
     googleId?: Prisma.SortOrder;
     avatarUrl?: Prisma.SortOrder;
+    avatarPublicId?: Prisma.SortOrder;
+    coverUrl?: Prisma.SortOrder;
+    coverPublicId?: Prisma.SortOrder;
     bio?: Prisma.SortOrder;
     notifEnabled?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -820,6 +886,9 @@ export type UserCreateWithoutFollowingInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -852,6 +921,9 @@ export type UserUncheckedCreateWithoutFollowingInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -888,6 +960,9 @@ export type UserCreateWithoutFollowersInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -920,6 +995,9 @@ export type UserUncheckedCreateWithoutFollowersInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -965,6 +1043,9 @@ export type UserUpdateWithoutFollowingInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -997,6 +1078,9 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1038,6 +1122,9 @@ export type UserUpdateWithoutFollowersInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1070,6 +1157,9 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1102,6 +1192,9 @@ export type UserCreateWithoutRefreshTokensInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1134,6 +1227,9 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1179,6 +1275,9 @@ export type UserUpdateWithoutRefreshTokensInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1211,6 +1310,9 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1243,6 +1345,9 @@ export type UserCreateWithoutReviewsInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1275,6 +1380,9 @@ export type UserUncheckedCreateWithoutReviewsInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1320,6 +1428,9 @@ export type UserUpdateWithoutReviewsInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1352,6 +1463,9 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1384,6 +1498,9 @@ export type UserCreateWithoutReactionsInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1416,6 +1533,9 @@ export type UserUncheckedCreateWithoutReactionsInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1461,6 +1581,9 @@ export type UserUpdateWithoutReactionsInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1493,6 +1616,9 @@ export type UserUncheckedUpdateWithoutReactionsInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1525,6 +1651,9 @@ export type UserCreateWithoutCommentsInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1557,6 +1686,9 @@ export type UserUncheckedCreateWithoutCommentsInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1602,6 +1734,9 @@ export type UserUpdateWithoutCommentsInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1634,6 +1769,9 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1666,6 +1804,9 @@ export type UserCreateWithoutNotificationsReceivedInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1698,6 +1839,9 @@ export type UserUncheckedCreateWithoutNotificationsReceivedInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1734,6 +1878,9 @@ export type UserCreateWithoutNotificationsActedInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1766,6 +1913,9 @@ export type UserUncheckedCreateWithoutNotificationsActedInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1811,6 +1961,9 @@ export type UserUpdateWithoutNotificationsReceivedInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1843,6 +1996,9 @@ export type UserUncheckedUpdateWithoutNotificationsReceivedInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1884,6 +2040,9 @@ export type UserUpdateWithoutNotificationsActedInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1916,6 +2075,9 @@ export type UserUncheckedUpdateWithoutNotificationsActedInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -1948,6 +2110,9 @@ export type UserCreateWithoutNotifPreferenceInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -1980,6 +2145,9 @@ export type UserUncheckedCreateWithoutNotifPreferenceInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -2025,6 +2193,9 @@ export type UserUpdateWithoutNotifPreferenceInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -2057,6 +2228,9 @@ export type UserUncheckedUpdateWithoutNotifPreferenceInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -2089,6 +2263,9 @@ export type UserCreateWithoutReportsInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -2121,6 +2298,9 @@ export type UserUncheckedCreateWithoutReportsInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -2157,6 +2337,9 @@ export type UserCreateWithoutReportsReviewedInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -2189,6 +2372,9 @@ export type UserUncheckedCreateWithoutReportsReviewedInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -2234,6 +2420,9 @@ export type UserUpdateWithoutReportsInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -2266,6 +2455,9 @@ export type UserUncheckedUpdateWithoutReportsInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -2307,6 +2499,9 @@ export type UserUpdateWithoutReportsReviewedInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -2339,6 +2534,9 @@ export type UserUncheckedUpdateWithoutReportsReviewedInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -2371,6 +2569,9 @@ export type UserCreateWithoutRecommendationSnapshotInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -2403,6 +2604,9 @@ export type UserUncheckedCreateWithoutRecommendationSnapshotInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -2448,6 +2652,9 @@ export type UserUpdateWithoutRecommendationSnapshotInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -2480,6 +2687,9 @@ export type UserUncheckedUpdateWithoutRecommendationSnapshotInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -2512,6 +2722,9 @@ export type UserCreateWithoutFollowSuggestionSnapshotInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -2544,6 +2757,9 @@ export type UserUncheckedCreateWithoutFollowSuggestionSnapshotInput = {
     passwordHash?: string | null;
     googleId?: string | null;
     avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
     bio?: string | null;
     notifEnabled?: boolean;
     status?: $Enums.UserStatus;
@@ -2589,6 +2805,9 @@ export type UserUpdateWithoutFollowSuggestionSnapshotInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -2621,6 +2840,9 @@ export type UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput = {
     passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
@@ -2710,6 +2932,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     passwordHash?: boolean;
     googleId?: boolean;
     avatarUrl?: boolean;
+    avatarPublicId?: boolean;
+    coverUrl?: boolean;
+    coverPublicId?: boolean;
     bio?: boolean;
     notifEnabled?: boolean;
     status?: boolean;
@@ -2744,6 +2969,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     passwordHash?: boolean;
     googleId?: boolean;
     avatarUrl?: boolean;
+    avatarPublicId?: boolean;
+    coverUrl?: boolean;
+    coverPublicId?: boolean;
     bio?: boolean;
     notifEnabled?: boolean;
     status?: boolean;
@@ -2764,6 +2992,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     passwordHash?: boolean;
     googleId?: boolean;
     avatarUrl?: boolean;
+    avatarPublicId?: boolean;
+    coverUrl?: boolean;
+    coverPublicId?: boolean;
     bio?: boolean;
     notifEnabled?: boolean;
     status?: boolean;
@@ -2784,6 +3015,9 @@ export type UserSelectScalar = {
     passwordHash?: boolean;
     googleId?: boolean;
     avatarUrl?: boolean;
+    avatarPublicId?: boolean;
+    coverUrl?: boolean;
+    coverPublicId?: boolean;
     bio?: boolean;
     notifEnabled?: boolean;
     status?: boolean;
@@ -2796,7 +3030,7 @@ export type UserSelectScalar = {
     penaltyLevel?: boolean;
     penalizedUntil?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "handle" | "displayName" | "email" | "passwordHash" | "googleId" | "avatarUrl" | "bio" | "notifEnabled" | "status" | "role" | "consentedAt" | "createdAt" | "updatedAt" | "deletedAt" | "acceptedReportsCount" | "penaltyLevel" | "penalizedUntil", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "handle" | "displayName" | "email" | "passwordHash" | "googleId" | "avatarUrl" | "avatarPublicId" | "coverUrl" | "coverPublicId" | "bio" | "notifEnabled" | "status" | "role" | "consentedAt" | "createdAt" | "updatedAt" | "deletedAt" | "acceptedReportsCount" | "penaltyLevel" | "penalizedUntil", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     following?: boolean | Prisma.User$followingArgs<ExtArgs>;
     followers?: boolean | Prisma.User$followersArgs<ExtArgs>;
@@ -2840,6 +3074,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         passwordHash: string | null;
         googleId: string | null;
         avatarUrl: string | null;
+        avatarPublicId: string | null;
+        coverUrl: string | null;
+        coverPublicId: string | null;
         bio: string | null;
         notifEnabled: boolean;
         status: $Enums.UserStatus;
@@ -2928,6 +3165,9 @@ export interface UserFieldRefs {
     readonly passwordHash: Prisma.FieldRef<"User", 'String'>;
     readonly googleId: Prisma.FieldRef<"User", 'String'>;
     readonly avatarUrl: Prisma.FieldRef<"User", 'String'>;
+    readonly avatarPublicId: Prisma.FieldRef<"User", 'String'>;
+    readonly coverUrl: Prisma.FieldRef<"User", 'String'>;
+    readonly coverPublicId: Prisma.FieldRef<"User", 'String'>;
     readonly bio: Prisma.FieldRef<"User", 'String'>;
     readonly notifEnabled: Prisma.FieldRef<"User", 'Boolean'>;
     readonly status: Prisma.FieldRef<"User", 'UserStatus'>;

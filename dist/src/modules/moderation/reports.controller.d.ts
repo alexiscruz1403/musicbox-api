@@ -9,12 +9,12 @@ export declare class ReportsController {
             id: string;
             status: import("../../../generated/prisma/enums.js").ReportStatus;
             createdAt: Date;
+            reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
             targetId: string;
             reason: string;
-            reviewedAt: Date | null;
-            reporterId: string;
             reviewedById: string | null;
+            reviewedAt: Date | null;
         };
     }>;
 }

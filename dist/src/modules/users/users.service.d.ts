@@ -1,22 +1,21 @@
-import { ConfigService } from '@nestjs/config';
+import { CloudinaryService } from '../../cloudinary/cloudinary.service.js';
 import { SocialEventsProducer } from '../events/social-events.producer.js';
 import type { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import type { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersRepository } from './users.repository.js';
 export declare class UsersService {
     private readonly repo;
-    private readonly config;
     private readonly events;
-    constructor(repo: UsersRepository, config: ConfigService, events: SocialEventsProducer);
+    private readonly cloudinaryService;
+    constructor(repo: UsersRepository, events: SocialEventsProducer, cloudinaryService: CloudinaryService);
     getMe(userId: string): Promise<{
         user: {
+            id: string;
             handle: string;
             displayName: string;
             email: string;
-            id: string;
-            passwordHash: string | null;
-            googleId: string | null;
             avatarUrl: string | null;
+            coverUrl: string | null;
             bio: string | null;
             notifEnabled: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -36,13 +35,16 @@ export declare class UsersService {
         };
     }>;
     updateProfile(userId: string, dto: UpdateProfileDto): Promise<{
+        id: string;
         handle: string;
         displayName: string;
         email: string;
-        id: string;
         passwordHash: string | null;
         googleId: string | null;
         avatarUrl: string | null;
+        avatarPublicId: string | null;
+        coverUrl: string | null;
+        coverPublicId: string | null;
         bio: string | null;
         notifEnabled: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -56,14 +58,18 @@ export declare class UsersService {
         penalizedUntil: Date | null;
     }>;
     uploadAvatar(userId: string, buffer: Buffer): Promise<string>;
+    uploadCover(userId: string, buffer: Buffer): Promise<string>;
     deleteAccount(userId: string): Promise<void>;
     exportAccountData(userId: string): Promise<{
         profile: {
+            id: string;
             handle: string;
             displayName: string;
             email: string;
-            id: string;
             avatarUrl: string | null;
+            avatarPublicId: string | null;
+            coverUrl: string | null;
+            coverPublicId: string | null;
             bio: string | null;
             notifEnabled: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -86,15 +92,15 @@ export declare class UsersService {
                 position: number;
             }[];
         } & {
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -108,26 +114,26 @@ export declare class UsersService {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            content: string;
             reviewId: string;
+            content: string;
         }[];
         reactions: {
-            type: import("../../../generated/prisma/enums.js").ReactionType;
             id: string;
             createdAt: Date;
             userId: string;
+            type: import("../../../generated/prisma/enums.js").ReactionType;
             reviewId: string;
         }[];
         follows: {
             followers: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
             }[];
             following: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
             }[];
         };
         notificationPreferences: {
@@ -158,10 +164,11 @@ export declare class UsersService {
     }>;
     getPublicProfile(handle: string, viewerId?: string): Promise<{
         user: {
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
+            coverUrl: string | null;
             bio: string | null;
             notifEnabled: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -183,27 +190,27 @@ export declare class UsersService {
     searchUsers(q: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
         items: {
             isFollowing: boolean;
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
         }[];
         nextCursor: string | null;
     }>;
     getFollowers(handle: string, cursor?: string, limit?: number): Promise<{
         items: {
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
         }[];
         nextCursor: string | null;
     }>;
     getFollowing(handle: string, cursor?: string, limit?: number): Promise<{
         items: {
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
         }[];
         nextCursor: string | null;

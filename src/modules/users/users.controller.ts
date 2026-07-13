@@ -69,6 +69,27 @@ export class UsersController {
     return { data: { avatarUrl: url } };
   }
 
+  @Post('me/cover')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: memoryStorage(),
+      limits: { fileSize: 5 * 1024 * 1024 },
+      fileFilter: (_req, file, cb) => {
+        if (!file.mimetype.startsWith('image/')) {
+          return cb(new Error('Solo se permiten imágenes.'), false);
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  async uploadCover(
+    @CurrentUser() user: JwtPayload,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const url = await this.users.uploadCover(user.sub, file.buffer);
+    return { data: { coverUrl: url } };
+  }
+
   @Delete('me')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteMe(@CurrentUser() user: JwtPayload) {

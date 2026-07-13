@@ -8,15 +8,15 @@ export declare class ReviewsController {
     constructor(reviews: ReviewsService);
     create(user: JwtPayload, dto: CreateReviewDto): Promise<{
         data: {
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -33,9 +33,9 @@ export declare class ReviewsController {
             commentsCount: number;
             userReaction: "LIKE" | "DISLIKE" | null;
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             };
             album: {
@@ -58,15 +58,15 @@ export declare class ReviewsController {
                 reviewId: string;
                 position: number;
             })[];
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -77,9 +77,9 @@ export declare class ReviewsController {
     update(user: JwtPayload, id: string, dto: UpdateReviewDto): Promise<{
         data: ({
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             };
             album: {
@@ -103,15 +103,15 @@ export declare class ReviewsController {
                 position: number;
             })[];
         } & {
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;

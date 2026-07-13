@@ -12,8 +12,8 @@ export declare class CommentsController {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            content: string;
             reviewId: string;
+            content: string;
         };
     }>;
     remove(user: JwtPayload, id: string): Promise<void>;

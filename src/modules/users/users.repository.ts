@@ -28,7 +28,12 @@ export class UsersRepository {
   }
 
   async anonimize(userId: string) {
-    return this.prisma.$transaction([
+    const before = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { avatarPublicId: true, coverPublicId: true },
+    });
+
+    await this.prisma.$transaction([
       this.prisma.user.update({
         where: { id: userId },
         data: {
@@ -38,6 +43,9 @@ export class UsersRepository {
           passwordHash: null,
           googleId: null,
           avatarUrl: null,
+          avatarPublicId: null,
+          coverUrl: null,
+          coverPublicId: null,
           bio: null,
           status: 'DELETED',
           deletedAt: new Date(),
@@ -48,6 +56,8 @@ export class UsersRepository {
         data: { revokedAt: new Date() },
       }),
     ]);
+
+    return before;
   }
 
   // Derecho de acceso (Ley 25.326) — sin filtro de status/deletedAt, cubre
@@ -93,10 +103,17 @@ export class UsersRepository {
     return { reviews, comments, reactions, followers, following, notifPrefs };
   }
 
-  updateAvatarUrl(userId: string, avatarUrl: string) {
+  updateAvatar(userId: string, avatarUrl: string, avatarPublicId: string) {
     return this.prisma.user.update({
       where: { id: userId },
-      data: { avatarUrl },
+      data: { avatarUrl, avatarPublicId },
+    });
+  }
+
+  updateCover(userId: string, coverUrl: string, coverPublicId: string) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { coverUrl, coverPublicId },
     });
   }
 

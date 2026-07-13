@@ -4,6 +4,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
 import { configValidationSchema } from './config/config.validation.js';
+import { CloudinaryModule } from './cloudinary/cloudinary.module.js';
 import { EmailModule } from './email/email.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { RedisModule } from './redis/redis.module.js';
@@ -43,6 +44,7 @@ import { TrendingModule } from './modules/trending/trending.module.js';
     PrismaModule,
     RedisModule,
     EmailModule,
+    CloudinaryModule,
     ThrottlerModule.forRootAsync({
       inject: [RedisService],
       useFactory: (redis: RedisService) => ({

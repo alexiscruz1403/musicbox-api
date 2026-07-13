@@ -4,9 +4,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { v2 as cloudinary } from 'cloudinary';
 import sanitizeHtml from 'sanitize-html';
+import { CloudinaryService } from '../../cloudinary/cloudinary.service.js';
 import { SocialEventsProducer } from '../events/social-events.producer.js';
 import type { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import type { UpdateProfileDto } from './dto/update-profile.dto.js';
@@ -16,15 +15,9 @@ import { UsersRepository } from './users.repository.js';
 export class UsersService {
   constructor(
     private readonly repo: UsersRepository,
-    private readonly config: ConfigService,
     private readonly events: SocialEventsProducer,
-  ) {
-    cloudinary.config({
-      cloud_name: config.getOrThrow<string>('CLOUDINARY_CLOUD_NAME'),
-      api_key: config.getOrThrow<string>('CLOUDINARY_API_KEY'),
-      api_secret: config.getOrThrow<string>('CLOUDINARY_API_SECRET'),
-    });
-  }
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   async getMe(userId: string) {
     const user = await this.repo.findById(userId);
@@ -34,9 +27,20 @@ export class UsersService {
         message: 'Usuario no encontrado.',
       });
 
+    const {
+      passwordHash: _pw,
+      googleId: _gid,
+      avatarPublicId: _api,
+      coverPublicId: _cpi,
+      ...safeUser
+    } = user;
+
     const [reviewCount, followersCount, followingCount] =
       await this.repo.getStats(userId);
-    return { user, stats: { reviewCount, followersCount, followingCount } };
+    return {
+      user: safeUser,
+      stats: { reviewCount, followersCount, followingCount },
+    };
   }
 
   async updateProfile(userId: string, dto: UpdateProfileDto) {
@@ -67,28 +71,47 @@ export class UsersService {
   }
 
   async uploadAvatar(userId: string, buffer: Buffer): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        { folder: 'avatars', resource_type: 'image' },
-        (error, result) => {
-          if (error || !result)
-            return reject(new Error(error?.message ?? 'Upload failed'));
-          this.repo
-            .updateAvatarUrl(userId, result.secure_url)
-            .then(() => {
-              resolve(result.secure_url);
-            })
-            .catch((err: unknown) =>
-              reject(err instanceof Error ? err : new Error(String(err))),
-            );
-        },
-      );
-      stream.end(buffer);
-    });
+    const current = await this.repo.findById(userId);
+    if (!current)
+      throw new NotFoundException({
+        code: 'USER_NOT_FOUND',
+        message: 'Usuario no encontrado.',
+      });
+
+    const { secureUrl, publicId } = await this.cloudinaryService.upload(
+      buffer,
+      'avatars',
+    );
+    await this.repo.updateAvatar(userId, secureUrl, publicId);
+    await this.cloudinaryService.destroy(current.avatarPublicId);
+
+    return secureUrl;
+  }
+
+  async uploadCover(userId: string, buffer: Buffer): Promise<string> {
+    const current = await this.repo.findById(userId);
+    if (!current)
+      throw new NotFoundException({
+        code: 'USER_NOT_FOUND',
+        message: 'Usuario no encontrado.',
+      });
+
+    const { secureUrl, publicId } = await this.cloudinaryService.upload(
+      buffer,
+      'covers',
+    );
+    await this.repo.updateCover(userId, secureUrl, publicId);
+    await this.cloudinaryService.destroy(current.coverPublicId);
+
+    return secureUrl;
   }
 
   async deleteAccount(userId: string) {
-    await this.repo.anonimize(userId);
+    const before = await this.repo.anonimize(userId);
+    await Promise.all([
+      this.cloudinaryService.destroy(before?.avatarPublicId),
+      this.cloudinaryService.destroy(before?.coverPublicId),
+    ]);
   }
 
   async exportAccountData(userId: string) {
@@ -167,6 +190,8 @@ export class UsersService {
       passwordHash: _pw,
       googleId: _gid,
       deletedAt: _da,
+      avatarPublicId: _api,
+      coverPublicId: _cpi,
       ...publicFields
     } = user;
     return {

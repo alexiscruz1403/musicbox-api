@@ -5,9 +5,9 @@ export declare class FollowSuggestionsController {
     constructor(service: FollowSuggestionsService);
     getSuggestions(user: JwtPayload): Promise<{
         data: {
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
         }[];
     }>;

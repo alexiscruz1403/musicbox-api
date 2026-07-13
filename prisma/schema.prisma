@@ -66,6 +66,9 @@ model User {
   passwordHash    String?
   googleId        String?    @unique
   avatarUrl       String?
+  avatarPublicId  String?
+  coverUrl        String?
+  coverPublicId   String?
   bio             String?
   notifEnabled    Boolean    @default(true)
   status          UserStatus @default(ACTIVE)

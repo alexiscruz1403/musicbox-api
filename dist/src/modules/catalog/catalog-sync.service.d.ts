@@ -9,12 +9,12 @@ export declare class CatalogSyncService {
     constructor(catalogProvider: MusicCatalogProvider, repo: CatalogRepository, redis: RedisService);
     syncStaleArtists(): Promise<void>;
     ensureArtistSynced(deezerId: string): Promise<{
-        name: string;
         id: string;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
+        name: string;
         imageUrl: string | null;
+        lastSyncedAt: Date;
         catalogSyncedAt: Date | null;
     }>;
     private syncArtist;

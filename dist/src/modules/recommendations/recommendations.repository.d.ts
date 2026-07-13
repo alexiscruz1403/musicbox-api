@@ -6,16 +6,16 @@ export declare class RecommendationsRepository {
     countActiveReviews(userId: string): Promise<number>;
     getFavoriteArtistSignals(userId: string): Prisma.PrismaPromise<{
         album: {
+            artistId: string;
             artist: {
                 name: string;
             };
-            artistId: string;
         } | null;
         track: {
+            artistId: string;
             artist: {
                 name: string;
             };
-            artistId: string;
         } | null;
     }[]>;
     getGenreSignals(userId: string): Prisma.PrismaPromise<{
@@ -40,24 +40,24 @@ export declare class RecommendationsRepository {
     }[]>;
     findAlbumsByGenres(genres: string[], excludeDeezerIds: string[], limit: number): Promise<never[]> | Prisma.PrismaPromise<({
         artist: {
-            name: string;
             id: string;
             deezerId: string;
             mbid: string | null;
-            lastSyncedAt: Date;
+            name: string;
             imageUrl: string | null;
+            lastSyncedAt: Date;
             catalogSyncedAt: Date | null;
         };
     } & {
         id: string;
+        coverUrl: string | null;
         deezerId: string;
         mbid: string | null;
+        lastSyncedAt: Date;
         title: string;
         artistId: string;
-        coverUrl: string | null;
         releaseDate: Date | null;
         genreLabel: string | null;
-        lastSyncedAt: Date;
     })[]>;
     listUserIdsWithSnapshot(): Promise<{
         userId: string;

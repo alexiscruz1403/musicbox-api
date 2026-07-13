@@ -13,13 +13,12 @@ export declare class UsersController {
     getMe(user: JwtPayload): Promise<{
         data: {
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
                 email: string;
-                id: string;
-                passwordHash: string | null;
-                googleId: string | null;
                 avatarUrl: string | null;
+                coverUrl: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
                 status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -41,13 +40,16 @@ export declare class UsersController {
     }>;
     updateMe(user: JwtPayload, dto: UpdateProfileDto): Promise<{
         data: {
+            id: string;
             handle: string;
             displayName: string;
             email: string;
-            id: string;
             passwordHash: string | null;
             googleId: string | null;
             avatarUrl: string | null;
+            avatarPublicId: string | null;
+            coverUrl: string | null;
+            coverPublicId: string | null;
             bio: string | null;
             notifEnabled: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -66,15 +68,23 @@ export declare class UsersController {
             avatarUrl: string;
         };
     }>;
+    uploadCover(user: JwtPayload, file: Express.Multer.File): Promise<{
+        data: {
+            coverUrl: string;
+        };
+    }>;
     deleteMe(user: JwtPayload): Promise<void>;
     exportMe(user: JwtPayload): Promise<{
         data: {
             profile: {
+                id: string;
                 handle: string;
                 displayName: string;
                 email: string;
-                id: string;
                 avatarUrl: string | null;
+                avatarPublicId: string | null;
+                coverUrl: string | null;
+                coverPublicId: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
                 status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -97,15 +107,15 @@ export declare class UsersController {
                     position: number;
                 }[];
             } & {
-                type: import("../../../generated/prisma/enums.js").ReviewType;
                 id: string;
                 status: import("../../../generated/prisma/enums.js").ContentStatus;
                 createdAt: Date;
                 updatedAt: Date;
                 deletedAt: Date | null;
                 userId: string;
-                trackId: string | null;
                 albumId: string | null;
+                type: import("../../../generated/prisma/enums.js").ReviewType;
+                trackId: string | null;
                 description: string;
                 rating: import("@prisma/client-runtime-utils").Decimal;
                 externalTitle: string;
@@ -119,26 +129,26 @@ export declare class UsersController {
                 updatedAt: Date;
                 deletedAt: Date | null;
                 userId: string;
-                content: string;
                 reviewId: string;
+                content: string;
             }[];
             reactions: {
-                type: import("../../../generated/prisma/enums.js").ReactionType;
                 id: string;
                 createdAt: Date;
                 userId: string;
+                type: import("../../../generated/prisma/enums.js").ReactionType;
                 reviewId: string;
             }[];
             follows: {
                 followers: {
+                    id: string;
                     handle: string;
                     displayName: string;
-                    id: string;
                 }[];
                 following: {
+                    id: string;
                     handle: string;
                     displayName: string;
-                    id: string;
                 }[];
             };
             notificationPreferences: {
@@ -174,9 +184,9 @@ export declare class UsersController {
     }): Promise<{
         data: {
             isFollowing: boolean;
+            id: string;
             handle: string;
             displayName: string;
-            id: string;
             avatarUrl: string | null;
         }[];
         meta: {
@@ -195,10 +205,11 @@ export declare class UsersController {
     }): Promise<{
         data: {
             user: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
+                coverUrl: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
                 status: import("../../../generated/prisma/enums.js").UserStatus;
@@ -221,9 +232,9 @@ export declare class UsersController {
     getFollowers(handle: string, cursor?: string, limit?: string): Promise<{
         data: {
             items: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             }[];
             nextCursor: string | null;
@@ -232,9 +243,9 @@ export declare class UsersController {
     getFollowing(handle: string, cursor?: string, limit?: string): Promise<{
         data: {
             items: {
+                id: string;
                 handle: string;
                 displayName: string;
-                id: string;
                 avatarUrl: string | null;
             }[];
             nextCursor: string | null;
@@ -243,15 +254,15 @@ export declare class UsersController {
     getReviews(handle: string, query: ListUserReviewsQueryDto): Promise<{
         data: {
             avatarUrl: string | null;
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            trackId: string | null;
             albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
