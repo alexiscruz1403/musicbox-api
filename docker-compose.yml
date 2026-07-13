@@ -1,0 +1,24 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: musicbox-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    mem_limit: 256m
+    command: redis-server --save 60 1 --loglevel warning --maxmemory 200mb --maxmemory-policy allkeys-lru
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: musicbox-redisinsight
+    ports:
+      - '5540:5540'
+    volumes:
+      - redisinsight-data:/data
+    depends_on:
+      - redis
+
+volumes:
+  redis-data:
+  redisinsight-data:

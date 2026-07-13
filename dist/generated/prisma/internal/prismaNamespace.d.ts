@@ -1449,6 +1449,7 @@ export declare const ArtistScalarFieldEnum: {
     readonly name: "name";
     readonly imageUrl: "imageUrl";
     readonly lastSyncedAt: "lastSyncedAt";
+    readonly catalogSyncedAt: "catalogSyncedAt";
 };
 export type ArtistScalarFieldEnum = (typeof ArtistScalarFieldEnum)[keyof typeof ArtistScalarFieldEnum];
 export declare const AlbumScalarFieldEnum: {

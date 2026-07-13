@@ -43,8 +43,8 @@ export declare class FeedRepository {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             trackId: string | null;
+            albumId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -62,8 +62,8 @@ export declare class FeedRepository {
         track: {
             artistId: string;
         } | null;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
     }[]>;
     getTodaysCandidateIds(excludeUserIds: string[], since: Date): Promise<string[]>;
     countLikesByReviewIds(reviewIds: string[]): Promise<never[]> | Prisma.GetReviewReactionGroupByPayload<{

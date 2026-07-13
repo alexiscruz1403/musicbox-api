@@ -3,6 +3,7 @@ export declare const SOCIAL_QUEUE = "social";
 export declare const NOTIFICATIONS_QUEUE = "notifications";
 export declare const TRENDING_QUEUE = "trending";
 export declare const RECOMMENDATIONS_QUEUE = "recommendations";
+export declare const CATALOG_QUEUE = "catalog";
 export declare const DEFAULT_JOB_OPTIONS: {
     attempts: number;
     backoff: {

@@ -12,12 +12,16 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { Public } from '../common/decorators/public.decorator.js';
+import { ArtistDetailService } from './artist-detail.service.js';
 import { CatalogService } from './catalog.service.js';
+import { ArtistTracksQueryDto } from './dto/artist-tracks-query.dto.js';
 import { SearchCatalogDto } from './dto/search-catalog.dto.js';
 let CatalogController = class CatalogController {
     catalog;
-    constructor(catalog) {
+    artistDetail;
+    constructor(catalog, artistDetail) {
         this.catalog = catalog;
+        this.artistDetail = artistDetail;
     }
     async search(dto) {
         return {
@@ -40,6 +44,14 @@ let CatalogController = class CatalogController {
     }
     async getArtist(deezerId) {
         return { data: await this.catalog.getArtist(deezerId) };
+    }
+    async getArtistDetail(deezerId) {
+        return { data: await this.artistDetail.getDetail(deezerId) };
+    }
+    async getArtistTracks(deezerId, dto) {
+        return {
+            data: await this.catalog.getArtistTracks(deezerId, dto.limit, dto.cursor ?? null),
+        };
     }
 };
 __decorate([
@@ -79,10 +91,26 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CatalogController.prototype, "getArtist", null);
+__decorate([
+    Get('artists/:deezerId/detail'),
+    __param(0, Param('deezerId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CatalogController.prototype, "getArtistDetail", null);
+__decorate([
+    Get('artists/:deezerId/tracks'),
+    __param(0, Param('deezerId')),
+    __param(1, Query()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, ArtistTracksQueryDto]),
+    __metadata("design:returntype", Promise)
+], CatalogController.prototype, "getArtistTracks", null);
 CatalogController = __decorate([
     Public(),
     Controller('catalog'),
-    __metadata("design:paramtypes", [CatalogService])
+    __metadata("design:paramtypes", [CatalogService,
+        ArtistDetailService])
 ], CatalogController);
 export { CatalogController };
 //# sourceMappingURL=catalog.controller.js.map

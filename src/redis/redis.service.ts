@@ -33,6 +33,15 @@ export class RedisService implements OnModuleDestroy {
     await this.client.del(key);
   }
 
+  // Uses SCAN (via scanStream) instead of KEYS, which blocks Redis while it
+  // walks the whole keyspace — safe to call against a shared/production instance.
+  async deleteByPattern(pattern: string): Promise<void> {
+    const stream = this.client.scanStream({ match: pattern, count: 100 });
+    for await (const keys of stream as AsyncIterable<string[]>) {
+      if (keys.length > 0) await this.client.del(...keys);
+    }
+  }
+
   async exists(key: string): Promise<boolean> {
     const result = await this.client.exists(key);
     return result === 1;

@@ -3,6 +3,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Redis } from 'ioredis';
 import {
+  CATALOG_QUEUE,
   DEFAULT_JOB_OPTIONS,
   NOTIFICATIONS_QUEUE,
   RECOMMENDATIONS_QUEUE,
@@ -33,6 +34,7 @@ import { SocialEventsProducer } from './social-events.producer.js';
       { name: NOTIFICATIONS_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS },
       { name: TRENDING_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS },
       { name: RECOMMENDATIONS_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS },
+      { name: CATALOG_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS },
     ),
   ],
   providers: [ReviewEventsProducer, SocialEventsProducer],

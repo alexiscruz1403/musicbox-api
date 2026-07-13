@@ -13,6 +13,7 @@ export type ArtistMinAggregateOutputType = {
     name: string | null;
     imageUrl: string | null;
     lastSyncedAt: Date | null;
+    catalogSyncedAt: Date | null;
 };
 export type ArtistMaxAggregateOutputType = {
     id: string | null;
@@ -21,6 +22,7 @@ export type ArtistMaxAggregateOutputType = {
     name: string | null;
     imageUrl: string | null;
     lastSyncedAt: Date | null;
+    catalogSyncedAt: Date | null;
 };
 export type ArtistCountAggregateOutputType = {
     id: number;
@@ -29,6 +31,7 @@ export type ArtistCountAggregateOutputType = {
     name: number;
     imageUrl: number;
     lastSyncedAt: number;
+    catalogSyncedAt: number;
     _all: number;
 };
 export type ArtistMinAggregateInputType = {
@@ -38,6 +41,7 @@ export type ArtistMinAggregateInputType = {
     name?: true;
     imageUrl?: true;
     lastSyncedAt?: true;
+    catalogSyncedAt?: true;
 };
 export type ArtistMaxAggregateInputType = {
     id?: true;
@@ -46,6 +50,7 @@ export type ArtistMaxAggregateInputType = {
     name?: true;
     imageUrl?: true;
     lastSyncedAt?: true;
+    catalogSyncedAt?: true;
 };
 export type ArtistCountAggregateInputType = {
     id?: true;
@@ -54,6 +59,7 @@ export type ArtistCountAggregateInputType = {
     name?: true;
     imageUrl?: true;
     lastSyncedAt?: true;
+    catalogSyncedAt?: true;
     _all?: true;
 };
 export type ArtistAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -87,6 +93,7 @@ export type ArtistGroupByOutputType = {
     name: string;
     imageUrl: string | null;
     lastSyncedAt: Date;
+    catalogSyncedAt: Date | null;
     _count: ArtistCountAggregateOutputType | null;
     _min: ArtistMinAggregateOutputType | null;
     _max: ArtistMaxAggregateOutputType | null;
@@ -104,6 +111,7 @@ export type ArtistWhereInput = {
     name?: Prisma.StringFilter<"Artist"> | string;
     imageUrl?: Prisma.StringNullableFilter<"Artist"> | string | null;
     lastSyncedAt?: Prisma.DateTimeFilter<"Artist"> | Date | string;
+    catalogSyncedAt?: Prisma.DateTimeNullableFilter<"Artist"> | Date | string | null;
     albums?: Prisma.AlbumListRelationFilter;
     tracks?: Prisma.TrackListRelationFilter;
 };
@@ -114,6 +122,7 @@ export type ArtistOrderByWithRelationInput = {
     name?: Prisma.SortOrder;
     imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    catalogSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     albums?: Prisma.AlbumOrderByRelationAggregateInput;
     tracks?: Prisma.TrackOrderByRelationAggregateInput;
 };
@@ -127,6 +136,7 @@ export type ArtistWhereUniqueInput = Prisma.AtLeast<{
     name?: Prisma.StringFilter<"Artist"> | string;
     imageUrl?: Prisma.StringNullableFilter<"Artist"> | string | null;
     lastSyncedAt?: Prisma.DateTimeFilter<"Artist"> | Date | string;
+    catalogSyncedAt?: Prisma.DateTimeNullableFilter<"Artist"> | Date | string | null;
     albums?: Prisma.AlbumListRelationFilter;
     tracks?: Prisma.TrackListRelationFilter;
 }, "id" | "deezerId" | "mbid">;
@@ -137,6 +147,7 @@ export type ArtistOrderByWithAggregationInput = {
     name?: Prisma.SortOrder;
     imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    catalogSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     _count?: Prisma.ArtistCountOrderByAggregateInput;
     _max?: Prisma.ArtistMaxOrderByAggregateInput;
     _min?: Prisma.ArtistMinOrderByAggregateInput;
@@ -151,6 +162,7 @@ export type ArtistScalarWhereWithAggregatesInput = {
     name?: Prisma.StringWithAggregatesFilter<"Artist"> | string;
     imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Artist"> | string | null;
     lastSyncedAt?: Prisma.DateTimeWithAggregatesFilter<"Artist"> | Date | string;
+    catalogSyncedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Artist"> | Date | string | null;
 };
 export type ArtistCreateInput = {
     id?: string;
@@ -159,6 +171,7 @@ export type ArtistCreateInput = {
     name: string;
     imageUrl?: string | null;
     lastSyncedAt: Date | string;
+    catalogSyncedAt?: Date | string | null;
     albums?: Prisma.AlbumCreateNestedManyWithoutArtistInput;
     tracks?: Prisma.TrackCreateNestedManyWithoutArtistInput;
 };
@@ -169,6 +182,7 @@ export type ArtistUncheckedCreateInput = {
     name: string;
     imageUrl?: string | null;
     lastSyncedAt: Date | string;
+    catalogSyncedAt?: Date | string | null;
     albums?: Prisma.AlbumUncheckedCreateNestedManyWithoutArtistInput;
     tracks?: Prisma.TrackUncheckedCreateNestedManyWithoutArtistInput;
 };
@@ -179,6 +193,7 @@ export type ArtistUpdateInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    catalogSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     albums?: Prisma.AlbumUpdateManyWithoutArtistNestedInput;
     tracks?: Prisma.TrackUpdateManyWithoutArtistNestedInput;
 };
@@ -189,6 +204,7 @@ export type ArtistUncheckedUpdateInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    catalogSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     albums?: Prisma.AlbumUncheckedUpdateManyWithoutArtistNestedInput;
     tracks?: Prisma.TrackUncheckedUpdateManyWithoutArtistNestedInput;
 };
@@ -199,6 +215,7 @@ export type ArtistCreateManyInput = {
     name: string;
     imageUrl?: string | null;
     lastSyncedAt: Date | string;
+    catalogSyncedAt?: Date | string | null;
 };
 export type ArtistUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -207,6 +224,7 @@ export type ArtistUpdateManyMutationInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    catalogSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type ArtistUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -215,6 +233,7 @@ export type ArtistUncheckedUpdateManyInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    catalogSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type ArtistCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -223,6 +242,7 @@ export type ArtistCountOrderByAggregateInput = {
     name?: Prisma.SortOrder;
     imageUrl?: Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    catalogSyncedAt?: Prisma.SortOrder;
 };
 export type ArtistMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -231,6 +251,7 @@ export type ArtistMaxOrderByAggregateInput = {
     name?: Prisma.SortOrder;
     imageUrl?: Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    catalogSyncedAt?: Prisma.SortOrder;
 };
 export type ArtistMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -239,6 +260,7 @@ export type ArtistMinOrderByAggregateInput = {
     name?: Prisma.SortOrder;
     imageUrl?: Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    catalogSyncedAt?: Prisma.SortOrder;
 };
 export type ArtistScalarRelationFilter = {
     is?: Prisma.ArtistWhereInput;
@@ -275,6 +297,7 @@ export type ArtistCreateWithoutAlbumsInput = {
     name: string;
     imageUrl?: string | null;
     lastSyncedAt: Date | string;
+    catalogSyncedAt?: Date | string | null;
     tracks?: Prisma.TrackCreateNestedManyWithoutArtistInput;
 };
 export type ArtistUncheckedCreateWithoutAlbumsInput = {
@@ -284,6 +307,7 @@ export type ArtistUncheckedCreateWithoutAlbumsInput = {
     name: string;
     imageUrl?: string | null;
     lastSyncedAt: Date | string;
+    catalogSyncedAt?: Date | string | null;
     tracks?: Prisma.TrackUncheckedCreateNestedManyWithoutArtistInput;
 };
 export type ArtistCreateOrConnectWithoutAlbumsInput = {
@@ -306,6 +330,7 @@ export type ArtistUpdateWithoutAlbumsInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    catalogSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     tracks?: Prisma.TrackUpdateManyWithoutArtistNestedInput;
 };
 export type ArtistUncheckedUpdateWithoutAlbumsInput = {
@@ -315,6 +340,7 @@ export type ArtistUncheckedUpdateWithoutAlbumsInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    catalogSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     tracks?: Prisma.TrackUncheckedUpdateManyWithoutArtistNestedInput;
 };
 export type ArtistCreateWithoutTracksInput = {
@@ -324,6 +350,7 @@ export type ArtistCreateWithoutTracksInput = {
     name: string;
     imageUrl?: string | null;
     lastSyncedAt: Date | string;
+    catalogSyncedAt?: Date | string | null;
     albums?: Prisma.AlbumCreateNestedManyWithoutArtistInput;
 };
 export type ArtistUncheckedCreateWithoutTracksInput = {
@@ -333,6 +360,7 @@ export type ArtistUncheckedCreateWithoutTracksInput = {
     name: string;
     imageUrl?: string | null;
     lastSyncedAt: Date | string;
+    catalogSyncedAt?: Date | string | null;
     albums?: Prisma.AlbumUncheckedCreateNestedManyWithoutArtistInput;
 };
 export type ArtistCreateOrConnectWithoutTracksInput = {
@@ -355,6 +383,7 @@ export type ArtistUpdateWithoutTracksInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    catalogSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     albums?: Prisma.AlbumUpdateManyWithoutArtistNestedInput;
 };
 export type ArtistUncheckedUpdateWithoutTracksInput = {
@@ -364,6 +393,7 @@ export type ArtistUncheckedUpdateWithoutTracksInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    catalogSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     albums?: Prisma.AlbumUncheckedUpdateManyWithoutArtistNestedInput;
 };
 export type ArtistCountOutputType = {
@@ -390,6 +420,7 @@ export type ArtistSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name?: boolean;
     imageUrl?: boolean;
     lastSyncedAt?: boolean;
+    catalogSyncedAt?: boolean;
     albums?: boolean | Prisma.Artist$albumsArgs<ExtArgs>;
     tracks?: boolean | Prisma.Artist$tracksArgs<ExtArgs>;
     _count?: boolean | Prisma.ArtistCountOutputTypeDefaultArgs<ExtArgs>;
@@ -401,6 +432,7 @@ export type ArtistSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
     name?: boolean;
     imageUrl?: boolean;
     lastSyncedAt?: boolean;
+    catalogSyncedAt?: boolean;
 }, ExtArgs["result"]["artist"]>;
 export type ArtistSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -409,6 +441,7 @@ export type ArtistSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
     name?: boolean;
     imageUrl?: boolean;
     lastSyncedAt?: boolean;
+    catalogSyncedAt?: boolean;
 }, ExtArgs["result"]["artist"]>;
 export type ArtistSelectScalar = {
     id?: boolean;
@@ -417,8 +450,9 @@ export type ArtistSelectScalar = {
     name?: boolean;
     imageUrl?: boolean;
     lastSyncedAt?: boolean;
+    catalogSyncedAt?: boolean;
 };
-export type ArtistOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deezerId" | "mbid" | "name" | "imageUrl" | "lastSyncedAt", ExtArgs["result"]["artist"]>;
+export type ArtistOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deezerId" | "mbid" | "name" | "imageUrl" | "lastSyncedAt" | "catalogSyncedAt", ExtArgs["result"]["artist"]>;
 export type ArtistInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     albums?: boolean | Prisma.Artist$albumsArgs<ExtArgs>;
     tracks?: boolean | Prisma.Artist$tracksArgs<ExtArgs>;
@@ -439,6 +473,7 @@ export type $ArtistPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         name: string;
         imageUrl: string | null;
         lastSyncedAt: Date;
+        catalogSyncedAt: Date | null;
     }, ExtArgs["result"]["artist"]>;
     composites: {};
 };
@@ -504,6 +539,7 @@ export interface ArtistFieldRefs {
     readonly name: Prisma.FieldRef<"Artist", 'String'>;
     readonly imageUrl: Prisma.FieldRef<"Artist", 'String'>;
     readonly lastSyncedAt: Prisma.FieldRef<"Artist", 'DateTime'>;
+    readonly catalogSyncedAt: Prisma.FieldRef<"Artist", 'DateTime'>;
 }
 export type ArtistFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.ArtistSelect<ExtArgs> | null;

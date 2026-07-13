@@ -8,7 +8,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Redis } from 'ioredis';
-import { DEFAULT_JOB_OPTIONS, NOTIFICATIONS_QUEUE, RECOMMENDATIONS_QUEUE, REVIEWS_QUEUE, SOCIAL_QUEUE, TRENDING_QUEUE, } from './events.constants.js';
+import { CATALOG_QUEUE, DEFAULT_JOB_OPTIONS, NOTIFICATIONS_QUEUE, RECOMMENDATIONS_QUEUE, REVIEWS_QUEUE, SOCIAL_QUEUE, TRENDING_QUEUE, } from './events.constants.js';
 import { ReviewEventsProducer } from './review-events.producer.js';
 import { SocialEventsProducer } from './social-events.producer.js';
 let EventsModule = class EventsModule {
@@ -25,7 +25,7 @@ EventsModule = __decorate([
                     }),
                 }),
             }),
-            BullModule.registerQueue({ name: REVIEWS_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS }, { name: SOCIAL_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS }, { name: NOTIFICATIONS_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS }, { name: TRENDING_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS }, { name: RECOMMENDATIONS_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS }),
+            BullModule.registerQueue({ name: REVIEWS_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS }, { name: SOCIAL_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS }, { name: NOTIFICATIONS_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS }, { name: TRENDING_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS }, { name: RECOMMENDATIONS_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS }, { name: CATALOG_QUEUE, defaultJobOptions: DEFAULT_JOB_OPTIONS }),
         ],
         providers: [ReviewEventsProducer, SocialEventsProducer],
         exports: [ReviewEventsProducer, SocialEventsProducer],
