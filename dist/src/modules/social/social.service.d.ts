@@ -17,7 +17,7 @@ export declare class SocialService {
         reviewId: string;
     }>;
     removeReaction(userId: string, reviewId: string): Promise<void>;
-    listComments(reviewId: string, query: ListCommentsQueryDto): Promise<{
+    listComments(reviewId: string, query: ListCommentsQueryDto, viewerId?: string): Promise<{
         items: ({
             user: {
                 id: string;
@@ -59,6 +59,7 @@ export declare class SocialService {
     }>;
     removeComment(userId: string, id: string): Promise<void>;
     private getActiveReviewOrThrow;
+    private assertReviewVisible;
     private getActiveComment;
     private getOwnedActiveComment;
 }

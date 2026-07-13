@@ -24,6 +24,7 @@ let SocialService = class SocialService {
     }
     async react(userId, reviewId, dto) {
         const review = await this.getActiveReviewOrThrow(reviewId);
+        await this.assertReviewVisible(review.userId, userId);
         const existing = await this.repo.findReaction(userId, reviewId);
         const reaction = await this.repo.upsertReaction(userId, reviewId, dto.type);
         if (!existing) {
@@ -47,7 +48,8 @@ let SocialService = class SocialService {
         return reaction;
     }
     async removeReaction(userId, reviewId) {
-        await this.getActiveReviewOrThrow(reviewId);
+        const review = await this.getActiveReviewOrThrow(reviewId);
+        await this.assertReviewVisible(review.userId, userId);
         const existing = await this.repo.findReaction(userId, reviewId);
         if (!existing) {
             throw new NotFoundException({
@@ -57,12 +59,14 @@ let SocialService = class SocialService {
         }
         await this.repo.deleteReaction(userId, reviewId);
     }
-    async listComments(reviewId, query) {
-        await this.getActiveReviewOrThrow(reviewId);
+    async listComments(reviewId, query, viewerId) {
+        const review = await this.getActiveReviewOrThrow(reviewId);
+        await this.assertReviewVisible(review.userId, viewerId);
         return this.repo.listComments(reviewId, query.cursor, query.limit);
     }
     async createComment(userId, reviewId, dto) {
         const review = await this.getActiveReviewOrThrow(reviewId);
+        await this.assertReviewVisible(review.userId, userId);
         const content = sanitizeHtml(dto.content, SANITIZE_OPTIONS);
         const comment = await this.repo.createComment({
             userId,
@@ -95,6 +99,15 @@ let SocialService = class SocialService {
             });
         }
         return review;
+    }
+    async assertReviewVisible(ownerId, viewerId) {
+        const visible = await this.repo.isOwnerVisibleTo(ownerId, viewerId);
+        if (!visible) {
+            throw new ForbiddenException({
+                code: 'PRIVATE_PROFILE',
+                message: 'Este perfil es privado.',
+            });
+        }
     }
     async getActiveComment(id) {
         const comment = await this.repo.findCommentById(id);

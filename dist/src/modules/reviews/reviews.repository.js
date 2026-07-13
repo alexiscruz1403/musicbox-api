@@ -32,6 +32,24 @@ let ReviewsRepository = class ReviewsRepository {
             select: { id: true },
         });
     }
+    async isOwnerVisibleTo(ownerId, viewerId) {
+        if (viewerId === ownerId)
+            return true;
+        const owner = await this.prisma.user.findUnique({
+            where: { id: ownerId },
+            select: { isPrivate: true },
+        });
+        if (!owner?.isPrivate)
+            return true;
+        if (!viewerId)
+            return false;
+        const follow = await this.prisma.follow.findUnique({
+            where: {
+                followerId_followeeId: { followerId: viewerId, followeeId: ownerId },
+            },
+        });
+        return !!follow;
+    }
     createTrackReview(data) {
         return this.prisma.review.create({
             data: {
@@ -140,7 +158,7 @@ let ReviewsRepository = class ReviewsRepository {
             data: { status: 'DELETED', deletedAt: new Date() },
         });
     }
-    async listByAlbum(albumId, cursor, limit, sort) {
+    async listByAlbum(albumId, cursor, limit, sort, viewerId) {
         const take = Math.min(limit, 50);
         const cursorId = this.decodeCursor(cursor);
         const reviews = await this.prisma.review.findMany({
@@ -149,6 +167,7 @@ let ReviewsRepository = class ReviewsRepository {
                 type: 'ALBUM',
                 status: 'ACTIVE',
                 deletedAt: null,
+                ...this.buildVisibilityFilter(viewerId),
             },
             orderBy: this.buildOrderBy(sort),
             take: take + 1,
@@ -166,7 +185,7 @@ let ReviewsRepository = class ReviewsRepository {
         });
         return this.paginate(reviews, take);
     }
-    async listByTrack(trackId, cursor, limit, sort) {
+    async listByTrack(trackId, cursor, limit, sort, viewerId) {
         const take = Math.min(limit, 50);
         const cursorId = this.decodeCursor(cursor);
         const reviews = await this.prisma.review.findMany({
@@ -175,6 +194,7 @@ let ReviewsRepository = class ReviewsRepository {
                 type: 'TRACK',
                 status: 'ACTIVE',
                 deletedAt: null,
+                ...this.buildVisibilityFilter(viewerId),
             },
             orderBy: this.buildOrderBy(sort),
             take: take + 1,
@@ -191,6 +211,17 @@ let ReviewsRepository = class ReviewsRepository {
             },
         });
         return this.paginate(reviews, take);
+    }
+    buildVisibilityFilter(viewerId) {
+        if (!viewerId)
+            return { user: { isPrivate: false } };
+        return {
+            OR: [
+                { user: { isPrivate: false } },
+                { userId: viewerId },
+                { user: { followers: { some: { followerId: viewerId } } } },
+            ],
+        };
     }
     async listByUserId(userId, cursor, limit) {
         const take = Math.min(limit, 50);

@@ -15,6 +15,7 @@ export declare class SocialRepository {
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
+    isOwnerVisibleTo(ownerId: string, viewerId?: string): Promise<boolean>;
     findReaction(userId: string, reviewId: string): import("../../../generated/prisma/models.js").Prisma__ReviewReactionClient<{
         id: string;
         createdAt: Date;

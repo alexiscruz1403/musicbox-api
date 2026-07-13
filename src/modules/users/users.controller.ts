@@ -10,13 +10,14 @@ import {
   Post,
   Query,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
-import type { Request } from 'express';
+import type { Request, Response } from 'express';
 import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
@@ -24,6 +25,7 @@ import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
 import { ReviewsService } from '../reviews/reviews.service.js';
 import { SearchUsersQueryDto } from './dto/search-users-query.dto.js';
+import { UpdateFollowRequestStatusDto } from './dto/update-follow-request-status.dto.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersService } from './users.service.js';
@@ -114,6 +116,31 @@ export class UsersController {
     return { data: await this.users.updateNotifPrefs(user.sub, dto) };
   }
 
+  @Get('me/follow-requests')
+  async listFollowRequests(
+    @CurrentUser() user: JwtPayload,
+    @Query('cursor') cursor?: string,
+    @Query('limit') limit?: string,
+  ) {
+    const result = await this.users.listFollowRequests(
+      user.sub,
+      cursor,
+      limit ? parseInt(limit, 10) : undefined,
+    );
+    return { data: result.items, meta: { cursor: result.nextCursor } };
+  }
+
+  @Patch('me/follow-requests/:id')
+  async respondFollowRequest(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Body() dto: UpdateFollowRequestStatusDto,
+  ) {
+    return {
+      data: await this.users.respondToFollowRequest(user.sub, id, dto.status),
+    };
+  }
+
   @Public()
   @Get('search')
   @UseGuards(OptionalJwtAuthGuard)
@@ -184,21 +211,32 @@ export class UsersController {
 
   @Public()
   @Get(':handle/reviews')
+  @UseGuards(OptionalJwtAuthGuard)
   async getReviews(
     @Param('handle') handle: string,
     @Query() query: ListUserReviewsQueryDto,
+    @Req() req: Request & { user?: JwtPayload },
   ) {
-    const result = await this.reviews.listByUserHandle(handle, query);
+    const result = await this.reviews.listByUserHandle(
+      handle,
+      query,
+      req.user?.sub,
+    );
     return { data: result.items, meta: { cursor: result.nextCursor } };
   }
 
   @Post(':handle/follow')
-  @HttpCode(HttpStatus.NO_CONTENT)
   async follow(
     @CurrentUser() user: JwtPayload,
     @Param('handle') handle: string,
+    @Res({ passthrough: true }) res: Response,
   ) {
-    await this.users.follow(user.sub, handle);
+    const result = await this.users.follow(user.sub, handle);
+    if (result.status === 'PENDING') {
+      res.status(HttpStatus.CREATED);
+      return { data: result };
+    }
+    res.status(HttpStatus.NO_CONTENT);
   }
 
   @Delete(':handle/follow')

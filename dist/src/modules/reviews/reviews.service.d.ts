@@ -36,18 +36,18 @@ export declare class ReviewsService {
         dislikesCount: number;
         commentsCount: number;
         userReaction: "LIKE" | "DISLIKE" | null;
-        user: {
-            id: string;
-            handle: string;
-            displayName: string;
-            avatarUrl: string | null;
-        };
         album: {
             deezerId: string;
         } | null;
         track: {
             deezerId: string;
         } | null;
+        user: {
+            id: string;
+            handle: string;
+            displayName: string;
+            avatarUrl: string | null;
+        };
         trackReviewItems: ({
             track: {
                 deezerId: string;
@@ -78,18 +78,18 @@ export declare class ReviewsService {
         externalCoverUrl: string | null;
     }>;
     update(userId: string, id: string, dto: UpdateReviewDto): Promise<({
-        user: {
-            id: string;
-            handle: string;
-            displayName: string;
-            avatarUrl: string | null;
-        };
         album: {
             deezerId: string;
         } | null;
         track: {
             deezerId: string;
         } | null;
+        user: {
+            id: string;
+            handle: string;
+            displayName: string;
+            avatarUrl: string | null;
+        };
         trackReviewItems: ({
             track: {
                 deezerId: string;
@@ -174,7 +174,7 @@ export declare class ReviewsService {
         nextCursor: string | null;
     }>;
     private withReviewStats;
-    listByUserHandle(handle: string, query: ListUserReviewsQueryDto): Promise<{
+    listByUserHandle(handle: string, query: ListUserReviewsQueryDto, viewerId?: string): Promise<{
         items: {
             avatarUrl: string | null;
             id: string;
@@ -198,6 +198,7 @@ export declare class ReviewsService {
     private findTrackOrThrow;
     private getActiveReview;
     private getOwnedActiveReview;
+    private assertOwnerVisible;
     private computeAverageRating;
     private translatePrismaError;
 }

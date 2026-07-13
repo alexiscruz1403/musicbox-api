@@ -27,6 +27,7 @@ const enabledGate = {
     dislikesEnabled: true,
     commentsEnabled: true,
     followsEnabled: true,
+    followRequestsEnabled: true,
   },
 };
 
@@ -238,6 +239,100 @@ describe('NotificationsService', () => {
       });
 
       expect(mockRepo.findRecentGroupable).not.toHaveBeenCalled();
+      expect(mockRepo.create).toHaveBeenCalled();
+    });
+
+    it('creates a FOLLOW_REQUEST notification for the target', async () => {
+      mockRepo.create.mockResolvedValue({ id: 'n1', type: 'FOLLOW_REQUEST' });
+
+      await service.createFromEvent('follow.requested', {
+        requesterId: 'a1',
+        targetId: 'owner1',
+      });
+
+      expect(mockRepo.create).toHaveBeenCalledWith({
+        recipientId: 'owner1',
+        actorId: 'a1',
+        type: 'FOLLOW_REQUEST',
+      });
+      expect(mockSse.push).toHaveBeenCalledWith('owner1', {
+        id: 'n1',
+        type: 'FOLLOW_REQUEST',
+      });
+    });
+
+    it('creates a FOLLOW_REQUEST_ACCEPTED notification for the requester', async () => {
+      mockRepo.create.mockResolvedValue({
+        id: 'n1',
+        type: 'FOLLOW_REQUEST_ACCEPTED',
+      });
+
+      await service.createFromEvent('follow.request.accepted', {
+        requesterId: 'a1',
+        accepterId: 'owner1',
+      });
+
+      expect(mockRepo.create).toHaveBeenCalledWith({
+        recipientId: 'a1',
+        actorId: 'owner1',
+        type: 'FOLLOW_REQUEST_ACCEPTED',
+      });
+      expect(mockSse.push).toHaveBeenCalledWith('a1', {
+        id: 'n1',
+        type: 'FOLLOW_REQUEST_ACCEPTED',
+      });
+    });
+
+    it('gates FOLLOW_REQUEST behind followRequestsEnabled (distinct from followsEnabled)', async () => {
+      mockRepo.getRecipientGate.mockResolvedValue({
+        ...enabledGate,
+        notifPreference: {
+          ...enabledGate.notifPreference,
+          followRequestsEnabled: false,
+        },
+      });
+
+      await service.createFromEvent('follow.requested', {
+        requesterId: 'a1',
+        targetId: 'owner1',
+      });
+
+      expect(mockRepo.create).not.toHaveBeenCalled();
+    });
+
+    it('gates FOLLOW_REQUEST_ACCEPTED behind followRequestsEnabled', async () => {
+      mockRepo.getRecipientGate.mockResolvedValue({
+        ...enabledGate,
+        notifPreference: {
+          ...enabledGate.notifPreference,
+          followRequestsEnabled: false,
+        },
+      });
+
+      await service.createFromEvent('follow.request.accepted', {
+        requesterId: 'a1',
+        accepterId: 'owner1',
+      });
+
+      expect(mockRepo.create).not.toHaveBeenCalled();
+    });
+
+    it('does not gate FOLLOW_REQUEST behind followsEnabled (the two preferences are independent)', async () => {
+      mockRepo.getRecipientGate.mockResolvedValue({
+        ...enabledGate,
+        notifPreference: {
+          ...enabledGate.notifPreference,
+          followsEnabled: false,
+          followRequestsEnabled: true,
+        },
+      });
+      mockRepo.create.mockResolvedValue({ id: 'n1', type: 'FOLLOW_REQUEST' });
+
+      await service.createFromEvent('follow.requested', {
+        requesterId: 'a1',
+        targetId: 'owner1',
+      });
+
       expect(mockRepo.create).toHaveBeenCalled();
     });
   });

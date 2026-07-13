@@ -18,6 +18,7 @@ export declare class UsersService {
             coverUrl: string | null;
             bio: string | null;
             notifEnabled: boolean;
+            isPrivate: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
             consentedAt: Date | null;
@@ -47,6 +48,7 @@ export declare class UsersService {
         coverPublicId: string | null;
         bio: string | null;
         notifEnabled: boolean;
+        isPrivate: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
         role: import("../../../generated/prisma/enums.js").UserRole;
         consentedAt: Date | null;
@@ -57,6 +59,7 @@ export declare class UsersService {
         penaltyLevel: number;
         penalizedUntil: Date | null;
     }>;
+    private autoAcceptPendingFollowRequests;
     uploadAvatar(userId: string, buffer: Buffer): Promise<string>;
     uploadCover(userId: string, buffer: Buffer): Promise<string>;
     deleteAccount(userId: string): Promise<void>;
@@ -72,6 +75,7 @@ export declare class UsersService {
             coverPublicId: string | null;
             bio: string | null;
             notifEnabled: boolean;
+            isPrivate: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
             consentedAt: Date | null;
@@ -142,23 +146,50 @@ export declare class UsersService {
             dislikesEnabled: boolean;
             commentsEnabled: boolean;
             followsEnabled: boolean;
+            followRequestsEnabled: boolean;
         } | null;
         exportedAt: string;
     }>;
-    getNotifPrefs(userId: string): Promise<{
+    getNotifPrefs(userId: string): Promise<(Omit<{
         userId: string;
         likesEnabled: boolean;
         dislikesEnabled: boolean;
         commentsEnabled: boolean;
         followsEnabled: boolean;
-    }>;
-    updateNotifPrefs(userId: string, dto: UpdateNotifPrefsDto): Promise<{
+        followRequestsEnabled: boolean;
+    }, "followsEnabled" | "followRequestsEnabled"> & {
+        followRequestsEnabled: boolean;
+    }) | (Omit<{
         userId: string;
         likesEnabled: boolean;
         dislikesEnabled: boolean;
         commentsEnabled: boolean;
         followsEnabled: boolean;
-    }>;
+        followRequestsEnabled: boolean;
+    }, "followsEnabled" | "followRequestsEnabled"> & {
+        followsEnabled: boolean;
+    })>;
+    updateNotifPrefs(userId: string, dto: UpdateNotifPrefsDto): Promise<(Omit<{
+        userId: string;
+        likesEnabled: boolean;
+        dislikesEnabled: boolean;
+        commentsEnabled: boolean;
+        followsEnabled: boolean;
+        followRequestsEnabled: boolean;
+    }, "followsEnabled" | "followRequestsEnabled"> & {
+        followRequestsEnabled: boolean;
+    }) | (Omit<{
+        userId: string;
+        likesEnabled: boolean;
+        dislikesEnabled: boolean;
+        commentsEnabled: boolean;
+        followsEnabled: boolean;
+        followRequestsEnabled: boolean;
+    }, "followsEnabled" | "followRequestsEnabled"> & {
+        followsEnabled: boolean;
+    })>;
+    private getUserOrThrow;
+    private applyNotifPrefsVisibility;
     checkHandle(handle: string, currentUserId?: string): Promise<{
         available: boolean;
     }>;
@@ -171,6 +202,7 @@ export declare class UsersService {
             coverUrl: string | null;
             bio: string | null;
             notifEnabled: boolean;
+            isPrivate: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
             consentedAt: Date | null;
@@ -186,6 +218,7 @@ export declare class UsersService {
             followingCount: number;
         };
         isFollowing: boolean;
+        followRequestPending: boolean;
     }>;
     searchUsers(q: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
         items: {
@@ -215,6 +248,32 @@ export declare class UsersService {
         }[];
         nextCursor: string | null;
     }>;
-    follow(followerId: string, handle: string): Promise<void>;
+    follow(followerId: string, handle: string): Promise<{
+        status: 'FOLLOWING';
+    } | {
+        status: 'PENDING';
+        followRequestId: string;
+    }>;
     unfollow(followerId: string, handle: string): Promise<void>;
+    listFollowRequests(userId: string, cursor?: string, limit?: number): Promise<{
+        items: {
+            id: string;
+            createdAt: Date;
+            requester: {
+                id: string;
+                handle: string;
+                displayName: string;
+                avatarUrl: string | null;
+            };
+        }[];
+        nextCursor: string | null;
+    }>;
+    respondToFollowRequest(userId: string, requestId: string, status: 'ACCEPTED' | 'REJECTED'): Promise<{
+        id: string;
+        status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
+        createdAt: Date;
+        requesterId: string;
+        targetId: string;
+        respondedAt: Date | null;
+    }>;
 }

@@ -26,6 +26,7 @@ export class SocialService {
 
   async react(userId: string, reviewId: string, dto: CreateReactionDto) {
     const review = await this.getActiveReviewOrThrow(reviewId);
+    await this.assertReviewVisible(review.userId, userId);
     const existing = await this.repo.findReaction(userId, reviewId);
     const reaction = await this.repo.upsertReaction(userId, reviewId, dto.type);
 
@@ -51,7 +52,8 @@ export class SocialService {
   }
 
   async removeReaction(userId: string, reviewId: string) {
-    await this.getActiveReviewOrThrow(reviewId);
+    const review = await this.getActiveReviewOrThrow(reviewId);
+    await this.assertReviewVisible(review.userId, userId);
     const existing = await this.repo.findReaction(userId, reviewId);
     if (!existing) {
       throw new NotFoundException({
@@ -62,13 +64,19 @@ export class SocialService {
     await this.repo.deleteReaction(userId, reviewId);
   }
 
-  async listComments(reviewId: string, query: ListCommentsQueryDto) {
-    await this.getActiveReviewOrThrow(reviewId);
+  async listComments(
+    reviewId: string,
+    query: ListCommentsQueryDto,
+    viewerId?: string,
+  ) {
+    const review = await this.getActiveReviewOrThrow(reviewId);
+    await this.assertReviewVisible(review.userId, viewerId);
     return this.repo.listComments(reviewId, query.cursor, query.limit);
   }
 
   async createComment(userId: string, reviewId: string, dto: CreateCommentDto) {
     const review = await this.getActiveReviewOrThrow(reviewId);
+    await this.assertReviewVisible(review.userId, userId);
     const content = sanitizeHtml(dto.content, SANITIZE_OPTIONS);
     const comment = await this.repo.createComment({
       userId,
@@ -104,6 +112,18 @@ export class SocialService {
       });
     }
     return review;
+  }
+
+  // Si el detalle de la reseña está bloqueado (perfil privado del dueño),
+  // tampoco se puede leer/crear comentarios ni reaccionar sobre ella.
+  private async assertReviewVisible(ownerId: string, viewerId?: string) {
+    const visible = await this.repo.isOwnerVisibleTo(ownerId, viewerId);
+    if (!visible) {
+      throw new ForbiddenException({
+        code: 'PRIVATE_PROFILE',
+        message: 'Este perfil es privado.',
+      });
+    }
   }
 
   private async getActiveComment(id: string) {

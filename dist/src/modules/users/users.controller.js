@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors, } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Req, Res, UploadedFile, UseGuards, UseInterceptors, } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
@@ -19,6 +19,7 @@ import { Public } from '../common/decorators/public.decorator.js';
 import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
 import { ReviewsService } from '../reviews/reviews.service.js';
 import { SearchUsersQueryDto } from './dto/search-users-query.dto.js';
+import { UpdateFollowRequestStatusDto } from './dto/update-follow-request-status.dto.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersService } from './users.service.js';
@@ -55,6 +56,15 @@ let UsersController = class UsersController {
     async updateNotifPrefs(user, dto) {
         return { data: await this.users.updateNotifPrefs(user.sub, dto) };
     }
+    async listFollowRequests(user, cursor, limit) {
+        const result = await this.users.listFollowRequests(user.sub, cursor, limit ? parseInt(limit, 10) : undefined);
+        return { data: result.items, meta: { cursor: result.nextCursor } };
+    }
+    async respondFollowRequest(user, id, dto) {
+        return {
+            data: await this.users.respondToFollowRequest(user.sub, id, dto.status),
+        };
+    }
     async searchUsers(query, req) {
         const result = await this.users.searchUsers(query.q, query.cursor, query.limit, req.user?.sub);
         return { data: result.items, meta: { cursor: result.nextCursor } };
@@ -75,12 +85,17 @@ let UsersController = class UsersController {
             data: await this.users.getFollowing(handle, cursor, limit ? parseInt(limit, 10) : undefined),
         };
     }
-    async getReviews(handle, query) {
-        const result = await this.reviews.listByUserHandle(handle, query);
+    async getReviews(handle, query, req) {
+        const result = await this.reviews.listByUserHandle(handle, query, req.user?.sub);
         return { data: result.items, meta: { cursor: result.nextCursor } };
     }
-    async follow(user, handle) {
-        await this.users.follow(user.sub, handle);
+    async follow(user, handle, res) {
+        const result = await this.users.follow(user.sub, handle);
+        if (result.status === 'PENDING') {
+            res.status(HttpStatus.CREATED);
+            return { data: result };
+        }
+        res.status(HttpStatus.NO_CONTENT);
     }
     async unfollow(user, handle) {
         await this.users.unfollow(user.sub, handle);
@@ -168,6 +183,24 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateNotifPrefs", null);
 __decorate([
+    Get('me/follow-requests'),
+    __param(0, CurrentUser()),
+    __param(1, Query('cursor')),
+    __param(2, Query('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "listFollowRequests", null);
+__decorate([
+    Patch('me/follow-requests/:id'),
+    __param(0, CurrentUser()),
+    __param(1, Param('id')),
+    __param(2, Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, UpdateFollowRequestStatusDto]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "respondFollowRequest", null);
+__decorate([
     Public(),
     Get('search'),
     UseGuards(OptionalJwtAuthGuard),
@@ -220,19 +253,21 @@ __decorate([
 __decorate([
     Public(),
     Get(':handle/reviews'),
+    UseGuards(OptionalJwtAuthGuard),
     __param(0, Param('handle')),
     __param(1, Query()),
+    __param(2, Req()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, ListUserReviewsQueryDto]),
+    __metadata("design:paramtypes", [String, ListUserReviewsQueryDto, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getReviews", null);
 __decorate([
     Post(':handle/follow'),
-    HttpCode(HttpStatus.NO_CONTENT),
     __param(0, CurrentUser()),
     __param(1, Param('handle')),
+    __param(2, Res({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "follow", null);
 __decorate([

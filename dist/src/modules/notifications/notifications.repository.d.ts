@@ -2,7 +2,7 @@ import { PrismaService } from '../../prisma/prisma.service.js';
 export interface CreateNotificationInput {
     recipientId: string;
     actorId?: string;
-    type: 'LIKE' | 'DISLIKE' | 'COMMENT' | 'FOLLOW' | 'MODERATION';
+    type: 'LIKE' | 'DISLIKE' | 'COMMENT' | 'FOLLOW' | 'MODERATION' | 'FOLLOW_REQUEST' | 'FOLLOW_REQUEST_ACCEPTED';
     reviewId?: string;
     commentId?: string;
 }
@@ -17,6 +17,7 @@ export declare class NotificationsRepository {
             dislikesEnabled: boolean;
             commentsEnabled: boolean;
             followsEnabled: boolean;
+            followRequestsEnabled: boolean;
         } | null;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;

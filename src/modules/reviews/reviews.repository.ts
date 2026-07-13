@@ -36,6 +36,27 @@ export class ReviewsRepository {
     });
   }
 
+  // El dueño de una reseña es visible si su perfil es público, si el viewer
+  // es el propio dueño, o si el viewer lo sigue (Follow aceptado). Query
+  // directa a Prisma (mismo patrón pragmático que UsersRepository/
+  // NotificationsRepository) — ReviewsModule no puede importar UsersModule
+  // sin crear un ciclo (UsersModule ya importa ReviewsModule).
+  async isOwnerVisibleTo(ownerId: string, viewerId?: string): Promise<boolean> {
+    if (viewerId === ownerId) return true;
+    const owner = await this.prisma.user.findUnique({
+      where: { id: ownerId },
+      select: { isPrivate: true },
+    });
+    if (!owner?.isPrivate) return true;
+    if (!viewerId) return false;
+    const follow = await this.prisma.follow.findUnique({
+      where: {
+        followerId_followeeId: { followerId: viewerId, followeeId: ownerId },
+      },
+    });
+    return !!follow;
+  }
+
   createTrackReview(data: {
     userId: string;
     trackId: string;
@@ -181,6 +202,7 @@ export class ReviewsRepository {
     cursor: string | undefined,
     limit: number,
     sort: SortMode,
+    viewerId?: string,
   ) {
     const take = Math.min(limit, 50);
     const cursorId = this.decodeCursor(cursor);
@@ -190,6 +212,7 @@ export class ReviewsRepository {
         type: 'ALBUM',
         status: 'ACTIVE',
         deletedAt: null,
+        ...this.buildVisibilityFilter(viewerId),
       },
       orderBy: this.buildOrderBy(sort),
       take: take + 1,
@@ -213,6 +236,7 @@ export class ReviewsRepository {
     cursor: string | undefined,
     limit: number,
     sort: SortMode,
+    viewerId?: string,
   ) {
     const take = Math.min(limit, 50);
     const cursorId = this.decodeCursor(cursor);
@@ -222,6 +246,7 @@ export class ReviewsRepository {
         type: 'TRACK',
         status: 'ACTIVE',
         deletedAt: null,
+        ...this.buildVisibilityFilter(viewerId),
       },
       orderBy: this.buildOrderBy(sort),
       take: take + 1,
@@ -238,6 +263,20 @@ export class ReviewsRepository {
       },
     });
     return this.paginate(reviews, take);
+  }
+
+  // Filtra a nivel de where (no post-proceso) para no romper el cálculo de
+  // hasMore/cursor: las reseñas de un dueño privado solo son visibles si el
+  // viewer es el dueño o lo sigue (Follow aceptado).
+  private buildVisibilityFilter(viewerId?: string): Prisma.ReviewWhereInput {
+    if (!viewerId) return { user: { isPrivate: false } };
+    return {
+      OR: [
+        { user: { isPrivate: false } },
+        { userId: viewerId },
+        { user: { followers: { some: { followerId: viewerId } } } },
+      ],
+    };
   }
 
   async listByUserId(

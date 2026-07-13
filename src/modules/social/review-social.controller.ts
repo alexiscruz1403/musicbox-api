@@ -8,14 +8,17 @@ import {
   Param,
   Post,
   Query,
+  Req,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
+import type { Request } from 'express';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
 import { NotPenalizedGuard } from '../common/guards/not-penalized.guard.js';
+import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { CreateReactionDto } from './dto/create-reaction.dto.js';
@@ -47,11 +50,13 @@ export class ReviewSocialController {
 
   @Public()
   @Get(':id/comments')
+  @UseGuards(OptionalJwtAuthGuard)
   async listComments(
     @Param('id') id: string,
     @Query() query: ListCommentsQueryDto,
+    @Req() req: Request & { user?: JwtPayload },
   ) {
-    const result = await this.social.listComments(id, query);
+    const result = await this.social.listComments(id, query, req.user?.sub);
     return { data: result.items, meta: { cursor: result.nextCursor } };
   }
 

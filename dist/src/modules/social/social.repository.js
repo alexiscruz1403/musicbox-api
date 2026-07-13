@@ -69,6 +69,24 @@ let SocialRepository = class SocialRepository {
             select: { id: true, userId: true },
         });
     }
+    async isOwnerVisibleTo(ownerId, viewerId) {
+        if (viewerId === ownerId)
+            return true;
+        const owner = await this.prisma.user.findUnique({
+            where: { id: ownerId },
+            select: { isPrivate: true },
+        });
+        if (!owner?.isPrivate)
+            return true;
+        if (!viewerId)
+            return false;
+        const follow = await this.prisma.follow.findUnique({
+            where: {
+                followerId_followeeId: { followerId: viewerId, followeeId: ownerId },
+            },
+        });
+        return !!follow;
+    }
     findReaction(userId, reviewId) {
         return this.prisma.reviewReaction.findUnique({
             where: { userId_reviewId: { userId, reviewId } },

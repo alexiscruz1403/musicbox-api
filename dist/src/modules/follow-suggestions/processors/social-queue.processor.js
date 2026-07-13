@@ -18,6 +18,8 @@ const NOTIFIABLE_JOB_NAMES = new Set([
     'reaction.added',
     'comment.created',
     'follow.created',
+    'follow.requested',
+    'follow.request.accepted',
 ]);
 let SocialQueueProcessor = class SocialQueueProcessor extends WorkerHost {
     followSuggestions;

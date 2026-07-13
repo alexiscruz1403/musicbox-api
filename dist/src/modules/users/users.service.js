@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { BadRequestException, ConflictException, Injectable, NotFoundException, } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException, } from '@nestjs/common';
 import sanitizeHtml from 'sanitize-html';
 import { CloudinaryService } from '../../cloudinary/cloudinary.service.js';
 import { SocialEventsProducer } from '../events/social-events.producer.js';
@@ -45,6 +45,7 @@ let UsersService = class UsersService {
                 });
             }
         }
+        const current = dto.isPrivate !== undefined ? await this.repo.findById(userId) : null;
         const sanitized = {
             ...dto,
             ...(dto.displayName && {
@@ -57,7 +58,18 @@ let UsersService = class UsersService {
                 bio: sanitizeHtml(dto.bio, { allowedTags: [], allowedAttributes: {} }),
             }),
         };
-        return this.repo.updateProfile(userId, sanitized);
+        const updated = await this.repo.updateProfile(userId, sanitized);
+        if (current?.isPrivate === true && dto.isPrivate === false) {
+            await this.autoAcceptPendingFollowRequests(userId);
+        }
+        return updated;
+    }
+    async autoAcceptPendingFollowRequests(targetId) {
+        const requesterIds = await this.repo.acceptAllPendingFollowRequests(targetId);
+        await Promise.all(requesterIds.map((requesterId) => this.events.emitFollowRequestAccepted({
+            requesterId,
+            accepterId: targetId,
+        })));
     }
     async uploadAvatar(userId, buffer) {
         const current = await this.repo.findById(userId);
@@ -113,16 +125,37 @@ let UsersService = class UsersService {
         };
     }
     async getNotifPrefs(userId) {
+        const user = await this.getUserOrThrow(userId);
         const prefs = await this.repo.getNotifPrefs(userId);
         if (!prefs)
             throw new NotFoundException({
                 code: 'PREFS_NOT_FOUND',
                 message: 'Preferencias no encontradas.',
             });
-        return prefs;
+        return this.applyNotifPrefsVisibility(prefs, user.isPrivate);
     }
     async updateNotifPrefs(userId, dto) {
-        return this.repo.updateNotifPrefs(userId, dto);
+        const user = await this.getUserOrThrow(userId);
+        const sanitized = user.isPrivate
+            ? { ...dto, followsEnabled: undefined }
+            : { ...dto, followRequestsEnabled: undefined };
+        const updated = await this.repo.updateNotifPrefs(userId, sanitized);
+        return this.applyNotifPrefsVisibility(updated, user.isPrivate);
+    }
+    async getUserOrThrow(userId) {
+        const user = await this.repo.findById(userId);
+        if (!user)
+            throw new NotFoundException({
+                code: 'USER_NOT_FOUND',
+                message: 'Usuario no encontrado.',
+            });
+        return user;
+    }
+    applyNotifPrefsVisibility(prefs, isPrivate) {
+        const { followsEnabled, followRequestsEnabled, ...rest } = prefs;
+        return isPrivate
+            ? { ...rest, followRequestsEnabled }
+            : { ...rest, followsEnabled };
     }
     async checkHandle(handle, currentUserId) {
         if (!/^[a-zA-Z0-9_]{3,30}$/.test(handle)) {
@@ -144,14 +177,20 @@ let UsersService = class UsersService {
         }
         const [reviewCount, followersCount, followingCount] = await this.repo.getStats(user.id);
         let isFollowing = false;
+        let followRequestPending = false;
         if (viewerId) {
             isFollowing = !!(await this.repo.followExists(viewerId, user.id));
+            if (!isFollowing) {
+                const request = await this.repo.findFollowRequest(viewerId, user.id);
+                followRequestPending = request?.status === 'PENDING';
+            }
         }
         const { email: _email, passwordHash: _pw, googleId: _gid, deletedAt: _da, avatarPublicId: _api, coverPublicId: _cpi, ...publicFields } = user;
         return {
             user: publicFields,
             stats: { reviewCount, followersCount, followingCount },
             isFollowing,
+            followRequestPending,
         };
     }
     async searchUsers(q, cursor, limit, viewerId) {
@@ -183,8 +222,27 @@ let UsersService = class UsersService {
                 code: 'ALREADY_FOLLOWING',
                 message: 'Ya sigues a este usuario.',
             });
-        await this.repo.createFollow(followerId, target.id);
-        await this.events.emitFollowCreated({ followerId, followeeId: target.id });
+        if (!target.isPrivate) {
+            await this.repo.createFollow(followerId, target.id);
+            await this.events.emitFollowCreated({
+                followerId,
+                followeeId: target.id,
+            });
+            return { status: 'FOLLOWING' };
+        }
+        const existingRequest = await this.repo.findFollowRequest(followerId, target.id);
+        if (existingRequest?.status === 'PENDING') {
+            throw new ConflictException({
+                code: 'FOLLOW_REQUEST_ALREADY_SENT',
+                message: 'Ya enviaste una solicitud de seguimiento a este usuario.',
+            });
+        }
+        const request = await this.repo.createOrResetFollowRequest(followerId, target.id);
+        await this.events.emitFollowRequested({
+            requesterId: followerId,
+            targetId: target.id,
+        });
+        return { status: 'PENDING', followRequestId: request.id };
     }
     async unfollow(followerId, handle) {
         const target = await this.repo.findByHandle(handle);
@@ -194,12 +252,60 @@ let UsersService = class UsersService {
                 message: 'Usuario no encontrado.',
             });
         const exists = await this.repo.followExists(followerId, target.id);
-        if (!exists)
+        if (exists) {
+            await this.repo.deleteFollow(followerId, target.id);
+            return;
+        }
+        const pendingRequest = await this.repo.findFollowRequest(followerId, target.id);
+        if (pendingRequest?.status === 'PENDING') {
+            await this.repo.deleteFollowRequest(followerId, target.id);
+            return;
+        }
+        throw new NotFoundException({
+            code: 'NOT_FOLLOWING',
+            message: 'No sigues a este usuario.',
+        });
+    }
+    async listFollowRequests(userId, cursor, limit) {
+        const result = await this.repo.listIncomingFollowRequests(userId, cursor, limit);
+        return {
+            items: result.items.map((r) => ({
+                id: r.id,
+                createdAt: r.createdAt,
+                requester: r.requester,
+            })),
+            nextCursor: result.nextCursor,
+        };
+    }
+    async respondToFollowRequest(userId, requestId, status) {
+        const request = await this.repo.findFollowRequestById(requestId);
+        if (!request) {
             throw new NotFoundException({
-                code: 'NOT_FOLLOWING',
-                message: 'No sigues a este usuario.',
+                code: 'FOLLOW_REQUEST_NOT_FOUND',
+                message: 'Solicitud de seguimiento no encontrada.',
             });
-        await this.repo.deleteFollow(followerId, target.id);
+        }
+        if (request.targetId !== userId) {
+            throw new ForbiddenException({
+                code: 'NOT_FOLLOW_REQUEST_TARGET',
+                message: 'No puedes responder esta solicitud.',
+            });
+        }
+        if (request.status !== 'PENDING') {
+            throw new ConflictException({
+                code: 'FOLLOW_REQUEST_ALREADY_RESOLVED',
+                message: 'Esta solicitud ya fue resuelta.',
+            });
+        }
+        if (status === 'REJECTED') {
+            return this.repo.rejectFollowRequest(requestId);
+        }
+        const accepted = await this.repo.acceptFollowRequest(requestId);
+        await this.events.emitFollowRequestAccepted({
+            requesterId: accepted.requesterId,
+            accepterId: userId,
+        });
+        return accepted;
     }
 };
 UsersService = __decorate([

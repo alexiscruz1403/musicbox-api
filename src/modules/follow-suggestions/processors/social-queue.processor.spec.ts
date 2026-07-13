@@ -5,6 +5,8 @@ import { NOTIFICATIONS_QUEUE } from '../../events/events.constants.js';
 import type {
   CommentEventPayload,
   FollowEventPayload,
+  FollowRequestAcceptedEventPayload,
+  FollowRequestEventPayload,
   ReactionEventPayload,
 } from '../../events/social-events.producer.js';
 import { FollowSuggestionsService } from '../follow-suggestions.service.js';
@@ -69,6 +71,19 @@ describe('SocialQueueProcessor', () => {
       data: { followerId: 'u1', followeeId: 'owner1' },
     }) as Job<FollowEventPayload>;
 
+  const buildFollowRequestedJob = (): Job<FollowRequestEventPayload> =>
+    ({
+      name: 'follow.requested',
+      data: { requesterId: 'u1', targetId: 'owner1' },
+    }) as Job<FollowRequestEventPayload>;
+
+  const buildFollowRequestAcceptedJob =
+    (): Job<FollowRequestAcceptedEventPayload> =>
+      ({
+        name: 'follow.request.accepted',
+        data: { requesterId: 'u1', accepterId: 'owner1' },
+      }) as Job<FollowRequestAcceptedEventPayload>;
+
   it('recomputes suggestions for reaction.added with type LIKE', async () => {
     await processor.process(buildReactionJob('reaction.added', 'LIKE'));
     expect(mockService.recompute).toHaveBeenCalledWith('u1');
@@ -129,5 +144,25 @@ describe('SocialQueueProcessor', () => {
   it('does not relay reaction.changed to the notifications queue', async () => {
     await processor.process(buildReactionJob('reaction.changed', 'LIKE'));
     expect(mockNotificationsQueue.add).not.toHaveBeenCalled();
+  });
+
+  it('relays follow.requested to the notifications queue without recomputing suggestions', async () => {
+    const job = buildFollowRequestedJob();
+    await processor.process(job);
+    expect(mockNotificationsQueue.add).toHaveBeenCalledWith(
+      'follow.requested',
+      job.data,
+    );
+    expect(mockService.recompute).not.toHaveBeenCalled();
+  });
+
+  it('relays follow.request.accepted to the notifications queue without recomputing suggestions', async () => {
+    const job = buildFollowRequestAcceptedJob();
+    await processor.process(job);
+    expect(mockNotificationsQueue.add).toHaveBeenCalledWith(
+      'follow.request.accepted',
+      job.data,
+    );
+    expect(mockService.recompute).not.toHaveBeenCalled();
   });
 });

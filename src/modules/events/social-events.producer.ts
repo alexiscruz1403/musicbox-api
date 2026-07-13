@@ -23,6 +23,16 @@ export interface FollowEventPayload {
   followeeId: string;
 }
 
+export interface FollowRequestEventPayload {
+  requesterId: string;
+  targetId: string;
+}
+
+export interface FollowRequestAcceptedEventPayload {
+  requesterId: string;
+  accepterId: string;
+}
+
 @Injectable()
 export class SocialEventsProducer {
   constructor(@InjectQueue(SOCIAL_QUEUE) private readonly queue: Queue) {}
@@ -41,5 +51,13 @@ export class SocialEventsProducer {
 
   emitFollowCreated(payload: FollowEventPayload) {
     return this.queue.add('follow.created', payload);
+  }
+
+  emitFollowRequested(payload: FollowRequestEventPayload) {
+    return this.queue.add('follow.requested', payload);
+  }
+
+  emitFollowRequestAccepted(payload: FollowRequestAcceptedEventPayload) {
+    return this.queue.add('follow.request.accepted', payload);
   }
 }

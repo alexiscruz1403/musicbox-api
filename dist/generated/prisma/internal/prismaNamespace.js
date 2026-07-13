@@ -26,6 +26,7 @@ export const AnyNull = runtime.AnyNull;
 export const ModelName = {
     User: 'User',
     Follow: 'Follow',
+    FollowRequest: 'FollowRequest',
     RefreshToken: 'RefreshToken',
     Artist: 'Artist',
     Album: 'Album',
@@ -60,6 +61,7 @@ export const UserScalarFieldEnum = {
     coverPublicId: 'coverPublicId',
     bio: 'bio',
     notifEnabled: 'notifEnabled',
+    isPrivate: 'isPrivate',
     status: 'status',
     role: 'role',
     consentedAt: 'consentedAt',
@@ -74,6 +76,14 @@ export const FollowScalarFieldEnum = {
     followerId: 'followerId',
     followeeId: 'followeeId',
     createdAt: 'createdAt'
+};
+export const FollowRequestScalarFieldEnum = {
+    id: 'id',
+    requesterId: 'requesterId',
+    targetId: 'targetId',
+    status: 'status',
+    createdAt: 'createdAt',
+    respondedAt: 'respondedAt'
 };
 export const RefreshTokenScalarFieldEnum = {
     id: 'id',
@@ -174,7 +184,8 @@ export const NotificationPreferenceScalarFieldEnum = {
     likesEnabled: 'likesEnabled',
     dislikesEnabled: 'dislikesEnabled',
     commentsEnabled: 'commentsEnabled',
-    followsEnabled: 'followsEnabled'
+    followsEnabled: 'followsEnabled',
+    followRequestsEnabled: 'followRequestsEnabled'
 };
 export const ReportScalarFieldEnum = {
     id: 'id',

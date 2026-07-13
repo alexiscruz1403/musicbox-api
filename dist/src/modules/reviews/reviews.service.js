@@ -114,6 +114,7 @@ let ReviewsService = class ReviewsService {
     }
     async findById(id, viewerId) {
         const review = await this.getActiveReview(id);
+        await this.assertOwnerVisible(review.userId, viewerId);
         const stats = await this.social.getReviewStats([id], viewerId);
         return { ...review, ...stats.get(id) };
     }
@@ -182,12 +183,12 @@ let ReviewsService = class ReviewsService {
     }
     async listByAlbum(deezerId, query, viewerId) {
         const album = await this.findAlbumOrThrow(deezerId);
-        const result = await this.repo.listByAlbum(album.id, query.cursor, query.limit, query.sort);
+        const result = await this.repo.listByAlbum(album.id, query.cursor, query.limit, query.sort, viewerId);
         return this.withReviewStats(result, viewerId);
     }
     async listByTrack(deezerId, query, viewerId) {
         const track = await this.findTrackOrThrow(deezerId);
-        const result = await this.repo.listByTrack(track.id, query.cursor, query.limit, query.sort);
+        const result = await this.repo.listByTrack(track.id, query.cursor, query.limit, query.sort, viewerId);
         return this.withReviewStats(result, viewerId);
     }
     async withReviewStats(result, viewerId) {
@@ -197,13 +198,14 @@ let ReviewsService = class ReviewsService {
             nextCursor: result.nextCursor,
         };
     }
-    async listByUserHandle(handle, query) {
+    async listByUserHandle(handle, query, viewerId) {
         const user = await this.repo.findUserIdByHandle(handle).catch(() => {
             throw new NotFoundException({
                 code: 'USER_NOT_FOUND',
                 message: 'Usuario no encontrado.',
             });
         });
+        await this.assertOwnerVisible(user.id, viewerId);
         const result = await this.repo.listByUserId(user.id, query.cursor, query.limit);
         return {
             items: result.items.map(({ user: reviewUser, ...review }) => ({
@@ -248,6 +250,15 @@ let ReviewsService = class ReviewsService {
             });
         }
         return review;
+    }
+    async assertOwnerVisible(ownerId, viewerId) {
+        const visible = await this.repo.isOwnerVisibleTo(ownerId, viewerId);
+        if (!visible) {
+            throw new ForbiddenException({
+                code: 'PRIVATE_PROFILE',
+                message: 'Este perfil es privado.',
+            });
+        }
     }
     computeAverageRating(ratings) {
         const avg = ratings.reduce((sum, r) => sum + r, 0) / ratings.length;

@@ -159,6 +159,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export declare const ModelName: {
     readonly User: "User";
     readonly Follow: "Follow";
+    readonly FollowRequest: "FollowRequest";
     readonly RefreshToken: "RefreshToken";
     readonly Artist: "Artist";
     readonly Album: "Album";
@@ -185,7 +186,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "follow" | "refreshToken" | "artist" | "album" | "track" | "review" | "trackReviewItem" | "reviewReaction" | "comment" | "notification" | "notificationPreference" | "report" | "recommendationSnapshot" | "followSuggestionSnapshot" | "trendingSnapshot";
+        modelProps: "user" | "follow" | "followRequest" | "refreshToken" | "artist" | "album" | "track" | "review" | "trackReviewItem" | "reviewReaction" | "comment" | "notification" | "notificationPreference" | "report" | "recommendationSnapshot" | "followSuggestionSnapshot" | "trendingSnapshot";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -334,6 +335,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 count: {
                     args: Prisma.FollowCountArgs<ExtArgs>;
                     result: runtime.Types.Utils.Optional<Prisma.FollowCountAggregateOutputType> | number;
+                };
+            };
+        };
+        FollowRequest: {
+            payload: Prisma.$FollowRequestPayload<ExtArgs>;
+            fields: Prisma.FollowRequestFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.FollowRequestFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowRequestPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.FollowRequestFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowRequestPayload>;
+                };
+                findFirst: {
+                    args: Prisma.FollowRequestFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowRequestPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.FollowRequestFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowRequestPayload>;
+                };
+                findMany: {
+                    args: Prisma.FollowRequestFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowRequestPayload>[];
+                };
+                create: {
+                    args: Prisma.FollowRequestCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowRequestPayload>;
+                };
+                createMany: {
+                    args: Prisma.FollowRequestCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.FollowRequestCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowRequestPayload>[];
+                };
+                delete: {
+                    args: Prisma.FollowRequestDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowRequestPayload>;
+                };
+                update: {
+                    args: Prisma.FollowRequestUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowRequestPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.FollowRequestDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.FollowRequestUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.FollowRequestUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowRequestPayload>[];
+                };
+                upsert: {
+                    args: Prisma.FollowRequestUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FollowRequestPayload>;
+                };
+                aggregate: {
+                    args: Prisma.FollowRequestAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateFollowRequest>;
+                };
+                groupBy: {
+                    args: Prisma.FollowRequestGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.FollowRequestGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.FollowRequestCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.FollowRequestCountAggregateOutputType> | number;
                 };
             };
         };
@@ -1417,6 +1492,7 @@ export declare const UserScalarFieldEnum: {
     readonly coverPublicId: "coverPublicId";
     readonly bio: "bio";
     readonly notifEnabled: "notifEnabled";
+    readonly isPrivate: "isPrivate";
     readonly status: "status";
     readonly role: "role";
     readonly consentedAt: "consentedAt";
@@ -1434,6 +1510,15 @@ export declare const FollowScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type FollowScalarFieldEnum = (typeof FollowScalarFieldEnum)[keyof typeof FollowScalarFieldEnum];
+export declare const FollowRequestScalarFieldEnum: {
+    readonly id: "id";
+    readonly requesterId: "requesterId";
+    readonly targetId: "targetId";
+    readonly status: "status";
+    readonly createdAt: "createdAt";
+    readonly respondedAt: "respondedAt";
+};
+export type FollowRequestScalarFieldEnum = (typeof FollowRequestScalarFieldEnum)[keyof typeof FollowRequestScalarFieldEnum];
 export declare const RefreshTokenScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
@@ -1543,6 +1628,7 @@ export declare const NotificationPreferenceScalarFieldEnum: {
     readonly dislikesEnabled: "dislikesEnabled";
     readonly commentsEnabled: "commentsEnabled";
     readonly followsEnabled: "followsEnabled";
+    readonly followRequestsEnabled: "followRequestsEnabled";
 };
 export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum];
 export declare const ReportScalarFieldEnum: {
@@ -1611,6 +1697,8 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
+export type EnumFollowRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FollowRequestStatus'>;
+export type ListEnumFollowRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FollowRequestStatus[]'>;
 export type EnumReviewTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewType'>;
 export type ListEnumReviewTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewType[]'>;
 export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>;
@@ -1656,6 +1744,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
     user?: Prisma.UserOmit;
     follow?: Prisma.FollowOmit;
+    followRequest?: Prisma.FollowRequestOmit;
     refreshToken?: Prisma.RefreshTokenOmit;
     artist?: Prisma.ArtistOmit;
     album?: Prisma.AlbumOmit;

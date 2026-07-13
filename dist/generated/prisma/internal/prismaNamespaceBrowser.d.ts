@@ -13,6 +13,7 @@ export declare const AnyNull: import("@prisma/client-runtime-utils").AnyNullClas
 export declare const ModelName: {
     readonly User: "User";
     readonly Follow: "Follow";
+    readonly FollowRequest: "FollowRequest";
     readonly RefreshToken: "RefreshToken";
     readonly Artist: "Artist";
     readonly Album: "Album";
@@ -49,6 +50,7 @@ export declare const UserScalarFieldEnum: {
     readonly coverPublicId: "coverPublicId";
     readonly bio: "bio";
     readonly notifEnabled: "notifEnabled";
+    readonly isPrivate: "isPrivate";
     readonly status: "status";
     readonly role: "role";
     readonly consentedAt: "consentedAt";
@@ -66,6 +68,15 @@ export declare const FollowScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type FollowScalarFieldEnum = (typeof FollowScalarFieldEnum)[keyof typeof FollowScalarFieldEnum];
+export declare const FollowRequestScalarFieldEnum: {
+    readonly id: "id";
+    readonly requesterId: "requesterId";
+    readonly targetId: "targetId";
+    readonly status: "status";
+    readonly createdAt: "createdAt";
+    readonly respondedAt: "respondedAt";
+};
+export type FollowRequestScalarFieldEnum = (typeof FollowRequestScalarFieldEnum)[keyof typeof FollowRequestScalarFieldEnum];
 export declare const RefreshTokenScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
@@ -175,6 +186,7 @@ export declare const NotificationPreferenceScalarFieldEnum: {
     readonly dislikesEnabled: "dislikesEnabled";
     readonly commentsEnabled: "commentsEnabled";
     readonly followsEnabled: "followsEnabled";
+    readonly followRequestsEnabled: "followRequestsEnabled";
 };
 export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum];
 export declare const ReportScalarFieldEnum: {

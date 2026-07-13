@@ -237,6 +237,97 @@ let UsersRepository = class UsersRepository {
             where: { followerId_followeeId: { followerId, followeeId } },
         });
     }
+    findFollowRequest(requesterId, targetId) {
+        return this.prisma.followRequest.findUnique({
+            where: { requesterId_targetId: { requesterId, targetId } },
+        });
+    }
+    createOrResetFollowRequest(requesterId, targetId) {
+        return this.prisma.followRequest.upsert({
+            where: { requesterId_targetId: { requesterId, targetId } },
+            create: { requesterId, targetId },
+            update: { status: 'PENDING', respondedAt: null },
+        });
+    }
+    deleteFollowRequest(requesterId, targetId) {
+        return this.prisma.followRequest.delete({
+            where: { requesterId_targetId: { requesterId, targetId } },
+        });
+    }
+    findFollowRequestById(id) {
+        return this.prisma.followRequest.findUnique({ where: { id } });
+    }
+    async listIncomingFollowRequests(targetId, cursor, limit = 20) {
+        const take = Math.min(limit, 50);
+        const cursorId = cursor
+            ? Buffer.from(cursor, 'base64').toString('utf8')
+            : undefined;
+        const requests = await this.prisma.followRequest.findMany({
+            where: { targetId, status: 'PENDING' },
+            orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+            take: take + 1,
+            ...(cursorId && { cursor: { id: cursorId }, skip: 1 }),
+            include: {
+                requester: {
+                    select: {
+                        id: true,
+                        handle: true,
+                        displayName: true,
+                        avatarUrl: true,
+                    },
+                },
+            },
+        });
+        const hasMore = requests.length > take;
+        const items = hasMore ? requests.slice(0, take) : requests;
+        const nextCursor = hasMore
+            ? Buffer.from(items[items.length - 1].id).toString('base64')
+            : null;
+        return { items, nextCursor };
+    }
+    acceptFollowRequest(id) {
+        return this.prisma.$transaction(async (tx) => {
+            const request = await tx.followRequest.update({
+                where: { id },
+                data: { status: 'ACCEPTED', respondedAt: new Date() },
+            });
+            await tx.follow.create({
+                data: {
+                    followerId: request.requesterId,
+                    followeeId: request.targetId,
+                },
+            });
+            return request;
+        });
+    }
+    rejectFollowRequest(id) {
+        return this.prisma.followRequest.update({
+            where: { id },
+            data: { status: 'REJECTED', respondedAt: new Date() },
+        });
+    }
+    async acceptAllPendingFollowRequests(targetId) {
+        return this.prisma.$transaction(async (tx) => {
+            const pending = await tx.followRequest.findMany({
+                where: { targetId, status: 'PENDING' },
+                select: { id: true, requesterId: true },
+            });
+            if (pending.length === 0)
+                return [];
+            await tx.follow.createMany({
+                data: pending.map((p) => ({
+                    followerId: p.requesterId,
+                    followeeId: targetId,
+                })),
+                skipDuplicates: true,
+            });
+            await tx.followRequest.updateMany({
+                where: { id: { in: pending.map((p) => p.id) } },
+                data: { status: 'ACCEPTED', respondedAt: new Date() },
+            });
+            return pending.map((p) => p.requesterId);
+        });
+    }
 };
 UsersRepository = __decorate([
     Injectable(),

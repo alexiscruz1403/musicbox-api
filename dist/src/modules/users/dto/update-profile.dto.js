@@ -7,11 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { IsOptional, IsString, Length, Matches } from 'class-validator';
+import { IsBoolean, IsOptional, IsString, Length, Matches, } from 'class-validator';
 export class UpdateProfileDto {
     handle;
     displayName;
     bio;
+    isPrivate;
 }
 __decorate([
     IsOptional(),
@@ -34,4 +35,9 @@ __decorate([
     Length(0, 300),
     __metadata("design:type", String)
 ], UpdateProfileDto.prototype, "bio", void 0);
+__decorate([
+    IsOptional(),
+    IsBoolean(),
+    __metadata("design:type", Boolean)
+], UpdateProfileDto.prototype, "isPrivate", void 0);
 //# sourceMappingURL=update-profile.dto.js.map

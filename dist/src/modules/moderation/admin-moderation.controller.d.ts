@@ -16,9 +16,9 @@ export declare class AdminModerationController {
             id: string;
             status: import("../../../generated/prisma/enums.js").ReportStatus;
             createdAt: Date;
+            targetId: string;
             reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
-            targetId: string;
             reason: string;
             reviewedById: string | null;
             reviewedAt: Date | null;
@@ -34,9 +34,9 @@ export declare class AdminModerationController {
             id: string;
             status: import("../../../generated/prisma/enums.js").ReportStatus;
             createdAt: Date;
+            targetId: string;
             reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
-            targetId: string;
             reason: string;
             reviewedById: string | null;
             reviewedAt: Date | null;

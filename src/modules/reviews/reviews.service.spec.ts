@@ -76,6 +76,7 @@ const mockRepo = {
   listByAlbum: vi.fn(),
   listByTrack: vi.fn(),
   listByUserId: vi.fn(),
+  isOwnerVisibleTo: vi.fn(),
 };
 
 const mockCatalog = {
@@ -119,6 +120,7 @@ describe('ReviewsService', () => {
     mockSocial.getReviewStats.mockImplementation((ids: string[]) =>
       Promise.resolve(new Map(ids.map((id) => [id, { ...defaultStats }]))),
     );
+    mockRepo.isOwnerVisibleTo.mockResolvedValue(true);
   });
 
   describe('create — TRACK', () => {
@@ -376,6 +378,24 @@ describe('ReviewsService', () => {
         NotFoundException,
       );
     });
+
+    it('throws ForbiddenException when the owner is private and not visible to the viewer', async () => {
+      mockRepo.findById.mockResolvedValue({
+        id: 'review-1',
+        userId: 'owner',
+        status: 'ACTIVE',
+        deletedAt: null,
+      });
+      mockRepo.isOwnerVisibleTo.mockResolvedValue(false);
+
+      await expect(service.findById('review-1', 'stranger')).rejects.toThrow(
+        ForbiddenException,
+      );
+      expect(mockRepo.isOwnerVisibleTo).toHaveBeenCalledWith(
+        'owner',
+        'stranger',
+      );
+    });
   });
 
   describe('update', () => {
@@ -514,6 +534,7 @@ describe('ReviewsService', () => {
         undefined,
         20,
         'recent',
+        undefined,
       );
     });
 
@@ -591,6 +612,16 @@ describe('ReviewsService', () => {
       await expect(
         service.listByUserHandle('unknown', { limit: 10 }),
       ).rejects.toThrow(NotFoundException);
+    });
+
+    it('throws ForbiddenException when the profile is private and not visible to the viewer', async () => {
+      mockRepo.findUserIdByHandle.mockResolvedValue({ id: 'user-uuid-1' });
+      mockRepo.isOwnerVisibleTo.mockResolvedValue(false);
+
+      await expect(
+        service.listByUserHandle('private_user', { limit: 10 }, 'stranger'),
+      ).rejects.toThrow(ForbiddenException);
+      expect(mockRepo.listByUserId).not.toHaveBeenCalled();
     });
 
     it('flattens the included user relation into a plain avatarUrl field', async () => {

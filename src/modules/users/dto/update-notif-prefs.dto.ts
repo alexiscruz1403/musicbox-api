@@ -16,4 +16,8 @@ export class UpdateNotifPrefsDto {
   @IsOptional()
   @IsBoolean()
   followsEnabled?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  followRequestsEnabled?: boolean;
 }

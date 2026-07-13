@@ -11,10 +11,7 @@ export interface ReportedReviewContent {
 }
 
 export type ReportedContent =
-  | ReportedReviewContent
-  | { content: string }
-  | { handle: string }
-  | null;
+  ReportedReviewContent | { content: string } | { handle: string } | null;
 
 @Injectable()
 export class ModerationRepository {

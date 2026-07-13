@@ -6,6 +6,8 @@ import {
 import type {
   CommentEventPayload,
   FollowEventPayload,
+  FollowRequestAcceptedEventPayload,
+  FollowRequestEventPayload,
   ReactionEventPayload,
 } from '../events/social-events.producer.js';
 import type { ListNotificationsQueryDto } from './dto/list-notifications-query.dto.js';
@@ -23,6 +25,7 @@ interface NotificationPreferenceGate {
     dislikesEnabled: boolean;
     commentsEnabled: boolean;
     followsEnabled: boolean;
+    followRequestsEnabled: boolean;
   } | null;
 }
 
@@ -120,6 +123,22 @@ export class NotificationsService {
           type: 'FOLLOW',
         };
       }
+      case 'follow.requested': {
+        const p = payload as FollowRequestEventPayload;
+        return {
+          recipientId: p.targetId,
+          actorId: p.requesterId,
+          type: 'FOLLOW_REQUEST',
+        };
+      }
+      case 'follow.request.accepted': {
+        const p = payload as FollowRequestAcceptedEventPayload;
+        return {
+          recipientId: p.requesterId,
+          actorId: p.accepterId,
+          type: 'FOLLOW_REQUEST_ACCEPTED',
+        };
+      }
       default:
         return null;
     }
@@ -140,6 +159,14 @@ export class NotificationsService {
         return prefs.commentsEnabled;
       case 'FOLLOW':
         return prefs.followsEnabled;
+      // Distinta de followsEnabled (post-Fase 7): una cuenta pública solo
+      // configura followsEnabled (nunca recibe FOLLOW_REQUEST, ya que el
+      // follow directo no pasa por solicitud); una cuenta privada solo
+      // configura followRequestsEnabled (nunca recibe FOLLOW directo). Ver
+      // UsersService para el filtrado de cuál campo es configurable.
+      case 'FOLLOW_REQUEST':
+      case 'FOLLOW_REQUEST_ACCEPTED':
+        return prefs.followRequestsEnabled;
       case 'MODERATION':
         return true;
     }

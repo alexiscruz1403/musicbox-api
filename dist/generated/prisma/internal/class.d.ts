@@ -36,6 +36,9 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get follow(): Prisma.FollowDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get followRequest(): Prisma.FollowRequestDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
     get refreshToken(): Prisma.RefreshTokenDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;

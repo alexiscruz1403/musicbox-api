@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -54,6 +55,11 @@ export class UsersService {
       }
     }
 
+    // Necesario solo para detectar la transición isPrivate true → false
+    // (dispara la auto-aceptación de solicitudes pendientes, ver abajo).
+    const current =
+      dto.isPrivate !== undefined ? await this.repo.findById(userId) : null;
+
     const sanitized: UpdateProfileDto = {
       ...dto,
       ...(dto.displayName && {
@@ -67,7 +73,29 @@ export class UsersService {
       }),
     };
 
-    return this.repo.updateProfile(userId, sanitized);
+    const updated = await this.repo.updateProfile(userId, sanitized);
+
+    if (current?.isPrivate === true && dto.isPrivate === false) {
+      await this.autoAcceptPendingFollowRequests(userId);
+    }
+
+    return updated;
+  }
+
+  // Al pasar un perfil de privado a público, el gate de aprobación deja de
+  // tener sentido — todas las solicitudes PENDING se resuelven como
+  // aceptadas (docs/fase-7-features.md, sección de perfiles privados).
+  private async autoAcceptPendingFollowRequests(targetId: string) {
+    const requesterIds =
+      await this.repo.acceptAllPendingFollowRequests(targetId);
+    await Promise.all(
+      requesterIds.map((requesterId) =>
+        this.events.emitFollowRequestAccepted({
+          requesterId,
+          accepterId: targetId,
+        }),
+      ),
+    );
   }
 
   async uploadAvatar(userId: string, buffer: Buffer): Promise<string> {
@@ -140,17 +168,46 @@ export class UsersService {
   }
 
   async getNotifPrefs(userId: string) {
+    const user = await this.getUserOrThrow(userId);
     const prefs = await this.repo.getNotifPrefs(userId);
     if (!prefs)
       throw new NotFoundException({
         code: 'PREFS_NOT_FOUND',
         message: 'Preferencias no encontradas.',
       });
-    return prefs;
+    return this.applyNotifPrefsVisibility(prefs, user.isPrivate);
   }
 
+  // Solicitudes de seguimiento (post-Fase 7): una cuenta pública solo
+  // configura followsEnabled (nunca recibe FOLLOW_REQUEST); una privada solo
+  // configura followRequestsEnabled (nunca recibe FOLLOW directo). El campo
+  // no aplicable al tipo de cuenta actual no se persiste ni se devuelve.
   async updateNotifPrefs(userId: string, dto: UpdateNotifPrefsDto) {
-    return this.repo.updateNotifPrefs(userId, dto);
+    const user = await this.getUserOrThrow(userId);
+    const sanitized: UpdateNotifPrefsDto = user.isPrivate
+      ? { ...dto, followsEnabled: undefined }
+      : { ...dto, followRequestsEnabled: undefined };
+    const updated = await this.repo.updateNotifPrefs(userId, sanitized);
+    return this.applyNotifPrefsVisibility(updated, user.isPrivate);
+  }
+
+  private async getUserOrThrow(userId: string) {
+    const user = await this.repo.findById(userId);
+    if (!user)
+      throw new NotFoundException({
+        code: 'USER_NOT_FOUND',
+        message: 'Usuario no encontrado.',
+      });
+    return user;
+  }
+
+  private applyNotifPrefsVisibility<
+    T extends { followsEnabled: boolean; followRequestsEnabled: boolean },
+  >(prefs: T, isPrivate: boolean) {
+    const { followsEnabled, followRequestsEnabled, ...rest } = prefs;
+    return isPrivate
+      ? { ...rest, followRequestsEnabled }
+      : { ...rest, followsEnabled };
   }
 
   async checkHandle(
@@ -181,8 +238,13 @@ export class UsersService {
       await this.repo.getStats(user.id);
 
     let isFollowing = false;
+    let followRequestPending = false;
     if (viewerId) {
       isFollowing = !!(await this.repo.followExists(viewerId, user.id));
+      if (!isFollowing) {
+        const request = await this.repo.findFollowRequest(viewerId, user.id);
+        followRequestPending = request?.status === 'PENDING';
+      }
     }
 
     const {
@@ -198,6 +260,7 @@ export class UsersService {
       user: publicFields,
       stats: { reviewCount, followersCount, followingCount },
       isFollowing,
+      followRequestPending,
     };
   }
 
@@ -218,7 +281,12 @@ export class UsersService {
     return this.repo.getFollowing(handle, cursor, limit);
   }
 
-  async follow(followerId: string, handle: string) {
+  async follow(
+    followerId: string,
+    handle: string,
+  ): Promise<
+    { status: 'FOLLOWING' } | { status: 'PENDING'; followRequestId: string }
+  > {
     const target = await this.repo.findByHandle(handle);
     if (!target || target.status === 'DELETED') {
       throw new NotFoundException({
@@ -239,8 +307,35 @@ export class UsersService {
         message: 'Ya sigues a este usuario.',
       });
 
-    await this.repo.createFollow(followerId, target.id);
-    await this.events.emitFollowCreated({ followerId, followeeId: target.id });
+    if (!target.isPrivate) {
+      await this.repo.createFollow(followerId, target.id);
+      await this.events.emitFollowCreated({
+        followerId,
+        followeeId: target.id,
+      });
+      return { status: 'FOLLOWING' };
+    }
+
+    const existingRequest = await this.repo.findFollowRequest(
+      followerId,
+      target.id,
+    );
+    if (existingRequest?.status === 'PENDING') {
+      throw new ConflictException({
+        code: 'FOLLOW_REQUEST_ALREADY_SENT',
+        message: 'Ya enviaste una solicitud de seguimiento a este usuario.',
+      });
+    }
+
+    const request = await this.repo.createOrResetFollowRequest(
+      followerId,
+      target.id,
+    );
+    await this.events.emitFollowRequested({
+      requesterId: followerId,
+      targetId: target.id,
+    });
+    return { status: 'PENDING', followRequestId: request.id };
   }
 
   async unfollow(followerId: string, handle: string) {
@@ -252,12 +347,77 @@ export class UsersService {
       });
 
     const exists = await this.repo.followExists(followerId, target.id);
-    if (!exists)
-      throw new NotFoundException({
-        code: 'NOT_FOLLOWING',
-        message: 'No sigues a este usuario.',
-      });
+    if (exists) {
+      await this.repo.deleteFollow(followerId, target.id);
+      return;
+    }
 
-    await this.repo.deleteFollow(followerId, target.id);
+    const pendingRequest = await this.repo.findFollowRequest(
+      followerId,
+      target.id,
+    );
+    if (pendingRequest?.status === 'PENDING') {
+      await this.repo.deleteFollowRequest(followerId, target.id);
+      return;
+    }
+
+    throw new NotFoundException({
+      code: 'NOT_FOLLOWING',
+      message: 'No sigues a este usuario.',
+    });
+  }
+
+  async listFollowRequests(userId: string, cursor?: string, limit?: number) {
+    const result = await this.repo.listIncomingFollowRequests(
+      userId,
+      cursor,
+      limit,
+    );
+    return {
+      items: result.items.map((r) => ({
+        id: r.id,
+        createdAt: r.createdAt,
+        requester: r.requester,
+      })),
+      nextCursor: result.nextCursor,
+    };
+  }
+
+  async respondToFollowRequest(
+    userId: string,
+    requestId: string,
+    status: 'ACCEPTED' | 'REJECTED',
+  ) {
+    const request = await this.repo.findFollowRequestById(requestId);
+    if (!request) {
+      throw new NotFoundException({
+        code: 'FOLLOW_REQUEST_NOT_FOUND',
+        message: 'Solicitud de seguimiento no encontrada.',
+      });
+    }
+    if (request.targetId !== userId) {
+      throw new ForbiddenException({
+        code: 'NOT_FOLLOW_REQUEST_TARGET',
+        message: 'No puedes responder esta solicitud.',
+      });
+    }
+    if (request.status !== 'PENDING') {
+      throw new ConflictException({
+        code: 'FOLLOW_REQUEST_ALREADY_RESOLVED',
+        message: 'Esta solicitud ya fue resuelta.',
+      });
+    }
+
+    if (status === 'REJECTED') {
+      // Sin notificación al rechazar — requisito explícito.
+      return this.repo.rejectFollowRequest(requestId);
+    }
+
+    const accepted = await this.repo.acceptFollowRequest(requestId);
+    await this.events.emitFollowRequestAccepted({
+      requesterId: accepted.requesterId,
+      accepterId: userId,
+    });
+    return accepted;
   }
 }
