@@ -110,8 +110,8 @@ export declare class ModerationRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;

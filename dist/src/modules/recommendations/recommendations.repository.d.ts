@@ -44,19 +44,20 @@ export declare class RecommendationsRepository {
             id: string;
             deezerId: string;
             mbid: string | null;
-            imageUrl: string | null;
             lastSyncedAt: Date;
+            imageUrl: string | null;
+            catalogSyncedAt: Date | null;
         };
     } & {
         id: string;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
         coverUrl: string | null;
         releaseDate: Date | null;
         genreLabel: string | null;
+        lastSyncedAt: Date;
     })[]>;
     listUserIdsWithSnapshot(): Promise<{
         userId: string;

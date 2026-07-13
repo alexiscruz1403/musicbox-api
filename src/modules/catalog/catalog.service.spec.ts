@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { RedisService } from '../../redis/redis.service.js';
+import { CatalogSyncService } from './catalog-sync.service.js';
 import { CatalogRepository } from './catalog.repository.js';
 import { CatalogService } from './catalog.service.js';
 import {
@@ -96,6 +97,7 @@ describe('CatalogService', () => {
     upsertArtist: vi.fn(),
     upsertAlbum: vi.fn(),
     upsertTrack: vi.fn(),
+    findTracksByArtist: vi.fn(),
   };
 
   const mockRedis = {
@@ -105,11 +107,16 @@ describe('CatalogService', () => {
     exists: vi.fn(),
   };
 
+  const mockCatalogSyncService = {
+    ensureArtistSynced: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
     mockRepo.upsertArtist.mockResolvedValue(dbArtistRow);
     mockRepo.upsertAlbum.mockResolvedValue(dbAlbumRow);
     mockRepo.upsertTrack.mockResolvedValue(dbTrackRow);
+    mockCatalogSyncService.ensureArtistSynced.mockResolvedValue(dbArtistRow);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -117,6 +124,7 @@ describe('CatalogService', () => {
         { provide: MUSIC_CATALOG_PROVIDER, useValue: mockProvider },
         { provide: CatalogRepository, useValue: mockRepo },
         { provide: RedisService, useValue: mockRedis },
+        { provide: CatalogSyncService, useValue: mockCatalogSyncService },
       ],
     }).compile();
 
@@ -274,6 +282,82 @@ describe('CatalogService', () => {
 
       expect(mockProvider.getArtistAlbums).not.toHaveBeenCalled();
       expect(result).toEqual(albumsPageFixture);
+    });
+  });
+
+  describe('getArtistTracks()', () => {
+    const dbTrackRowWithRelations = {
+      ...dbTrackRow,
+      artist: dbArtistRow,
+      album: {
+        deezerId: '302127',
+        title: 'Discovery',
+        coverUrl: 'https://example.com/discovery.jpg',
+        releaseDate: new Date('2001-03-07'),
+      },
+    };
+
+    it('cache miss — ensures artist is synced, queries Postgres, maps and caches result', async () => {
+      mockRedis.get.mockResolvedValue(null);
+      mockRepo.findTracksByArtist.mockResolvedValue({
+        items: [dbTrackRowWithRelations],
+        nextCursor: null,
+        total: 1,
+      });
+
+      const result = await service.getArtistTracks('27', 20, null);
+
+      expect(mockCatalogSyncService.ensureArtistSynced).toHaveBeenCalledWith(
+        '27',
+      );
+      expect(mockRepo.findTracksByArtist).toHaveBeenCalledWith(
+        'uuid-artist-1',
+        null,
+        20,
+      );
+      expect(result).toEqual({
+        items: [
+          {
+            deezerId: '3135556',
+            title: 'One More Time',
+            artist: {
+              deezerId: '27',
+              name: 'Daft Punk',
+              imageUrl: null,
+              fans: 0,
+            },
+            albumDeezerId: '302127',
+            albumTitle: 'Discovery',
+            coverUrl: 'https://example.com/discovery.jpg',
+            releaseDate: '2001-03-07T00:00:00.000Z',
+            durationMs: 320000,
+            trackNumber: 1,
+            previewUrl: null,
+          },
+        ],
+        nextCursor: null,
+        total: 1,
+      });
+      expect(mockRedis.set).toHaveBeenCalledWith(
+        'catalog:artist-tracks:27:20:0',
+        JSON.stringify(result),
+        86_400,
+      );
+    });
+
+    it('cache hit — returns cached tracks without calling ensureArtistSynced', async () => {
+      const cachedPage = {
+        items: [],
+        nextCursor: null,
+        total: 0,
+      };
+      mockRedis.get.mockResolvedValue(JSON.stringify(cachedPage));
+
+      const result = await service.getArtistTracks('27', 20, null);
+
+      expect(mockCatalogSyncService.ensureArtistSynced).not.toHaveBeenCalled();
+      expect(mockRepo.findTracksByArtist).not.toHaveBeenCalled();
+      expect(result).toEqual(cachedPage);
     });
   });
 });

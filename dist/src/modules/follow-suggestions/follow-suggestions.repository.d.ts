@@ -10,8 +10,8 @@ export declare class FollowSuggestionsRepository {
         track: {
             artistId: string;
         } | null;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
     }[]>;
     getOwnLikeSignals(userId: string): Prisma.PrismaPromise<{
         review: {
@@ -21,8 +21,8 @@ export declare class FollowSuggestionsRepository {
             track: {
                 artistId: string;
             } | null;
-            albumId: string | null;
             trackId: string | null;
+            albumId: string | null;
         };
     }[]>;
     findReviewsByAlbumIds(albumIds: string[]): Promise<never[]> | Prisma.PrismaPromise<{

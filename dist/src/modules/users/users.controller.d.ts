@@ -90,10 +90,10 @@ export declare class UsersController {
             reviews: ({
                 trackReviewItems: {
                     id: string;
-                    reviewId: string;
                     trackId: string;
                     description: string | null;
                     rating: number;
+                    reviewId: string;
                     position: number;
                 }[];
             } & {
@@ -104,8 +104,8 @@ export declare class UsersController {
                 updatedAt: Date;
                 deletedAt: Date | null;
                 userId: string;
-                albumId: string | null;
                 trackId: string | null;
+                albumId: string | null;
                 description: string;
                 rating: import("@prisma/client-runtime-utils").Decimal;
                 externalTitle: string;
@@ -250,8 +250,8 @@ export declare class UsersController {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             trackId: string | null;
+            albumId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;

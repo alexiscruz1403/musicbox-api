@@ -14,23 +14,23 @@ export declare class ReviewsRepository {
         id: string;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
         coverUrl: string | null;
         releaseDate: Date | null;
         genreLabel: string | null;
+        lastSyncedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: Prisma.GlobalOmitConfig | undefined;
     }>;
     findTrackByDeezerId(deezerId: string): Prisma.Prisma__TrackClient<{
         id: string;
+        albumId: string | null;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
-        albumId: string | null;
+        lastSyncedAt: Date;
         durationMs: number | null;
         trackNumber: number | null;
         previewUrl: string | null;
@@ -39,12 +39,12 @@ export declare class ReviewsRepository {
     }>;
     findTracksByDeezerIds(deezerIds: string[]): Prisma.PrismaPromise<{
         id: string;
+        albumId: string | null;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
-        albumId: string | null;
+        lastSyncedAt: Date;
         durationMs: number | null;
         trackNumber: number | null;
         previewUrl: string | null;
@@ -70,8 +70,8 @@ export declare class ReviewsRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -97,8 +97,8 @@ export declare class ReviewsRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -126,10 +126,10 @@ export declare class ReviewsRepository {
             };
         } & {
             id: string;
-            reviewId: string;
             trackId: string;
             description: string | null;
             rating: number;
+            reviewId: string;
             position: number;
         })[];
     } & {
@@ -140,8 +140,8 @@ export declare class ReviewsRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -161,8 +161,8 @@ export declare class ReviewsRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -179,8 +179,8 @@ export declare class ReviewsRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -195,8 +195,8 @@ export declare class ReviewsRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -213,8 +213,8 @@ export declare class ReviewsRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -239,8 +239,8 @@ export declare class ReviewsRepository {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             trackId: string | null;
+            albumId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -265,8 +265,8 @@ export declare class ReviewsRepository {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             trackId: string | null;
+            albumId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -288,8 +288,8 @@ export declare class ReviewsRepository {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             trackId: string | null;
+            albumId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;

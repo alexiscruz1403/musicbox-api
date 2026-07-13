@@ -17,19 +17,20 @@ export declare class TrendingRepository {
             id: string;
             deezerId: string;
             mbid: string | null;
-            imageUrl: string | null;
             lastSyncedAt: Date;
+            imageUrl: string | null;
+            catalogSyncedAt: Date | null;
         };
     } & {
         id: string;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
         coverUrl: string | null;
         releaseDate: Date | null;
         genreLabel: string | null;
+        lastSyncedAt: Date;
     })[]>;
     hydrateTracks(ids: string[]): Promise<never[]> | Prisma.PrismaPromise<({
         artist: {
@@ -37,8 +38,9 @@ export declare class TrendingRepository {
             id: string;
             deezerId: string;
             mbid: string | null;
-            imageUrl: string | null;
             lastSyncedAt: Date;
+            imageUrl: string | null;
+            catalogSyncedAt: Date | null;
         };
         album: {
             deezerId: string;
@@ -46,12 +48,12 @@ export declare class TrendingRepository {
         } | null;
     } & {
         id: string;
+        albumId: string | null;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
-        albumId: string | null;
+        lastSyncedAt: Date;
         durationMs: number | null;
         trackNumber: number | null;
         previewUrl: string | null;

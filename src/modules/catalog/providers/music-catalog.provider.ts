@@ -21,6 +21,13 @@ export interface CatalogTrack {
   previewUrl: string | null;
 }
 
+// GET /catalog/artists/:deezerId/tracks item shape — CatalogTrack plus the
+// title of the album it belongs to (that endpoint is Postgres-sourced, not
+// Deezer, so it can afford the extra join without an extra API call).
+export interface ArtistTrackItem extends CatalogTrack {
+  albumTitle: string | null;
+}
+
 export interface CatalogAlbum {
   deezerId: string;
   title: string;

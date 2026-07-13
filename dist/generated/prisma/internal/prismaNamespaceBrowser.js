@@ -73,7 +73,8 @@ export const ArtistScalarFieldEnum = {
     mbid: 'mbid',
     name: 'name',
     imageUrl: 'imageUrl',
-    lastSyncedAt: 'lastSyncedAt'
+    lastSyncedAt: 'lastSyncedAt',
+    catalogSyncedAt: 'catalogSyncedAt'
 };
 export const AlbumScalarFieldEnum = {
     id: 'id',

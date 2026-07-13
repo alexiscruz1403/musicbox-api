@@ -127,12 +127,16 @@ model RefreshToken {
 // ─── Catalog (cache de Deezer) ────────────────────────────────────
 
 model Artist {
-  id           String   @id @default(uuid())
-  deezerId     String   @unique
-  mbid         String?  @unique
-  name         String
-  imageUrl     String?
-  lastSyncedAt DateTime
+  id              String    @id @default(uuid())
+  deezerId        String    @unique
+  mbid            String?   @unique
+  name            String
+  imageUrl        String?
+  lastSyncedAt    DateTime
+  // Set only when the full discography (all albums + tracks) has been
+  // walked and persisted — distinct from lastSyncedAt, which any partial
+  // upsert (e.g. a lone getArtist() call) also touches.
+  catalogSyncedAt DateTime?
 
   albums Album[]
   tracks Track[]

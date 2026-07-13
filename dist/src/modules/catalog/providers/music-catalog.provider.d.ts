@@ -17,6 +17,9 @@ export interface CatalogTrack {
     trackNumber: number | null;
     previewUrl: string | null;
 }
+export interface ArtistTrackItem extends CatalogTrack {
+    albumTitle: string | null;
+}
 export interface CatalogAlbum {
     deezerId: string;
     title: string;

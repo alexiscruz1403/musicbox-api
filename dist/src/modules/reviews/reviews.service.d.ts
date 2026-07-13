@@ -20,8 +20,8 @@ export declare class ReviewsService {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -56,10 +56,10 @@ export declare class ReviewsService {
             };
         } & {
             id: string;
-            reviewId: string;
             trackId: string;
             description: string | null;
             rating: number;
+            reviewId: string;
             position: number;
         })[];
         type: import("../../../generated/prisma/enums.js").ReviewType;
@@ -69,8 +69,8 @@ export declare class ReviewsService {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -98,10 +98,10 @@ export declare class ReviewsService {
             };
         } & {
             id: string;
-            reviewId: string;
             trackId: string;
             description: string | null;
             rating: number;
+            reviewId: string;
             position: number;
         })[];
     } & {
@@ -112,8 +112,8 @@ export declare class ReviewsService {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         trackId: string | null;
+        albumId: string | null;
         description: string;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -137,8 +137,8 @@ export declare class ReviewsService {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             trackId: string | null;
+            albumId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -163,8 +163,8 @@ export declare class ReviewsService {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             trackId: string | null;
+            albumId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -184,8 +184,8 @@ export declare class ReviewsService {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             trackId: string | null;
+            albumId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;

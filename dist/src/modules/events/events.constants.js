@@ -3,6 +3,7 @@ export const SOCIAL_QUEUE = 'social';
 export const NOTIFICATIONS_QUEUE = 'notifications';
 export const TRENDING_QUEUE = 'trending';
 export const RECOMMENDATIONS_QUEUE = 'recommendations';
+export const CATALOG_QUEUE = 'catalog';
 export const DEFAULT_JOB_OPTIONS = {
     attempts: 3,
     backoff: { type: 'exponential', delay: 2000 },

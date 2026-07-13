@@ -12,17 +12,20 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 import { Inject, Injectable } from '@nestjs/common';
 import { RedisService } from '../../redis/redis.service.js';
+import { CatalogSyncService } from './catalog-sync.service.js';
 import { CatalogRepository } from './catalog.repository.js';
 import { MUSIC_CATALOG_PROVIDER, } from './providers/music-catalog.provider.js';
 let CatalogService = class CatalogService {
     catalogProvider;
     repo;
     redis;
+    catalogSyncService;
     CACHE_TTL = 86_400;
-    constructor(catalogProvider, repo, redis) {
+    constructor(catalogProvider, repo, redis, catalogSyncService) {
         this.catalogProvider = catalogProvider;
         this.repo = repo;
         this.redis = redis;
+        this.catalogSyncService = catalogSyncService;
     }
     async withCache(key, fetcher) {
         const cached = await this.redis.get(key);
@@ -67,12 +70,41 @@ let CatalogService = class CatalogService {
         const key = `catalog:artist-albums:${deezerId}:${limit}:${cursor ?? '0'}`;
         return this.withCache(key, () => this.catalogProvider.getArtistAlbums(deezerId, limit, cursor));
     }
+    getArtistTracks(deezerId, limit, cursor) {
+        const key = `catalog:artist-tracks:${deezerId}:${limit}:${cursor ?? '0'}`;
+        return this.withCache(key, async () => {
+            const artistRow = await this.catalogSyncService.ensureArtistSynced(deezerId);
+            const page = await this.repo.findTracksByArtist(artistRow.id, cursor, limit);
+            return {
+                items: page.items.map((track) => ({
+                    deezerId: track.deezerId,
+                    title: track.title,
+                    artist: {
+                        deezerId: track.artist.deezerId,
+                        name: track.artist.name,
+                        imageUrl: track.artist.imageUrl,
+                        fans: 0,
+                    },
+                    albumDeezerId: track.album?.deezerId ?? null,
+                    albumTitle: track.album?.title ?? null,
+                    coverUrl: track.album?.coverUrl ?? null,
+                    releaseDate: track.album?.releaseDate?.toISOString() ?? null,
+                    durationMs: track.durationMs,
+                    trackNumber: track.trackNumber,
+                    previewUrl: track.previewUrl,
+                })),
+                nextCursor: page.nextCursor,
+                total: page.total,
+            };
+        });
+    }
 };
 CatalogService = __decorate([
     Injectable(),
     __param(0, Inject(MUSIC_CATALOG_PROVIDER)),
     __metadata("design:paramtypes", [Object, CatalogRepository,
-        RedisService])
+        RedisService,
+        CatalogSyncService])
 ], CatalogService);
 export { CatalogService };
 //# sourceMappingURL=catalog.service.js.map
