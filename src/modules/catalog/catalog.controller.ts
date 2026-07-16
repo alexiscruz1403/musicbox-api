@@ -1,8 +1,15 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
+import type { Request } from 'express';
+import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { Public } from '../common/decorators/public.decorator.js';
+import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { ArtistDetailService } from './artist-detail.service.js';
+import { CatalogHistoryService } from './catalog-history.service.js';
+import { CatalogQuickSearchService } from './catalog-quick-search.service.js';
 import { CatalogService } from './catalog.service.js';
 import { ArtistTracksQueryDto } from './dto/artist-tracks-query.dto.js';
+import { QuickSearchCatalogDto } from './dto/quick-search-catalog.dto.js';
 import { SearchCatalogDto } from './dto/search-catalog.dto.js';
 
 @Public()
@@ -11,28 +18,58 @@ export class CatalogController {
   constructor(
     private readonly catalog: CatalogService,
     private readonly artistDetail: ArtistDetailService,
+    private readonly quickSearch: CatalogQuickSearchService,
+    private readonly history: CatalogHistoryService,
   ) {}
 
   @Get('search')
-  async search(@Query() dto: SearchCatalogDto) {
-    return {
-      data: await this.catalog.search(
-        dto.q,
-        dto.type,
-        dto.limit,
-        dto.cursor ?? null,
-      ),
-    };
+  @UseGuards(OptionalJwtAuthGuard)
+  async search(
+    @Query() dto: SearchCatalogDto,
+    @Req() req: Request & { user?: JwtPayload },
+  ) {
+    const result = await this.catalog.search(
+      dto.q,
+      dto.type,
+      dto.limit,
+      dto.cursor ?? null,
+    );
+    if (req.user) {
+      await this.history.recordSearch(req.user.sub, dto.q);
+    }
+    return { data: result };
+  }
+
+  @Get('quick-search')
+  @Throttle({ default: { limit: 30, ttl: 60 } })
+  async quickSearchCatalog(@Query() dto: QuickSearchCatalogDto) {
+    return { data: await this.quickSearch.quickSearch(dto.q) };
   }
 
   @Get('albums/:deezerId')
-  async getAlbum(@Param('deezerId') deezerId: string) {
-    return { data: await this.catalog.getAlbum(deezerId) };
+  @UseGuards(OptionalJwtAuthGuard)
+  async getAlbum(
+    @Param('deezerId') deezerId: string,
+    @Req() req: Request & { user?: JwtPayload },
+  ) {
+    const album = await this.catalog.getAlbum(deezerId);
+    if (req.user) {
+      await this.history.recordAlbumView(req.user.sub, album);
+    }
+    return { data: album };
   }
 
   @Get('tracks/:deezerId')
-  async getTrack(@Param('deezerId') deezerId: string) {
-    return { data: await this.catalog.getTrack(deezerId) };
+  @UseGuards(OptionalJwtAuthGuard)
+  async getTrack(
+    @Param('deezerId') deezerId: string,
+    @Req() req: Request & { user?: JwtPayload },
+  ) {
+    const track = await this.catalog.getTrack(deezerId);
+    if (req.user) {
+      await this.history.recordTrackView(req.user.sub, track);
+    }
+    return { data: track };
   }
 
   @Get('artists/:deezerId/albums')
@@ -59,8 +96,16 @@ export class CatalogController {
   }
 
   @Get('artists/:deezerId/detail')
-  async getArtistDetail(@Param('deezerId') deezerId: string) {
-    return { data: await this.artistDetail.getDetail(deezerId) };
+  @UseGuards(OptionalJwtAuthGuard)
+  async getArtistDetail(
+    @Param('deezerId') deezerId: string,
+    @Req() req: Request & { user?: JwtPayload },
+  ) {
+    const detail = await this.artistDetail.getDetail(deezerId);
+    if (req.user) {
+      await this.history.recordArtistView(req.user.sub, detail.artist);
+    }
+    return { data: detail };
   }
 
   @Get('artists/:deezerId/tracks')

@@ -25,7 +25,10 @@ export const ModelName = {
     Report: 'Report',
     RecommendationSnapshot: 'RecommendationSnapshot',
     FollowSuggestionSnapshot: 'FollowSuggestionSnapshot',
-    TrendingSnapshot: 'TrendingSnapshot'
+    TrendingSnapshot: 'TrendingSnapshot',
+    CatalogSearchHistory: 'CatalogSearchHistory',
+    UserSearchHistory: 'UserSearchHistory',
+    RecentlyViewedItem: 'RecentlyViewedItem'
 };
 export const TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -197,6 +200,29 @@ export const TrendingSnapshotScalarFieldEnum = {
     id: 'id',
     payload: 'payload',
     snapshotAt: 'snapshotAt'
+};
+export const CatalogSearchHistoryScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    query: 'query',
+    searchedAt: 'searchedAt'
+};
+export const UserSearchHistoryScalarFieldEnum = {
+    id: 'id',
+    searcherId: 'searcherId',
+    query: 'query',
+    searchedAt: 'searchedAt'
+};
+export const RecentlyViewedItemScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    resourceType: 'resourceType',
+    deezerId: 'deezerId',
+    title: 'title',
+    artistName: 'artistName',
+    coverUrl: 'coverUrl',
+    albumsCount: 'albumsCount',
+    viewedAt: 'viewedAt'
 };
 export const SortOrder = {
     asc: 'asc',

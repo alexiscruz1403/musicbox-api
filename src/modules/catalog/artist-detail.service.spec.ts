@@ -12,6 +12,7 @@ const artistFixture: CatalogArtist = {
   name: 'Daft Punk',
   imageUrl: 'https://example.com/daft-punk.jpg',
   fans: 1000,
+  albumsCount: 9,
 };
 
 const dbArtistRow = {

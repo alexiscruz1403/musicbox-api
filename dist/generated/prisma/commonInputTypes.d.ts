@@ -371,6 +371,21 @@ export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
     _min?: Prisma.NestedJsonFilter<$PrismaModel>;
     _max?: Prisma.NestedJsonFilter<$PrismaModel>;
 };
+export type EnumCatalogResourceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CatalogResourceType | Prisma.EnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    in?: $Enums.CatalogResourceType[] | Prisma.ListEnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.CatalogResourceType[] | Prisma.ListEnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumCatalogResourceTypeFilter<$PrismaModel> | $Enums.CatalogResourceType;
+};
+export type EnumCatalogResourceTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CatalogResourceType | Prisma.EnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    in?: $Enums.CatalogResourceType[] | Prisma.ListEnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.CatalogResourceType[] | Prisma.ListEnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumCatalogResourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.CatalogResourceType;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumCatalogResourceTypeFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumCatalogResourceTypeFilter<$PrismaModel>;
+};
 export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | Prisma.StringFieldRefInput<$PrismaModel>;
     in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>;
@@ -732,4 +747,19 @@ export type NestedJsonFilterBase<$PrismaModel = never> = {
     gt?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>;
     gte?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>;
     not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter;
+};
+export type NestedEnumCatalogResourceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CatalogResourceType | Prisma.EnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    in?: $Enums.CatalogResourceType[] | Prisma.ListEnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.CatalogResourceType[] | Prisma.ListEnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumCatalogResourceTypeFilter<$PrismaModel> | $Enums.CatalogResourceType;
+};
+export type NestedEnumCatalogResourceTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CatalogResourceType | Prisma.EnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    in?: $Enums.CatalogResourceType[] | Prisma.ListEnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.CatalogResourceType[] | Prisma.ListEnumCatalogResourceTypeFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumCatalogResourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.CatalogResourceType;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumCatalogResourceTypeFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumCatalogResourceTypeFilter<$PrismaModel>;
 };

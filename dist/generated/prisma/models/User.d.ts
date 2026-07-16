@@ -272,6 +272,9 @@ export type UserWhereInput = {
     followSuggestionSnapshot?: Prisma.XOR<Prisma.FollowSuggestionSnapshotNullableScalarRelationFilter, Prisma.FollowSuggestionSnapshotWhereInput> | null;
     followRequestsSent?: Prisma.FollowRequestListRelationFilter;
     followRequestsReceived?: Prisma.FollowRequestListRelationFilter;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryListRelationFilter;
+    userSearchHistory?: Prisma.UserSearchHistoryListRelationFilter;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemListRelationFilter;
 };
 export type UserOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -311,6 +314,9 @@ export type UserOrderByWithRelationInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotOrderByWithRelationInput;
     followRequestsSent?: Prisma.FollowRequestOrderByRelationAggregateInput;
     followRequestsReceived?: Prisma.FollowRequestOrderByRelationAggregateInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryOrderByRelationAggregateInput;
+    userSearchHistory?: Prisma.UserSearchHistoryOrderByRelationAggregateInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemOrderByRelationAggregateInput;
 };
 export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -353,6 +359,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     followSuggestionSnapshot?: Prisma.XOR<Prisma.FollowSuggestionSnapshotNullableScalarRelationFilter, Prisma.FollowSuggestionSnapshotWhereInput> | null;
     followRequestsSent?: Prisma.FollowRequestListRelationFilter;
     followRequestsReceived?: Prisma.FollowRequestListRelationFilter;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryListRelationFilter;
+    userSearchHistory?: Prisma.UserSearchHistoryListRelationFilter;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemListRelationFilter;
 }, "id" | "handle" | "email" | "googleId">;
 export type UserOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -448,6 +457,9 @@ export type UserCreateInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateInput = {
     id?: string;
@@ -487,6 +499,9 @@ export type UserUncheckedCreateInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -526,6 +541,9 @@ export type UserUpdateInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -565,6 +583,9 @@ export type UserUncheckedUpdateInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateManyInput = {
     id?: string;
@@ -938,6 +959,42 @@ export type UserUpdateOneRequiredWithoutFollowSuggestionSnapshotNestedInput = {
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFollowSuggestionSnapshotInput, Prisma.UserUpdateWithoutFollowSuggestionSnapshotInput>, Prisma.UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput>;
 };
+export type UserCreateNestedOneWithoutCatalogSearchHistoryInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutCatalogSearchHistoryInput, Prisma.UserUncheckedCreateWithoutCatalogSearchHistoryInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutCatalogSearchHistoryInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutCatalogSearchHistoryNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutCatalogSearchHistoryInput, Prisma.UserUncheckedCreateWithoutCatalogSearchHistoryInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutCatalogSearchHistoryInput;
+    upsert?: Prisma.UserUpsertWithoutCatalogSearchHistoryInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCatalogSearchHistoryInput, Prisma.UserUpdateWithoutCatalogSearchHistoryInput>, Prisma.UserUncheckedUpdateWithoutCatalogSearchHistoryInput>;
+};
+export type UserCreateNestedOneWithoutUserSearchHistoryInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutUserSearchHistoryInput, Prisma.UserUncheckedCreateWithoutUserSearchHistoryInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserSearchHistoryInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutUserSearchHistoryNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutUserSearchHistoryInput, Prisma.UserUncheckedCreateWithoutUserSearchHistoryInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserSearchHistoryInput;
+    upsert?: Prisma.UserUpsertWithoutUserSearchHistoryInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserSearchHistoryInput, Prisma.UserUpdateWithoutUserSearchHistoryInput>, Prisma.UserUncheckedUpdateWithoutUserSearchHistoryInput>;
+};
+export type UserCreateNestedOneWithoutRecentlyViewedItemsInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutRecentlyViewedItemsInput, Prisma.UserUncheckedCreateWithoutRecentlyViewedItemsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutRecentlyViewedItemsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutRecentlyViewedItemsNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutRecentlyViewedItemsInput, Prisma.UserUncheckedCreateWithoutRecentlyViewedItemsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutRecentlyViewedItemsInput;
+    upsert?: Prisma.UserUpsertWithoutRecentlyViewedItemsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRecentlyViewedItemsInput, Prisma.UserUpdateWithoutRecentlyViewedItemsInput>, Prisma.UserUncheckedUpdateWithoutRecentlyViewedItemsInput>;
+};
 export type UserCreateWithoutFollowingInput = {
     id?: string;
     handle: string;
@@ -975,6 +1032,9 @@ export type UserCreateWithoutFollowingInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutFollowingInput = {
     id?: string;
@@ -1013,6 +1073,9 @@ export type UserUncheckedCreateWithoutFollowingInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutFollowingInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1055,6 +1118,9 @@ export type UserCreateWithoutFollowersInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutFollowersInput = {
     id?: string;
@@ -1093,6 +1159,9 @@ export type UserUncheckedCreateWithoutFollowersInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutFollowersInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1144,6 +1213,9 @@ export type UserUpdateWithoutFollowingInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutFollowingInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1182,6 +1254,9 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserUpsertWithoutFollowersInput = {
     update: Prisma.XOR<Prisma.UserUpdateWithoutFollowersInput, Prisma.UserUncheckedUpdateWithoutFollowersInput>;
@@ -1229,6 +1304,9 @@ export type UserUpdateWithoutFollowersInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutFollowersInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1267,6 +1345,9 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutFollowRequestsSentInput = {
     id?: string;
@@ -1305,6 +1386,9 @@ export type UserCreateWithoutFollowRequestsSentInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutFollowRequestsSentInput = {
     id?: string;
@@ -1343,6 +1427,9 @@ export type UserUncheckedCreateWithoutFollowRequestsSentInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutFollowRequestsSentInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1385,6 +1472,9 @@ export type UserCreateWithoutFollowRequestsReceivedInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutFollowRequestsReceivedInput = {
     id?: string;
@@ -1423,6 +1513,9 @@ export type UserUncheckedCreateWithoutFollowRequestsReceivedInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutFollowRequestsReceivedInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1474,6 +1567,9 @@ export type UserUpdateWithoutFollowRequestsSentInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutFollowRequestsSentInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1512,6 +1608,9 @@ export type UserUncheckedUpdateWithoutFollowRequestsSentInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserUpsertWithoutFollowRequestsReceivedInput = {
     update: Prisma.XOR<Prisma.UserUpdateWithoutFollowRequestsReceivedInput, Prisma.UserUncheckedUpdateWithoutFollowRequestsReceivedInput>;
@@ -1559,6 +1658,9 @@ export type UserUpdateWithoutFollowRequestsReceivedInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutFollowRequestsReceivedInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1597,6 +1699,9 @@ export type UserUncheckedUpdateWithoutFollowRequestsReceivedInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutRefreshTokensInput = {
     id?: string;
@@ -1635,6 +1740,9 @@ export type UserCreateWithoutRefreshTokensInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutRefreshTokensInput = {
     id?: string;
@@ -1673,6 +1781,9 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutRefreshTokensInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1724,6 +1835,9 @@ export type UserUpdateWithoutRefreshTokensInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutRefreshTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1762,6 +1876,9 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutReviewsInput = {
     id?: string;
@@ -1800,6 +1917,9 @@ export type UserCreateWithoutReviewsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutReviewsInput = {
     id?: string;
@@ -1838,6 +1958,9 @@ export type UserUncheckedCreateWithoutReviewsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutReviewsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1889,6 +2012,9 @@ export type UserUpdateWithoutReviewsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutReviewsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1927,6 +2053,9 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutReactionsInput = {
     id?: string;
@@ -1965,6 +2094,9 @@ export type UserCreateWithoutReactionsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutReactionsInput = {
     id?: string;
@@ -2003,6 +2135,9 @@ export type UserUncheckedCreateWithoutReactionsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutReactionsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2054,6 +2189,9 @@ export type UserUpdateWithoutReactionsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutReactionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2092,6 +2230,9 @@ export type UserUncheckedUpdateWithoutReactionsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutCommentsInput = {
     id?: string;
@@ -2130,6 +2271,9 @@ export type UserCreateWithoutCommentsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutCommentsInput = {
     id?: string;
@@ -2168,6 +2312,9 @@ export type UserUncheckedCreateWithoutCommentsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutCommentsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2219,6 +2366,9 @@ export type UserUpdateWithoutCommentsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutCommentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2257,6 +2407,9 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutNotificationsReceivedInput = {
     id?: string;
@@ -2295,6 +2448,9 @@ export type UserCreateWithoutNotificationsReceivedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutNotificationsReceivedInput = {
     id?: string;
@@ -2333,6 +2489,9 @@ export type UserUncheckedCreateWithoutNotificationsReceivedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutNotificationsReceivedInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2375,6 +2534,9 @@ export type UserCreateWithoutNotificationsActedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutNotificationsActedInput = {
     id?: string;
@@ -2413,6 +2575,9 @@ export type UserUncheckedCreateWithoutNotificationsActedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutNotificationsActedInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2464,6 +2629,9 @@ export type UserUpdateWithoutNotificationsReceivedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutNotificationsReceivedInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2502,6 +2670,9 @@ export type UserUncheckedUpdateWithoutNotificationsReceivedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserUpsertWithoutNotificationsActedInput = {
     update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsActedInput, Prisma.UserUncheckedUpdateWithoutNotificationsActedInput>;
@@ -2549,6 +2720,9 @@ export type UserUpdateWithoutNotificationsActedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutNotificationsActedInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2587,6 +2761,9 @@ export type UserUncheckedUpdateWithoutNotificationsActedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutNotifPreferenceInput = {
     id?: string;
@@ -2625,6 +2802,9 @@ export type UserCreateWithoutNotifPreferenceInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutNotifPreferenceInput = {
     id?: string;
@@ -2663,6 +2843,9 @@ export type UserUncheckedCreateWithoutNotifPreferenceInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutNotifPreferenceInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2714,6 +2897,9 @@ export type UserUpdateWithoutNotifPreferenceInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutNotifPreferenceInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2752,6 +2938,9 @@ export type UserUncheckedUpdateWithoutNotifPreferenceInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutReportsInput = {
     id?: string;
@@ -2790,6 +2979,9 @@ export type UserCreateWithoutReportsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutReportsInput = {
     id?: string;
@@ -2828,6 +3020,9 @@ export type UserUncheckedCreateWithoutReportsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutReportsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2870,6 +3065,9 @@ export type UserCreateWithoutReportsReviewedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutReportsReviewedInput = {
     id?: string;
@@ -2908,6 +3106,9 @@ export type UserUncheckedCreateWithoutReportsReviewedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutReportsReviewedInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -2959,6 +3160,9 @@ export type UserUpdateWithoutReportsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutReportsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2997,6 +3201,9 @@ export type UserUncheckedUpdateWithoutReportsInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserUpsertWithoutReportsReviewedInput = {
     update: Prisma.XOR<Prisma.UserUpdateWithoutReportsReviewedInput, Prisma.UserUncheckedUpdateWithoutReportsReviewedInput>;
@@ -3044,6 +3251,9 @@ export type UserUpdateWithoutReportsReviewedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutReportsReviewedInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -3082,6 +3292,9 @@ export type UserUncheckedUpdateWithoutReportsReviewedInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutRecommendationSnapshotInput = {
     id?: string;
@@ -3120,6 +3333,9 @@ export type UserCreateWithoutRecommendationSnapshotInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutRecommendationSnapshotInput = {
     id?: string;
@@ -3158,6 +3374,9 @@ export type UserUncheckedCreateWithoutRecommendationSnapshotInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutRecommendationSnapshotInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -3209,6 +3428,9 @@ export type UserUpdateWithoutRecommendationSnapshotInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutRecommendationSnapshotInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -3247,6 +3469,9 @@ export type UserUncheckedUpdateWithoutRecommendationSnapshotInput = {
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutFollowSuggestionSnapshotInput = {
     id?: string;
@@ -3285,6 +3510,9 @@ export type UserCreateWithoutFollowSuggestionSnapshotInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutFollowSuggestionSnapshotInput = {
     id?: string;
@@ -3323,6 +3551,9 @@ export type UserUncheckedCreateWithoutFollowSuggestionSnapshotInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutFollowSuggestionSnapshotInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -3374,6 +3605,9 @@ export type UserUpdateWithoutFollowSuggestionSnapshotInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -3412,6 +3646,540 @@ export type UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
     followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
     followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
+};
+export type UserCreateWithoutCatalogSearchHistoryInput = {
+    id?: string;
+    handle: string;
+    displayName: string;
+    email: string;
+    passwordHash?: string | null;
+    googleId?: string | null;
+    avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
+    bio?: string | null;
+    notifEnabled?: boolean;
+    isPrivate?: boolean;
+    status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
+    consentedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
+    following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
+    followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
+    reactions?: Prisma.ReviewReactionCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentCreateNestedManyWithoutUserInput;
+    notificationsReceived?: Prisma.NotificationCreateNestedManyWithoutRecipientInput;
+    notificationsActed?: Prisma.NotificationCreateNestedManyWithoutActorInput;
+    notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
+    refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
+    reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
+    followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
+    followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutCatalogSearchHistoryInput = {
+    id?: string;
+    handle: string;
+    displayName: string;
+    email: string;
+    passwordHash?: string | null;
+    googleId?: string | null;
+    avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
+    bio?: string | null;
+    notifEnabled?: boolean;
+    isPrivate?: boolean;
+    status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
+    consentedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
+    following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
+    followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
+    reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput;
+    notificationsReceived?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientInput;
+    notificationsActed?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput;
+    notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
+    refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
+    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
+    followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutCatalogSearchHistoryInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutCatalogSearchHistoryInput, Prisma.UserUncheckedCreateWithoutCatalogSearchHistoryInput>;
+};
+export type UserUpsertWithoutCatalogSearchHistoryInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutCatalogSearchHistoryInput, Prisma.UserUncheckedUpdateWithoutCatalogSearchHistoryInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutCatalogSearchHistoryInput, Prisma.UserUncheckedCreateWithoutCatalogSearchHistoryInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutCatalogSearchHistoryInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutCatalogSearchHistoryInput, Prisma.UserUncheckedUpdateWithoutCatalogSearchHistoryInput>;
+};
+export type UserUpdateWithoutCatalogSearchHistoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    handle?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
+    followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
+    reactions?: Prisma.ReviewReactionUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUpdateManyWithoutUserNestedInput;
+    notificationsReceived?: Prisma.NotificationUpdateManyWithoutRecipientNestedInput;
+    notificationsActed?: Prisma.NotificationUpdateManyWithoutActorNestedInput;
+    notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
+    refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
+    reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
+    followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
+    followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutCatalogSearchHistoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    handle?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
+    followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
+    reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput;
+    notificationsReceived?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientNestedInput;
+    notificationsActed?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput;
+    notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
+    refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
+    reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
+    followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
+};
+export type UserCreateWithoutUserSearchHistoryInput = {
+    id?: string;
+    handle: string;
+    displayName: string;
+    email: string;
+    passwordHash?: string | null;
+    googleId?: string | null;
+    avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
+    bio?: string | null;
+    notifEnabled?: boolean;
+    isPrivate?: boolean;
+    status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
+    consentedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
+    following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
+    followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
+    reactions?: Prisma.ReviewReactionCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentCreateNestedManyWithoutUserInput;
+    notificationsReceived?: Prisma.NotificationCreateNestedManyWithoutRecipientInput;
+    notificationsActed?: Prisma.NotificationCreateNestedManyWithoutActorInput;
+    notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
+    refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
+    reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
+    followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
+    followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemCreateNestedManyWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutUserSearchHistoryInput = {
+    id?: string;
+    handle: string;
+    displayName: string;
+    email: string;
+    passwordHash?: string | null;
+    googleId?: string | null;
+    avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
+    bio?: string | null;
+    notifEnabled?: boolean;
+    isPrivate?: boolean;
+    status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
+    consentedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
+    following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
+    followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
+    reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput;
+    notificationsReceived?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientInput;
+    notificationsActed?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput;
+    notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
+    refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
+    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
+    followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedCreateNestedManyWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutUserSearchHistoryInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutUserSearchHistoryInput, Prisma.UserUncheckedCreateWithoutUserSearchHistoryInput>;
+};
+export type UserUpsertWithoutUserSearchHistoryInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutUserSearchHistoryInput, Prisma.UserUncheckedUpdateWithoutUserSearchHistoryInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutUserSearchHistoryInput, Prisma.UserUncheckedCreateWithoutUserSearchHistoryInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutUserSearchHistoryInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutUserSearchHistoryInput, Prisma.UserUncheckedUpdateWithoutUserSearchHistoryInput>;
+};
+export type UserUpdateWithoutUserSearchHistoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    handle?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
+    followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
+    reactions?: Prisma.ReviewReactionUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUpdateManyWithoutUserNestedInput;
+    notificationsReceived?: Prisma.NotificationUpdateManyWithoutRecipientNestedInput;
+    notificationsActed?: Prisma.NotificationUpdateManyWithoutActorNestedInput;
+    notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
+    refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
+    reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
+    followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
+    followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUpdateManyWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutUserSearchHistoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    handle?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
+    followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
+    reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput;
+    notificationsReceived?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientNestedInput;
+    notificationsActed?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput;
+    notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
+    refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
+    reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
+    followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    recentlyViewedItems?: Prisma.RecentlyViewedItemUncheckedUpdateManyWithoutUserNestedInput;
+};
+export type UserCreateWithoutRecentlyViewedItemsInput = {
+    id?: string;
+    handle: string;
+    displayName: string;
+    email: string;
+    passwordHash?: string | null;
+    googleId?: string | null;
+    avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
+    bio?: string | null;
+    notifEnabled?: boolean;
+    isPrivate?: boolean;
+    status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
+    consentedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
+    following?: Prisma.FollowCreateNestedManyWithoutFollowerInput;
+    followers?: Prisma.FollowCreateNestedManyWithoutFolloweeInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
+    reactions?: Prisma.ReviewReactionCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentCreateNestedManyWithoutUserInput;
+    notificationsReceived?: Prisma.NotificationCreateNestedManyWithoutRecipientInput;
+    notificationsActed?: Prisma.NotificationCreateNestedManyWithoutActorInput;
+    notifPreference?: Prisma.NotificationPreferenceCreateNestedOneWithoutUserInput;
+    refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput;
+    reports?: Prisma.ReportCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportCreateNestedManyWithoutReviewerInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotCreateNestedOneWithoutUserInput;
+    followRequestsSent?: Prisma.FollowRequestCreateNestedManyWithoutRequesterInput;
+    followRequestsReceived?: Prisma.FollowRequestCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryCreateNestedManyWithoutSearcherInput;
+};
+export type UserUncheckedCreateWithoutRecentlyViewedItemsInput = {
+    id?: string;
+    handle: string;
+    displayName: string;
+    email: string;
+    passwordHash?: string | null;
+    googleId?: string | null;
+    avatarUrl?: string | null;
+    avatarPublicId?: string | null;
+    coverUrl?: string | null;
+    coverPublicId?: string | null;
+    bio?: string | null;
+    notifEnabled?: boolean;
+    isPrivate?: boolean;
+    status?: $Enums.UserStatus;
+    role?: $Enums.UserRole;
+    consentedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    acceptedReportsCount?: number;
+    penaltyLevel?: number;
+    penalizedUntil?: Date | string | null;
+    following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput;
+    followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFolloweeInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
+    reactions?: Prisma.ReviewReactionUncheckedCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput;
+    notificationsReceived?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientInput;
+    notificationsActed?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput;
+    notifPreference?: Prisma.NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput;
+    refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
+    reports?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput;
+    reportsReviewed?: Prisma.ReportUncheckedCreateNestedManyWithoutReviewerInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedCreateNestedOneWithoutUserInput;
+    followRequestsSent?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutRequesterInput;
+    followRequestsReceived?: Prisma.FollowRequestUncheckedCreateNestedManyWithoutTargetInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedCreateNestedManyWithoutUserInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedCreateNestedManyWithoutSearcherInput;
+};
+export type UserCreateOrConnectWithoutRecentlyViewedItemsInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutRecentlyViewedItemsInput, Prisma.UserUncheckedCreateWithoutRecentlyViewedItemsInput>;
+};
+export type UserUpsertWithoutRecentlyViewedItemsInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutRecentlyViewedItemsInput, Prisma.UserUncheckedUpdateWithoutRecentlyViewedItemsInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutRecentlyViewedItemsInput, Prisma.UserUncheckedCreateWithoutRecentlyViewedItemsInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutRecentlyViewedItemsInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutRecentlyViewedItemsInput, Prisma.UserUncheckedUpdateWithoutRecentlyViewedItemsInput>;
+};
+export type UserUpdateWithoutRecentlyViewedItemsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    handle?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput;
+    followers?: Prisma.FollowUpdateManyWithoutFolloweeNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
+    reactions?: Prisma.ReviewReactionUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUpdateManyWithoutUserNestedInput;
+    notificationsReceived?: Prisma.NotificationUpdateManyWithoutRecipientNestedInput;
+    notificationsActed?: Prisma.NotificationUpdateManyWithoutActorNestedInput;
+    notifPreference?: Prisma.NotificationPreferenceUpdateOneWithoutUserNestedInput;
+    refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput;
+    reports?: Prisma.ReportUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUpdateManyWithoutReviewerNestedInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUpdateOneWithoutUserNestedInput;
+    followRequestsSent?: Prisma.FollowRequestUpdateManyWithoutRequesterNestedInput;
+    followRequestsReceived?: Prisma.FollowRequestUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUpdateManyWithoutSearcherNestedInput;
+};
+export type UserUncheckedUpdateWithoutRecentlyViewedItemsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    handle?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    notifEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    acceptedReportsCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    penaltyLevel?: Prisma.IntFieldUpdateOperationsInput | number;
+    penalizedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput;
+    followers?: Prisma.FollowUncheckedUpdateManyWithoutFolloweeNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
+    reactions?: Prisma.ReviewReactionUncheckedUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput;
+    notificationsReceived?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientNestedInput;
+    notificationsActed?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput;
+    notifPreference?: Prisma.NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput;
+    refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
+    reports?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput;
+    reportsReviewed?: Prisma.ReportUncheckedUpdateManyWithoutReviewerNestedInput;
+    recommendationSnapshot?: Prisma.RecommendationSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotUncheckedUpdateOneWithoutUserNestedInput;
+    followRequestsSent?: Prisma.FollowRequestUncheckedUpdateManyWithoutRequesterNestedInput;
+    followRequestsReceived?: Prisma.FollowRequestUncheckedUpdateManyWithoutTargetNestedInput;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryUncheckedUpdateManyWithoutUserNestedInput;
+    userSearchHistory?: Prisma.UserSearchHistoryUncheckedUpdateManyWithoutSearcherNestedInput;
 };
 export type UserCountOutputType = {
     following: number;
@@ -3426,6 +4194,9 @@ export type UserCountOutputType = {
     reportsReviewed: number;
     followRequestsSent: number;
     followRequestsReceived: number;
+    catalogSearchHistory: number;
+    userSearchHistory: number;
+    recentlyViewedItems: number;
 };
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     following?: boolean | UserCountOutputTypeCountFollowingArgs;
@@ -3440,6 +4211,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
     reportsReviewed?: boolean | UserCountOutputTypeCountReportsReviewedArgs;
     followRequestsSent?: boolean | UserCountOutputTypeCountFollowRequestsSentArgs;
     followRequestsReceived?: boolean | UserCountOutputTypeCountFollowRequestsReceivedArgs;
+    catalogSearchHistory?: boolean | UserCountOutputTypeCountCatalogSearchHistoryArgs;
+    userSearchHistory?: boolean | UserCountOutputTypeCountUserSearchHistoryArgs;
+    recentlyViewedItems?: boolean | UserCountOutputTypeCountRecentlyViewedItemsArgs;
 };
 export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null;
@@ -3480,6 +4254,15 @@ export type UserCountOutputTypeCountFollowRequestsSentArgs<ExtArgs extends runti
 export type UserCountOutputTypeCountFollowRequestsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.FollowRequestWhereInput;
 };
+export type UserCountOutputTypeCountCatalogSearchHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.CatalogSearchHistoryWhereInput;
+};
+export type UserCountOutputTypeCountUserSearchHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.UserSearchHistoryWhereInput;
+};
+export type UserCountOutputTypeCountRecentlyViewedItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.RecentlyViewedItemWhereInput;
+};
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     handle?: boolean;
@@ -3518,6 +4301,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     followSuggestionSnapshot?: boolean | Prisma.User$followSuggestionSnapshotArgs<ExtArgs>;
     followRequestsSent?: boolean | Prisma.User$followRequestsSentArgs<ExtArgs>;
     followRequestsReceived?: boolean | Prisma.User$followRequestsReceivedArgs<ExtArgs>;
+    catalogSearchHistory?: boolean | Prisma.User$catalogSearchHistoryArgs<ExtArgs>;
+    userSearchHistory?: boolean | Prisma.User$userSearchHistoryArgs<ExtArgs>;
+    recentlyViewedItems?: boolean | Prisma.User$recentlyViewedItemsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -3609,6 +4395,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     followSuggestionSnapshot?: boolean | Prisma.User$followSuggestionSnapshotArgs<ExtArgs>;
     followRequestsSent?: boolean | Prisma.User$followRequestsSentArgs<ExtArgs>;
     followRequestsReceived?: boolean | Prisma.User$followRequestsReceivedArgs<ExtArgs>;
+    catalogSearchHistory?: boolean | Prisma.User$catalogSearchHistoryArgs<ExtArgs>;
+    userSearchHistory?: boolean | Prisma.User$userSearchHistoryArgs<ExtArgs>;
+    recentlyViewedItems?: boolean | Prisma.User$recentlyViewedItemsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -3631,6 +4420,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         followSuggestionSnapshot: Prisma.$FollowSuggestionSnapshotPayload<ExtArgs> | null;
         followRequestsSent: Prisma.$FollowRequestPayload<ExtArgs>[];
         followRequestsReceived: Prisma.$FollowRequestPayload<ExtArgs>[];
+        catalogSearchHistory: Prisma.$CatalogSearchHistoryPayload<ExtArgs>[];
+        userSearchHistory: Prisma.$UserSearchHistoryPayload<ExtArgs>[];
+        recentlyViewedItems: Prisma.$RecentlyViewedItemPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -3722,6 +4514,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
     followSuggestionSnapshot<T extends Prisma.User$followSuggestionSnapshotArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followSuggestionSnapshotArgs<ExtArgs>>): Prisma.Prisma__FollowSuggestionSnapshotClient<runtime.Types.Result.GetResult<Prisma.$FollowSuggestionSnapshotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     followRequestsSent<T extends Prisma.User$followRequestsSentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followRequestsSentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     followRequestsReceived<T extends Prisma.User$followRequestsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followRequestsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    catalogSearchHistory<T extends Prisma.User$catalogSearchHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$catalogSearchHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CatalogSearchHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    userSearchHistory<T extends Prisma.User$userSearchHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userSearchHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSearchHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    recentlyViewedItems<T extends Prisma.User$recentlyViewedItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recentlyViewedItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecentlyViewedItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -3997,6 +4792,39 @@ export type User$followRequestsReceivedArgs<ExtArgs extends runtime.Types.Extens
     take?: number;
     skip?: number;
     distinct?: Prisma.FollowRequestScalarFieldEnum | Prisma.FollowRequestScalarFieldEnum[];
+};
+export type User$catalogSearchHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.CatalogSearchHistorySelect<ExtArgs> | null;
+    omit?: Prisma.CatalogSearchHistoryOmit<ExtArgs> | null;
+    include?: Prisma.CatalogSearchHistoryInclude<ExtArgs> | null;
+    where?: Prisma.CatalogSearchHistoryWhereInput;
+    orderBy?: Prisma.CatalogSearchHistoryOrderByWithRelationInput | Prisma.CatalogSearchHistoryOrderByWithRelationInput[];
+    cursor?: Prisma.CatalogSearchHistoryWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.CatalogSearchHistoryScalarFieldEnum | Prisma.CatalogSearchHistoryScalarFieldEnum[];
+};
+export type User$userSearchHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserSearchHistorySelect<ExtArgs> | null;
+    omit?: Prisma.UserSearchHistoryOmit<ExtArgs> | null;
+    include?: Prisma.UserSearchHistoryInclude<ExtArgs> | null;
+    where?: Prisma.UserSearchHistoryWhereInput;
+    orderBy?: Prisma.UserSearchHistoryOrderByWithRelationInput | Prisma.UserSearchHistoryOrderByWithRelationInput[];
+    cursor?: Prisma.UserSearchHistoryWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.UserSearchHistoryScalarFieldEnum | Prisma.UserSearchHistoryScalarFieldEnum[];
+};
+export type User$recentlyViewedItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.RecentlyViewedItemSelect<ExtArgs> | null;
+    omit?: Prisma.RecentlyViewedItemOmit<ExtArgs> | null;
+    include?: Prisma.RecentlyViewedItemInclude<ExtArgs> | null;
+    where?: Prisma.RecentlyViewedItemWhereInput;
+    orderBy?: Prisma.RecentlyViewedItemOrderByWithRelationInput | Prisma.RecentlyViewedItemOrderByWithRelationInput[];
+    cursor?: Prisma.RecentlyViewedItemWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.RecentlyViewedItemScalarFieldEnum | Prisma.RecentlyViewedItemScalarFieldEnum[];
 };
 export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserSelect<ExtArgs> | null;

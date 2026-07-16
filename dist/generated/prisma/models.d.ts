@@ -15,4 +15,7 @@ export type * from './models/Report.js';
 export type * from './models/RecommendationSnapshot.js';
 export type * from './models/FollowSuggestionSnapshot.js';
 export type * from './models/TrendingSnapshot.js';
+export type * from './models/CatalogSearchHistory.js';
+export type * from './models/UserSearchHistory.js';
+export type * from './models/RecentlyViewedItem.js';
 export type * from './commonInputTypes.js';

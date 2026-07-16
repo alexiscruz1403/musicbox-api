@@ -174,6 +174,9 @@ export declare const ModelName: {
     readonly RecommendationSnapshot: "RecommendationSnapshot";
     readonly FollowSuggestionSnapshot: "FollowSuggestionSnapshot";
     readonly TrendingSnapshot: "TrendingSnapshot";
+    readonly CatalogSearchHistory: "CatalogSearchHistory";
+    readonly UserSearchHistory: "UserSearchHistory";
+    readonly RecentlyViewedItem: "RecentlyViewedItem";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
@@ -186,7 +189,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "follow" | "followRequest" | "refreshToken" | "artist" | "album" | "track" | "review" | "trackReviewItem" | "reviewReaction" | "comment" | "notification" | "notificationPreference" | "report" | "recommendationSnapshot" | "followSuggestionSnapshot" | "trendingSnapshot";
+        modelProps: "user" | "follow" | "followRequest" | "refreshToken" | "artist" | "album" | "track" | "review" | "trackReviewItem" | "reviewReaction" | "comment" | "notification" | "notificationPreference" | "report" | "recommendationSnapshot" | "followSuggestionSnapshot" | "trendingSnapshot" | "catalogSearchHistory" | "userSearchHistory" | "recentlyViewedItem";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -1448,6 +1451,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        CatalogSearchHistory: {
+            payload: Prisma.$CatalogSearchHistoryPayload<ExtArgs>;
+            fields: Prisma.CatalogSearchHistoryFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.CatalogSearchHistoryFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogSearchHistoryPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.CatalogSearchHistoryFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogSearchHistoryPayload>;
+                };
+                findFirst: {
+                    args: Prisma.CatalogSearchHistoryFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogSearchHistoryPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.CatalogSearchHistoryFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogSearchHistoryPayload>;
+                };
+                findMany: {
+                    args: Prisma.CatalogSearchHistoryFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogSearchHistoryPayload>[];
+                };
+                create: {
+                    args: Prisma.CatalogSearchHistoryCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogSearchHistoryPayload>;
+                };
+                createMany: {
+                    args: Prisma.CatalogSearchHistoryCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.CatalogSearchHistoryCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogSearchHistoryPayload>[];
+                };
+                delete: {
+                    args: Prisma.CatalogSearchHistoryDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogSearchHistoryPayload>;
+                };
+                update: {
+                    args: Prisma.CatalogSearchHistoryUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogSearchHistoryPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.CatalogSearchHistoryDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.CatalogSearchHistoryUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.CatalogSearchHistoryUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogSearchHistoryPayload>[];
+                };
+                upsert: {
+                    args: Prisma.CatalogSearchHistoryUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogSearchHistoryPayload>;
+                };
+                aggregate: {
+                    args: Prisma.CatalogSearchHistoryAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateCatalogSearchHistory>;
+                };
+                groupBy: {
+                    args: Prisma.CatalogSearchHistoryGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.CatalogSearchHistoryGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.CatalogSearchHistoryCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.CatalogSearchHistoryCountAggregateOutputType> | number;
+                };
+            };
+        };
+        UserSearchHistory: {
+            payload: Prisma.$UserSearchHistoryPayload<ExtArgs>;
+            fields: Prisma.UserSearchHistoryFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.UserSearchHistoryFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSearchHistoryPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.UserSearchHistoryFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSearchHistoryPayload>;
+                };
+                findFirst: {
+                    args: Prisma.UserSearchHistoryFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSearchHistoryPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.UserSearchHistoryFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSearchHistoryPayload>;
+                };
+                findMany: {
+                    args: Prisma.UserSearchHistoryFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSearchHistoryPayload>[];
+                };
+                create: {
+                    args: Prisma.UserSearchHistoryCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSearchHistoryPayload>;
+                };
+                createMany: {
+                    args: Prisma.UserSearchHistoryCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.UserSearchHistoryCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSearchHistoryPayload>[];
+                };
+                delete: {
+                    args: Prisma.UserSearchHistoryDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSearchHistoryPayload>;
+                };
+                update: {
+                    args: Prisma.UserSearchHistoryUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSearchHistoryPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.UserSearchHistoryDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.UserSearchHistoryUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.UserSearchHistoryUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSearchHistoryPayload>[];
+                };
+                upsert: {
+                    args: Prisma.UserSearchHistoryUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSearchHistoryPayload>;
+                };
+                aggregate: {
+                    args: Prisma.UserSearchHistoryAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateUserSearchHistory>;
+                };
+                groupBy: {
+                    args: Prisma.UserSearchHistoryGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.UserSearchHistoryGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.UserSearchHistoryCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.UserSearchHistoryCountAggregateOutputType> | number;
+                };
+            };
+        };
+        RecentlyViewedItem: {
+            payload: Prisma.$RecentlyViewedItemPayload<ExtArgs>;
+            fields: Prisma.RecentlyViewedItemFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.RecentlyViewedItemFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RecentlyViewedItemPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.RecentlyViewedItemFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RecentlyViewedItemPayload>;
+                };
+                findFirst: {
+                    args: Prisma.RecentlyViewedItemFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RecentlyViewedItemPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.RecentlyViewedItemFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RecentlyViewedItemPayload>;
+                };
+                findMany: {
+                    args: Prisma.RecentlyViewedItemFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RecentlyViewedItemPayload>[];
+                };
+                create: {
+                    args: Prisma.RecentlyViewedItemCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RecentlyViewedItemPayload>;
+                };
+                createMany: {
+                    args: Prisma.RecentlyViewedItemCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.RecentlyViewedItemCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RecentlyViewedItemPayload>[];
+                };
+                delete: {
+                    args: Prisma.RecentlyViewedItemDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RecentlyViewedItemPayload>;
+                };
+                update: {
+                    args: Prisma.RecentlyViewedItemUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RecentlyViewedItemPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.RecentlyViewedItemDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.RecentlyViewedItemUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.RecentlyViewedItemUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RecentlyViewedItemPayload>[];
+                };
+                upsert: {
+                    args: Prisma.RecentlyViewedItemUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RecentlyViewedItemPayload>;
+                };
+                aggregate: {
+                    args: Prisma.RecentlyViewedItemAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateRecentlyViewedItem>;
+                };
+                groupBy: {
+                    args: Prisma.RecentlyViewedItemGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.RecentlyViewedItemGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.RecentlyViewedItemCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.RecentlyViewedItemCountAggregateOutputType> | number;
+                };
+            };
+        };
     };
 } & {
     other: {
@@ -1661,6 +1886,32 @@ export declare const TrendingSnapshotScalarFieldEnum: {
     readonly snapshotAt: "snapshotAt";
 };
 export type TrendingSnapshotScalarFieldEnum = (typeof TrendingSnapshotScalarFieldEnum)[keyof typeof TrendingSnapshotScalarFieldEnum];
+export declare const CatalogSearchHistoryScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly query: "query";
+    readonly searchedAt: "searchedAt";
+};
+export type CatalogSearchHistoryScalarFieldEnum = (typeof CatalogSearchHistoryScalarFieldEnum)[keyof typeof CatalogSearchHistoryScalarFieldEnum];
+export declare const UserSearchHistoryScalarFieldEnum: {
+    readonly id: "id";
+    readonly searcherId: "searcherId";
+    readonly query: "query";
+    readonly searchedAt: "searchedAt";
+};
+export type UserSearchHistoryScalarFieldEnum = (typeof UserSearchHistoryScalarFieldEnum)[keyof typeof UserSearchHistoryScalarFieldEnum];
+export declare const RecentlyViewedItemScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly resourceType: "resourceType";
+    readonly deezerId: "deezerId";
+    readonly title: "title";
+    readonly artistName: "artistName";
+    readonly coverUrl: "coverUrl";
+    readonly albumsCount: "albumsCount";
+    readonly viewedAt: "viewedAt";
+};
+export type RecentlyViewedItemScalarFieldEnum = (typeof RecentlyViewedItemScalarFieldEnum)[keyof typeof RecentlyViewedItemScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
@@ -1715,6 +1966,8 @@ export type EnumReportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 export type ListEnumReportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReportStatus[]'>;
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>;
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>;
+export type EnumCatalogResourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CatalogResourceType'>;
+export type ListEnumCatalogResourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CatalogResourceType[]'>;
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
 export type BatchPayload = {
@@ -1759,6 +2012,9 @@ export type GlobalOmitConfig = {
     recommendationSnapshot?: Prisma.RecommendationSnapshotOmit;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotOmit;
     trendingSnapshot?: Prisma.TrendingSnapshotOmit;
+    catalogSearchHistory?: Prisma.CatalogSearchHistoryOmit;
+    userSearchHistory?: Prisma.UserSearchHistoryOmit;
+    recentlyViewedItem?: Prisma.RecentlyViewedItemOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';
 export type LogDefinition = {

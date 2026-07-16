@@ -5,21 +5,21 @@ export interface CatalogArtist {
     name: string;
     imageUrl: string | null;
     fans: number;
+    albumsCount: number;
 }
 export interface CatalogTrack {
     deezerId: string;
     title: string;
     artist: CatalogArtist;
     albumDeezerId: string | null;
+    albumTitle: string | null;
     coverUrl: string | null;
     releaseDate: string | null;
     durationMs: number | null;
     trackNumber: number | null;
     previewUrl: string | null;
 }
-export interface ArtistTrackItem extends CatalogTrack {
-    albumTitle: string | null;
-}
+export type ArtistTrackItem = CatalogTrack;
 export interface CatalogAlbum {
     deezerId: string;
     title: string;

@@ -196,11 +196,14 @@ let UsersService = class UsersService {
     async searchUsers(q, cursor, limit, viewerId) {
         return this.repo.searchUsers(q.trim(), cursor, limit, viewerId);
     }
-    async getFollowers(handle, cursor, limit) {
-        return this.repo.getFollowers(handle, cursor, limit);
+    async quickSearchUsers(q, viewerId) {
+        return this.repo.quickSearchUsers(q.trim(), 5, viewerId);
     }
-    async getFollowing(handle, cursor, limit) {
-        return this.repo.getFollowing(handle, cursor, limit);
+    async getFollowers(handle, cursor, limit, viewerId) {
+        return this.repo.getFollowers(handle, cursor, limit, viewerId);
+    }
+    async getFollowing(handle, cursor, limit, viewerId) {
+        return this.repo.getFollowing(handle, cursor, limit, viewerId);
     }
     async follow(followerId, handle) {
         const target = await this.repo.findByHandle(handle);

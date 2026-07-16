@@ -69,6 +69,7 @@ export class DeezerMusicCatalogProvider
       name: raw.name,
       imageUrl: raw.picture_medium ?? null,
       fans: raw.nb_fan ?? 0,
+      albumsCount: raw.nb_album ?? 0,
     };
   }
 
@@ -78,6 +79,7 @@ export class DeezerMusicCatalogProvider
       title: raw.title,
       artist: this.mapArtist(raw.artist),
       albumDeezerId: raw.album ? String(raw.album.id) : null,
+      albumTitle: raw.album?.title ?? null,
       coverUrl: raw.album?.cover_medium ?? null,
       releaseDate:
         raw.release_date ?? raw.album?.release_date ?? albumReleaseDate ?? null,
