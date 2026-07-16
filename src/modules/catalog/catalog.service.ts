@@ -120,6 +120,7 @@ export class CatalogService {
             name: track.artist.name,
             imageUrl: track.artist.imageUrl,
             fans: 0,
+            albumsCount: 0,
           },
           albumDeezerId: track.album?.deezerId ?? null,
           albumTitle: track.album?.title ?? null,

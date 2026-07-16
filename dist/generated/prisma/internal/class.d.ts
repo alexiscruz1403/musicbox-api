@@ -81,5 +81,14 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get trendingSnapshot(): Prisma.TrendingSnapshotDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get catalogSearchHistory(): Prisma.CatalogSearchHistoryDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get userSearchHistory(): Prisma.UserSearchHistoryDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get recentlyViewedItem(): Prisma.RecentlyViewedItemDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;

@@ -102,9 +102,9 @@ export declare class UsersRepository {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
+            albumId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -136,8 +136,8 @@ export declare class UsersRepository {
             };
         } & {
             createdAt: Date;
-            followerId: string;
             followeeId: string;
+            followerId: string;
         })[];
         following: ({
             followee: {
@@ -147,8 +147,8 @@ export declare class UsersRepository {
             };
         } & {
             createdAt: Date;
-            followerId: string;
             followeeId: string;
+            followerId: string;
         })[];
         notifPrefs: {
             userId: string;
@@ -231,22 +231,29 @@ export declare class UsersRepository {
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
-    getFollowers(handle: string, cursor?: string, limit?: number): Promise<{
-        items: {
+    private hydrateIsFollowing;
+    getFollowers(handle: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
+        items: ({
             id: string;
             handle: string;
             displayName: string;
             avatarUrl: string | null;
-        }[];
+            isPrivate: boolean;
+        } & {
+            isFollowing: boolean;
+        })[];
         nextCursor: string | null;
     }>;
-    getFollowing(handle: string, cursor?: string, limit?: number): Promise<{
-        items: {
+    getFollowing(handle: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
+        items: ({
             id: string;
             handle: string;
             displayName: string;
             avatarUrl: string | null;
-        }[];
+            isPrivate: boolean;
+        } & {
+            isFollowing: boolean;
+        })[];
         nextCursor: string | null;
     }>;
     searchUsers(query: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
@@ -259,24 +266,31 @@ export declare class UsersRepository {
         }[];
         nextCursor: string | null;
     }>;
+    quickSearchUsers(query: string, limit: number, viewerId?: string): Promise<{
+        isFollowing: boolean;
+        handle: string;
+        displayName: string;
+        avatarUrl: string | null;
+        isPrivate: boolean;
+    }[]>;
     followExists(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
         createdAt: Date;
-        followerId: string;
         followeeId: string;
+        followerId: string;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     createFollow(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
         createdAt: Date;
-        followerId: string;
         followeeId: string;
+        followerId: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     deleteFollow(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
         createdAt: Date;
-        followerId: string;
         followeeId: string;
+        followerId: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;

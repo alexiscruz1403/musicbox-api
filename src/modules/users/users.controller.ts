@@ -16,6 +16,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Throttle } from '@nestjs/throttler';
 import { memoryStorage } from 'multer';
 import type { Request, Response } from 'express';
 import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
@@ -24,10 +25,12 @@ import { Public } from '../common/decorators/public.decorator.js';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
 import { ReviewsService } from '../reviews/reviews.service.js';
+import { QuickSearchUsersDto } from './dto/quick-search-users.dto.js';
 import { SearchUsersQueryDto } from './dto/search-users-query.dto.js';
 import { UpdateFollowRequestStatusDto } from './dto/update-follow-request-status.dto.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
+import { UserSearchHistoryService } from './user-search-history.service.js';
 import { UsersService } from './users.service.js';
 
 @Controller('users')
@@ -35,6 +38,7 @@ export class UsersController {
   constructor(
     private readonly users: UsersService,
     private readonly reviews: ReviewsService,
+    private readonly searchHistory: UserSearchHistoryService,
   ) {}
 
   @Get('me')
@@ -154,7 +158,43 @@ export class UsersController {
       query.limit,
       req.user?.sub,
     );
+    if (req.user) {
+      await this.searchHistory.recordSearch(req.user.sub, query.q);
+    }
     return { data: result.items, meta: { cursor: result.nextCursor } };
+  }
+
+  @Public()
+  @Get('quick-search')
+  @Throttle({ default: { limit: 30, ttl: 60 } })
+  @UseGuards(OptionalJwtAuthGuard)
+  async quickSearchUsers(
+    @Query() query: QuickSearchUsersDto,
+    @Req() req: Request & { user?: JwtPayload },
+  ) {
+    return {
+      data: await this.users.quickSearchUsers(query.q, req.user?.sub),
+    };
+  }
+
+  @Get('search-history')
+  async listSearchHistory(@CurrentUser() user: JwtPayload) {
+    return { data: await this.searchHistory.listHistory(user.sub) };
+  }
+
+  @Delete('search-history/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteSearchHistoryItem(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+  ) {
+    await this.searchHistory.deleteHistoryItem(user.sub, id);
+  }
+
+  @Delete('search-history')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteAllSearchHistory(@CurrentUser() user: JwtPayload) {
+    await this.searchHistory.deleteAllHistory(user.sub);
   }
 
   @Public()
@@ -179,8 +219,10 @@ export class UsersController {
 
   @Public()
   @Get(':handle/followers')
+  @UseGuards(OptionalJwtAuthGuard)
   async getFollowers(
     @Param('handle') handle: string,
+    @Req() req: Request & { user?: JwtPayload },
     @Query('cursor') cursor?: string,
     @Query('limit') limit?: string,
   ) {
@@ -189,14 +231,17 @@ export class UsersController {
         handle,
         cursor,
         limit ? parseInt(limit, 10) : undefined,
+        req.user?.sub,
       ),
     };
   }
 
   @Public()
   @Get(':handle/following')
+  @UseGuards(OptionalJwtAuthGuard)
   async getFollowing(
     @Param('handle') handle: string,
+    @Req() req: Request & { user?: JwtPayload },
     @Query('cursor') cursor?: string,
     @Query('limit') limit?: string,
   ) {
@@ -205,6 +250,7 @@ export class UsersController {
         handle,
         cursor,
         limit ? parseInt(limit, 10) : undefined,
+        req.user?.sub,
       ),
     };
   }

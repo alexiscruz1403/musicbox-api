@@ -107,18 +107,18 @@ export declare class ReviewsRepository {
         externalCoverUrl: string | null;
     }>;
     findById(id: string): Prisma.Prisma__ReviewClient<({
-        album: {
-            deezerId: string;
-        } | null;
-        track: {
-            deezerId: string;
-        } | null;
         user: {
             id: string;
             handle: string;
             displayName: string;
             avatarUrl: string | null;
         };
+        album: {
+            deezerId: string;
+        } | null;
+        track: {
+            deezerId: string;
+        } | null;
         trackReviewItems: ({
             track: {
                 deezerId: string;

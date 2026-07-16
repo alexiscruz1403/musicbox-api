@@ -102,9 +102,9 @@ export declare class UsersService {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
+            albumId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -230,22 +230,35 @@ export declare class UsersService {
         }[];
         nextCursor: string | null;
     }>;
-    getFollowers(handle: string, cursor?: string, limit?: number): Promise<{
-        items: {
+    quickSearchUsers(q: string, viewerId?: string): Promise<{
+        isFollowing: boolean;
+        handle: string;
+        displayName: string;
+        avatarUrl: string | null;
+        isPrivate: boolean;
+    }[]>;
+    getFollowers(handle: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
+        items: ({
             id: string;
             handle: string;
             displayName: string;
             avatarUrl: string | null;
-        }[];
+            isPrivate: boolean;
+        } & {
+            isFollowing: boolean;
+        })[];
         nextCursor: string | null;
     }>;
-    getFollowing(handle: string, cursor?: string, limit?: number): Promise<{
-        items: {
+    getFollowing(handle: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
+        items: ({
             id: string;
             handle: string;
             displayName: string;
             avatarUrl: string | null;
-        }[];
+            isPrivate: boolean;
+        } & {
+            isFollowing: boolean;
+        })[];
         nextCursor: string | null;
     }>;
     follow(followerId: string, handle: string): Promise<{

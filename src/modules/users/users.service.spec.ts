@@ -26,6 +26,7 @@ const mockRepo = {
   createFollow: vi.fn(),
   deleteFollow: vi.fn(),
   searchUsers: vi.fn(),
+  quickSearchUsers: vi.fn(),
   getExportData: vi.fn(),
   findFollowRequest: vi.fn(),
   createOrResetFollowRequest: vi.fn(),
@@ -658,6 +659,106 @@ describe('UsersService', () => {
       });
       const result = await service.searchUsers('juan');
       expect(result).toEqual({ items: [user], nextCursor: 'next' });
+    });
+  });
+
+  describe('getFollowers', () => {
+    it('forwards cursor/limit/viewerId to the repository', async () => {
+      mockRepo.getFollowers.mockResolvedValue({ items: [], nextCursor: null });
+      await service.getFollowers('juan', 'cursor-1', 5, 'viewer-1');
+      expect(mockRepo.getFollowers).toHaveBeenCalledWith(
+        'juan',
+        'cursor-1',
+        5,
+        'viewer-1',
+      );
+    });
+
+    it('forwards undefined viewerId for anonymous callers', async () => {
+      mockRepo.getFollowers.mockResolvedValue({ items: [], nextCursor: null });
+      await service.getFollowers('juan');
+      expect(mockRepo.getFollowers).toHaveBeenCalledWith(
+        'juan',
+        undefined,
+        undefined,
+        undefined,
+      );
+    });
+
+    it('returns items (with isFollowing/isPrivate) and nextCursor from the repository', async () => {
+      const follower = {
+        id: 'u2',
+        handle: 'juan',
+        displayName: 'Juan',
+        avatarUrl: null,
+        isPrivate: false,
+        isFollowing: true,
+      };
+      mockRepo.getFollowers.mockResolvedValue({
+        items: [follower],
+        nextCursor: 'next',
+      });
+      const result = await service.getFollowers('juan');
+      expect(result).toEqual({ items: [follower], nextCursor: 'next' });
+    });
+  });
+
+  describe('getFollowing', () => {
+    it('forwards cursor/limit/viewerId to the repository', async () => {
+      mockRepo.getFollowing.mockResolvedValue({ items: [], nextCursor: null });
+      await service.getFollowing('juan', 'cursor-1', 5, 'viewer-1');
+      expect(mockRepo.getFollowing).toHaveBeenCalledWith(
+        'juan',
+        'cursor-1',
+        5,
+        'viewer-1',
+      );
+    });
+
+    it('forwards undefined viewerId for anonymous callers', async () => {
+      mockRepo.getFollowing.mockResolvedValue({ items: [], nextCursor: null });
+      await service.getFollowing('juan');
+      expect(mockRepo.getFollowing).toHaveBeenCalledWith(
+        'juan',
+        undefined,
+        undefined,
+        undefined,
+      );
+    });
+  });
+
+  describe('quickSearchUsers', () => {
+    it('trims the query and forwards the fixed limit and viewerId to the repository', async () => {
+      mockRepo.quickSearchUsers.mockResolvedValue([]);
+      await service.quickSearchUsers('  juan  ', 'viewer-1');
+      expect(mockRepo.quickSearchUsers).toHaveBeenCalledWith(
+        'juan',
+        5,
+        'viewer-1',
+      );
+    });
+
+    it('forwards undefined viewerId for anonymous callers', async () => {
+      mockRepo.quickSearchUsers.mockResolvedValue([]);
+      await service.quickSearchUsers('juan');
+      expect(mockRepo.quickSearchUsers).toHaveBeenCalledWith(
+        'juan',
+        5,
+        undefined,
+      );
+    });
+
+    it('returns the items (including isFollowing) from the repository', async () => {
+      const user = {
+        handle: 'juan',
+        displayName: 'Juan',
+        avatarUrl: null,
+        isPrivate: false,
+        isFollowing: true,
+      };
+      mockRepo.quickSearchUsers.mockResolvedValue([user]);
+      const result = await service.quickSearchUsers('juan', 'viewer-1');
+      expect(result).toEqual([user]);
     });
   });
 

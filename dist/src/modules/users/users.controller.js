@@ -12,23 +12,28 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Req, Res, UploadedFile, UseGuards, UseInterceptors, } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Throttle } from '@nestjs/throttler';
 import { memoryStorage } from 'multer';
 import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
 import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
 import { ReviewsService } from '../reviews/reviews.service.js';
+import { QuickSearchUsersDto } from './dto/quick-search-users.dto.js';
 import { SearchUsersQueryDto } from './dto/search-users-query.dto.js';
 import { UpdateFollowRequestStatusDto } from './dto/update-follow-request-status.dto.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
+import { UserSearchHistoryService } from './user-search-history.service.js';
 import { UsersService } from './users.service.js';
 let UsersController = class UsersController {
     users;
     reviews;
-    constructor(users, reviews) {
+    searchHistory;
+    constructor(users, reviews, searchHistory) {
         this.users = users;
         this.reviews = reviews;
+        this.searchHistory = searchHistory;
     }
     async getMe(user) {
         return { data: await this.users.getMe(user.sub) };
@@ -67,7 +72,24 @@ let UsersController = class UsersController {
     }
     async searchUsers(query, req) {
         const result = await this.users.searchUsers(query.q, query.cursor, query.limit, req.user?.sub);
+        if (req.user) {
+            await this.searchHistory.recordSearch(req.user.sub, query.q);
+        }
         return { data: result.items, meta: { cursor: result.nextCursor } };
+    }
+    async quickSearchUsers(query, req) {
+        return {
+            data: await this.users.quickSearchUsers(query.q, req.user?.sub),
+        };
+    }
+    async listSearchHistory(user) {
+        return { data: await this.searchHistory.listHistory(user.sub) };
+    }
+    async deleteSearchHistoryItem(user, id) {
+        await this.searchHistory.deleteHistoryItem(user.sub, id);
+    }
+    async deleteAllSearchHistory(user) {
+        await this.searchHistory.deleteAllHistory(user.sub);
     }
     async checkHandle(handle, req) {
         return { data: await this.users.checkHandle(handle, req.user?.sub) };
@@ -75,14 +97,14 @@ let UsersController = class UsersController {
     async getPublicProfile(handle, req) {
         return { data: await this.users.getPublicProfile(handle, req.user?.sub) };
     }
-    async getFollowers(handle, cursor, limit) {
+    async getFollowers(handle, req, cursor, limit) {
         return {
-            data: await this.users.getFollowers(handle, cursor, limit ? parseInt(limit, 10) : undefined),
+            data: await this.users.getFollowers(handle, cursor, limit ? parseInt(limit, 10) : undefined, req.user?.sub),
         };
     }
-    async getFollowing(handle, cursor, limit) {
+    async getFollowing(handle, req, cursor, limit) {
         return {
-            data: await this.users.getFollowing(handle, cursor, limit ? parseInt(limit, 10) : undefined),
+            data: await this.users.getFollowing(handle, cursor, limit ? parseInt(limit, 10) : undefined, req.user?.sub),
         };
     }
     async getReviews(handle, query, req) {
@@ -212,6 +234,41 @@ __decorate([
 ], UsersController.prototype, "searchUsers", null);
 __decorate([
     Public(),
+    Get('quick-search'),
+    Throttle({ default: { limit: 30, ttl: 60 } }),
+    UseGuards(OptionalJwtAuthGuard),
+    __param(0, Query()),
+    __param(1, Req()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [QuickSearchUsersDto, Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "quickSearchUsers", null);
+__decorate([
+    Get('search-history'),
+    __param(0, CurrentUser()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "listSearchHistory", null);
+__decorate([
+    Delete('search-history/:id'),
+    HttpCode(HttpStatus.NO_CONTENT),
+    __param(0, CurrentUser()),
+    __param(1, Param('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "deleteSearchHistoryItem", null);
+__decorate([
+    Delete('search-history'),
+    HttpCode(HttpStatus.NO_CONTENT),
+    __param(0, CurrentUser()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "deleteAllSearchHistory", null);
+__decorate([
+    Public(),
     Get('check-handle'),
     UseGuards(OptionalJwtAuthGuard),
     __param(0, Query('handle')),
@@ -233,21 +290,25 @@ __decorate([
 __decorate([
     Public(),
     Get(':handle/followers'),
+    UseGuards(OptionalJwtAuthGuard),
     __param(0, Param('handle')),
-    __param(1, Query('cursor')),
-    __param(2, Query('limit')),
+    __param(1, Req()),
+    __param(2, Query('cursor')),
+    __param(3, Query('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:paramtypes", [String, Object, String, String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getFollowers", null);
 __decorate([
     Public(),
     Get(':handle/following'),
+    UseGuards(OptionalJwtAuthGuard),
     __param(0, Param('handle')),
-    __param(1, Query('cursor')),
-    __param(2, Query('limit')),
+    __param(1, Req()),
+    __param(2, Query('cursor')),
+    __param(3, Query('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:paramtypes", [String, Object, String, String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getFollowing", null);
 __decorate([
@@ -282,7 +343,8 @@ __decorate([
 UsersController = __decorate([
     Controller('users'),
     __metadata("design:paramtypes", [UsersService,
-        ReviewsService])
+        ReviewsService,
+        UserSearchHistoryService])
 ], UsersController);
 export { UsersController };
 //# sourceMappingURL=users.controller.js.map

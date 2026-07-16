@@ -2,15 +2,18 @@ import type { Request, Response } from 'express';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
 import { ReviewsService } from '../reviews/reviews.service.js';
+import { QuickSearchUsersDto } from './dto/quick-search-users.dto.js';
 import { SearchUsersQueryDto } from './dto/search-users-query.dto.js';
 import { UpdateFollowRequestStatusDto } from './dto/update-follow-request-status.dto.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
+import { UserSearchHistoryService } from './user-search-history.service.js';
 import { UsersService } from './users.service.js';
 export declare class UsersController {
     private readonly users;
     private readonly reviews;
-    constructor(users: UsersService, reviews: ReviewsService);
+    private readonly searchHistory;
+    constructor(users: UsersService, reviews: ReviewsService, searchHistory: UserSearchHistoryService);
     getMe(user: JwtPayload): Promise<{
         data: {
             user: {
@@ -117,9 +120,9 @@ export declare class UsersController {
                 updatedAt: Date;
                 deletedAt: Date | null;
                 userId: string;
-                albumId: string | null;
                 type: import("../../../generated/prisma/enums.js").ReviewType;
                 trackId: string | null;
+                albumId: string | null;
                 description: string;
                 rating: import("@prisma/client-runtime-utils").Decimal;
                 externalTitle: string;
@@ -247,6 +250,27 @@ export declare class UsersController {
             cursor: string | null;
         };
     }>;
+    quickSearchUsers(query: QuickSearchUsersDto, req: Request & {
+        user?: JwtPayload;
+    }): Promise<{
+        data: {
+            isFollowing: boolean;
+            handle: string;
+            displayName: string;
+            avatarUrl: string | null;
+            isPrivate: boolean;
+        }[];
+    }>;
+    listSearchHistory(user: JwtPayload): Promise<{
+        data: {
+            query: string;
+            id: string;
+            searcherId: string;
+            searchedAt: Date;
+        }[];
+    }>;
+    deleteSearchHistoryItem(user: JwtPayload, id: string): Promise<void>;
+    deleteAllSearchHistory(user: JwtPayload): Promise<void>;
     checkHandle(handle: string, req: Request & {
         user?: JwtPayload;
     }): Promise<{
@@ -285,25 +309,35 @@ export declare class UsersController {
             followRequestPending: boolean;
         };
     }>;
-    getFollowers(handle: string, cursor?: string, limit?: string): Promise<{
+    getFollowers(handle: string, req: Request & {
+        user?: JwtPayload;
+    }, cursor?: string, limit?: string): Promise<{
         data: {
-            items: {
+            items: ({
                 id: string;
                 handle: string;
                 displayName: string;
                 avatarUrl: string | null;
-            }[];
+                isPrivate: boolean;
+            } & {
+                isFollowing: boolean;
+            })[];
             nextCursor: string | null;
         };
     }>;
-    getFollowing(handle: string, cursor?: string, limit?: string): Promise<{
+    getFollowing(handle: string, req: Request & {
+        user?: JwtPayload;
+    }, cursor?: string, limit?: string): Promise<{
         data: {
-            items: {
+            items: ({
                 id: string;
                 handle: string;
                 displayName: string;
                 avatarUrl: string | null;
-            }[];
+                isPrivate: boolean;
+            } & {
+                isFollowing: boolean;
+            })[];
             nextCursor: string | null;
         };
     }>;
@@ -318,9 +352,9 @@ export declare class UsersController {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
+            albumId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;

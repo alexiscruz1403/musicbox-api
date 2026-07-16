@@ -28,6 +28,9 @@ export declare const ModelName: {
     readonly RecommendationSnapshot: "RecommendationSnapshot";
     readonly FollowSuggestionSnapshot: "FollowSuggestionSnapshot";
     readonly TrendingSnapshot: "TrendingSnapshot";
+    readonly CatalogSearchHistory: "CatalogSearchHistory";
+    readonly UserSearchHistory: "UserSearchHistory";
+    readonly RecentlyViewedItem: "RecentlyViewedItem";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -219,6 +222,32 @@ export declare const TrendingSnapshotScalarFieldEnum: {
     readonly snapshotAt: "snapshotAt";
 };
 export type TrendingSnapshotScalarFieldEnum = (typeof TrendingSnapshotScalarFieldEnum)[keyof typeof TrendingSnapshotScalarFieldEnum];
+export declare const CatalogSearchHistoryScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly query: "query";
+    readonly searchedAt: "searchedAt";
+};
+export type CatalogSearchHistoryScalarFieldEnum = (typeof CatalogSearchHistoryScalarFieldEnum)[keyof typeof CatalogSearchHistoryScalarFieldEnum];
+export declare const UserSearchHistoryScalarFieldEnum: {
+    readonly id: "id";
+    readonly searcherId: "searcherId";
+    readonly query: "query";
+    readonly searchedAt: "searchedAt";
+};
+export type UserSearchHistoryScalarFieldEnum = (typeof UserSearchHistoryScalarFieldEnum)[keyof typeof UserSearchHistoryScalarFieldEnum];
+export declare const RecentlyViewedItemScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly resourceType: "resourceType";
+    readonly deezerId: "deezerId";
+    readonly title: "title";
+    readonly artistName: "artistName";
+    readonly coverUrl: "coverUrl";
+    readonly albumsCount: "albumsCount";
+    readonly viewedAt: "viewedAt";
+};
+export type RecentlyViewedItemScalarFieldEnum = (typeof RecentlyViewedItemScalarFieldEnum)[keyof typeof RecentlyViewedItemScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

@@ -19,3 +19,6 @@ export type Report = Prisma.ReportModel;
 export type RecommendationSnapshot = Prisma.RecommendationSnapshotModel;
 export type FollowSuggestionSnapshot = Prisma.FollowSuggestionSnapshotModel;
 export type TrendingSnapshot = Prisma.TrendingSnapshotModel;
+export type CatalogSearchHistory = Prisma.CatalogSearchHistoryModel;
+export type UserSearchHistory = Prisma.UserSearchHistoryModel;
+export type RecentlyViewedItem = Prisma.RecentlyViewedItemModel;

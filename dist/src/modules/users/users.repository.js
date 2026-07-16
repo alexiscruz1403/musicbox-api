@@ -118,7 +118,19 @@ let UsersRepository = class UsersRepository {
             data,
         });
     }
-    async getFollowers(handle, cursor, limit = 20) {
+    async hydrateIsFollowing(users, viewerId) {
+        const followedIds = viewerId && users.length > 0
+            ? new Set((await this.prisma.follow.findMany({
+                where: {
+                    followerId: viewerId,
+                    followeeId: { in: users.map((u) => u.id) },
+                },
+                select: { followeeId: true },
+            })).map((f) => f.followeeId))
+            : new Set();
+        return users.map((u) => ({ ...u, isFollowing: followedIds.has(u.id) }));
+    }
+    async getFollowers(handle, cursor, limit = 20, viewerId) {
         const user = await this.prisma.user.findUniqueOrThrow({
             where: { handle },
             select: { id: true },
@@ -141,18 +153,20 @@ let UsersRepository = class UsersRepository {
                         handle: true,
                         displayName: true,
                         avatarUrl: true,
+                        isPrivate: true,
                     },
                 },
             },
         });
         const hasMore = follows.length > take;
-        const items = hasMore ? follows.slice(0, take) : follows;
+        const rows = hasMore ? follows.slice(0, take) : follows;
         const nextCursor = hasMore
-            ? Buffer.from(items[items.length - 1].createdAt.toISOString()).toString('base64')
+            ? Buffer.from(rows[rows.length - 1].createdAt.toISOString()).toString('base64')
             : null;
-        return { items: items.map((f) => f.follower), nextCursor };
+        const items = await this.hydrateIsFollowing(rows.map((f) => f.follower), viewerId);
+        return { items, nextCursor };
     }
-    async getFollowing(handle, cursor, limit = 20) {
+    async getFollowing(handle, cursor, limit = 20, viewerId) {
         const user = await this.prisma.user.findUniqueOrThrow({
             where: { handle },
             select: { id: true },
@@ -175,16 +189,18 @@ let UsersRepository = class UsersRepository {
                         handle: true,
                         displayName: true,
                         avatarUrl: true,
+                        isPrivate: true,
                     },
                 },
             },
         });
         const hasMore = follows.length > take;
-        const items = hasMore ? follows.slice(0, take) : follows;
+        const rows = hasMore ? follows.slice(0, take) : follows;
         const nextCursor = hasMore
-            ? Buffer.from(items[items.length - 1].createdAt.toISOString()).toString('base64')
+            ? Buffer.from(rows[rows.length - 1].createdAt.toISOString()).toString('base64')
             : null;
-        return { items: items.map((f) => f.followee), nextCursor };
+        const items = await this.hydrateIsFollowing(rows.map((f) => f.followee), viewerId);
+        return { items, nextCursor };
     }
     async searchUsers(query, cursor, limit = 10, viewerId) {
         const take = Math.min(limit, 50);
@@ -223,6 +239,39 @@ let UsersRepository = class UsersRepository {
             isFollowing: followedIds.has(r.id),
         }));
         return { items, nextCursor };
+    }
+    async quickSearchUsers(query, limit, viewerId) {
+        const rows = await this.prisma.user.findMany({
+            where: {
+                status: 'ACTIVE',
+                OR: [
+                    { handle: { contains: query, mode: 'insensitive' } },
+                    { displayName: { contains: query, mode: 'insensitive' } },
+                ],
+            },
+            orderBy: [{ handle: 'asc' }],
+            take: limit,
+            select: {
+                id: true,
+                handle: true,
+                displayName: true,
+                avatarUrl: true,
+                isPrivate: true,
+            },
+        });
+        const followedIds = viewerId && rows.length > 0
+            ? new Set((await this.prisma.follow.findMany({
+                where: {
+                    followerId: viewerId,
+                    followeeId: { in: rows.map((r) => r.id) },
+                },
+                select: { followeeId: true },
+            })).map((f) => f.followeeId))
+            : new Set();
+        return rows.map(({ id, ...rest }) => ({
+            ...rest,
+            isFollowing: followedIds.has(id),
+        }));
     }
     followExists(followerId, followeeId) {
         return this.prisma.follow.findUnique({

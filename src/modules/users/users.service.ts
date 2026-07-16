@@ -273,12 +273,26 @@ export class UsersService {
     return this.repo.searchUsers(q.trim(), cursor, limit, viewerId);
   }
 
-  async getFollowers(handle: string, cursor?: string, limit?: number) {
-    return this.repo.getFollowers(handle, cursor, limit);
+  async quickSearchUsers(q: string, viewerId?: string) {
+    return this.repo.quickSearchUsers(q.trim(), 5, viewerId);
   }
 
-  async getFollowing(handle: string, cursor?: string, limit?: number) {
-    return this.repo.getFollowing(handle, cursor, limit);
+  async getFollowers(
+    handle: string,
+    cursor?: string,
+    limit?: number,
+    viewerId?: string,
+  ) {
+    return this.repo.getFollowers(handle, cursor, limit, viewerId);
+  }
+
+  async getFollowing(
+    handle: string,
+    cursor?: string,
+    limit?: number,
+    viewerId?: string,
+  ) {
+    return this.repo.getFollowing(handle, cursor, limit, viewerId);
   }
 
   async follow(

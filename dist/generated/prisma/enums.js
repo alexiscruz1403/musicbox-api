@@ -44,4 +44,9 @@ export const FollowRequestStatus = {
     ACCEPTED: 'ACCEPTED',
     REJECTED: 'REJECTED'
 };
+export const CatalogResourceType = {
+    ARTIST: 'ARTIST',
+    ALBUM: 'ALBUM',
+    TRACK: 'TRACK'
+};
 //# sourceMappingURL=enums.js.map

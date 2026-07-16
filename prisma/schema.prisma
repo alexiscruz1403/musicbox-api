@@ -64,6 +64,12 @@ enum FollowRequestStatus {
   REJECTED
 }
 
+enum CatalogResourceType {
+  ARTIST
+  ALBUM
+  TRACK
+}
+
 // ─── User & Auth ─────────────────────────────────────────────────
 
 model User {
@@ -107,6 +113,9 @@ model User {
   followSuggestionSnapshot FollowSuggestionSnapshot?
   followRequestsSent       FollowRequest[]           @relation("FollowRequester")
   followRequestsReceived   FollowRequest[]           @relation("FollowRequestTarget")
+  catalogSearchHistory     CatalogSearchHistory[]
+  userSearchHistory        UserSearchHistory[]
+  recentlyViewedItems      RecentlyViewedItem[]
 
   @@map("users")
 }
@@ -382,4 +391,50 @@ model TrendingSnapshot {
   snapshotAt DateTime @default(now())
 
   @@map("trending_snapshots")
+}
+
+// ─── Historial de búsquedas y vistos recientes ────────────────────
+
+model CatalogSearchHistory {
+  id         String   @id @default(uuid())
+  userId     String
+  query      String
+  searchedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, query])
+  @@map("catalog_search_history")
+}
+
+model UserSearchHistory {
+  id         String   @id @default(uuid())
+  searcherId String
+  query      String
+  searchedAt DateTime @default(now())
+
+  searcher User @relation(fields: [searcherId], references: [id], onDelete: Cascade)
+
+  @@unique([searcherId, query])
+  @@map("user_search_history")
+}
+
+// Denormalizado (título/artista/cover/albumsCount capturados al momento de
+// la visita), mismo precedente que Review.externalTitle/externalArtistName —
+// evita un join de vuelta a Artist/Album/Track en cada GET.
+model RecentlyViewedItem {
+  id           String              @id @default(uuid())
+  userId       String
+  resourceType CatalogResourceType
+  deezerId     String
+  title        String
+  artistName   String?
+  coverUrl     String?
+  albumsCount  Int?
+  viewedAt     DateTime            @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, resourceType, deezerId])
+  @@map("recently_viewed_items")
 }

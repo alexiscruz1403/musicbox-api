@@ -3,6 +3,7 @@ export interface DeezerArtist {
     name: string;
     picture_medium: string;
     nb_fan?: number;
+    nb_album?: number;
 }
 export interface DeezerTrack {
     id: number;
@@ -11,6 +12,7 @@ export interface DeezerTrack {
     release_date?: string;
     album?: {
         id: number;
+        title?: string;
         cover_medium: string;
         release_date?: string;
     };

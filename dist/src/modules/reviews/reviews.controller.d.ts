@@ -9,16 +9,16 @@ export declare class ReviewsController {
     create(user: JwtPayload, dto: CreateReviewDto): Promise<{
         data: {
             id: string;
-            status: import("../../../generated/prisma/enums.js").ContentStatus;
-            createdAt: Date;
-            updatedAt: Date;
-            deletedAt: Date | null;
-            userId: string;
             albumId: string | null;
+            userId: string;
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
+            status: import("../../../generated/prisma/enums.js").ContentStatus;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt: Date | null;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;
@@ -38,12 +38,6 @@ export declare class ReviewsController {
             track: {
                 deezerId: string;
             } | null;
-            user: {
-                id: string;
-                handle: string;
-                displayName: string;
-                avatarUrl: string | null;
-            };
             trackReviewItems: ({
                 track: {
                     deezerId: string;
@@ -55,20 +49,26 @@ export declare class ReviewsController {
                 trackId: string;
                 description: string | null;
                 rating: number;
-                reviewId: string;
                 position: number;
+                reviewId: string;
             })[];
+            user: {
+                id: string;
+                handle: string;
+                displayName: string;
+                avatarUrl: string | null;
+            };
             id: string;
-            status: import("../../../generated/prisma/enums.js").ContentStatus;
-            createdAt: Date;
-            updatedAt: Date;
-            deletedAt: Date | null;
-            userId: string;
             albumId: string | null;
+            userId: string;
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
+            status: import("../../../generated/prisma/enums.js").ContentStatus;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt: Date | null;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;
@@ -82,12 +82,6 @@ export declare class ReviewsController {
             track: {
                 deezerId: string;
             } | null;
-            user: {
-                id: string;
-                handle: string;
-                displayName: string;
-                avatarUrl: string | null;
-            };
             trackReviewItems: ({
                 track: {
                     deezerId: string;
@@ -99,21 +93,27 @@ export declare class ReviewsController {
                 trackId: string;
                 description: string | null;
                 rating: number;
-                reviewId: string;
                 position: number;
+                reviewId: string;
             })[];
+            user: {
+                id: string;
+                handle: string;
+                displayName: string;
+                avatarUrl: string | null;
+            };
         } & {
             id: string;
-            status: import("../../../generated/prisma/enums.js").ContentStatus;
-            createdAt: Date;
-            updatedAt: Date;
-            deletedAt: Date | null;
-            userId: string;
             albumId: string | null;
+            userId: string;
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
             description: string;
             rating: import("@prisma/client-runtime-utils").Decimal;
+            status: import("../../../generated/prisma/enums.js").ContentStatus;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt: Date | null;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;

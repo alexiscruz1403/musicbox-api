@@ -6,6 +6,10 @@ import { CATALOG_QUEUE } from '../events/events.constants.js';
 import { ArtistDetailService } from './artist-detail.service.js';
 import { CatalogSyncService } from './catalog-sync.service.js';
 import { CatalogController } from './catalog.controller.js';
+import { CatalogHistoryController } from './catalog-history.controller.js';
+import { CatalogHistoryRepository } from './catalog-history.repository.js';
+import { CatalogHistoryService } from './catalog-history.service.js';
+import { CatalogQuickSearchService } from './catalog-quick-search.service.js';
 import { CatalogRepository } from './catalog.repository.js';
 import { CatalogService } from './catalog.service.js';
 import { MUSIC_CATALOG_PROVIDER } from './providers/music-catalog.provider.js';
@@ -28,7 +32,7 @@ import { CatalogScheduler } from './scheduler/catalog.scheduler.js';
     // @nestjs/bullmq pattern for multi-module queue access (see TrendingModule).
     BullModule.registerQueue({ name: CATALOG_QUEUE }),
   ],
-  controllers: [CatalogController],
+  controllers: [CatalogController, CatalogHistoryController],
   providers: [
     CatalogService,
     CatalogRepository,
@@ -36,6 +40,9 @@ import { CatalogScheduler } from './scheduler/catalog.scheduler.js';
     ArtistDetailService,
     CatalogScheduler,
     CatalogQueueProcessor,
+    CatalogHistoryRepository,
+    CatalogHistoryService,
+    CatalogQuickSearchService,
     {
       provide: MUSIC_CATALOG_PROVIDER,
       useClass: DeezerMusicCatalogProvider,

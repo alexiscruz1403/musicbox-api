@@ -19,6 +19,7 @@ const artistFixture: CatalogArtist = {
   name: 'Daft Punk',
   imageUrl: 'https://example.com/daft-punk.jpg',
   fans: 1000,
+  albumsCount: 9,
 };
 
 const trackFixture: CatalogTrack = {
@@ -26,6 +27,7 @@ const trackFixture: CatalogTrack = {
   title: 'One More Time',
   artist: artistFixture,
   albumDeezerId: '302127',
+  albumTitle: 'Discovery',
   coverUrl: 'https://example.com/discovery.jpg',
   releaseDate: '2001-03-07',
   durationMs: 320000,
@@ -325,6 +327,7 @@ describe('CatalogService', () => {
               name: 'Daft Punk',
               imageUrl: null,
               fans: 0,
+              albumsCount: 0,
             },
             albumDeezerId: '302127',
             albumTitle: 'Discovery',

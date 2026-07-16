@@ -53,3 +53,9 @@ export declare const FollowRequestStatus: {
     readonly REJECTED: "REJECTED";
 };
 export type FollowRequestStatus = (typeof FollowRequestStatus)[keyof typeof FollowRequestStatus];
+export declare const CatalogResourceType: {
+    readonly ARTIST: "ARTIST";
+    readonly ALBUM: "ALBUM";
+    readonly TRACK: "TRACK";
+};
+export type CatalogResourceType = (typeof CatalogResourceType)[keyof typeof CatalogResourceType];
