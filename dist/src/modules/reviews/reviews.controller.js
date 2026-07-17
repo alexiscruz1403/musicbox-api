@@ -61,6 +61,7 @@ __decorate([
 ], ReviewsController.prototype, "findOne", null);
 __decorate([
     Patch(':id'),
+    UseInterceptors(IdempotencyInterceptor),
     __param(0, CurrentUser()),
     __param(1, Param('id')),
     __param(2, Body()),
@@ -71,6 +72,7 @@ __decorate([
 __decorate([
     Delete(':id'),
     HttpCode(HttpStatus.NO_CONTENT),
+    UseInterceptors(IdempotencyInterceptor),
     __param(0, CurrentUser()),
     __param(1, Param('id')),
     __metadata("design:type", Function),

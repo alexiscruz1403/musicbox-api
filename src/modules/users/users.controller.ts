@@ -22,6 +22,7 @@ import type { Request, Response } from 'express';
 import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
+import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
 import { ReviewsService } from '../reviews/reviews.service.js';
@@ -47,6 +48,7 @@ export class UsersController {
   }
 
   @Patch('me')
+  @UseInterceptors(IdempotencyInterceptor)
   async updateMe(
     @CurrentUser() user: JwtPayload,
     @Body() dto: UpdateProfileDto,
@@ -66,6 +68,7 @@ export class UsersController {
         cb(null, true);
       },
     }),
+    IdempotencyInterceptor,
   )
   async uploadAvatar(
     @CurrentUser() user: JwtPayload,
@@ -87,6 +90,7 @@ export class UsersController {
         cb(null, true);
       },
     }),
+    IdempotencyInterceptor,
   )
   async uploadCover(
     @CurrentUser() user: JwtPayload,
@@ -113,6 +117,7 @@ export class UsersController {
   }
 
   @Patch('me/notifications-prefs')
+  @UseInterceptors(IdempotencyInterceptor)
   async updateNotifPrefs(
     @CurrentUser() user: JwtPayload,
     @Body() dto: UpdateNotifPrefsDto,

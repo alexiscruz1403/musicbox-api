@@ -3,6 +3,7 @@ import { ListNotificationsQueryDto } from './dto/list-notifications-query.dto.js
 import { NotificationsRepository } from './notifications.repository.js';
 import { NotificationsService } from './notifications.service.js';
 import { NotificationsSseService } from './notifications-sse.service.js';
+import { WebPushService } from './push/web-push.service.js';
 
 const mockRepo = {
   getRecipientGate: vi.fn(),
@@ -18,6 +19,10 @@ const mockRepo = {
 
 const mockSse = {
   push: vi.fn(),
+};
+
+const mockWebPush = {
+  sendToUser: vi.fn(),
 };
 
 const enabledGate = {
@@ -40,6 +45,7 @@ describe('NotificationsService', () => {
         NotificationsService,
         { provide: NotificationsRepository, useValue: mockRepo },
         { provide: NotificationsSseService, useValue: mockSse },
+        { provide: WebPushService, useValue: mockWebPush },
       ],
     }).compile();
 
@@ -135,6 +141,10 @@ describe('NotificationsService', () => {
         commentId: 'c1',
       });
       expect(mockSse.push).toHaveBeenCalledWith('owner1', {
+        id: 'n1',
+        type: 'COMMENT',
+      });
+      expect(mockWebPush.sendToUser).toHaveBeenCalledWith('owner1', {
         id: 'n1',
         type: 'COMMENT',
       });
@@ -415,6 +425,10 @@ describe('NotificationsService', () => {
         reviewId: 'rev1',
       });
       expect(mockSse.push).toHaveBeenCalledWith('owner1', {
+        id: 'n1',
+        type: 'MODERATION',
+      });
+      expect(mockWebPush.sendToUser).toHaveBeenCalledWith('owner1', {
         id: 'n1',
         type: 'MODERATION',
       });

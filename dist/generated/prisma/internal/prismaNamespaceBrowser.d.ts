@@ -24,6 +24,7 @@ export declare const ModelName: {
     readonly Comment: "Comment";
     readonly Notification: "Notification";
     readonly NotificationPreference: "NotificationPreference";
+    readonly PushSubscription: "PushSubscription";
     readonly Report: "Report";
     readonly RecommendationSnapshot: "RecommendationSnapshot";
     readonly FollowSuggestionSnapshot: "FollowSuggestionSnapshot";
@@ -192,6 +193,17 @@ export declare const NotificationPreferenceScalarFieldEnum: {
     readonly followRequestsEnabled: "followRequestsEnabled";
 };
 export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum];
+export declare const PushSubscriptionScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly endpoint: "endpoint";
+    readonly p256dh: "p256dh";
+    readonly auth: "auth";
+    readonly userAgent: "userAgent";
+    readonly createdAt: "createdAt";
+    readonly lastSeenAt: "lastSeenAt";
+};
+export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum];
 export declare const ReportScalarFieldEnum: {
     readonly id: "id";
     readonly reporterId: "reporterId";

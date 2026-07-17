@@ -170,6 +170,7 @@ export declare const ModelName: {
     readonly Comment: "Comment";
     readonly Notification: "Notification";
     readonly NotificationPreference: "NotificationPreference";
+    readonly PushSubscription: "PushSubscription";
     readonly Report: "Report";
     readonly RecommendationSnapshot: "RecommendationSnapshot";
     readonly FollowSuggestionSnapshot: "FollowSuggestionSnapshot";
@@ -189,7 +190,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "follow" | "followRequest" | "refreshToken" | "artist" | "album" | "track" | "review" | "trackReviewItem" | "reviewReaction" | "comment" | "notification" | "notificationPreference" | "report" | "recommendationSnapshot" | "followSuggestionSnapshot" | "trendingSnapshot" | "catalogSearchHistory" | "userSearchHistory" | "recentlyViewedItem";
+        modelProps: "user" | "follow" | "followRequest" | "refreshToken" | "artist" | "album" | "track" | "review" | "trackReviewItem" | "reviewReaction" | "comment" | "notification" | "notificationPreference" | "pushSubscription" | "report" | "recommendationSnapshot" | "followSuggestionSnapshot" | "trendingSnapshot" | "catalogSearchHistory" | "userSearchHistory" | "recentlyViewedItem";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -1155,6 +1156,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        PushSubscription: {
+            payload: Prisma.$PushSubscriptionPayload<ExtArgs>;
+            fields: Prisma.PushSubscriptionFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.PushSubscriptionFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.PushSubscriptionFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>;
+                };
+                findFirst: {
+                    args: Prisma.PushSubscriptionFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.PushSubscriptionFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>;
+                };
+                findMany: {
+                    args: Prisma.PushSubscriptionFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[];
+                };
+                create: {
+                    args: Prisma.PushSubscriptionCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>;
+                };
+                createMany: {
+                    args: Prisma.PushSubscriptionCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.PushSubscriptionCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[];
+                };
+                delete: {
+                    args: Prisma.PushSubscriptionDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>;
+                };
+                update: {
+                    args: Prisma.PushSubscriptionUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.PushSubscriptionDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.PushSubscriptionUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.PushSubscriptionUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>[];
+                };
+                upsert: {
+                    args: Prisma.PushSubscriptionUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PushSubscriptionPayload>;
+                };
+                aggregate: {
+                    args: Prisma.PushSubscriptionAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregatePushSubscription>;
+                };
+                groupBy: {
+                    args: Prisma.PushSubscriptionGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.PushSubscriptionGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.PushSubscriptionCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.PushSubscriptionCountAggregateOutputType> | number;
+                };
+            };
+        };
         Report: {
             payload: Prisma.$ReportPayload<ExtArgs>;
             fields: Prisma.ReportFieldRefs;
@@ -1856,6 +1931,17 @@ export declare const NotificationPreferenceScalarFieldEnum: {
     readonly followRequestsEnabled: "followRequestsEnabled";
 };
 export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum];
+export declare const PushSubscriptionScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly endpoint: "endpoint";
+    readonly p256dh: "p256dh";
+    readonly auth: "auth";
+    readonly userAgent: "userAgent";
+    readonly createdAt: "createdAt";
+    readonly lastSeenAt: "lastSeenAt";
+};
+export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum];
 export declare const ReportScalarFieldEnum: {
     readonly id: "id";
     readonly reporterId: "reporterId";
@@ -2008,6 +2094,7 @@ export type GlobalOmitConfig = {
     comment?: Prisma.CommentOmit;
     notification?: Prisma.NotificationOmit;
     notificationPreference?: Prisma.NotificationPreferenceOmit;
+    pushSubscription?: Prisma.PushSubscriptionOmit;
     report?: Prisma.ReportOmit;
     recommendationSnapshot?: Prisma.RecommendationSnapshotOmit;
     followSuggestionSnapshot?: Prisma.FollowSuggestionSnapshotOmit;

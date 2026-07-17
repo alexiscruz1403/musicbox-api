@@ -21,12 +21,12 @@ export declare class CatalogRepository {
     }>;
     upsertAlbum(data: CatalogAlbum, artistId: string): import("../../../generated/prisma/models.js").Prisma__AlbumClient<{
         id: string;
+        coverUrl: string | null;
         deezerId: string;
         mbid: string | null;
         lastSyncedAt: Date;
         title: string;
         artistId: string;
-        coverUrl: string | null;
         releaseDate: Date | null;
         genreLabel: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
@@ -66,9 +66,9 @@ export declare class CatalogRepository {
     findTracksByArtist(artistId: string, cursor: string | null, limit: number): Promise<{
         items: ({
             album: {
+                coverUrl: string | null;
                 deezerId: string;
                 title: string;
-                coverUrl: string | null;
                 releaseDate: Date | null;
             } | null;
             artist: {
@@ -111,19 +111,19 @@ export declare class CatalogRepository {
         };
     } & {
         id: string;
+        coverUrl: string | null;
         deezerId: string;
         mbid: string | null;
         lastSyncedAt: Date;
         title: string;
         artistId: string;
-        coverUrl: string | null;
         releaseDate: Date | null;
         genreLabel: string | null;
     })[]>;
     hydrateTrackSummaries(ids: string[]): Promise<never[]> | import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<({
         album: {
-            deezerId: string;
             coverUrl: string | null;
+            deezerId: string;
         } | null;
         artist: {
             id: string;

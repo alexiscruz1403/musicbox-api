@@ -17,16 +17,16 @@ export declare class AlbumTrackReviewsController {
             };
         } & {
             id: string;
-            albumId: string | null;
-            userId: string;
-            type: import("../../../generated/prisma/enums.js").ReviewType;
-            trackId: string | null;
-            description: string;
-            rating: import("@prisma/client-runtime-utils").Decimal;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
+            userId: string;
+            albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
+            description: string;
+            rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;
@@ -47,16 +47,16 @@ export declare class AlbumTrackReviewsController {
             };
         } & {
             id: string;
-            albumId: string | null;
-            userId: string;
-            type: import("../../../generated/prisma/enums.js").ReviewType;
-            trackId: string | null;
-            description: string;
-            rating: import("@prisma/client-runtime-utils").Decimal;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
+            userId: string;
+            albumId: string | null;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
+            description: string;
+            rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;

@@ -11,12 +11,15 @@ import { ForbiddenException, Injectable, NotFoundException, } from '@nestjs/comm
 import { NOTIFICATION_GROUP_WINDOW_MS } from './notifications.constants.js';
 import { NotificationsRepository, } from './notifications.repository.js';
 import { NotificationsSseService } from './notifications-sse.service.js';
+import { WebPushService } from './push/web-push.service.js';
 let NotificationsService = class NotificationsService {
     repo;
     sse;
-    constructor(repo, sse) {
+    webPush;
+    constructor(repo, sse, webPush) {
         this.repo = repo;
         this.sse = sse;
+        this.webPush = webPush;
     }
     async list(userId, query) {
         return this.repo.list(userId, query.cursor, query.limit, query.unreadOnly ?? false);
@@ -37,6 +40,7 @@ let NotificationsService = class NotificationsService {
             ...payload,
         });
         this.sse.push(recipientId, notification);
+        void this.webPush.sendToUser(recipientId, notification);
     }
     async createFromEvent(jobName, payload) {
         const input = this.buildInput(jobName, payload);
@@ -51,6 +55,7 @@ let NotificationsService = class NotificationsService {
             ? await this.createOrGroupReaction(input)
             : await this.repo.create(input);
         this.sse.push(input.recipientId, notification);
+        void this.webPush.sendToUser(input.recipientId, notification);
     }
     buildInput(jobName, payload) {
         switch (jobName) {
@@ -150,7 +155,8 @@ let NotificationsService = class NotificationsService {
 NotificationsService = __decorate([
     Injectable(),
     __metadata("design:paramtypes", [NotificationsRepository,
-        NotificationsSseService])
+        NotificationsSseService,
+        WebPushService])
 ], NotificationsService);
 export { NotificationsService };
 //# sourceMappingURL=notifications.service.js.map

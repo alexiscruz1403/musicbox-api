@@ -11,6 +11,7 @@ export type * from './models/ReviewReaction.js';
 export type * from './models/Comment.js';
 export type * from './models/Notification.js';
 export type * from './models/NotificationPreference.js';
+export type * from './models/PushSubscription.js';
 export type * from './models/Report.js';
 export type * from './models/RecommendationSnapshot.js';
 export type * from './models/FollowSuggestionSnapshot.js';

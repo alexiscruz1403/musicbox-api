@@ -116,6 +116,7 @@ model User {
   catalogSearchHistory     CatalogSearchHistory[]
   userSearchHistory        UserSearchHistory[]
   recentlyViewedItems      RecentlyViewedItem[]
+  pushSubscriptions        PushSubscription[]
 
   @@map("users")
 }
@@ -338,6 +339,26 @@ model NotificationPreference {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("notification_preferences")
+}
+
+// endpoint es la clave natural de dedupe de Web Push (única por navegador
+// suscripto, no por usuario) — el subscribe es un upsert por endpoint, no
+// por (userId, endpoint), para reasignar correctamente cuando otra cuenta
+// se loguea en el mismo navegador (ver docs/fase-8-features.md).
+model PushSubscription {
+  id         String   @id @default(uuid())
+  userId     String
+  endpoint   String   @unique
+  p256dh     String
+  auth       String
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("push_subscriptions")
 }
 
 // ─── Moderación ───────────────────────────────────────────────────

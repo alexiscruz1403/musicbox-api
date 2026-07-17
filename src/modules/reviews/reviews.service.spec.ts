@@ -513,13 +513,34 @@ describe('ReviewsService', () => {
       expect(mockRepo.softDelete).not.toHaveBeenCalled();
     });
 
-    it('throws NotFoundException when deleting an already-deleted review', async () => {
+    it('is a no-op (no throw, no repo/event calls) when the owner deletes an already-deleted review', async () => {
       mockRepo.findById.mockResolvedValue({
         ...review,
         status: 'DELETED',
         deletedAt: new Date(),
       });
-      await expect(service.remove('owner', 'review-1')).rejects.toThrow(
+      await expect(
+        service.remove('owner', 'review-1'),
+      ).resolves.toBeUndefined();
+      expect(mockRepo.softDelete).not.toHaveBeenCalled();
+      expect(mockEvents.emitDeleted).not.toHaveBeenCalled();
+    });
+
+    it('still rejects a non-owner even when the review is already deleted (no silent success leaking ownership)', async () => {
+      mockRepo.findById.mockResolvedValue({
+        ...review,
+        status: 'DELETED',
+        deletedAt: new Date(),
+      });
+      await expect(service.remove('someone-else', 'review-1')).rejects.toThrow(
+        ForbiddenException,
+      );
+      expect(mockRepo.softDelete).not.toHaveBeenCalled();
+    });
+
+    it('throws NotFoundException when the review id does not exist at all', async () => {
+      mockRepo.findById.mockResolvedValue(null);
+      await expect(service.remove('owner', 'missing')).rejects.toThrow(
         NotFoundException,
       );
     });

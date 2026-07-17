@@ -33,7 +33,7 @@ export class EmailService {
       await this.transporter.sendMail({
         from: this.from,
         to,
-        subject: 'Restablecer contraseña en MusicBox',
+        subject: 'Restablecer contraseña en Vinlyst',
         html: `<p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p><p><a href="${link}">${link}</a></p><p>El enlace expira en 1 hora.</p>`,
       });
     } catch (err) {
@@ -51,7 +51,7 @@ export class EmailService {
       await this.transporter.sendMail({
         from: this.from,
         to,
-        subject: 'Confirma tu nuevo email en MusicBox',
+        subject: 'Confirma tu nuevo email en Vinlyst',
         html: `<p>Haz clic en el siguiente enlace para confirmar tu nuevo email:</p><p><a href="${link}">${link}</a></p><p>El enlace expira en 1 hora.</p>`,
       });
     } catch (err) {
@@ -67,7 +67,7 @@ export class EmailService {
       await this.transporter.sendMail({
         from: this.from,
         to,
-        subject: 'Tu cuenta de MusicBox fue suspendida',
+        subject: 'Tu cuenta de Vinlyst fue suspendida',
         html: `<p>Tu cuenta fue suspendida por incumplir reiteradamente las normas de la comunidad (reportes validados por nuestro equipo de moderación).</p>`,
       });
     } catch (err) {

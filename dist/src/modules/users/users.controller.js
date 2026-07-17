@@ -17,6 +17,7 @@ import { memoryStorage } from 'multer';
 import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
+import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
 import { ReviewsService } from '../reviews/reviews.service.js';
 import { QuickSearchUsersDto } from './dto/quick-search-users.dto.js';
@@ -132,6 +133,7 @@ __decorate([
 ], UsersController.prototype, "getMe", null);
 __decorate([
     Patch('me'),
+    UseInterceptors(IdempotencyInterceptor),
     __param(0, CurrentUser()),
     __param(1, Body()),
     __metadata("design:type", Function),
@@ -149,7 +151,7 @@ __decorate([
             }
             cb(null, true);
         },
-    })),
+    }), IdempotencyInterceptor),
     __param(0, CurrentUser()),
     __param(1, UploadedFile()),
     __metadata("design:type", Function),
@@ -167,7 +169,7 @@ __decorate([
             }
             cb(null, true);
         },
-    })),
+    }), IdempotencyInterceptor),
     __param(0, CurrentUser()),
     __param(1, UploadedFile()),
     __metadata("design:type", Function),
@@ -198,6 +200,7 @@ __decorate([
 ], UsersController.prototype, "getNotifPrefs", null);
 __decorate([
     Patch('me/notifications-prefs'),
+    UseInterceptors(IdempotencyInterceptor),
     __param(0, CurrentUser()),
     __param(1, Body()),
     __metadata("design:type", Function),

@@ -9,15 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var CatalogHistoryService_1;
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { ArtistDetailService } from './artist-detail.service.js';
 import { CatalogHistoryRepository } from './catalog-history.repository.js';
+import { CatalogService } from './catalog.service.js';
 const ALBUM = 'ALBUM';
 const TRACK = 'TRACK';
 const ARTIST = 'ARTIST';
 let CatalogHistoryService = CatalogHistoryService_1 = class CatalogHistoryService {
     repo;
+    catalog;
+    artistDetail;
     logger = new Logger(CatalogHistoryService_1.name);
-    constructor(repo) {
+    constructor(repo, catalog, artistDetail) {
         this.repo = repo;
+        this.catalog = catalog;
+        this.artistDetail = artistDetail;
     }
     async recordSearch(userId, query) {
         try {
@@ -80,10 +86,42 @@ let CatalogHistoryService = CatalogHistoryService_1 = class CatalogHistoryServic
     async listRecentlyViewed(userId) {
         return this.repo.listRecentlyViewed(userId);
     }
+    async getRecentlyViewedDetails(userId) {
+        const items = await this.repo.listRecentlyViewed(userId);
+        return Promise.all(items.map((item) => this.hydrateOne(item)));
+    }
+    async hydrateOne(item) {
+        try {
+            const detail = await this.fetchDetail(item.resourceType, item.deezerId);
+            return { ...item, detail, error: null };
+        }
+        catch (err) {
+            return {
+                ...item,
+                detail: null,
+                error: {
+                    code: err instanceof NotFoundException ? 'NOT_FOUND' : 'FETCH_FAILED',
+                    message: err instanceof Error ? err.message : String(err),
+                },
+            };
+        }
+    }
+    fetchDetail(resourceType, deezerId) {
+        switch (resourceType) {
+            case ALBUM:
+                return this.catalog.getAlbum(deezerId);
+            case TRACK:
+                return this.catalog.getTrack(deezerId);
+            case ARTIST:
+                return this.artistDetail.getDetail(deezerId);
+        }
+    }
 };
 CatalogHistoryService = CatalogHistoryService_1 = __decorate([
     Injectable(),
-    __metadata("design:paramtypes", [CatalogHistoryRepository])
+    __metadata("design:paramtypes", [CatalogHistoryRepository,
+        CatalogService,
+        ArtistDetailService])
 ], CatalogHistoryService);
 export { CatalogHistoryService };
 //# sourceMappingURL=catalog-history.service.js.map

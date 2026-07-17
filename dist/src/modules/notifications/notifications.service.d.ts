@@ -1,22 +1,24 @@
 import type { ListNotificationsQueryDto } from './dto/list-notifications-query.dto.js';
 import { NotificationsRepository } from './notifications.repository.js';
 import { NotificationsSseService } from './notifications-sse.service.js';
+import { WebPushService } from './push/web-push.service.js';
 export declare class NotificationsService {
     private readonly repo;
     private readonly sse;
-    constructor(repo: NotificationsRepository, sse: NotificationsSseService);
+    private readonly webPush;
+    constructor(repo: NotificationsRepository, sse: NotificationsSseService, webPush: WebPushService);
     list(userId: string, query: ListNotificationsQueryDto): Promise<{
         items: ({
+            actor: {
+                handle: string;
+                displayName: string;
+                avatarUrl: string | null;
+            } | null;
             review: {
                 id: string;
                 externalTitle: string;
                 externalArtistName: string;
                 externalCoverUrl: string | null;
-            } | null;
-            actor: {
-                handle: string;
-                displayName: string;
-                avatarUrl: string | null;
             } | null;
         } & {
             id: string;

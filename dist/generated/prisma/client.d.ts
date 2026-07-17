@@ -19,6 +19,7 @@ export type ReviewReaction = Prisma.ReviewReactionModel;
 export type Comment = Prisma.CommentModel;
 export type Notification = Prisma.NotificationModel;
 export type NotificationPreference = Prisma.NotificationPreferenceModel;
+export type PushSubscription = Prisma.PushSubscriptionModel;
 export type Report = Prisma.ReportModel;
 export type RecommendationSnapshot = Prisma.RecommendationSnapshotModel;
 export type FollowSuggestionSnapshot = Prisma.FollowSuggestionSnapshotModel;

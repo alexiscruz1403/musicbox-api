@@ -26,4 +26,7 @@ export declare class CatalogHistoryController {
             viewedAt: Date;
         }[];
     }>;
+    listRecentlyViewedDetails(user: JwtPayload): Promise<{
+        data: import("./catalog-history.service.js").RecentlyViewedDetailItem[];
+    }>;
 }

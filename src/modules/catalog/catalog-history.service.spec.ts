@@ -1,7 +1,9 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { ArtistDetailService } from './artist-detail.service.js';
 import { CatalogHistoryRepository } from './catalog-history.repository.js';
 import { CatalogHistoryService } from './catalog-history.service.js';
+import { CatalogService } from './catalog.service.js';
 import type {
   CatalogAlbum,
   CatalogArtist,
@@ -15,6 +17,15 @@ const mockRepo = {
   deleteAllSearchHistory: vi.fn(),
   upsertRecentlyViewed: vi.fn(),
   listRecentlyViewed: vi.fn(),
+};
+
+const mockCatalog = {
+  getAlbum: vi.fn(),
+  getTrack: vi.fn(),
+};
+
+const mockArtistDetail = {
+  getDetail: vi.fn(),
 };
 
 const artistFixture: CatalogArtist = {
@@ -57,6 +68,8 @@ describe('CatalogHistoryService', () => {
       providers: [
         CatalogHistoryService,
         { provide: CatalogHistoryRepository, useValue: mockRepo },
+        { provide: CatalogService, useValue: mockCatalog },
+        { provide: ArtistDetailService, useValue: mockArtistDetail },
       ],
     }).compile();
 
@@ -170,6 +183,78 @@ describe('CatalogHistoryService', () => {
       await expect(
         service.recordArtistView('user-1', artistFixture),
       ).resolves.toBeUndefined();
+    });
+  });
+
+  describe('getRecentlyViewedDetails', () => {
+    it('hydrates each item with full detail via the matching catalog service, keyed by resourceType', async () => {
+      mockRepo.listRecentlyViewed.mockResolvedValue([
+        { resourceType: 'ALBUM', deezerId: '302127', viewedAt: new Date(0) },
+        { resourceType: 'TRACK', deezerId: '3135556', viewedAt: new Date(1) },
+        { resourceType: 'ARTIST', deezerId: '27', viewedAt: new Date(2) },
+      ]);
+      mockCatalog.getAlbum.mockResolvedValue(albumFixture);
+      mockCatalog.getTrack.mockResolvedValue(trackFixture);
+      mockArtistDetail.getDetail.mockResolvedValue({ artist: artistFixture });
+
+      const result = await service.getRecentlyViewedDetails('user-1');
+
+      expect(mockCatalog.getAlbum).toHaveBeenCalledWith('302127');
+      expect(mockCatalog.getTrack).toHaveBeenCalledWith('3135556');
+      expect(mockArtistDetail.getDetail).toHaveBeenCalledWith('27');
+      expect(result).toEqual([
+        {
+          resourceType: 'ALBUM',
+          deezerId: '302127',
+          viewedAt: new Date(0),
+          detail: albumFixture,
+          error: null,
+        },
+        {
+          resourceType: 'TRACK',
+          deezerId: '3135556',
+          viewedAt: new Date(1),
+          detail: trackFixture,
+          error: null,
+        },
+        {
+          resourceType: 'ARTIST',
+          deezerId: '27',
+          viewedAt: new Date(2),
+          detail: { artist: artistFixture },
+          error: null,
+        },
+      ]);
+    });
+
+    it('isolates a per-item failure instead of failing the whole bundle', async () => {
+      mockRepo.listRecentlyViewed.mockResolvedValue([
+        { resourceType: 'ALBUM', deezerId: 'gone', viewedAt: new Date(0) },
+        { resourceType: 'TRACK', deezerId: '3135556', viewedAt: new Date(1) },
+      ]);
+      mockCatalog.getAlbum.mockRejectedValue(
+        new NotFoundException('Deezer: no data (code 800)'),
+      );
+      mockCatalog.getTrack.mockResolvedValue(trackFixture);
+
+      const result = await service.getRecentlyViewedDetails('user-1');
+
+      expect(result[0]).toMatchObject({
+        detail: null,
+        error: { code: 'NOT_FOUND' },
+      });
+      expect(result[1]).toMatchObject({ detail: trackFixture, error: null });
+    });
+
+    it('does not re-record a view for any hydrated item', async () => {
+      mockRepo.listRecentlyViewed.mockResolvedValue([
+        { resourceType: 'ALBUM', deezerId: '302127', viewedAt: new Date(0) },
+      ]);
+      mockCatalog.getAlbum.mockResolvedValue(albumFixture);
+
+      await service.getRecentlyViewedDetails('user-1');
+
+      expect(mockRepo.upsertRecentlyViewed).not.toHaveBeenCalled();
     });
   });
 });

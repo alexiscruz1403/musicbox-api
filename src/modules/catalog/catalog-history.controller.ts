@@ -43,4 +43,12 @@ export class CatalogHistoryController {
   async listRecentlyViewed(@CurrentUser() user: JwtPayload) {
     return { data: await this.history.listRecentlyViewed(user.sub) };
   }
+
+  // Bundle prefetch for offline caching — full detail for the last 10
+  // visited resources in a single round trip, instead of the client making
+  // up to 10 separate detail requests right before going offline.
+  @Get('recently-viewed/details')
+  async listRecentlyViewedDetails(@CurrentUser() user: JwtPayload) {
+    return { data: await this.history.getRecentlyViewedDetails(user.sub) };
+  }
 }

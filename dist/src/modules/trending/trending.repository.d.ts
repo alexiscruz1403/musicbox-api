@@ -33,6 +33,10 @@ export declare class TrendingRepository {
         genreLabel: string | null;
     })[]>;
     hydrateTracks(ids: string[]): Promise<never[]> | Prisma.PrismaPromise<({
+        album: {
+            coverUrl: string | null;
+            deezerId: string;
+        } | null;
         artist: {
             id: string;
             deezerId: string;
@@ -42,10 +46,6 @@ export declare class TrendingRepository {
             lastSyncedAt: Date;
             catalogSyncedAt: Date | null;
         };
-        album: {
-            coverUrl: string | null;
-            deezerId: string;
-        } | null;
     } & {
         id: string;
         deezerId: string;

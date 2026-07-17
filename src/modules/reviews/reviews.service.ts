@@ -215,8 +215,16 @@ export class ReviewsService {
     return this.repo.findById(id);
   }
 
+  // Idempotent delete (unlike update, which stays strict): a client that
+  // queued a delete offline and replays it after reconnecting may hit a
+  // review it (or another device) already deleted. Already-deleted is
+  // treated as "goal already achieved" (no-op success, no re-emitted event),
+  // while ownership violations and unknown ids still fail loudly — see
+  // docs/fase-8-features.md.
   async remove(userId: string, id: string) {
-    const review = await this.getOwnedActiveReview(userId, id);
+    const review = await this.getOwnedReviewAllowDeleted(userId, id);
+    if (review.deletedAt || review.status !== 'ACTIVE') return;
+
     await this.repo.softDelete(id);
     await this.events.emitDeleted({
       reviewId: id,
@@ -330,6 +338,28 @@ export class ReviewsService {
 
   private async getOwnedActiveReview(userId: string, id: string) {
     const review = await this.getActiveReview(id);
+    if (review.userId !== userId) {
+      throw new ForbiddenException({
+        code: 'NOT_REVIEW_OWNER',
+        message: 'No puedes modificar esta reseña.',
+      });
+    }
+    return review;
+  }
+
+  // Used only by remove(): unlike getOwnedActiveReview, does not reject an
+  // already-deleted review — the caller decides what "already deleted" means
+  // (a no-op, for delete). Ownership is still enforced regardless of
+  // deletion state, so a non-owner can never learn "this review exists and
+  // belongs to someone else" via a silent success.
+  private async getOwnedReviewAllowDeleted(userId: string, id: string) {
+    const review = await this.repo.findById(id);
+    if (!review) {
+      throw new NotFoundException({
+        code: 'REVIEW_NOT_FOUND',
+        message: 'Reseña no encontrada.',
+      });
+    }
     if (review.userId !== userId) {
       throw new ForbiddenException({
         code: 'NOT_REVIEW_OWNER',

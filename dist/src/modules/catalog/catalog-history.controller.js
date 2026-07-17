@@ -30,6 +30,9 @@ let CatalogHistoryController = class CatalogHistoryController {
     async listRecentlyViewed(user) {
         return { data: await this.history.listRecentlyViewed(user.sub) };
     }
+    async listRecentlyViewedDetails(user) {
+        return { data: await this.history.getRecentlyViewedDetails(user.sub) };
+    }
 };
 __decorate([
     Get('search-history'),
@@ -62,6 +65,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CatalogHistoryController.prototype, "listRecentlyViewed", null);
+__decorate([
+    Get('recently-viewed/details'),
+    __param(0, CurrentUser()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], CatalogHistoryController.prototype, "listRecentlyViewedDetails", null);
 CatalogHistoryController = __decorate([
     Controller('catalog'),
     __metadata("design:paramtypes", [CatalogHistoryService])

@@ -38,4 +38,9 @@ export const configValidationSchema = Joi.object({
   MUSICBRAINZ_CONTACT_EMAIL: Joi.string().email().optional(),
 
   SENTRY_DSN: Joi.string().optional().allow(''),
+
+  VAPID_PUBLIC_KEY: Joi.string().required(),
+  VAPID_PRIVATE_KEY: Joi.string().required(),
+  VAPID_SUBJECT: Joi.string().required(),
+  IDEMPOTENCY_TTL_SECONDS: Joi.number().default(259200),
 });

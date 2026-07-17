@@ -10,16 +10,16 @@ export declare class NotificationsController {
     constructor(service: NotificationsService, sse: NotificationsSseService);
     list(user: JwtPayload, query: ListNotificationsQueryDto): Promise<{
         data: ({
+            actor: {
+                handle: string;
+                displayName: string;
+                avatarUrl: string | null;
+            } | null;
             review: {
                 id: string;
                 externalTitle: string;
                 externalArtistName: string;
                 externalCoverUrl: string | null;
-            } | null;
-            actor: {
-                handle: string;
-                displayName: string;
-                avatarUrl: string | null;
             } | null;
         } & {
             id: string;

@@ -39,7 +39,7 @@ let UsersRepository = class UsersRepository {
             this.prisma.user.update({
                 where: { id: userId },
                 data: {
-                    email: `deleted_${userId}@musicbox.invalid`,
+                    email: `deleted_${userId}@vinlyst.invalid`,
                     handle: `deleted_${userId}`,
                     displayName: '[usuario eliminado]',
                     passwordHash: null,
@@ -57,6 +57,7 @@ let UsersRepository = class UsersRepository {
                 where: { userId, revokedAt: null },
                 data: { revokedAt: new Date() },
             }),
+            this.prisma.pushSubscription.deleteMany({ where: { userId } }),
         ]);
         return before;
     }

@@ -61,7 +61,8 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "sanitize-html": "^2.17.5",
-    "uuid": "^11.1.1"
+    "uuid": "^11.1.1",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -79,6 +80,7 @@
     "@types/sanitize-html": "^2.16.1",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^9.0.8",
+    "@types/web-push": "^3.6.4",
     "@vitest/coverage-v8": "^4.1.9",
     "dotenv": "^17.4.2",
     "eslint": "^9.18.0",

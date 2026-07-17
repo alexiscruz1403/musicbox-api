@@ -10,29 +10,29 @@ export declare class CatalogHistoryRepository {
     private readonly prisma;
     constructor(prisma: PrismaService);
     upsertSearchHistory(userId: string, query: string): import("../../../generated/prisma/models.js").Prisma__CatalogSearchHistoryClient<{
-        query: string;
         id: string;
         userId: string;
+        query: string;
         searchedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     listSearchHistory(userId: string): import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<{
-        query: string;
         id: string;
         userId: string;
+        query: string;
         searchedAt: Date;
     }[]>;
     deleteSearchHistoryItem(userId: string, id: string): Promise<boolean>;
     deleteAllSearchHistory(userId: string): import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<import("../../../generated/prisma/internal/prismaNamespace.js").BatchPayload>;
     upsertRecentlyViewed(userId: string, resourceType: CatalogResourceType, deezerId: string, data: RecordViewData): import("../../../generated/prisma/models.js").Prisma__RecentlyViewedItemClient<{
         id: string;
+        coverUrl: string | null;
         userId: string;
-        resourceType: CatalogResourceType;
         deezerId: string;
         title: string;
+        resourceType: CatalogResourceType;
         artistName: string | null;
-        coverUrl: string | null;
         albumsCount: number | null;
         viewedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
@@ -40,12 +40,12 @@ export declare class CatalogHistoryRepository {
     }>;
     listRecentlyViewed(userId: string): import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<{
         id: string;
+        coverUrl: string | null;
         userId: string;
-        resourceType: CatalogResourceType;
         deezerId: string;
         title: string;
+        resourceType: CatalogResourceType;
         artistName: string | null;
-        coverUrl: string | null;
         albumsCount: number | null;
         viewedAt: Date;
     }[]>;

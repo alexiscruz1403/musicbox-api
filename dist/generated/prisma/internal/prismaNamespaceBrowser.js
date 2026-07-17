@@ -22,6 +22,7 @@ export const ModelName = {
     Comment: 'Comment',
     Notification: 'Notification',
     NotificationPreference: 'NotificationPreference',
+    PushSubscription: 'PushSubscription',
     Report: 'Report',
     RecommendationSnapshot: 'RecommendationSnapshot',
     FollowSuggestionSnapshot: 'FollowSuggestionSnapshot',
@@ -174,6 +175,16 @@ export const NotificationPreferenceScalarFieldEnum = {
     commentsEnabled: 'commentsEnabled',
     followsEnabled: 'followsEnabled',
     followRequestsEnabled: 'followRequestsEnabled'
+};
+export const PushSubscriptionScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    endpoint: 'endpoint',
+    p256dh: 'p256dh',
+    auth: 'auth',
+    userAgent: 'userAgent',
+    createdAt: 'createdAt',
+    lastSeenAt: 'lastSeenAt'
 };
 export const ReportScalarFieldEnum = {
     id: 'id',

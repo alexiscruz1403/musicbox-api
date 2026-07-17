@@ -171,7 +171,9 @@ let ReviewsService = class ReviewsService {
         return this.repo.findById(id);
     }
     async remove(userId, id) {
-        const review = await this.getOwnedActiveReview(userId, id);
+        const review = await this.getOwnedReviewAllowDeleted(userId, id);
+        if (review.deletedAt || review.status !== 'ACTIVE')
+            return;
         await this.repo.softDelete(id);
         await this.events.emitDeleted({
             reviewId: id,
@@ -243,6 +245,22 @@ let ReviewsService = class ReviewsService {
     }
     async getOwnedActiveReview(userId, id) {
         const review = await this.getActiveReview(id);
+        if (review.userId !== userId) {
+            throw new ForbiddenException({
+                code: 'NOT_REVIEW_OWNER',
+                message: 'No puedes modificar esta reseña.',
+            });
+        }
+        return review;
+    }
+    async getOwnedReviewAllowDeleted(userId, id) {
+        const review = await this.repo.findById(id);
+        if (!review) {
+            throw new NotFoundException({
+                code: 'REVIEW_NOT_FOUND',
+                message: 'Reseña no encontrada.',
+            });
+        }
         if (review.userId !== userId) {
             throw new ForbiddenException({
                 code: 'NOT_REVIEW_OWNER',

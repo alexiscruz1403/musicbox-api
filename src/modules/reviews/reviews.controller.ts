@@ -47,6 +47,7 @@ export class ReviewsController {
   }
 
   @Patch(':id')
+  @UseInterceptors(IdempotencyInterceptor)
   async update(
     @CurrentUser() user: JwtPayload,
     @Param('id') id: string,
@@ -57,6 +58,7 @@ export class ReviewsController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseInterceptors(IdempotencyInterceptor)
   async remove(@CurrentUser() user: JwtPayload, @Param('id') id: string) {
     await this.reviews.remove(user.sub, id);
   }

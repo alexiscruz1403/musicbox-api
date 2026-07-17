@@ -17,6 +17,7 @@ import {
   type CreateNotificationInput,
 } from './notifications.repository.js';
 import { NotificationsSseService } from './notifications-sse.service.js';
+import { WebPushService } from './push/web-push.service.js';
 
 interface NotificationPreferenceGate {
   notifEnabled: boolean;
@@ -34,6 +35,7 @@ export class NotificationsService {
   constructor(
     private readonly repo: NotificationsRepository,
     private readonly sse: NotificationsSseService,
+    private readonly webPush: WebPushService,
   ) {}
 
   async list(userId: string, query: ListNotificationsQueryDto) {
@@ -69,6 +71,7 @@ export class NotificationsService {
       ...payload,
     });
     this.sse.push(recipientId, notification);
+    void this.webPush.sendToUser(recipientId, notification);
   }
 
   // Entry point for NotificationsQueueProcessor — fed by the relay in
@@ -89,6 +92,7 @@ export class NotificationsService {
         : await this.repo.create(input);
 
     this.sse.push(input.recipientId, notification);
+    void this.webPush.sendToUser(input.recipientId, notification);
   }
 
   private buildInput(

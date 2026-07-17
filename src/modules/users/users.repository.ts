@@ -37,7 +37,7 @@ export class UsersRepository {
       this.prisma.user.update({
         where: { id: userId },
         data: {
-          email: `deleted_${userId}@musicbox.invalid`,
+          email: `deleted_${userId}@vinlyst.invalid`,
           handle: `deleted_${userId}`,
           displayName: '[usuario eliminado]',
           passwordHash: null,
@@ -55,6 +55,10 @@ export class UsersRepository {
         where: { userId, revokedAt: null },
         data: { revokedAt: new Date() },
       }),
+      // anonimize() never hard-deletes the User row, so PushSubscription's
+      // onDelete: Cascade never fires here — without this, a "deleted"
+      // account's old devices would keep receiving push indefinitely.
+      this.prisma.pushSubscription.deleteMany({ where: { userId } }),
     ]);
 
     return before;
