@@ -30,7 +30,11 @@ let TrendingRepository = class TrendingRepository {
             },
             _count: { albumId: true },
             _avg: { rating: true },
-            orderBy: [{ _count: { albumId: 'desc' } }, { _avg: { rating: 'desc' } }],
+            orderBy: [
+                { _count: { albumId: 'desc' } },
+                { _avg: { rating: 'desc' } },
+                { albumId: 'asc' },
+            ],
             take: TRENDING_TOP_N,
         });
         return groups.map((g) => ({
@@ -51,7 +55,11 @@ let TrendingRepository = class TrendingRepository {
             },
             _count: { trackId: true },
             _avg: { rating: true },
-            orderBy: [{ _count: { trackId: 'desc' } }, { _avg: { rating: 'desc' } }],
+            orderBy: [
+                { _count: { trackId: 'desc' } },
+                { _avg: { rating: 'desc' } },
+                { trackId: 'asc' },
+            ],
             take: TRENDING_TOP_N,
         });
         return groups.map((g) => ({
@@ -81,6 +89,11 @@ let TrendingRepository = class TrendingRepository {
     }
     saveSnapshot(payload) {
         return this.prisma.trendingSnapshot.create({ data: { payload } });
+    }
+    findLatestSnapshot() {
+        return this.prisma.trendingSnapshot.findFirst({
+            orderBy: { snapshotAt: 'desc' },
+        });
     }
 };
 TrendingRepository = __decorate([

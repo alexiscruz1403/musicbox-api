@@ -51,17 +51,28 @@ let ReviewsRepository = class ReviewsRepository {
         return !!follow;
     }
     createTrackReview(data) {
-        return this.prisma.review.create({
-            data: {
-                userId: data.userId,
-                type: 'TRACK',
-                trackId: data.trackId,
-                description: data.description,
-                rating: new Prisma.Decimal(data.rating.toFixed(1)),
-                externalTitle: data.externalTitle,
-                externalArtistName: data.externalArtistName,
-                externalCoverUrl: data.externalCoverUrl,
-            },
+        return this.prisma.$transaction(async (tx) => {
+            const review = await tx.review.create({
+                data: {
+                    userId: data.userId,
+                    type: 'TRACK',
+                    trackId: data.trackId,
+                    description: data.description,
+                    rating: new Prisma.Decimal(data.rating.toFixed(2)),
+                    externalTitle: data.externalTitle,
+                    externalArtistName: data.externalArtistName,
+                    externalCoverUrl: data.externalCoverUrl,
+                },
+            });
+            await tx.track.update({
+                where: { id: data.trackId },
+                data: { reviewCount: { increment: 1 } },
+            });
+            await tx.artist.update({
+                where: { id: data.artistId },
+                data: { reviewCount: { increment: 1 } },
+            });
+            return review;
         });
     }
     createAlbumReview(data) {
@@ -72,7 +83,7 @@ let ReviewsRepository = class ReviewsRepository {
                     type: 'ALBUM',
                     albumId: data.albumId,
                     description: data.description,
-                    rating: new Prisma.Decimal(data.rating.toFixed(1)),
+                    rating: new Prisma.Decimal(data.rating.toFixed(2)),
                     externalTitle: data.externalTitle,
                     externalArtistName: data.externalArtistName,
                     externalCoverUrl: data.externalCoverUrl,
@@ -82,10 +93,18 @@ let ReviewsRepository = class ReviewsRepository {
                 data: data.items.map((item) => ({
                     reviewId: review.id,
                     trackId: item.trackId,
-                    rating: item.rating,
+                    rating: new Prisma.Decimal(item.rating.toFixed(2)),
                     description: item.description ?? null,
                     position: item.position,
                 })),
+            });
+            await tx.album.update({
+                where: { id: data.albumId },
+                data: { reviewCount: { increment: 1 } },
+            });
+            await tx.artist.update({
+                where: { id: data.artistId },
+                data: { reviewCount: { increment: 1 } },
             });
             return review;
         });
@@ -123,7 +142,7 @@ let ReviewsRepository = class ReviewsRepository {
                     description: data.description,
                 }),
                 ...(data.rating !== undefined && {
-                    rating: new Prisma.Decimal(data.rating.toFixed(1)),
+                    rating: new Prisma.Decimal(data.rating.toFixed(2)),
                 }),
             },
         });
@@ -135,7 +154,7 @@ let ReviewsRepository = class ReviewsRepository {
                 data: items.map((item) => ({
                     reviewId,
                     trackId: item.trackId,
-                    rating: item.rating,
+                    rating: new Prisma.Decimal(item.rating.toFixed(2)),
                     description: item.description ?? null,
                     position: item.position,
                 })),
@@ -144,7 +163,7 @@ let ReviewsRepository = class ReviewsRepository {
                 where: { id: reviewId },
                 data: {
                     ...(description !== undefined && { description }),
-                    rating: new Prisma.Decimal(rating.toFixed(1)),
+                    rating: new Prisma.Decimal(rating.toFixed(2)),
                 },
             });
         });
@@ -152,10 +171,33 @@ let ReviewsRepository = class ReviewsRepository {
     updateAlbumReviewDescription(id, description) {
         return this.prisma.review.update({ where: { id }, data: { description } });
     }
-    softDelete(id) {
-        return this.prisma.review.update({
-            where: { id },
-            data: { status: 'DELETED', deletedAt: new Date() },
+    softDelete(id, type, trackId, albumId) {
+        return this.prisma.$transaction(async (tx) => {
+            const review = await tx.review.update({
+                where: { id },
+                data: { status: 'DELETED', deletedAt: new Date() },
+            });
+            if (type === 'TRACK') {
+                const track = await tx.track.update({
+                    where: { id: trackId },
+                    data: { reviewCount: { decrement: 1 } },
+                });
+                await tx.artist.update({
+                    where: { id: track.artistId },
+                    data: { reviewCount: { decrement: 1 } },
+                });
+            }
+            else {
+                const album = await tx.album.update({
+                    where: { id: albumId },
+                    data: { reviewCount: { decrement: 1 } },
+                });
+                await tx.artist.update({
+                    where: { id: album.artistId },
+                    data: { reviewCount: { decrement: 1 } },
+                });
+            }
+            return review;
         });
     }
     async listByAlbum(albumId, cursor, limit, sort, viewerId) {
@@ -167,6 +209,7 @@ let ReviewsRepository = class ReviewsRepository {
                 type: 'ALBUM',
                 status: 'ACTIVE',
                 deletedAt: null,
+                description: { not: null },
                 ...this.buildVisibilityFilter(viewerId),
             },
             orderBy: this.buildOrderBy(sort),
@@ -194,6 +237,7 @@ let ReviewsRepository = class ReviewsRepository {
                 type: 'TRACK',
                 status: 'ACTIVE',
                 deletedAt: null,
+                description: { not: null },
                 ...this.buildVisibilityFilter(viewerId),
             },
             orderBy: this.buildOrderBy(sort),
@@ -223,12 +267,24 @@ let ReviewsRepository = class ReviewsRepository {
             ],
         };
     }
-    async listByUserId(userId, cursor, limit) {
+    async listByUserId(userId, cursor, limit, sort, textQuery) {
         const take = Math.min(limit, 50);
         const cursorId = this.decodeCursor(cursor);
         const reviews = await this.prisma.review.findMany({
-            where: { userId, status: 'ACTIVE', deletedAt: null },
-            orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+            where: {
+                userId,
+                status: 'ACTIVE',
+                deletedAt: null,
+                ...(textQuery && {
+                    OR: [
+                        { externalTitle: { contains: textQuery, mode: 'insensitive' } },
+                        {
+                            externalArtistName: { contains: textQuery, mode: 'insensitive' },
+                        },
+                    ],
+                }),
+            },
+            orderBy: this.buildUserReviewsOrderBy(sort),
             take: take + 1,
             ...(cursorId && { cursor: { id: cursorId }, skip: 1 }),
             include: { user: { select: { avatarUrl: true } } },
@@ -243,6 +299,26 @@ let ReviewsRepository = class ReviewsRepository {
                 { id: 'desc' },
             ]
             : [{ createdAt: 'desc' }, { id: 'desc' }];
+    }
+    buildUserReviewsOrderBy(sort) {
+        switch (sort) {
+            case 'oldest':
+                return [{ createdAt: 'asc' }, { id: 'asc' }];
+            case 'best':
+                return [
+                    { rating: 'desc' },
+                    { createdAt: 'desc' },
+                    { id: 'desc' },
+                ];
+            case 'worst':
+                return [
+                    { rating: 'asc' },
+                    { createdAt: 'asc' },
+                    { id: 'asc' },
+                ];
+            default:
+                return [{ createdAt: 'desc' }, { id: 'desc' }];
+        }
     }
     decodeCursor(cursor) {
         return cursor ? Buffer.from(cursor, 'base64').toString('utf8') : undefined;

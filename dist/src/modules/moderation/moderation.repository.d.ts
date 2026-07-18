@@ -3,7 +3,7 @@ type ReportTargetType = 'REVIEW' | 'COMMENT' | 'USER';
 type ReportStatus = 'PENDING' | 'REVIEWED' | 'DISMISSED';
 export interface ReportedReviewContent {
     reviewType: 'TRACK' | 'ALBUM';
-    description: string;
+    description: string | null;
     trackDescriptions?: {
         trackTitle: string;
         description: string | null;
@@ -27,11 +27,11 @@ export declare class ModerationRepository {
         status: import("../../../generated/prisma/enums.js").ReportStatus;
         createdAt: Date;
         targetId: string;
-        reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
-        reviewedById: string | null;
         reviewedAt: Date | null;
+        reporterId: string;
+        reviewedById: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -41,11 +41,11 @@ export declare class ModerationRepository {
         status: import("../../../generated/prisma/enums.js").ReportStatus;
         createdAt: Date;
         targetId: string;
-        reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
-        reviewedById: string | null;
         reviewedAt: Date | null;
+        reporterId: string;
+        reviewedById: string | null;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -61,11 +61,11 @@ export declare class ModerationRepository {
             status: import("../../../generated/prisma/enums.js").ReportStatus;
             createdAt: Date;
             targetId: string;
-            reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
             reason: string;
-            reviewedById: string | null;
             reviewedAt: Date | null;
+            reporterId: string;
+            reviewedById: string | null;
         } & {
             reportedContent: ReportedContent;
         })[];
@@ -78,11 +78,11 @@ export declare class ModerationRepository {
         status: import("../../../generated/prisma/enums.js").ReportStatus;
         createdAt: Date;
         targetId: string;
-        reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
-        reviewedById: string | null;
         reviewedAt: Date | null;
+        reporterId: string;
+        reviewedById: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -90,6 +90,9 @@ export declare class ModerationRepository {
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         userId: string;
+        type: import("../../../generated/prisma/enums.js").ReviewType;
+        trackId: string | null;
+        albumId: string | null;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -100,7 +103,7 @@ export declare class ModerationRepository {
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
-    hideReviewIfActive(id: string): Promise<void>;
+    hideReviewIfActive(id: string, type: 'TRACK' | 'ALBUM', trackId: string | null, albumId: string | null): Promise<void>;
     hideCommentIfActive(id: string): Promise<void>;
     findActiveReview(id: string): import("../../../generated/prisma/models.js").Prisma__ReviewClient<{
         id: string;
@@ -109,10 +112,10 @@ export declare class ModerationRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         type: import("../../../generated/prisma/enums.js").ReviewType;
         trackId: string | null;
-        description: string;
+        albumId: string | null;
+        description: string | null;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
         externalArtistName: string;

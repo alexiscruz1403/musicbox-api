@@ -8,7 +8,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Type } from 'class-transformer';
-import { ArrayMinSize, IsArray, IsIn, IsInt, IsString, Length, Max, Min, ValidateIf, ValidateNested, } from 'class-validator';
+import { ArrayMinSize, IsArray, IsIn, IsNumber, IsOptional, IsString, Length, Max, Min, ValidateIf, ValidateNested, } from 'class-validator';
+import { IsQuarterPointRating } from './quarter-point-rating.validator.js';
 import { TrackReviewItemDto } from './track-review-item.dto.js';
 export class CreateReviewDto {
     type;
@@ -26,15 +27,17 @@ __decorate([
     __metadata("design:type", String)
 ], CreateReviewDto.prototype, "deezerId", void 0);
 __decorate([
+    IsOptional(),
     IsString(),
     Length(1, 2000),
     __metadata("design:type", String)
 ], CreateReviewDto.prototype, "description", void 0);
 __decorate([
     ValidateIf((o) => o.type === 'TRACK'),
-    IsInt(),
+    IsNumber(),
     Min(1),
     Max(10),
+    IsQuarterPointRating(),
     __metadata("design:type", Number)
 ], CreateReviewDto.prototype, "rating", void 0);
 __decorate([

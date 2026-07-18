@@ -22,10 +22,10 @@ export declare class FeedController {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
-            description: string;
+            albumId: string | null;
+            description: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;

@@ -8,7 +8,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Type } from 'class-transformer';
-import { ArrayMinSize, IsArray, IsInt, IsOptional, IsString, Length, Max, Min, ValidateNested, } from 'class-validator';
+import { ArrayMinSize, IsArray, IsNumber, IsOptional, IsString, Length, Max, Min, ValidateNested, } from 'class-validator';
+import { IsQuarterPointRating } from './quarter-point-rating.validator.js';
 import { TrackReviewItemDto } from './track-review-item.dto.js';
 export class UpdateReviewDto {
     description;
@@ -23,9 +24,10 @@ __decorate([
 ], UpdateReviewDto.prototype, "description", void 0);
 __decorate([
     IsOptional(),
-    IsInt(),
+    IsNumber(),
     Min(1),
     Max(10),
+    IsQuarterPointRating(),
     __metadata("design:type", Number)
 ], UpdateReviewDto.prototype, "rating", void 0);
 __decorate([

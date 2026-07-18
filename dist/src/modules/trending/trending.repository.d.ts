@@ -14,11 +14,12 @@ export declare class TrendingRepository {
     hydrateAlbums(ids: string[]): Promise<never[]> | Prisma.PrismaPromise<({
         artist: {
             id: string;
+            name: string;
             deezerId: string;
             mbid: string | null;
-            name: string;
-            imageUrl: string | null;
             lastSyncedAt: Date;
+            reviewCount: number;
+            imageUrl: string | null;
             catalogSyncedAt: Date | null;
         };
     } & {
@@ -26,34 +27,37 @@ export declare class TrendingRepository {
         coverUrl: string | null;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
         releaseDate: Date | null;
         genreLabel: string | null;
+        lastSyncedAt: Date;
+        reviewCount: number;
     })[]>;
     hydrateTracks(ids: string[]): Promise<never[]> | Prisma.PrismaPromise<({
+        artist: {
+            id: string;
+            name: string;
+            deezerId: string;
+            mbid: string | null;
+            lastSyncedAt: Date;
+            reviewCount: number;
+            imageUrl: string | null;
+            catalogSyncedAt: Date | null;
+        };
         album: {
             coverUrl: string | null;
             deezerId: string;
         } | null;
-        artist: {
-            id: string;
-            deezerId: string;
-            mbid: string | null;
-            name: string;
-            imageUrl: string | null;
-            lastSyncedAt: Date;
-            catalogSyncedAt: Date | null;
-        };
     } & {
         id: string;
+        albumId: string | null;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
-        albumId: string | null;
+        lastSyncedAt: Date;
+        reviewCount: number;
         durationMs: number | null;
         trackNumber: number | null;
         previewUrl: string | null;
@@ -63,6 +67,13 @@ export declare class TrendingRepository {
         payload: import("@prisma/client/runtime/client").JsonValue;
         snapshotAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
+        omit: Prisma.GlobalOmitConfig | undefined;
+    }>;
+    findLatestSnapshot(): Prisma.Prisma__TrendingSnapshotClient<{
+        id: string;
+        payload: import("@prisma/client/runtime/client").JsonValue;
+        snapshotAt: Date;
+    } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: Prisma.GlobalOmitConfig | undefined;
     }>;
 }

@@ -4,9 +4,9 @@ export declare class TrendingController {
     private readonly service;
     constructor(service: TrendingService);
     getAlbums(query: ListTrendingQueryDto): Promise<{
-        data: import("./trending.service.js").TrendingAlbumItem[];
+        data: import("./trending.service.js").RankedTrendingAlbumItem[];
     }>;
     getTracks(query: ListTrendingQueryDto): Promise<{
-        data: import("./trending.service.js").TrendingTrackItem[];
+        data: import("./trending.service.js").RankedTrendingTrackItem[];
     }>;
 }

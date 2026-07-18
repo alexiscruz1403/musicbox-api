@@ -25,10 +25,17 @@ let ArtistDetailService = class ArtistDetailService {
     async getDetail(deezerId) {
         const key = `catalog:artist-detail:${deezerId}`;
         const cached = await this.redis.get(key);
-        if (cached !== null)
-            return JSON.parse(cached);
-        const response = await this.buildDetail(deezerId);
-        await this.redis.set(key, JSON.stringify(response), ARTIST_DETAIL_CACHE_TTL_SECONDS);
+        const response = cached !== null
+            ? JSON.parse(cached)
+            : await this.buildDetail(deezerId);
+        if (cached === null) {
+            await this.redis.set(key, JSON.stringify(response), ARTIST_DETAIL_CACHE_TTL_SECONDS);
+        }
+        const artistStats = await this.repo.getArtistStats(deezerId);
+        response.artist = {
+            ...response.artist,
+            reviewCount: artistStats?.reviewCount ?? 0,
+        };
         return response;
     }
     async buildDetail(deezerId) {

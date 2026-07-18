@@ -91,7 +91,7 @@ export declare class UsersRepository {
                 id: string;
                 trackId: string;
                 description: string | null;
-                rating: number;
+                rating: import("@prisma/client-runtime-utils").Decimal;
                 reviewId: string;
                 position: number;
             }[];
@@ -105,7 +105,7 @@ export declare class UsersRepository {
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
             albumId: string | null;
-            description: string;
+            description: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;
@@ -136,8 +136,8 @@ export declare class UsersRepository {
             };
         } & {
             createdAt: Date;
-            followeeId: string;
             followerId: string;
+            followeeId: string;
         })[];
         following: ({
             followee: {
@@ -147,8 +147,8 @@ export declare class UsersRepository {
             };
         } & {
             createdAt: Date;
-            followeeId: string;
             followerId: string;
+            followeeId: string;
         })[];
         notifPrefs: {
             userId: string;
@@ -275,22 +275,22 @@ export declare class UsersRepository {
     }[]>;
     followExists(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
         createdAt: Date;
-        followeeId: string;
         followerId: string;
+        followeeId: string;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     createFollow(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
         createdAt: Date;
-        followeeId: string;
         followerId: string;
+        followeeId: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     deleteFollow(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
         createdAt: Date;
-        followeeId: string;
         followerId: string;
+        followeeId: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;

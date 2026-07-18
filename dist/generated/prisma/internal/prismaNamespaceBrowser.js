@@ -91,7 +91,8 @@ export const ArtistScalarFieldEnum = {
     name: 'name',
     imageUrl: 'imageUrl',
     lastSyncedAt: 'lastSyncedAt',
-    catalogSyncedAt: 'catalogSyncedAt'
+    catalogSyncedAt: 'catalogSyncedAt',
+    reviewCount: 'reviewCount'
 };
 export const AlbumScalarFieldEnum = {
     id: 'id',
@@ -102,7 +103,8 @@ export const AlbumScalarFieldEnum = {
     coverUrl: 'coverUrl',
     releaseDate: 'releaseDate',
     genreLabel: 'genreLabel',
-    lastSyncedAt: 'lastSyncedAt'
+    lastSyncedAt: 'lastSyncedAt',
+    reviewCount: 'reviewCount'
 };
 export const TrackScalarFieldEnum = {
     id: 'id',
@@ -114,7 +116,8 @@ export const TrackScalarFieldEnum = {
     durationMs: 'durationMs',
     trackNumber: 'trackNumber',
     previewUrl: 'previewUrl',
-    lastSyncedAt: 'lastSyncedAt'
+    lastSyncedAt: 'lastSyncedAt',
+    reviewCount: 'reviewCount'
 };
 export const ReviewScalarFieldEnum = {
     id: 'id',

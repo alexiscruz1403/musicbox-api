@@ -9,18 +9,18 @@ export type AggregateTrackReviewItem = {
     _max: TrackReviewItemMaxAggregateOutputType | null;
 };
 export type TrackReviewItemAvgAggregateOutputType = {
-    rating: number | null;
+    rating: runtime.Decimal | null;
     position: number | null;
 };
 export type TrackReviewItemSumAggregateOutputType = {
-    rating: number | null;
+    rating: runtime.Decimal | null;
     position: number | null;
 };
 export type TrackReviewItemMinAggregateOutputType = {
     id: string | null;
     reviewId: string | null;
     trackId: string | null;
-    rating: number | null;
+    rating: runtime.Decimal | null;
     description: string | null;
     position: number | null;
 };
@@ -28,7 +28,7 @@ export type TrackReviewItemMaxAggregateOutputType = {
     id: string | null;
     reviewId: string | null;
     trackId: string | null;
-    rating: number | null;
+    rating: runtime.Decimal | null;
     description: string | null;
     position: number | null;
 };
@@ -106,7 +106,7 @@ export type TrackReviewItemGroupByOutputType = {
     id: string;
     reviewId: string;
     trackId: string;
-    rating: number;
+    rating: runtime.Decimal;
     description: string | null;
     position: number;
     _count: TrackReviewItemCountAggregateOutputType | null;
@@ -125,7 +125,7 @@ export type TrackReviewItemWhereInput = {
     id?: Prisma.StringFilter<"TrackReviewItem"> | string;
     reviewId?: Prisma.StringFilter<"TrackReviewItem"> | string;
     trackId?: Prisma.StringFilter<"TrackReviewItem"> | string;
-    rating?: Prisma.IntFilter<"TrackReviewItem"> | number;
+    rating?: Prisma.DecimalFilter<"TrackReviewItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.StringNullableFilter<"TrackReviewItem"> | string | null;
     position?: Prisma.IntFilter<"TrackReviewItem"> | number;
     review?: Prisma.XOR<Prisma.ReviewScalarRelationFilter, Prisma.ReviewWhereInput>;
@@ -149,7 +149,7 @@ export type TrackReviewItemWhereUniqueInput = Prisma.AtLeast<{
     NOT?: Prisma.TrackReviewItemWhereInput | Prisma.TrackReviewItemWhereInput[];
     reviewId?: Prisma.StringFilter<"TrackReviewItem"> | string;
     trackId?: Prisma.StringFilter<"TrackReviewItem"> | string;
-    rating?: Prisma.IntFilter<"TrackReviewItem"> | number;
+    rating?: Prisma.DecimalFilter<"TrackReviewItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.StringNullableFilter<"TrackReviewItem"> | string | null;
     position?: Prisma.IntFilter<"TrackReviewItem"> | number;
     review?: Prisma.XOR<Prisma.ReviewScalarRelationFilter, Prisma.ReviewWhereInput>;
@@ -175,13 +175,13 @@ export type TrackReviewItemScalarWhereWithAggregatesInput = {
     id?: Prisma.StringWithAggregatesFilter<"TrackReviewItem"> | string;
     reviewId?: Prisma.StringWithAggregatesFilter<"TrackReviewItem"> | string;
     trackId?: Prisma.StringWithAggregatesFilter<"TrackReviewItem"> | string;
-    rating?: Prisma.IntWithAggregatesFilter<"TrackReviewItem"> | number;
+    rating?: Prisma.DecimalWithAggregatesFilter<"TrackReviewItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.StringNullableWithAggregatesFilter<"TrackReviewItem"> | string | null;
     position?: Prisma.IntWithAggregatesFilter<"TrackReviewItem"> | number;
 };
 export type TrackReviewItemCreateInput = {
     id?: string;
-    rating: number;
+    rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: string | null;
     position: number;
     review: Prisma.ReviewCreateNestedOneWithoutTrackReviewItemsInput;
@@ -191,13 +191,13 @@ export type TrackReviewItemUncheckedCreateInput = {
     id?: string;
     reviewId: string;
     trackId: string;
-    rating: number;
+    rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: string | null;
     position: number;
 };
 export type TrackReviewItemUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     position?: Prisma.IntFieldUpdateOperationsInput | number;
     review?: Prisma.ReviewUpdateOneRequiredWithoutTrackReviewItemsNestedInput;
@@ -207,7 +207,7 @@ export type TrackReviewItemUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     reviewId?: Prisma.StringFieldUpdateOperationsInput | string;
     trackId?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     position?: Prisma.IntFieldUpdateOperationsInput | number;
 };
@@ -215,13 +215,13 @@ export type TrackReviewItemCreateManyInput = {
     id?: string;
     reviewId: string;
     trackId: string;
-    rating: number;
+    rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: string | null;
     position: number;
 };
 export type TrackReviewItemUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     position?: Prisma.IntFieldUpdateOperationsInput | number;
 };
@@ -229,7 +229,7 @@ export type TrackReviewItemUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     reviewId?: Prisma.StringFieldUpdateOperationsInput | string;
     trackId?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     position?: Prisma.IntFieldUpdateOperationsInput | number;
 };
@@ -355,7 +355,7 @@ export type TrackReviewItemUncheckedUpdateManyWithoutReviewNestedInput = {
 };
 export type TrackReviewItemCreateWithoutTrackInput = {
     id?: string;
-    rating: number;
+    rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: string | null;
     position: number;
     review: Prisma.ReviewCreateNestedOneWithoutTrackReviewItemsInput;
@@ -363,7 +363,7 @@ export type TrackReviewItemCreateWithoutTrackInput = {
 export type TrackReviewItemUncheckedCreateWithoutTrackInput = {
     id?: string;
     reviewId: string;
-    rating: number;
+    rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: string | null;
     position: number;
 };
@@ -395,13 +395,13 @@ export type TrackReviewItemScalarWhereInput = {
     id?: Prisma.StringFilter<"TrackReviewItem"> | string;
     reviewId?: Prisma.StringFilter<"TrackReviewItem"> | string;
     trackId?: Prisma.StringFilter<"TrackReviewItem"> | string;
-    rating?: Prisma.IntFilter<"TrackReviewItem"> | number;
+    rating?: Prisma.DecimalFilter<"TrackReviewItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.StringNullableFilter<"TrackReviewItem"> | string | null;
     position?: Prisma.IntFilter<"TrackReviewItem"> | number;
 };
 export type TrackReviewItemCreateWithoutReviewInput = {
     id?: string;
-    rating: number;
+    rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: string | null;
     position: number;
     track: Prisma.TrackCreateNestedOneWithoutTrackReviewItemsInput;
@@ -409,7 +409,7 @@ export type TrackReviewItemCreateWithoutReviewInput = {
 export type TrackReviewItemUncheckedCreateWithoutReviewInput = {
     id?: string;
     trackId: string;
-    rating: number;
+    rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: string | null;
     position: number;
 };
@@ -437,13 +437,13 @@ export type TrackReviewItemUpdateManyWithWhereWithoutReviewInput = {
 export type TrackReviewItemCreateManyTrackInput = {
     id?: string;
     reviewId: string;
-    rating: number;
+    rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: string | null;
     position: number;
 };
 export type TrackReviewItemUpdateWithoutTrackInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     position?: Prisma.IntFieldUpdateOperationsInput | number;
     review?: Prisma.ReviewUpdateOneRequiredWithoutTrackReviewItemsNestedInput;
@@ -451,27 +451,27 @@ export type TrackReviewItemUpdateWithoutTrackInput = {
 export type TrackReviewItemUncheckedUpdateWithoutTrackInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     reviewId?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     position?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type TrackReviewItemUncheckedUpdateManyWithoutTrackInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     reviewId?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     position?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type TrackReviewItemCreateManyReviewInput = {
     id?: string;
     trackId: string;
-    rating: number;
+    rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: string | null;
     position: number;
 };
 export type TrackReviewItemUpdateWithoutReviewInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     position?: Prisma.IntFieldUpdateOperationsInput | number;
     track?: Prisma.TrackUpdateOneRequiredWithoutTrackReviewItemsNestedInput;
@@ -479,14 +479,14 @@ export type TrackReviewItemUpdateWithoutReviewInput = {
 export type TrackReviewItemUncheckedUpdateWithoutReviewInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     trackId?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     position?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type TrackReviewItemUncheckedUpdateManyWithoutReviewInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     trackId?: Prisma.StringFieldUpdateOperationsInput | string;
-    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     position?: Prisma.IntFieldUpdateOperationsInput | number;
 };
@@ -551,7 +551,7 @@ export type $TrackReviewItemPayload<ExtArgs extends runtime.Types.Extensions.Int
         id: string;
         reviewId: string;
         trackId: string;
-        rating: number;
+        rating: runtime.Decimal;
         description: string | null;
         position: number;
     }, ExtArgs["result"]["trackReviewItem"]>;
@@ -616,7 +616,7 @@ export interface TrackReviewItemFieldRefs {
     readonly id: Prisma.FieldRef<"TrackReviewItem", 'String'>;
     readonly reviewId: Prisma.FieldRef<"TrackReviewItem", 'String'>;
     readonly trackId: Prisma.FieldRef<"TrackReviewItem", 'String'>;
-    readonly rating: Prisma.FieldRef<"TrackReviewItem", 'Int'>;
+    readonly rating: Prisma.FieldRef<"TrackReviewItem", 'Decimal'>;
     readonly description: Prisma.FieldRef<"TrackReviewItem", 'String'>;
     readonly position: Prisma.FieldRef<"TrackReviewItem", 'Int'>;
 }

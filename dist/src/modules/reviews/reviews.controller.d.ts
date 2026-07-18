@@ -9,19 +9,19 @@ export declare class ReviewsController {
     create(user: JwtPayload, dto: CreateReviewDto): Promise<{
         data: {
             id: string;
+            albumId: string | null;
+            userId: string;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            description: string | null;
+            rating: import("@prisma/client-runtime-utils").Decimal;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
-            userId: string;
-            albumId: string | null;
-            type: import("../../../generated/prisma/enums.js").ReviewType;
-            trackId: string | null;
-            description: string;
-            rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;
+            trackId: string | null;
         };
     }>;
     findOne(id: string, req: Request & {
@@ -32,12 +32,6 @@ export declare class ReviewsController {
             dislikesCount: number;
             commentsCount: number;
             userReaction: "LIKE" | "DISLIKE" | null;
-            user: {
-                id: string;
-                handle: string;
-                displayName: string;
-                avatarUrl: string | null;
-            };
             album: {
                 deezerId: string;
             } | null;
@@ -52,36 +46,36 @@ export declare class ReviewsController {
                 };
             } & {
                 id: string;
-                trackId: string;
                 description: string | null;
-                rating: number;
-                reviewId: string;
+                rating: import("@prisma/client-runtime-utils").Decimal;
+                trackId: string;
                 position: number;
+                reviewId: string;
             })[];
+            user: {
+                id: string;
+                handle: string;
+                displayName: string;
+                avatarUrl: string | null;
+            };
             id: string;
+            albumId: string | null;
+            userId: string;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            description: string | null;
+            rating: import("@prisma/client-runtime-utils").Decimal;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
-            userId: string;
-            albumId: string | null;
-            type: import("../../../generated/prisma/enums.js").ReviewType;
-            trackId: string | null;
-            description: string;
-            rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;
+            trackId: string | null;
         };
     }>;
     update(user: JwtPayload, id: string, dto: UpdateReviewDto): Promise<{
         data: ({
-            user: {
-                id: string;
-                handle: string;
-                displayName: string;
-                avatarUrl: string | null;
-            };
             album: {
                 deezerId: string;
             } | null;
@@ -96,27 +90,33 @@ export declare class ReviewsController {
                 };
             } & {
                 id: string;
-                trackId: string;
                 description: string | null;
-                rating: number;
-                reviewId: string;
+                rating: import("@prisma/client-runtime-utils").Decimal;
+                trackId: string;
                 position: number;
+                reviewId: string;
             })[];
+            user: {
+                id: string;
+                handle: string;
+                displayName: string;
+                avatarUrl: string | null;
+            };
         } & {
             id: string;
+            albumId: string | null;
+            userId: string;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            description: string | null;
+            rating: import("@prisma/client-runtime-utils").Decimal;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
-            userId: string;
-            albumId: string | null;
-            type: import("../../../generated/prisma/enums.js").ReviewType;
-            trackId: string | null;
-            description: string;
-            rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;
+            trackId: string | null;
         }) | null;
     }>;
     remove(user: JwtPayload, id: string): Promise<void>;

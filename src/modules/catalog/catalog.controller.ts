@@ -33,6 +33,7 @@ export class CatalogController {
       dto.type,
       dto.limit,
       dto.cursor ?? null,
+      req.user?.sub,
     );
     if (req.user) {
       await this.history.recordSearch(req.user.sub, dto.q);
@@ -52,7 +53,7 @@ export class CatalogController {
     @Param('deezerId') deezerId: string,
     @Req() req: Request & { user?: JwtPayload },
   ) {
-    const album = await this.catalog.getAlbum(deezerId);
+    const album = await this.catalog.getAlbum(deezerId, req.user?.sub);
     if (req.user) {
       await this.history.recordAlbumView(req.user.sub, album);
     }
@@ -65,7 +66,7 @@ export class CatalogController {
     @Param('deezerId') deezerId: string,
     @Req() req: Request & { user?: JwtPayload },
   ) {
-    const track = await this.catalog.getTrack(deezerId);
+    const track = await this.catalog.getTrack(deezerId, req.user?.sub);
     if (req.user) {
       await this.history.recordTrackView(req.user.sub, track);
     }

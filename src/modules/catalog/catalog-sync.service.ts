@@ -75,10 +75,12 @@ export class CatalogSyncService {
         artistRow.id,
       );
       await this.redis.del(`catalog:album:${fullAlbum.deezerId}`);
+      await this.redis.del(`catalog:album-preview:${fullAlbum.deezerId}`);
 
       for (const track of fullAlbum.tracks) {
         await this.repo.upsertTrack(track, artistRow.id, persistedAlbum.id);
         await this.redis.del(`catalog:track:${track.deezerId}`);
+        await this.redis.del(`catalog:track-preview:${track.deezerId}`);
       }
     }
 

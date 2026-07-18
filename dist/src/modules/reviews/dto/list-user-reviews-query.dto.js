@@ -8,10 +8,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsIn, IsInt, IsOptional, IsString, Max, MaxLength, Min, MinLength, } from 'class-validator';
 export class ListUserReviewsQueryDto {
     cursor;
     limit = 10;
+    sort = 'recent';
+    q;
 }
 __decorate([
     IsOptional(),
@@ -26,4 +28,16 @@ __decorate([
     Max(50),
     __metadata("design:type", Number)
 ], ListUserReviewsQueryDto.prototype, "limit", void 0);
+__decorate([
+    IsOptional(),
+    IsIn(['recent', 'oldest', 'best', 'worst']),
+    __metadata("design:type", String)
+], ListUserReviewsQueryDto.prototype, "sort", void 0);
+__decorate([
+    IsOptional(),
+    IsString(),
+    MinLength(1),
+    MaxLength(100),
+    __metadata("design:type", String)
+], ListUserReviewsQueryDto.prototype, "q", void 0);
 //# sourceMappingURL=list-user-reviews-query.dto.js.map

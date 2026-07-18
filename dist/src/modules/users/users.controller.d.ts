@@ -17,21 +17,21 @@ export declare class UsersController {
     getMe(user: JwtPayload): Promise<{
         data: {
             user: {
+                coverUrl: string | null;
                 id: string;
+                status: import("../../../generated/prisma/enums.js").UserStatus;
+                createdAt: Date;
+                updatedAt: Date;
+                deletedAt: Date | null;
                 handle: string;
                 displayName: string;
                 email: string;
                 avatarUrl: string | null;
-                coverUrl: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
                 isPrivate: boolean;
-                status: import("../../../generated/prisma/enums.js").UserStatus;
                 role: import("../../../generated/prisma/enums.js").UserRole;
                 consentedAt: Date | null;
-                createdAt: Date;
-                updatedAt: Date;
-                deletedAt: Date | null;
                 acceptedReportsCount: number;
                 penaltyLevel: number;
                 penalizedUntil: Date | null;
@@ -45,7 +45,12 @@ export declare class UsersController {
     }>;
     updateMe(user: JwtPayload, dto: UpdateProfileDto): Promise<{
         data: {
+            coverUrl: string | null;
             id: string;
+            status: import("../../../generated/prisma/enums.js").UserStatus;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt: Date | null;
             handle: string;
             displayName: string;
             email: string;
@@ -53,17 +58,12 @@ export declare class UsersController {
             googleId: string | null;
             avatarUrl: string | null;
             avatarPublicId: string | null;
-            coverUrl: string | null;
             coverPublicId: string | null;
             bio: string | null;
             notifEnabled: boolean;
             isPrivate: boolean;
-            status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
             consentedAt: Date | null;
-            createdAt: Date;
-            updatedAt: Date;
-            deletedAt: Date | null;
             acceptedReportsCount: number;
             penaltyLevel: number;
             penalizedUntil: Date | null;
@@ -83,23 +83,23 @@ export declare class UsersController {
     exportMe(user: JwtPayload): Promise<{
         data: {
             profile: {
+                coverUrl: string | null;
                 id: string;
+                status: import("../../../generated/prisma/enums.js").UserStatus;
+                createdAt: Date;
+                updatedAt: Date;
+                deletedAt: Date | null;
                 handle: string;
                 displayName: string;
                 email: string;
                 avatarUrl: string | null;
                 avatarPublicId: string | null;
-                coverUrl: string | null;
                 coverPublicId: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
                 isPrivate: boolean;
-                status: import("../../../generated/prisma/enums.js").UserStatus;
                 role: import("../../../generated/prisma/enums.js").UserRole;
                 consentedAt: Date | null;
-                createdAt: Date;
-                updatedAt: Date;
-                deletedAt: Date | null;
                 acceptedReportsCount: number;
                 penaltyLevel: number;
                 penalizedUntil: Date | null;
@@ -107,43 +107,43 @@ export declare class UsersController {
             reviews: ({
                 trackReviewItems: {
                     id: string;
-                    trackId: string;
                     description: string | null;
-                    rating: number;
-                    reviewId: string;
+                    rating: import("@prisma/client-runtime-utils").Decimal;
+                    trackId: string;
                     position: number;
+                    reviewId: string;
                 }[];
             } & {
                 id: string;
+                albumId: string | null;
+                userId: string;
+                type: import("../../../generated/prisma/enums.js").ReviewType;
+                description: string | null;
+                rating: import("@prisma/client-runtime-utils").Decimal;
                 status: import("../../../generated/prisma/enums.js").ContentStatus;
                 createdAt: Date;
                 updatedAt: Date;
                 deletedAt: Date | null;
-                userId: string;
-                type: import("../../../generated/prisma/enums.js").ReviewType;
-                trackId: string | null;
-                albumId: string | null;
-                description: string;
-                rating: import("@prisma/client-runtime-utils").Decimal;
                 externalTitle: string;
                 externalArtistName: string;
                 externalCoverUrl: string | null;
+                trackId: string | null;
             })[];
             comments: {
                 id: string;
+                userId: string;
                 status: import("../../../generated/prisma/enums.js").ContentStatus;
                 createdAt: Date;
                 updatedAt: Date;
                 deletedAt: Date | null;
-                userId: string;
                 reviewId: string;
                 content: string;
             }[];
             reactions: {
                 id: string;
-                createdAt: Date;
                 userId: string;
                 type: import("../../../generated/prisma/enums.js").ReactionType;
+                createdAt: Date;
                 reviewId: string;
             }[];
             follows: {
@@ -265,8 +265,8 @@ export declare class UsersController {
         data: {
             query: string;
             id: string;
-            searcherId: string;
             searchedAt: Date;
+            searcherId: string;
         }[];
     }>;
     deleteSearchHistoryItem(user: JwtPayload, id: string): Promise<void>;
@@ -283,19 +283,19 @@ export declare class UsersController {
     }): Promise<{
         data: {
             user: {
+                coverUrl: string | null;
                 id: string;
+                status: import("../../../generated/prisma/enums.js").UserStatus;
+                createdAt: Date;
+                updatedAt: Date;
                 handle: string;
                 displayName: string;
                 avatarUrl: string | null;
-                coverUrl: string | null;
                 bio: string | null;
                 notifEnabled: boolean;
                 isPrivate: boolean;
-                status: import("../../../generated/prisma/enums.js").UserStatus;
                 role: import("../../../generated/prisma/enums.js").UserRole;
                 consentedAt: Date | null;
-                createdAt: Date;
-                updatedAt: Date;
                 acceptedReportsCount: number;
                 penaltyLevel: number;
                 penalizedUntil: Date | null;
@@ -347,19 +347,19 @@ export declare class UsersController {
         data: {
             avatarUrl: string | null;
             id: string;
+            albumId: string | null;
+            userId: string;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            description: string | null;
+            rating: import("@prisma/client-runtime-utils").Decimal;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
-            userId: string;
-            type: import("../../../generated/prisma/enums.js").ReviewType;
-            trackId: string | null;
-            albumId: string | null;
-            description: string;
-            rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;
+            trackId: string | null;
         }[];
         meta: {
             cursor: string | null;

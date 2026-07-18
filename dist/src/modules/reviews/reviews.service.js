@@ -27,7 +27,9 @@ let ReviewsService = class ReviewsService {
         this.social = social;
     }
     async create(userId, dto) {
-        const description = sanitizeHtml(dto.description, SANITIZE_OPTIONS);
+        const description = dto.description
+            ? sanitizeHtml(dto.description, SANITIZE_OPTIONS)
+            : null;
         if (dto.type === 'TRACK') {
             return this.createTrackReview(userId, dto.deezerId, description, dto.rating);
         }
@@ -40,6 +42,7 @@ let ReviewsService = class ReviewsService {
             const review = await this.repo.createTrackReview({
                 userId,
                 trackId: trackRow.id,
+                artistId: trackRow.artistId,
                 description,
                 rating,
                 externalTitle: track.title,
@@ -68,6 +71,7 @@ let ReviewsService = class ReviewsService {
             const review = await this.repo.createAlbumReview({
                 userId,
                 albumId: albumRow.id,
+                artistId: albumRow.artistId,
                 description,
                 rating,
                 externalTitle: album.title,
@@ -174,7 +178,7 @@ let ReviewsService = class ReviewsService {
         const review = await this.getOwnedReviewAllowDeleted(userId, id);
         if (review.deletedAt || review.status !== 'ACTIVE')
             return;
-        await this.repo.softDelete(id);
+        await this.repo.softDelete(id, review.type, review.trackId, review.albumId);
         await this.events.emitDeleted({
             reviewId: id,
             userId,
@@ -208,7 +212,7 @@ let ReviewsService = class ReviewsService {
             });
         });
         await this.assertOwnerVisible(user.id, viewerId);
-        const result = await this.repo.listByUserId(user.id, query.cursor, query.limit);
+        const result = await this.repo.listByUserId(user.id, query.cursor, query.limit, query.sort, query.q);
         return {
             items: result.items.map(({ user: reviewUser, ...review }) => ({
                 ...review,
@@ -280,7 +284,7 @@ let ReviewsService = class ReviewsService {
     }
     computeAverageRating(ratings) {
         const avg = ratings.reduce((sum, r) => sum + r, 0) / ratings.length;
-        return Number(avg.toFixed(1));
+        return Number(avg.toFixed(2));
     }
     translatePrismaError(e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError &&

@@ -91,7 +91,7 @@ export declare class UsersService {
                 id: string;
                 trackId: string;
                 description: string | null;
-                rating: number;
+                rating: import("@prisma/client-runtime-utils").Decimal;
                 reviewId: string;
                 position: number;
             }[];
@@ -105,7 +105,7 @@ export declare class UsersService {
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
             albumId: string | null;
-            description: string;
+            description: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;

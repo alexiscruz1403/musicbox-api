@@ -11,10 +11,12 @@ export type AggregateTrack = {
 export type TrackAvgAggregateOutputType = {
     durationMs: number | null;
     trackNumber: number | null;
+    reviewCount: number | null;
 };
 export type TrackSumAggregateOutputType = {
     durationMs: number | null;
     trackNumber: number | null;
+    reviewCount: number | null;
 };
 export type TrackMinAggregateOutputType = {
     id: string | null;
@@ -27,6 +29,7 @@ export type TrackMinAggregateOutputType = {
     trackNumber: number | null;
     previewUrl: string | null;
     lastSyncedAt: Date | null;
+    reviewCount: number | null;
 };
 export type TrackMaxAggregateOutputType = {
     id: string | null;
@@ -39,6 +42,7 @@ export type TrackMaxAggregateOutputType = {
     trackNumber: number | null;
     previewUrl: string | null;
     lastSyncedAt: Date | null;
+    reviewCount: number | null;
 };
 export type TrackCountAggregateOutputType = {
     id: number;
@@ -51,15 +55,18 @@ export type TrackCountAggregateOutputType = {
     trackNumber: number;
     previewUrl: number;
     lastSyncedAt: number;
+    reviewCount: number;
     _all: number;
 };
 export type TrackAvgAggregateInputType = {
     durationMs?: true;
     trackNumber?: true;
+    reviewCount?: true;
 };
 export type TrackSumAggregateInputType = {
     durationMs?: true;
     trackNumber?: true;
+    reviewCount?: true;
 };
 export type TrackMinAggregateInputType = {
     id?: true;
@@ -72,6 +79,7 @@ export type TrackMinAggregateInputType = {
     trackNumber?: true;
     previewUrl?: true;
     lastSyncedAt?: true;
+    reviewCount?: true;
 };
 export type TrackMaxAggregateInputType = {
     id?: true;
@@ -84,6 +92,7 @@ export type TrackMaxAggregateInputType = {
     trackNumber?: true;
     previewUrl?: true;
     lastSyncedAt?: true;
+    reviewCount?: true;
 };
 export type TrackCountAggregateInputType = {
     id?: true;
@@ -96,6 +105,7 @@ export type TrackCountAggregateInputType = {
     trackNumber?: true;
     previewUrl?: true;
     lastSyncedAt?: true;
+    reviewCount?: true;
     _all?: true;
 };
 export type TrackAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -137,6 +147,7 @@ export type TrackGroupByOutputType = {
     trackNumber: number | null;
     previewUrl: string | null;
     lastSyncedAt: Date;
+    reviewCount: number;
     _count: TrackCountAggregateOutputType | null;
     _avg: TrackAvgAggregateOutputType | null;
     _sum: TrackSumAggregateOutputType | null;
@@ -160,6 +171,7 @@ export type TrackWhereInput = {
     trackNumber?: Prisma.IntNullableFilter<"Track"> | number | null;
     previewUrl?: Prisma.StringNullableFilter<"Track"> | string | null;
     lastSyncedAt?: Prisma.DateTimeFilter<"Track"> | Date | string;
+    reviewCount?: Prisma.IntFilter<"Track"> | number;
     album?: Prisma.XOR<Prisma.AlbumNullableScalarRelationFilter, Prisma.AlbumWhereInput> | null;
     artist?: Prisma.XOR<Prisma.ArtistScalarRelationFilter, Prisma.ArtistWhereInput>;
     reviews?: Prisma.ReviewListRelationFilter;
@@ -176,6 +188,7 @@ export type TrackOrderByWithRelationInput = {
     trackNumber?: Prisma.SortOrderInput | Prisma.SortOrder;
     previewUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
     album?: Prisma.AlbumOrderByWithRelationInput;
     artist?: Prisma.ArtistOrderByWithRelationInput;
     reviews?: Prisma.ReviewOrderByRelationAggregateInput;
@@ -195,6 +208,7 @@ export type TrackWhereUniqueInput = Prisma.AtLeast<{
     trackNumber?: Prisma.IntNullableFilter<"Track"> | number | null;
     previewUrl?: Prisma.StringNullableFilter<"Track"> | string | null;
     lastSyncedAt?: Prisma.DateTimeFilter<"Track"> | Date | string;
+    reviewCount?: Prisma.IntFilter<"Track"> | number;
     album?: Prisma.XOR<Prisma.AlbumNullableScalarRelationFilter, Prisma.AlbumWhereInput> | null;
     artist?: Prisma.XOR<Prisma.ArtistScalarRelationFilter, Prisma.ArtistWhereInput>;
     reviews?: Prisma.ReviewListRelationFilter;
@@ -211,6 +225,7 @@ export type TrackOrderByWithAggregationInput = {
     trackNumber?: Prisma.SortOrderInput | Prisma.SortOrder;
     previewUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
     _count?: Prisma.TrackCountOrderByAggregateInput;
     _avg?: Prisma.TrackAvgOrderByAggregateInput;
     _max?: Prisma.TrackMaxOrderByAggregateInput;
@@ -231,6 +246,7 @@ export type TrackScalarWhereWithAggregatesInput = {
     trackNumber?: Prisma.IntNullableWithAggregatesFilter<"Track"> | number | null;
     previewUrl?: Prisma.StringNullableWithAggregatesFilter<"Track"> | string | null;
     lastSyncedAt?: Prisma.DateTimeWithAggregatesFilter<"Track"> | Date | string;
+    reviewCount?: Prisma.IntWithAggregatesFilter<"Track"> | number;
 };
 export type TrackCreateInput = {
     id?: string;
@@ -241,6 +257,7 @@ export type TrackCreateInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     album?: Prisma.AlbumCreateNestedOneWithoutTracksInput;
     artist: Prisma.ArtistCreateNestedOneWithoutTracksInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutTrackInput;
@@ -257,6 +274,7 @@ export type TrackUncheckedCreateInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTrackInput;
     trackReviewItems?: Prisma.TrackReviewItemUncheckedCreateNestedManyWithoutTrackInput;
 };
@@ -269,6 +287,7 @@ export type TrackUpdateInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     album?: Prisma.AlbumUpdateOneWithoutTracksNestedInput;
     artist?: Prisma.ArtistUpdateOneRequiredWithoutTracksNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutTrackNestedInput;
@@ -285,6 +304,7 @@ export type TrackUncheckedUpdateInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTrackNestedInput;
     trackReviewItems?: Prisma.TrackReviewItemUncheckedUpdateManyWithoutTrackNestedInput;
 };
@@ -299,6 +319,7 @@ export type TrackCreateManyInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
 };
 export type TrackUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -309,6 +330,7 @@ export type TrackUpdateManyMutationInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type TrackUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -321,6 +343,7 @@ export type TrackUncheckedUpdateManyInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type TrackListRelationFilter = {
     every?: Prisma.TrackWhereInput;
@@ -341,10 +364,12 @@ export type TrackCountOrderByAggregateInput = {
     trackNumber?: Prisma.SortOrder;
     previewUrl?: Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
 };
 export type TrackAvgOrderByAggregateInput = {
     durationMs?: Prisma.SortOrder;
     trackNumber?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
 };
 export type TrackMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -357,6 +382,7 @@ export type TrackMaxOrderByAggregateInput = {
     trackNumber?: Prisma.SortOrder;
     previewUrl?: Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
 };
 export type TrackMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -369,10 +395,12 @@ export type TrackMinOrderByAggregateInput = {
     trackNumber?: Prisma.SortOrder;
     previewUrl?: Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
 };
 export type TrackSumOrderByAggregateInput = {
     durationMs?: Prisma.SortOrder;
     trackNumber?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
 };
 export type TrackNullableScalarRelationFilter = {
     is?: Prisma.TrackWhereInput | null;
@@ -500,6 +528,7 @@ export type TrackCreateWithoutArtistInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     album?: Prisma.AlbumCreateNestedOneWithoutTracksInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutTrackInput;
     trackReviewItems?: Prisma.TrackReviewItemCreateNestedManyWithoutTrackInput;
@@ -514,6 +543,7 @@ export type TrackUncheckedCreateWithoutArtistInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTrackInput;
     trackReviewItems?: Prisma.TrackReviewItemUncheckedCreateNestedManyWithoutTrackInput;
 };
@@ -552,6 +582,7 @@ export type TrackScalarWhereInput = {
     trackNumber?: Prisma.IntNullableFilter<"Track"> | number | null;
     previewUrl?: Prisma.StringNullableFilter<"Track"> | string | null;
     lastSyncedAt?: Prisma.DateTimeFilter<"Track"> | Date | string;
+    reviewCount?: Prisma.IntFilter<"Track"> | number;
 };
 export type TrackCreateWithoutAlbumInput = {
     id?: string;
@@ -562,6 +593,7 @@ export type TrackCreateWithoutAlbumInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     artist: Prisma.ArtistCreateNestedOneWithoutTracksInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutTrackInput;
     trackReviewItems?: Prisma.TrackReviewItemCreateNestedManyWithoutTrackInput;
@@ -576,6 +608,7 @@ export type TrackUncheckedCreateWithoutAlbumInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTrackInput;
     trackReviewItems?: Prisma.TrackReviewItemUncheckedCreateNestedManyWithoutTrackInput;
 };
@@ -609,6 +642,7 @@ export type TrackCreateWithoutReviewsInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     album?: Prisma.AlbumCreateNestedOneWithoutTracksInput;
     artist: Prisma.ArtistCreateNestedOneWithoutTracksInput;
     trackReviewItems?: Prisma.TrackReviewItemCreateNestedManyWithoutTrackInput;
@@ -624,6 +658,7 @@ export type TrackUncheckedCreateWithoutReviewsInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     trackReviewItems?: Prisma.TrackReviewItemUncheckedCreateNestedManyWithoutTrackInput;
 };
 export type TrackCreateOrConnectWithoutReviewsInput = {
@@ -648,6 +683,7 @@ export type TrackUpdateWithoutReviewsInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     album?: Prisma.AlbumUpdateOneWithoutTracksNestedInput;
     artist?: Prisma.ArtistUpdateOneRequiredWithoutTracksNestedInput;
     trackReviewItems?: Prisma.TrackReviewItemUpdateManyWithoutTrackNestedInput;
@@ -663,6 +699,7 @@ export type TrackUncheckedUpdateWithoutReviewsInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     trackReviewItems?: Prisma.TrackReviewItemUncheckedUpdateManyWithoutTrackNestedInput;
 };
 export type TrackCreateWithoutTrackReviewItemsInput = {
@@ -674,6 +711,7 @@ export type TrackCreateWithoutTrackReviewItemsInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     album?: Prisma.AlbumCreateNestedOneWithoutTracksInput;
     artist: Prisma.ArtistCreateNestedOneWithoutTracksInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutTrackInput;
@@ -689,6 +727,7 @@ export type TrackUncheckedCreateWithoutTrackReviewItemsInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTrackInput;
 };
 export type TrackCreateOrConnectWithoutTrackReviewItemsInput = {
@@ -713,6 +752,7 @@ export type TrackUpdateWithoutTrackReviewItemsInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     album?: Prisma.AlbumUpdateOneWithoutTracksNestedInput;
     artist?: Prisma.ArtistUpdateOneRequiredWithoutTracksNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutTrackNestedInput;
@@ -728,6 +768,7 @@ export type TrackUncheckedUpdateWithoutTrackReviewItemsInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTrackNestedInput;
 };
 export type TrackCreateManyArtistInput = {
@@ -740,6 +781,7 @@ export type TrackCreateManyArtistInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
 };
 export type TrackUpdateWithoutArtistInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -750,6 +792,7 @@ export type TrackUpdateWithoutArtistInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     album?: Prisma.AlbumUpdateOneWithoutTracksNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutTrackNestedInput;
     trackReviewItems?: Prisma.TrackReviewItemUpdateManyWithoutTrackNestedInput;
@@ -764,6 +807,7 @@ export type TrackUncheckedUpdateWithoutArtistInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTrackNestedInput;
     trackReviewItems?: Prisma.TrackReviewItemUncheckedUpdateManyWithoutTrackNestedInput;
 };
@@ -777,6 +821,7 @@ export type TrackUncheckedUpdateManyWithoutArtistInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type TrackCreateManyAlbumInput = {
     id?: string;
@@ -788,6 +833,7 @@ export type TrackCreateManyAlbumInput = {
     trackNumber?: number | null;
     previewUrl?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
 };
 export type TrackUpdateWithoutAlbumInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -798,6 +844,7 @@ export type TrackUpdateWithoutAlbumInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     artist?: Prisma.ArtistUpdateOneRequiredWithoutTracksNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutTrackNestedInput;
     trackReviewItems?: Prisma.TrackReviewItemUpdateManyWithoutTrackNestedInput;
@@ -812,6 +859,7 @@ export type TrackUncheckedUpdateWithoutAlbumInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTrackNestedInput;
     trackReviewItems?: Prisma.TrackReviewItemUncheckedUpdateManyWithoutTrackNestedInput;
 };
@@ -825,6 +873,7 @@ export type TrackUncheckedUpdateManyWithoutAlbumInput = {
     trackNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     previewUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type TrackCountOutputType = {
     reviews: number;
@@ -854,6 +903,7 @@ export type TrackSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     trackNumber?: boolean;
     previewUrl?: boolean;
     lastSyncedAt?: boolean;
+    reviewCount?: boolean;
     album?: boolean | Prisma.Track$albumArgs<ExtArgs>;
     artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>;
     reviews?: boolean | Prisma.Track$reviewsArgs<ExtArgs>;
@@ -871,6 +921,7 @@ export type TrackSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     trackNumber?: boolean;
     previewUrl?: boolean;
     lastSyncedAt?: boolean;
+    reviewCount?: boolean;
     album?: boolean | Prisma.Track$albumArgs<ExtArgs>;
     artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["track"]>;
@@ -885,6 +936,7 @@ export type TrackSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     trackNumber?: boolean;
     previewUrl?: boolean;
     lastSyncedAt?: boolean;
+    reviewCount?: boolean;
     album?: boolean | Prisma.Track$albumArgs<ExtArgs>;
     artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["track"]>;
@@ -899,8 +951,9 @@ export type TrackSelectScalar = {
     trackNumber?: boolean;
     previewUrl?: boolean;
     lastSyncedAt?: boolean;
+    reviewCount?: boolean;
 };
-export type TrackOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deezerId" | "mbid" | "title" | "albumId" | "artistId" | "durationMs" | "trackNumber" | "previewUrl" | "lastSyncedAt", ExtArgs["result"]["track"]>;
+export type TrackOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deezerId" | "mbid" | "title" | "albumId" | "artistId" | "durationMs" | "trackNumber" | "previewUrl" | "lastSyncedAt" | "reviewCount", ExtArgs["result"]["track"]>;
 export type TrackInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     album?: boolean | Prisma.Track$albumArgs<ExtArgs>;
     artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>;
@@ -935,6 +988,7 @@ export type $TrackPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
         trackNumber: number | null;
         previewUrl: string | null;
         lastSyncedAt: Date;
+        reviewCount: number;
     }, ExtArgs["result"]["track"]>;
     composites: {};
 };
@@ -1006,6 +1060,7 @@ export interface TrackFieldRefs {
     readonly trackNumber: Prisma.FieldRef<"Track", 'Int'>;
     readonly previewUrl: Prisma.FieldRef<"Track", 'String'>;
     readonly lastSyncedAt: Prisma.FieldRef<"Track", 'DateTime'>;
+    readonly reviewCount: Prisma.FieldRef<"Track", 'Int'>;
 }
 export type TrackFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.TrackSelect<ExtArgs> | null;

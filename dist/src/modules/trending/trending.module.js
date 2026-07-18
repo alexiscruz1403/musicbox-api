@@ -6,6 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
+import { CatalogModule } from '../catalog/catalog.module.js';
 import { TRENDING_QUEUE } from '../events/events.constants.js';
 import { TrendingQueueProcessor } from './processors/trending-queue.processor.js';
 import { TrendingScheduler } from './scheduler/trending.scheduler.js';
@@ -16,7 +17,7 @@ let TrendingModule = class TrendingModule {
 };
 TrendingModule = __decorate([
     Module({
-        imports: [BullModule.registerQueue({ name: TRENDING_QUEUE })],
+        imports: [BullModule.registerQueue({ name: TRENDING_QUEUE }), CatalogModule],
         controllers: [TrendingController],
         providers: [
             TrendingService,

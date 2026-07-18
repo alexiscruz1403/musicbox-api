@@ -32,14 +32,14 @@ export declare class CatalogHistoryService {
     recordTrackView(userId: string, track: CatalogTrack): Promise<void>;
     recordArtistView(userId: string, artist: CatalogArtist): Promise<void>;
     listRecentlyViewed(userId: string): Promise<{
-        id: string;
-        userId: string;
-        resourceType: CatalogResourceType;
         deezerId: string;
         title: string;
-        artistName: string | null;
         coverUrl: string | null;
+        id: string;
         albumsCount: number | null;
+        userId: string;
+        resourceType: CatalogResourceType;
+        artistName: string | null;
         viewedAt: Date;
     }[]>;
     getRecentlyViewedDetails(userId: string): Promise<RecentlyViewedDetailItem[]>;

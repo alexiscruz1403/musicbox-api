@@ -100,6 +100,13 @@ describe('CatalogService', () => {
     upsertAlbum: vi.fn(),
     upsertTrack: vi.fn(),
     findTracksByArtist: vi.fn(),
+    findAlbumIdByDeezerId: vi.fn(),
+    getAlbumStats: vi.fn(),
+    getTrackStats: vi.fn(),
+    getArtistStats: vi.fn(),
+    getAlbumStatsBatch: vi.fn(),
+    getTrackStatsBatch: vi.fn(),
+    getArtistStatsBatch: vi.fn(),
   };
 
   const mockRedis = {
@@ -113,11 +120,27 @@ describe('CatalogService', () => {
     ensureArtistSynced: vi.fn(),
   };
 
+  // Sets up mockRedis.get to answer per-key, defaulting to a cache miss
+  // (null) for anything not explicitly listed — needed once a single
+  // request can touch more than one Redis key (metadata + preview caches).
+  function mockRedisGet(responses: Record<string, string | null>) {
+    mockRedis.get.mockImplementation((key: string) =>
+      Promise.resolve(responses[key] ?? null),
+    );
+  }
+
   beforeEach(async () => {
     vi.clearAllMocks();
     mockRepo.upsertArtist.mockResolvedValue(dbArtistRow);
     mockRepo.upsertAlbum.mockResolvedValue(dbAlbumRow);
     mockRepo.upsertTrack.mockResolvedValue(dbTrackRow);
+    mockRepo.findAlbumIdByDeezerId.mockResolvedValue(null);
+    mockRepo.getAlbumStats.mockResolvedValue(null);
+    mockRepo.getTrackStats.mockResolvedValue(null);
+    mockRepo.getArtistStats.mockResolvedValue(null);
+    mockRepo.getAlbumStatsBatch.mockResolvedValue(new Map());
+    mockRepo.getTrackStatsBatch.mockResolvedValue(new Map());
+    mockRepo.getArtistStatsBatch.mockResolvedValue(new Map());
     mockCatalogSyncService.ensureArtistSynced.mockResolvedValue(dbArtistRow);
 
     const module: TestingModule = await Test.createTestingModule({
@@ -134,7 +157,7 @@ describe('CatalogService', () => {
   });
 
   describe('search()', () => {
-    it('cache miss — calls provider and caches result', async () => {
+    it('cache miss — calls provider, caches result, and enriches items with reviewCount/userRating', async () => {
       mockRedis.get.mockResolvedValue(null);
       vi.mocked(mockProvider.search).mockResolvedValue(searchPageFixture);
 
@@ -151,7 +174,11 @@ describe('CatalogService', () => {
         JSON.stringify(searchPageFixture),
         86_400,
       );
-      expect(result).toEqual(searchPageFixture);
+      expect(result).toEqual({
+        items: [{ type: 'artist', item: { ...artistFixture, reviewCount: 0 } }],
+        nextCursor: null,
+        total: 1,
+      });
     });
 
     it('cache hit — returns cached data without calling provider', async () => {
@@ -161,17 +188,22 @@ describe('CatalogService', () => {
 
       expect(mockProvider.search).not.toHaveBeenCalled();
       expect(mockRedis.set).not.toHaveBeenCalled();
-      expect(result).toEqual(searchPageFixture);
+      expect(result).toEqual({
+        items: [{ type: 'artist', item: { ...artistFixture, reviewCount: 0 } }],
+        nextCursor: null,
+        total: 1,
+      });
     });
   });
 
   describe('getAlbum()', () => {
-    it('cache miss — fetches from provider, upserts artist/album/tracks, caches result', async () => {
-      mockRedis.get.mockResolvedValue(null);
+    it('cache miss (metadata + preview) — fetches from provider once, upserts artist/album/tracks, caches result', async () => {
+      mockRedisGet({});
       vi.mocked(mockProvider.getAlbum).mockResolvedValue(albumFixture);
 
       const result = await service.getAlbum('302127');
 
+      expect(mockProvider.getAlbum).toHaveBeenCalledTimes(1);
       expect(mockProvider.getAlbum).toHaveBeenCalledWith('302127');
       expect(mockRepo.upsertArtist).toHaveBeenCalledWith(artistFixture);
       expect(mockRepo.upsertAlbum).toHaveBeenCalledWith(
@@ -188,45 +220,147 @@ describe('CatalogService', () => {
         JSON.stringify(albumFixture),
         86_400,
       );
-      expect(result).toEqual(albumFixture);
+      expect(mockRedis.set).toHaveBeenCalledWith(
+        'catalog:album-preview:302127',
+        JSON.stringify({ [trackFixture.deezerId]: trackFixture.previewUrl }),
+        600,
+      );
+      expect(result).toEqual({
+        ...albumFixture,
+        reviewCount: 0,
+        userRating: null,
+        tracks: [
+          {
+            ...trackFixture,
+            previewUrl: trackFixture.previewUrl,
+            userRating: null,
+          },
+        ],
+      });
     });
 
-    it('cache hit — returns cached album without calling provider or repo', async () => {
-      mockRedis.get.mockResolvedValue(JSON.stringify(albumFixture));
+    it('metadata cache hit + preview cache miss — refreshes only the preview via one extra provider call', async () => {
+      mockRedisGet({ 'catalog:album:302127': JSON.stringify(albumFixture) });
+      vi.mocked(mockProvider.getAlbum).mockResolvedValue(albumFixture);
+
+      const result = await service.getAlbum('302127');
+
+      expect(mockProvider.getAlbum).toHaveBeenCalledTimes(1);
+      expect(mockRepo.upsertArtist).not.toHaveBeenCalled();
+      expect(mockRedis.set).toHaveBeenCalledWith(
+        'catalog:album-preview:302127',
+        JSON.stringify({ [trackFixture.deezerId]: trackFixture.previewUrl }),
+        600,
+      );
+      expect(result.tracks[0]?.previewUrl).toBe(trackFixture.previewUrl);
+    });
+
+    it('cache hit (metadata + preview) — returns cached data without calling provider or repo', async () => {
+      mockRedisGet({
+        'catalog:album:302127': JSON.stringify(albumFixture),
+        'catalog:album-preview:302127': JSON.stringify({
+          [trackFixture.deezerId]: 'https://cached-fresh-preview.example.com',
+        }),
+      });
 
       const result = await service.getAlbum('302127');
 
       expect(mockProvider.getAlbum).not.toHaveBeenCalled();
       expect(mockRepo.upsertArtist).not.toHaveBeenCalled();
-      expect(result).toEqual(albumFixture);
+      expect(result.tracks[0]?.previewUrl).toBe(
+        'https://cached-fresh-preview.example.com',
+      );
+    });
+
+    it('an individual missing preview ("") does not change the whole album-batch TTL — unlike the single-track cache, a stale album batch always costs exactly one Deezer call to refresh, so there is no "cache the missing fact longer" fallback here', async () => {
+      const albumWithNoPreview: CatalogAlbum = {
+        ...albumFixture,
+        tracks: [{ ...trackFixture, previewUrl: '' }],
+      };
+      mockRedisGet({});
+      vi.mocked(mockProvider.getAlbum).mockResolvedValue(albumWithNoPreview);
+
+      await service.getAlbum('302127');
+
+      expect(mockRedis.set).toHaveBeenCalledWith(
+        'catalog:album-preview:302127',
+        JSON.stringify({ [trackFixture.deezerId]: '' }),
+        600,
+      );
     });
   });
 
   describe('getTrack()', () => {
-    it('cache miss — fetches from provider, upserts artist and track, caches result', async () => {
-      mockRedis.get.mockResolvedValue(null);
+    it('cache miss (metadata + preview) — fetches from provider once, upserts artist and track, caches result', async () => {
+      mockRedisGet({});
       vi.mocked(mockProvider.getTrack).mockResolvedValue(trackFixture);
 
       const result = await service.getTrack('3135556');
 
+      expect(mockProvider.getTrack).toHaveBeenCalledTimes(1);
       expect(mockProvider.getTrack).toHaveBeenCalledWith('3135556');
       expect(mockRepo.upsertArtist).toHaveBeenCalledWith(trackFixture.artist);
+      expect(mockRepo.findAlbumIdByDeezerId).toHaveBeenCalledWith('302127');
       expect(mockRepo.upsertTrack).toHaveBeenCalledWith(
         trackFixture,
         'uuid-artist-1',
         null,
       );
-      expect(result).toEqual(trackFixture);
+      expect(mockRedis.set).toHaveBeenCalledWith(
+        'catalog:track-preview:3135556',
+        JSON.stringify({ previewUrl: trackFixture.previewUrl }),
+        600,
+      );
+      expect(result).toEqual({
+        ...trackFixture,
+        previewUrl: trackFixture.previewUrl,
+        reviewCount: 0,
+        userRating: null,
+      });
     });
 
-    it('cache hit — returns cached track without calling provider or repo', async () => {
-      mockRedis.get.mockResolvedValue(JSON.stringify(trackFixture));
+    it('metadata cache hit + preview cache miss — refreshes only the preview via one extra provider call', async () => {
+      mockRedisGet({ 'catalog:track:3135556': JSON.stringify(trackFixture) });
+      vi.mocked(mockProvider.getTrack).mockResolvedValue(trackFixture);
+
+      const result = await service.getTrack('3135556');
+
+      expect(mockProvider.getTrack).toHaveBeenCalledTimes(1);
+      expect(mockRepo.upsertArtist).not.toHaveBeenCalled();
+      expect(result.previewUrl).toBe(trackFixture.previewUrl);
+    });
+
+    it('cache hit (metadata + preview) — returns cached data without calling provider or repo', async () => {
+      mockRedisGet({
+        'catalog:track:3135556': JSON.stringify(trackFixture),
+        'catalog:track-preview:3135556': JSON.stringify({
+          previewUrl: 'https://cached-fresh-preview.example.com',
+        }),
+      });
 
       const result = await service.getTrack('3135556');
 
       expect(mockProvider.getTrack).not.toHaveBeenCalled();
       expect(mockRepo.upsertArtist).not.toHaveBeenCalled();
-      expect(result).toEqual(trackFixture);
+      expect(result.previewUrl).toBe(
+        'https://cached-fresh-preview.example.com',
+      );
+    });
+
+    it('missing preview ("") is cached with the 24h fallback TTL, not the short one', async () => {
+      mockRedisGet({});
+      vi.mocked(mockProvider.getTrack).mockResolvedValue({
+        ...trackFixture,
+        previewUrl: '',
+      });
+
+      await service.getTrack('3135556');
+
+      expect(mockRedis.set).toHaveBeenCalledWith(
+        'catalog:track-preview:3135556',
+        JSON.stringify({ previewUrl: '' }),
+        86_400,
+      );
     });
   });
 
@@ -239,7 +373,7 @@ describe('CatalogService', () => {
 
       expect(mockProvider.getArtist).toHaveBeenCalledWith('27');
       expect(mockRepo.upsertArtist).toHaveBeenCalledWith(artistFixture);
-      expect(result).toEqual(artistFixture);
+      expect(result).toEqual({ ...artistFixture, reviewCount: 0 });
     });
 
     it('cache hit — returns cached artist without calling provider or repo', async () => {
@@ -249,7 +383,7 @@ describe('CatalogService', () => {
 
       expect(mockProvider.getArtist).not.toHaveBeenCalled();
       expect(mockRepo.upsertArtist).not.toHaveBeenCalled();
-      expect(result).toEqual(artistFixture);
+      expect(result).toEqual({ ...artistFixture, reviewCount: 0 });
     });
   });
 

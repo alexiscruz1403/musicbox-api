@@ -180,6 +180,12 @@ model Artist {
   // walked and persisted — distinct from lastSyncedAt, which any partial
   // upsert (e.g. a lone getArtist() call) also touches.
   catalogSyncedAt DateTime?
+  // Denormalized counter (docs/fase-2-features.md) — count of ACTIVE reviews
+  // across all of this artist's albums+tracks. Incremented/decremented in the
+  // same transaction as the underlying Album/Track review create/delete/hide;
+  // upsertArtist() must never touch this field or a catalog re-sync would
+  // silently reset it.
+  reviewCount     Int       @default(0)
 
   albums Album[]
   tracks Track[]
@@ -197,6 +203,10 @@ model Album {
   releaseDate  DateTime?
   genreLabel   String?
   lastSyncedAt DateTime
+  // Denormalized counter (docs/fase-2-features.md) — count of ACTIVE ALBUM
+  // reviews of this album. See Artist.reviewCount for the increment/decrement
+  // and upsert-safety notes; same rules apply here.
+  reviewCount  Int       @default(0)
 
   artist  Artist   @relation(fields: [artistId], references: [id])
   tracks  Track[]
@@ -216,6 +226,10 @@ model Track {
   trackNumber  Int?
   previewUrl   String?
   lastSyncedAt DateTime
+  // Denormalized counter (docs/fase-2-features.md) — count of ACTIVE TRACK
+  // reviews of this track. See Artist.reviewCount for the increment/decrement
+  // and upsert-safety notes; same rules apply here.
+  reviewCount  Int      @default(0)
 
   album            Album?            @relation(fields: [albumId], references: [id])
   artist           Artist            @relation(fields: [artistId], references: [id])
@@ -233,8 +247,16 @@ model Review {
   type        ReviewType
   trackId     String?
   albumId     String?
-  description String
-  rating      Decimal       @db.Decimal(3, 1)
+  // Nullable: crear una reseña solo con puntuaciones (rating de track, o
+  // trackItems por canción en un álbum) sin descripción es válido — la
+  // descripción nunca fue obligatoria a nivel de negocio, solo a nivel de
+  // columna/DTO (docs/fase-3-features.md).
+  description String?
+  // Decimal(4,2): soporta cuartos de punto (1, 1.25, ..., 10) — ampliado
+  // desde Decimal(3,1) para permitir esa granularidad tanto en el rating de
+  // una reseña TRACK independiente como en el promedio calculado de una
+  // reseña ALBUM (docs/fase-3-features.md).
+  rating      Decimal       @db.Decimal(4, 2)
   status      ContentStatus @default(ACTIVE)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
@@ -259,7 +281,9 @@ model TrackReviewItem {
   id          String  @id @default(uuid())
   reviewId    String
   trackId     String
-  rating      Int
+  // Decimal(4,2): cuartos de punto (1, 1.25, ..., 10) — ampliado desde Int
+  // (docs/fase-3-features.md).
+  rating      Decimal @db.Decimal(4, 2)
   description String?
   position    Int
 
@@ -411,6 +435,7 @@ model TrendingSnapshot {
   payload    Json
   snapshotAt DateTime @default(now())
 
+  @@index([snapshotAt])
   @@map("trending_snapshots")
 }
 

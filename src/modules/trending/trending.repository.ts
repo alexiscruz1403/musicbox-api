@@ -29,7 +29,16 @@ export class TrendingRepository {
       },
       _count: { albumId: true },
       _avg: { rating: true },
-      orderBy: [{ _count: { albumId: 'desc' } }, { _avg: { rating: 'desc' } }],
+      // Tertiary tie-break (albumId asc) makes ranking fully deterministic —
+      // without it, two items tied on both count and avg rating could
+      // silently swap array positions between hourly recalculations with no
+      // real review-activity change, which the rank-change feature
+      // (docs/fase-5-features.md) would otherwise surface as a false delta.
+      orderBy: [
+        { _count: { albumId: 'desc' } },
+        { _avg: { rating: 'desc' } },
+        { albumId: 'asc' },
+      ],
       take: TRENDING_TOP_N,
     });
     return groups.map((g) => ({
@@ -51,7 +60,11 @@ export class TrendingRepository {
       },
       _count: { trackId: true },
       _avg: { rating: true },
-      orderBy: [{ _count: { trackId: 'desc' } }, { _avg: { rating: 'desc' } }],
+      orderBy: [
+        { _count: { trackId: 'desc' } },
+        { _avg: { rating: 'desc' } },
+        { trackId: 'asc' },
+      ],
       take: TRENDING_TOP_N,
     });
     return groups.map((g) => ({
@@ -82,5 +95,14 @@ export class TrendingRepository {
 
   saveSnapshot(payload: Prisma.InputJsonValue) {
     return this.prisma.trendingSnapshot.create({ data: { payload } });
+  }
+
+  // First-ever reader of TrendingSnapshot history (docs/fase-5-features.md,
+  // rank-change feature) — used to diff the current top-N against the prior
+  // hourly recalculation.
+  findLatestSnapshot() {
+    return this.prisma.trendingSnapshot.findFirst({
+      orderBy: { snapshotAt: 'desc' },
+    });
   }
 }

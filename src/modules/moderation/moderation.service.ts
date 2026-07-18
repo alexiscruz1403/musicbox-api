@@ -82,7 +82,12 @@ export class ModerationService {
           message: 'Reseña no encontrada.',
         });
       }
-      return this.repo.hideReviewIfActive(id);
+      return this.repo.hideReviewIfActive(
+        id,
+        review.type,
+        review.trackId,
+        review.albumId,
+      );
     }
     if (type === 'comment') {
       const comment = await this.repo.findActiveComment(id);
@@ -124,7 +129,12 @@ export class ModerationService {
       const review = await this.repo.findReviewOwner(targetId);
       if (review) {
         offenderId = review.userId;
-        await this.repo.hideReviewIfActive(targetId);
+        await this.repo.hideReviewIfActive(
+          targetId,
+          review.type,
+          review.trackId,
+          review.albumId,
+        );
         await this.notifications.notifyModeration(offenderId, {
           reviewId: targetId,
         });

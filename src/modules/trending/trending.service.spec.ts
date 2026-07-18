@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RedisService } from '../../redis/redis.service.js';
+import { CatalogService } from '../catalog/catalog.service.js';
 import { TrendingRepository } from './trending.repository.js';
 import { TrendingService } from './trending.service.js';
 
@@ -14,6 +15,14 @@ const mockRepo = {
 const mockRedis = {
   get: vi.fn(),
   set: vi.fn(),
+};
+
+// Only consulted when a hydrated track has no local Album link (see
+// TrendingService.resolveAlbumFallback) — the fixtures below all have
+// `track.album` populated, so this is never called in the tests as they
+// stand today; still needed for the testing module's DI graph to resolve.
+const mockCatalogService = {
+  getTrack: vi.fn(),
 };
 
 const album = {
@@ -41,6 +50,7 @@ describe('TrendingService', () => {
         TrendingService,
         { provide: TrendingRepository, useValue: mockRepo },
         { provide: RedisService, useValue: mockRedis },
+        { provide: CatalogService, useValue: mockCatalogService },
       ],
     }).compile();
 

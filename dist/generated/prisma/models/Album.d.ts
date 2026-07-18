@@ -3,8 +3,16 @@ import type * as Prisma from "../internal/prismaNamespace.js";
 export type AlbumModel = runtime.Types.Result.DefaultSelection<Prisma.$AlbumPayload>;
 export type AggregateAlbum = {
     _count: AlbumCountAggregateOutputType | null;
+    _avg: AlbumAvgAggregateOutputType | null;
+    _sum: AlbumSumAggregateOutputType | null;
     _min: AlbumMinAggregateOutputType | null;
     _max: AlbumMaxAggregateOutputType | null;
+};
+export type AlbumAvgAggregateOutputType = {
+    reviewCount: number | null;
+};
+export type AlbumSumAggregateOutputType = {
+    reviewCount: number | null;
 };
 export type AlbumMinAggregateOutputType = {
     id: string | null;
@@ -16,6 +24,7 @@ export type AlbumMinAggregateOutputType = {
     releaseDate: Date | null;
     genreLabel: string | null;
     lastSyncedAt: Date | null;
+    reviewCount: number | null;
 };
 export type AlbumMaxAggregateOutputType = {
     id: string | null;
@@ -27,6 +36,7 @@ export type AlbumMaxAggregateOutputType = {
     releaseDate: Date | null;
     genreLabel: string | null;
     lastSyncedAt: Date | null;
+    reviewCount: number | null;
 };
 export type AlbumCountAggregateOutputType = {
     id: number;
@@ -38,7 +48,14 @@ export type AlbumCountAggregateOutputType = {
     releaseDate: number;
     genreLabel: number;
     lastSyncedAt: number;
+    reviewCount: number;
     _all: number;
+};
+export type AlbumAvgAggregateInputType = {
+    reviewCount?: true;
+};
+export type AlbumSumAggregateInputType = {
+    reviewCount?: true;
 };
 export type AlbumMinAggregateInputType = {
     id?: true;
@@ -50,6 +67,7 @@ export type AlbumMinAggregateInputType = {
     releaseDate?: true;
     genreLabel?: true;
     lastSyncedAt?: true;
+    reviewCount?: true;
 };
 export type AlbumMaxAggregateInputType = {
     id?: true;
@@ -61,6 +79,7 @@ export type AlbumMaxAggregateInputType = {
     releaseDate?: true;
     genreLabel?: true;
     lastSyncedAt?: true;
+    reviewCount?: true;
 };
 export type AlbumCountAggregateInputType = {
     id?: true;
@@ -72,6 +91,7 @@ export type AlbumCountAggregateInputType = {
     releaseDate?: true;
     genreLabel?: true;
     lastSyncedAt?: true;
+    reviewCount?: true;
     _all?: true;
 };
 export type AlbumAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -81,6 +101,8 @@ export type AlbumAggregateArgs<ExtArgs extends runtime.Types.Extensions.Internal
     take?: number;
     skip?: number;
     _count?: true | AlbumCountAggregateInputType;
+    _avg?: AlbumAvgAggregateInputType;
+    _sum?: AlbumSumAggregateInputType;
     _min?: AlbumMinAggregateInputType;
     _max?: AlbumMaxAggregateInputType;
 };
@@ -95,6 +117,8 @@ export type AlbumGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
     take?: number;
     skip?: number;
     _count?: AlbumCountAggregateInputType | true;
+    _avg?: AlbumAvgAggregateInputType;
+    _sum?: AlbumSumAggregateInputType;
     _min?: AlbumMinAggregateInputType;
     _max?: AlbumMaxAggregateInputType;
 };
@@ -108,7 +132,10 @@ export type AlbumGroupByOutputType = {
     releaseDate: Date | null;
     genreLabel: string | null;
     lastSyncedAt: Date;
+    reviewCount: number;
     _count: AlbumCountAggregateOutputType | null;
+    _avg: AlbumAvgAggregateOutputType | null;
+    _sum: AlbumSumAggregateOutputType | null;
     _min: AlbumMinAggregateOutputType | null;
     _max: AlbumMaxAggregateOutputType | null;
 };
@@ -128,6 +155,7 @@ export type AlbumWhereInput = {
     releaseDate?: Prisma.DateTimeNullableFilter<"Album"> | Date | string | null;
     genreLabel?: Prisma.StringNullableFilter<"Album"> | string | null;
     lastSyncedAt?: Prisma.DateTimeFilter<"Album"> | Date | string;
+    reviewCount?: Prisma.IntFilter<"Album"> | number;
     artist?: Prisma.XOR<Prisma.ArtistScalarRelationFilter, Prisma.ArtistWhereInput>;
     tracks?: Prisma.TrackListRelationFilter;
     reviews?: Prisma.ReviewListRelationFilter;
@@ -142,6 +170,7 @@ export type AlbumOrderByWithRelationInput = {
     releaseDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     genreLabel?: Prisma.SortOrderInput | Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
     artist?: Prisma.ArtistOrderByWithRelationInput;
     tracks?: Prisma.TrackOrderByRelationAggregateInput;
     reviews?: Prisma.ReviewOrderByRelationAggregateInput;
@@ -159,6 +188,7 @@ export type AlbumWhereUniqueInput = Prisma.AtLeast<{
     releaseDate?: Prisma.DateTimeNullableFilter<"Album"> | Date | string | null;
     genreLabel?: Prisma.StringNullableFilter<"Album"> | string | null;
     lastSyncedAt?: Prisma.DateTimeFilter<"Album"> | Date | string;
+    reviewCount?: Prisma.IntFilter<"Album"> | number;
     artist?: Prisma.XOR<Prisma.ArtistScalarRelationFilter, Prisma.ArtistWhereInput>;
     tracks?: Prisma.TrackListRelationFilter;
     reviews?: Prisma.ReviewListRelationFilter;
@@ -173,9 +203,12 @@ export type AlbumOrderByWithAggregationInput = {
     releaseDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     genreLabel?: Prisma.SortOrderInput | Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
     _count?: Prisma.AlbumCountOrderByAggregateInput;
+    _avg?: Prisma.AlbumAvgOrderByAggregateInput;
     _max?: Prisma.AlbumMaxOrderByAggregateInput;
     _min?: Prisma.AlbumMinOrderByAggregateInput;
+    _sum?: Prisma.AlbumSumOrderByAggregateInput;
 };
 export type AlbumScalarWhereWithAggregatesInput = {
     AND?: Prisma.AlbumScalarWhereWithAggregatesInput | Prisma.AlbumScalarWhereWithAggregatesInput[];
@@ -190,6 +223,7 @@ export type AlbumScalarWhereWithAggregatesInput = {
     releaseDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Album"> | Date | string | null;
     genreLabel?: Prisma.StringNullableWithAggregatesFilter<"Album"> | string | null;
     lastSyncedAt?: Prisma.DateTimeWithAggregatesFilter<"Album"> | Date | string;
+    reviewCount?: Prisma.IntWithAggregatesFilter<"Album"> | number;
 };
 export type AlbumCreateInput = {
     id?: string;
@@ -200,6 +234,7 @@ export type AlbumCreateInput = {
     releaseDate?: Date | string | null;
     genreLabel?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     artist: Prisma.ArtistCreateNestedOneWithoutAlbumsInput;
     tracks?: Prisma.TrackCreateNestedManyWithoutAlbumInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutAlbumInput;
@@ -214,6 +249,7 @@ export type AlbumUncheckedCreateInput = {
     releaseDate?: Date | string | null;
     genreLabel?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     tracks?: Prisma.TrackUncheckedCreateNestedManyWithoutAlbumInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutAlbumInput;
 };
@@ -226,6 +262,7 @@ export type AlbumUpdateInput = {
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genreLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     artist?: Prisma.ArtistUpdateOneRequiredWithoutAlbumsNestedInput;
     tracks?: Prisma.TrackUpdateManyWithoutAlbumNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutAlbumNestedInput;
@@ -240,6 +277,7 @@ export type AlbumUncheckedUpdateInput = {
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genreLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     tracks?: Prisma.TrackUncheckedUpdateManyWithoutAlbumNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutAlbumNestedInput;
 };
@@ -253,6 +291,7 @@ export type AlbumCreateManyInput = {
     releaseDate?: Date | string | null;
     genreLabel?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
 };
 export type AlbumUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -263,6 +302,7 @@ export type AlbumUpdateManyMutationInput = {
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genreLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type AlbumUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -274,6 +314,7 @@ export type AlbumUncheckedUpdateManyInput = {
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genreLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type AlbumListRelationFilter = {
     every?: Prisma.AlbumWhereInput;
@@ -293,6 +334,10 @@ export type AlbumCountOrderByAggregateInput = {
     releaseDate?: Prisma.SortOrder;
     genreLabel?: Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
+};
+export type AlbumAvgOrderByAggregateInput = {
+    reviewCount?: Prisma.SortOrder;
 };
 export type AlbumMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -304,6 +349,7 @@ export type AlbumMaxOrderByAggregateInput = {
     releaseDate?: Prisma.SortOrder;
     genreLabel?: Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
 };
 export type AlbumMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -315,6 +361,10 @@ export type AlbumMinOrderByAggregateInput = {
     releaseDate?: Prisma.SortOrder;
     genreLabel?: Prisma.SortOrder;
     lastSyncedAt?: Prisma.SortOrder;
+    reviewCount?: Prisma.SortOrder;
+};
+export type AlbumSumOrderByAggregateInput = {
+    reviewCount?: Prisma.SortOrder;
 };
 export type AlbumNullableScalarRelationFilter = {
     is?: Prisma.AlbumWhereInput | null;
@@ -395,6 +445,7 @@ export type AlbumCreateWithoutArtistInput = {
     releaseDate?: Date | string | null;
     genreLabel?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     tracks?: Prisma.TrackCreateNestedManyWithoutAlbumInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutAlbumInput;
 };
@@ -407,6 +458,7 @@ export type AlbumUncheckedCreateWithoutArtistInput = {
     releaseDate?: Date | string | null;
     genreLabel?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     tracks?: Prisma.TrackUncheckedCreateNestedManyWithoutAlbumInput;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutAlbumInput;
 };
@@ -444,6 +496,7 @@ export type AlbumScalarWhereInput = {
     releaseDate?: Prisma.DateTimeNullableFilter<"Album"> | Date | string | null;
     genreLabel?: Prisma.StringNullableFilter<"Album"> | string | null;
     lastSyncedAt?: Prisma.DateTimeFilter<"Album"> | Date | string;
+    reviewCount?: Prisma.IntFilter<"Album"> | number;
 };
 export type AlbumCreateWithoutTracksInput = {
     id?: string;
@@ -454,6 +507,7 @@ export type AlbumCreateWithoutTracksInput = {
     releaseDate?: Date | string | null;
     genreLabel?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     artist: Prisma.ArtistCreateNestedOneWithoutAlbumsInput;
     reviews?: Prisma.ReviewCreateNestedManyWithoutAlbumInput;
 };
@@ -467,6 +521,7 @@ export type AlbumUncheckedCreateWithoutTracksInput = {
     releaseDate?: Date | string | null;
     genreLabel?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutAlbumInput;
 };
 export type AlbumCreateOrConnectWithoutTracksInput = {
@@ -491,6 +546,7 @@ export type AlbumUpdateWithoutTracksInput = {
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genreLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     artist?: Prisma.ArtistUpdateOneRequiredWithoutAlbumsNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutAlbumNestedInput;
 };
@@ -504,6 +560,7 @@ export type AlbumUncheckedUpdateWithoutTracksInput = {
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genreLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutAlbumNestedInput;
 };
 export type AlbumCreateWithoutReviewsInput = {
@@ -515,6 +572,7 @@ export type AlbumCreateWithoutReviewsInput = {
     releaseDate?: Date | string | null;
     genreLabel?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     artist: Prisma.ArtistCreateNestedOneWithoutAlbumsInput;
     tracks?: Prisma.TrackCreateNestedManyWithoutAlbumInput;
 };
@@ -528,6 +586,7 @@ export type AlbumUncheckedCreateWithoutReviewsInput = {
     releaseDate?: Date | string | null;
     genreLabel?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
     tracks?: Prisma.TrackUncheckedCreateNestedManyWithoutAlbumInput;
 };
 export type AlbumCreateOrConnectWithoutReviewsInput = {
@@ -552,6 +611,7 @@ export type AlbumUpdateWithoutReviewsInput = {
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genreLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     artist?: Prisma.ArtistUpdateOneRequiredWithoutAlbumsNestedInput;
     tracks?: Prisma.TrackUpdateManyWithoutAlbumNestedInput;
 };
@@ -565,6 +625,7 @@ export type AlbumUncheckedUpdateWithoutReviewsInput = {
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genreLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     tracks?: Prisma.TrackUncheckedUpdateManyWithoutAlbumNestedInput;
 };
 export type AlbumCreateManyArtistInput = {
@@ -576,6 +637,7 @@ export type AlbumCreateManyArtistInput = {
     releaseDate?: Date | string | null;
     genreLabel?: string | null;
     lastSyncedAt: Date | string;
+    reviewCount?: number;
 };
 export type AlbumUpdateWithoutArtistInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -586,6 +648,7 @@ export type AlbumUpdateWithoutArtistInput = {
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genreLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     tracks?: Prisma.TrackUpdateManyWithoutAlbumNestedInput;
     reviews?: Prisma.ReviewUpdateManyWithoutAlbumNestedInput;
 };
@@ -598,6 +661,7 @@ export type AlbumUncheckedUpdateWithoutArtistInput = {
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genreLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
     tracks?: Prisma.TrackUncheckedUpdateManyWithoutAlbumNestedInput;
     reviews?: Prisma.ReviewUncheckedUpdateManyWithoutAlbumNestedInput;
 };
@@ -610,6 +674,7 @@ export type AlbumUncheckedUpdateManyWithoutArtistInput = {
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genreLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    reviewCount?: Prisma.IntFieldUpdateOperationsInput | number;
 };
 export type AlbumCountOutputType = {
     tracks: number;
@@ -638,6 +703,7 @@ export type AlbumSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     releaseDate?: boolean;
     genreLabel?: boolean;
     lastSyncedAt?: boolean;
+    reviewCount?: boolean;
     artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>;
     tracks?: boolean | Prisma.Album$tracksArgs<ExtArgs>;
     reviews?: boolean | Prisma.Album$reviewsArgs<ExtArgs>;
@@ -653,6 +719,7 @@ export type AlbumSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     releaseDate?: boolean;
     genreLabel?: boolean;
     lastSyncedAt?: boolean;
+    reviewCount?: boolean;
     artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["album"]>;
 export type AlbumSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -665,6 +732,7 @@ export type AlbumSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     releaseDate?: boolean;
     genreLabel?: boolean;
     lastSyncedAt?: boolean;
+    reviewCount?: boolean;
     artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["album"]>;
 export type AlbumSelectScalar = {
@@ -677,8 +745,9 @@ export type AlbumSelectScalar = {
     releaseDate?: boolean;
     genreLabel?: boolean;
     lastSyncedAt?: boolean;
+    reviewCount?: boolean;
 };
-export type AlbumOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deezerId" | "mbid" | "title" | "artistId" | "coverUrl" | "releaseDate" | "genreLabel" | "lastSyncedAt", ExtArgs["result"]["album"]>;
+export type AlbumOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deezerId" | "mbid" | "title" | "artistId" | "coverUrl" | "releaseDate" | "genreLabel" | "lastSyncedAt" | "reviewCount", ExtArgs["result"]["album"]>;
 export type AlbumInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>;
     tracks?: boolean | Prisma.Album$tracksArgs<ExtArgs>;
@@ -708,6 +777,7 @@ export type $AlbumPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
         releaseDate: Date | null;
         genreLabel: string | null;
         lastSyncedAt: Date;
+        reviewCount: number;
     }, ExtArgs["result"]["album"]>;
     composites: {};
 };
@@ -777,6 +847,7 @@ export interface AlbumFieldRefs {
     readonly releaseDate: Prisma.FieldRef<"Album", 'DateTime'>;
     readonly genreLabel: Prisma.FieldRef<"Album", 'String'>;
     readonly lastSyncedAt: Prisma.FieldRef<"Album", 'DateTime'>;
+    readonly reviewCount: Prisma.FieldRef<"Album", 'Int'>;
 }
 export type AlbumFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.AlbumSelect<ExtArgs> | null;

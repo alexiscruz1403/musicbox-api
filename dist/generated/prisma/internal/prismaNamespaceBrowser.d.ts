@@ -100,6 +100,7 @@ export declare const ArtistScalarFieldEnum: {
     readonly imageUrl: "imageUrl";
     readonly lastSyncedAt: "lastSyncedAt";
     readonly catalogSyncedAt: "catalogSyncedAt";
+    readonly reviewCount: "reviewCount";
 };
 export type ArtistScalarFieldEnum = (typeof ArtistScalarFieldEnum)[keyof typeof ArtistScalarFieldEnum];
 export declare const AlbumScalarFieldEnum: {
@@ -112,6 +113,7 @@ export declare const AlbumScalarFieldEnum: {
     readonly releaseDate: "releaseDate";
     readonly genreLabel: "genreLabel";
     readonly lastSyncedAt: "lastSyncedAt";
+    readonly reviewCount: "reviewCount";
 };
 export type AlbumScalarFieldEnum = (typeof AlbumScalarFieldEnum)[keyof typeof AlbumScalarFieldEnum];
 export declare const TrackScalarFieldEnum: {
@@ -125,6 +127,7 @@ export declare const TrackScalarFieldEnum: {
     readonly trackNumber: "trackNumber";
     readonly previewUrl: "previewUrl";
     readonly lastSyncedAt: "lastSyncedAt";
+    readonly reviewCount: "reviewCount";
 };
 export type TrackScalarFieldEnum = (typeof TrackScalarFieldEnum)[keyof typeof TrackScalarFieldEnum];
 export declare const ReviewScalarFieldEnum: {

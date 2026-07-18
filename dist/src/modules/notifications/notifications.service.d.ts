@@ -9,16 +9,16 @@ export declare class NotificationsService {
     constructor(repo: NotificationsRepository, sse: NotificationsSseService, webPush: WebPushService);
     list(userId: string, query: ListNotificationsQueryDto): Promise<{
         items: ({
-            actor: {
-                handle: string;
-                displayName: string;
-                avatarUrl: string | null;
-            } | null;
             review: {
                 id: string;
                 externalTitle: string;
                 externalArtistName: string;
                 externalCoverUrl: string | null;
+            } | null;
+            actor: {
+                handle: string;
+                displayName: string;
+                avatarUrl: string | null;
             } | null;
         } & {
             id: string;

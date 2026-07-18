@@ -6,7 +6,7 @@ type ReportStatus = 'PENDING' | 'REVIEWED' | 'DISMISSED';
 
 export interface ReportedReviewContent {
   reviewType: 'TRACK' | 'ALBUM';
-  description: string;
+  description: string | null;
   trackDescriptions?: { trackTitle: string; description: string | null }[];
 }
 
@@ -143,7 +143,7 @@ export class ModerationRepository {
       string,
       {
         type: 'TRACK' | 'ALBUM';
-        description: string;
+        description: string | null;
         trackReviewItems: {
           description: string | null;
           track: { title: string };
@@ -192,11 +192,20 @@ export class ModerationRepository {
   }
 
   // Sin filtro de status/deletedAt — necesitamos el userId dueño aunque el
-  // contenido ya esté oculto/borrado por otra vía.
+  // contenido ya esté oculto/borrado por otra vía. type/trackId/albumId se
+  // incluyen para poder decrementar reviewCount al ocultar (ver
+  // hideReviewIfActive / docs/fase-2-features.md).
   findReviewOwner(id: string) {
     return this.prisma.review.findUnique({
       where: { id },
-      select: { id: true, userId: true, status: true },
+      select: {
+        id: true,
+        userId: true,
+        status: true,
+        type: true,
+        trackId: true,
+        albumId: true,
+      },
     });
   }
 
@@ -208,11 +217,41 @@ export class ModerationRepository {
   }
 
   // Idempotente: no-op si el contenido ya no está ACTIVE (ocultado/borrado
-  // por otra vía).
-  async hideReviewIfActive(id: string): Promise<void> {
-    await this.prisma.review.updateMany({
-      where: { id, status: 'ACTIVE' },
-      data: { status: 'HIDDEN' },
+  // por otra vía) — el chequeo de result.count evita decrementar reviewCount
+  // dos veces si se llama más de una vez sobre la misma reseña (ver
+  // docs/fase-2-features.md: no existe un camino de "un-hide", así que este
+  // decremento es de una sola dirección).
+  async hideReviewIfActive(
+    id: string,
+    type: 'TRACK' | 'ALBUM',
+    trackId: string | null,
+    albumId: string | null,
+  ): Promise<void> {
+    await this.prisma.$transaction(async (tx) => {
+      const result = await tx.review.updateMany({
+        where: { id, status: 'ACTIVE' },
+        data: { status: 'HIDDEN' },
+      });
+      if (result.count !== 1) return;
+      if (type === 'TRACK') {
+        const track = await tx.track.update({
+          where: { id: trackId! },
+          data: { reviewCount: { decrement: 1 } },
+        });
+        await tx.artist.update({
+          where: { id: track.artistId },
+          data: { reviewCount: { decrement: 1 } },
+        });
+      } else {
+        const album = await tx.album.update({
+          where: { id: albumId! },
+          data: { reviewCount: { decrement: 1 } },
+        });
+        await tx.artist.update({
+          where: { id: album.artistId },
+          data: { reviewCount: { decrement: 1 } },
+        });
+      }
     });
   }
 

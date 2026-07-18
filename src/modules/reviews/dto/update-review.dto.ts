@@ -2,7 +2,7 @@ import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
   IsArray,
-  IsInt,
+  IsNumber,
   IsOptional,
   IsString,
   Length,
@@ -10,6 +10,7 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
+import { IsQuarterPointRating } from './quarter-point-rating.validator.js';
 import { TrackReviewItemDto } from './track-review-item.dto.js';
 
 export class UpdateReviewDto {
@@ -18,10 +19,12 @@ export class UpdateReviewDto {
   @Length(1, 2000)
   description?: string;
 
+  // Múltiplos de 0.25 (1, 1.25, ..., 10) — docs/fase-3-features.md.
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   @Min(1)
   @Max(10)
+  @IsQuarterPointRating()
   rating?: number;
 
   @IsOptional()

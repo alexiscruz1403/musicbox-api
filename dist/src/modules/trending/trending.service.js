@@ -9,28 +9,35 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '../../redis/redis.service.js';
+import { CatalogService } from '../catalog/catalog.service.js';
 import { TRENDING_ALBUMS_CACHE_KEY, TRENDING_CACHE_TTL_SECONDS, TRENDING_TRACKS_CACHE_KEY, } from './trending.constants.js';
 import { TrendingRepository } from './trending.repository.js';
 let TrendingService = class TrendingService {
     repo;
     redis;
-    constructor(repo, redis) {
+    catalogService;
+    constructor(repo, redis, catalogService) {
         this.repo = repo;
         this.redis = redis;
+        this.catalogService = catalogService;
     }
     async getAlbums(limit) {
-        const items = await this.getCached(TRENDING_ALBUMS_CACHE_KEY, () => this.computeAlbums());
+        const items = await this.getCached(TRENDING_ALBUMS_CACHE_KEY, () => this.computeAlbums(), (payload) => payload?.albums);
         return items.slice(0, limit);
     }
     async getTracks(limit) {
-        const items = await this.getCached(TRENDING_TRACKS_CACHE_KEY, () => this.computeTracks());
+        const items = await this.getCached(TRENDING_TRACKS_CACHE_KEY, () => this.computeTracks(), (payload) => payload?.tracks);
         return items.slice(0, limit);
     }
     async recalculate() {
-        const [albums, tracks] = await Promise.all([
+        const previous = await this.repo.findLatestSnapshot();
+        const previousPayload = previous?.payload;
+        const [rawAlbums, rawTracks] = await Promise.all([
             this.computeAlbums(),
             this.computeTracks(),
         ]);
+        const albums = this.applyRankChange(rawAlbums, previousPayload?.albums);
+        const tracks = this.applyRankChange(rawTracks, previousPayload?.tracks);
         await Promise.all([
             this.redis.set(TRENDING_ALBUMS_CACHE_KEY, JSON.stringify(albums), TRENDING_CACHE_TTL_SECONDS),
             this.redis.set(TRENDING_TRACKS_CACHE_KEY, JSON.stringify(tracks), TRENDING_CACHE_TTL_SECONDS),
@@ -41,13 +48,28 @@ let TrendingService = class TrendingService {
         });
         return { albums, tracks };
     }
-    async getCached(key, compute) {
+    async getCached(key, compute, extractPrevious) {
         const cached = await this.redis.get(key);
-        if (cached !== null)
+        if (cached !== null) {
             return JSON.parse(cached);
+        }
         const items = await compute();
-        await this.redis.set(key, JSON.stringify(items), TRENDING_CACHE_TTL_SECONDS);
-        return items;
+        const previous = await this.repo.findLatestSnapshot();
+        const ranked = this.applyRankChange(items, extractPrevious(previous?.payload));
+        await this.redis.set(key, JSON.stringify(ranked), TRENDING_CACHE_TTL_SECONDS);
+        return ranked;
+    }
+    applyRankChange(current, previous) {
+        const prevIndex = new Map((previous ?? []).map((it, idx) => [it.deezerId, idx]));
+        return current.map((item, idx) => {
+            const rank = idx + 1;
+            const prevIdx = prevIndex.get(item.deezerId);
+            return {
+                ...item,
+                rank,
+                rankChange: prevIdx === undefined ? null : prevIdx + 1 - rank,
+            };
+        });
     }
     async computeAlbums() {
         const groups = await this.repo.topAlbumGroups();
@@ -77,11 +99,17 @@ let TrendingService = class TrendingService {
         const groups = await this.repo.topTrackGroups();
         const tracks = await this.repo.hydrateTracks(groups.map((g) => g.id));
         const byId = new Map(tracks.map((t) => [t.id, t]));
-        return groups
-            .map((g) => {
+        const items = await Promise.all(groups.map(async (g) => {
             const track = byId.get(g.id);
             if (!track)
                 return null;
+            let albumDeezerId = track.album?.deezerId ?? null;
+            let coverUrl = track.album?.coverUrl ?? null;
+            if (!track.album) {
+                const fallback = await this.resolveAlbumFallback(track.deezerId);
+                albumDeezerId = fallback?.albumDeezerId ?? null;
+                coverUrl = fallback?.coverUrl ?? null;
+            }
             return {
                 deezerId: track.deezerId,
                 title: track.title,
@@ -90,19 +118,29 @@ let TrendingService = class TrendingService {
                     name: track.artist.name,
                     imageUrl: track.artist.imageUrl,
                 },
-                albumDeezerId: track.album?.deezerId ?? null,
-                coverUrl: track.album?.coverUrl ?? null,
+                albumDeezerId,
+                coverUrl,
                 reviewCount: g.reviewCount,
                 avgRating: g.avgRating,
             };
-        })
-            .filter((item) => item !== null);
+        }));
+        return items.filter((item) => item !== null);
+    }
+    async resolveAlbumFallback(deezerId) {
+        try {
+            const track = await this.catalogService.getTrack(deezerId);
+            return { albumDeezerId: track.albumDeezerId, coverUrl: track.coverUrl };
+        }
+        catch {
+            return null;
+        }
     }
 };
 TrendingService = __decorate([
     Injectable(),
     __metadata("design:paramtypes", [TrendingRepository,
-        RedisService])
+        RedisService,
+        CatalogService])
 ], TrendingService);
 export { TrendingService };
 //# sourceMappingURL=trending.service.js.map

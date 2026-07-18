@@ -153,7 +153,7 @@ export type ReviewGroupByOutputType = {
     type: $Enums.ReviewType;
     trackId: string | null;
     albumId: string | null;
-    description: string;
+    description: string | null;
     rating: runtime.Decimal;
     status: $Enums.ContentStatus;
     createdAt: Date;
@@ -180,7 +180,7 @@ export type ReviewWhereInput = {
     type?: Prisma.EnumReviewTypeFilter<"Review"> | $Enums.ReviewType;
     trackId?: Prisma.StringNullableFilter<"Review"> | string | null;
     albumId?: Prisma.StringNullableFilter<"Review"> | string | null;
-    description?: Prisma.StringFilter<"Review"> | string;
+    description?: Prisma.StringNullableFilter<"Review"> | string | null;
     rating?: Prisma.DecimalFilter<"Review"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFilter<"Review"> | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string;
@@ -203,7 +203,7 @@ export type ReviewOrderByWithRelationInput = {
     type?: Prisma.SortOrder;
     trackId?: Prisma.SortOrderInput | Prisma.SortOrder;
     albumId?: Prisma.SortOrderInput | Prisma.SortOrder;
-    description?: Prisma.SortOrder;
+    description?: Prisma.SortOrderInput | Prisma.SortOrder;
     rating?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
@@ -229,7 +229,7 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
     type?: Prisma.EnumReviewTypeFilter<"Review"> | $Enums.ReviewType;
     trackId?: Prisma.StringNullableFilter<"Review"> | string | null;
     albumId?: Prisma.StringNullableFilter<"Review"> | string | null;
-    description?: Prisma.StringFilter<"Review"> | string;
+    description?: Prisma.StringNullableFilter<"Review"> | string | null;
     rating?: Prisma.DecimalFilter<"Review"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFilter<"Review"> | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string;
@@ -252,7 +252,7 @@ export type ReviewOrderByWithAggregationInput = {
     type?: Prisma.SortOrder;
     trackId?: Prisma.SortOrderInput | Prisma.SortOrder;
     albumId?: Prisma.SortOrderInput | Prisma.SortOrder;
-    description?: Prisma.SortOrder;
+    description?: Prisma.SortOrderInput | Prisma.SortOrder;
     rating?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
@@ -276,7 +276,7 @@ export type ReviewScalarWhereWithAggregatesInput = {
     type?: Prisma.EnumReviewTypeWithAggregatesFilter<"Review"> | $Enums.ReviewType;
     trackId?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null;
     albumId?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null;
-    description?: Prisma.StringWithAggregatesFilter<"Review"> | string;
+    description?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null;
     rating?: Prisma.DecimalWithAggregatesFilter<"Review"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusWithAggregatesFilter<"Review"> | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Review"> | Date | string;
@@ -289,7 +289,7 @@ export type ReviewScalarWhereWithAggregatesInput = {
 export type ReviewCreateInput = {
     id?: string;
     type: $Enums.ReviewType;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -312,7 +312,7 @@ export type ReviewUncheckedCreateInput = {
     type: $Enums.ReviewType;
     trackId?: string | null;
     albumId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -329,7 +329,7 @@ export type ReviewUncheckedCreateInput = {
 export type ReviewUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -352,7 +352,7 @@ export type ReviewUncheckedUpdateInput = {
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     trackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -372,7 +372,7 @@ export type ReviewCreateManyInput = {
     type: $Enums.ReviewType;
     trackId?: string | null;
     albumId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -385,7 +385,7 @@ export type ReviewCreateManyInput = {
 export type ReviewUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -401,7 +401,7 @@ export type ReviewUncheckedUpdateManyInput = {
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     trackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -661,7 +661,7 @@ export type ReviewUpdateOneWithoutNotificationsNestedInput = {
 export type ReviewCreateWithoutUserInput = {
     id?: string;
     type: $Enums.ReviewType;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -682,7 +682,7 @@ export type ReviewUncheckedCreateWithoutUserInput = {
     type: $Enums.ReviewType;
     trackId?: string | null;
     albumId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -726,7 +726,7 @@ export type ReviewScalarWhereInput = {
     type?: Prisma.EnumReviewTypeFilter<"Review"> | $Enums.ReviewType;
     trackId?: Prisma.StringNullableFilter<"Review"> | string | null;
     albumId?: Prisma.StringNullableFilter<"Review"> | string | null;
-    description?: Prisma.StringFilter<"Review"> | string;
+    description?: Prisma.StringNullableFilter<"Review"> | string | null;
     rating?: Prisma.DecimalFilter<"Review"> | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFilter<"Review"> | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string;
@@ -739,7 +739,7 @@ export type ReviewScalarWhereInput = {
 export type ReviewCreateWithoutAlbumInput = {
     id?: string;
     type: $Enums.ReviewType;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -760,7 +760,7 @@ export type ReviewUncheckedCreateWithoutAlbumInput = {
     userId: string;
     type: $Enums.ReviewType;
     trackId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -798,7 +798,7 @@ export type ReviewUpdateManyWithWhereWithoutAlbumInput = {
 export type ReviewCreateWithoutTrackInput = {
     id?: string;
     type: $Enums.ReviewType;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -819,7 +819,7 @@ export type ReviewUncheckedCreateWithoutTrackInput = {
     userId: string;
     type: $Enums.ReviewType;
     albumId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -857,7 +857,7 @@ export type ReviewUpdateManyWithWhereWithoutTrackInput = {
 export type ReviewCreateWithoutTrackReviewItemsInput = {
     id?: string;
     type: $Enums.ReviewType;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -879,7 +879,7 @@ export type ReviewUncheckedCreateWithoutTrackReviewItemsInput = {
     type: $Enums.ReviewType;
     trackId?: string | null;
     albumId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -908,7 +908,7 @@ export type ReviewUpdateToOneWithWhereWithoutTrackReviewItemsInput = {
 export type ReviewUpdateWithoutTrackReviewItemsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -930,7 +930,7 @@ export type ReviewUncheckedUpdateWithoutTrackReviewItemsInput = {
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     trackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -946,7 +946,7 @@ export type ReviewUncheckedUpdateWithoutTrackReviewItemsInput = {
 export type ReviewCreateWithoutReactionsInput = {
     id?: string;
     type: $Enums.ReviewType;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -968,7 +968,7 @@ export type ReviewUncheckedCreateWithoutReactionsInput = {
     type: $Enums.ReviewType;
     trackId?: string | null;
     albumId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -997,7 +997,7 @@ export type ReviewUpdateToOneWithWhereWithoutReactionsInput = {
 export type ReviewUpdateWithoutReactionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1019,7 +1019,7 @@ export type ReviewUncheckedUpdateWithoutReactionsInput = {
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     trackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1035,7 +1035,7 @@ export type ReviewUncheckedUpdateWithoutReactionsInput = {
 export type ReviewCreateWithoutCommentsInput = {
     id?: string;
     type: $Enums.ReviewType;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -1057,7 +1057,7 @@ export type ReviewUncheckedCreateWithoutCommentsInput = {
     type: $Enums.ReviewType;
     trackId?: string | null;
     albumId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -1086,7 +1086,7 @@ export type ReviewUpdateToOneWithWhereWithoutCommentsInput = {
 export type ReviewUpdateWithoutCommentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1108,7 +1108,7 @@ export type ReviewUncheckedUpdateWithoutCommentsInput = {
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     trackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1124,7 +1124,7 @@ export type ReviewUncheckedUpdateWithoutCommentsInput = {
 export type ReviewCreateWithoutNotificationsInput = {
     id?: string;
     type: $Enums.ReviewType;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -1146,7 +1146,7 @@ export type ReviewUncheckedCreateWithoutNotificationsInput = {
     type: $Enums.ReviewType;
     trackId?: string | null;
     albumId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -1175,7 +1175,7 @@ export type ReviewUpdateToOneWithWhereWithoutNotificationsInput = {
 export type ReviewUpdateWithoutNotificationsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1197,7 +1197,7 @@ export type ReviewUncheckedUpdateWithoutNotificationsInput = {
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     trackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1215,7 +1215,7 @@ export type ReviewCreateManyUserInput = {
     type: $Enums.ReviewType;
     trackId?: string | null;
     albumId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -1228,7 +1228,7 @@ export type ReviewCreateManyUserInput = {
 export type ReviewUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1249,7 +1249,7 @@ export type ReviewUncheckedUpdateWithoutUserInput = {
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     trackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1268,7 +1268,7 @@ export type ReviewUncheckedUpdateManyWithoutUserInput = {
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     trackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1283,7 +1283,7 @@ export type ReviewCreateManyAlbumInput = {
     userId: string;
     type: $Enums.ReviewType;
     trackId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -1296,7 +1296,7 @@ export type ReviewCreateManyAlbumInput = {
 export type ReviewUpdateWithoutAlbumInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1317,7 +1317,7 @@ export type ReviewUncheckedUpdateWithoutAlbumInput = {
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     trackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1336,7 +1336,7 @@ export type ReviewUncheckedUpdateManyWithoutAlbumInput = {
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     trackId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1351,7 +1351,7 @@ export type ReviewCreateManyTrackInput = {
     userId: string;
     type: $Enums.ReviewType;
     albumId?: string | null;
-    description: string;
+    description?: string | null;
     rating: runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: $Enums.ContentStatus;
     createdAt?: Date | string;
@@ -1364,7 +1364,7 @@ export type ReviewCreateManyTrackInput = {
 export type ReviewUpdateWithoutTrackInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1385,7 +1385,7 @@ export type ReviewUncheckedUpdateWithoutTrackInput = {
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1404,7 +1404,7 @@ export type ReviewUncheckedUpdateManyWithoutTrackInput = {
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumReviewTypeFieldUpdateOperationsInput | $Enums.ReviewType;
     albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     rating?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
     status?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1557,7 +1557,7 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         type: $Enums.ReviewType;
         trackId: string | null;
         albumId: string | null;
-        description: string;
+        description: string | null;
         rating: runtime.Decimal;
         status: $Enums.ContentStatus;
         createdAt: Date;

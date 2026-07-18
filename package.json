@@ -23,7 +23,8 @@
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
     "test:debug": "vitest run --reporter=verbose",
-    "test:e2e": "vitest run --config ./test/vitest-e2e.config.ts"
+    "test:e2e": "vitest run --config ./test/vitest-e2e.config.ts",
+    "trending:recalculate": "nest build && node dist/src/scripts/recalculate-trending.js"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",

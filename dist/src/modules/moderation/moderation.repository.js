@@ -140,7 +140,14 @@ let ModerationRepository = class ModerationRepository {
     findReviewOwner(id) {
         return this.prisma.review.findUnique({
             where: { id },
-            select: { id: true, userId: true, status: true },
+            select: {
+                id: true,
+                userId: true,
+                status: true,
+                type: true,
+                trackId: true,
+                albumId: true,
+            },
         });
     }
     findCommentOwner(id) {
@@ -149,10 +156,34 @@ let ModerationRepository = class ModerationRepository {
             select: { id: true, userId: true, status: true },
         });
     }
-    async hideReviewIfActive(id) {
-        await this.prisma.review.updateMany({
-            where: { id, status: 'ACTIVE' },
-            data: { status: 'HIDDEN' },
+    async hideReviewIfActive(id, type, trackId, albumId) {
+        await this.prisma.$transaction(async (tx) => {
+            const result = await tx.review.updateMany({
+                where: { id, status: 'ACTIVE' },
+                data: { status: 'HIDDEN' },
+            });
+            if (result.count !== 1)
+                return;
+            if (type === 'TRACK') {
+                const track = await tx.track.update({
+                    where: { id: trackId },
+                    data: { reviewCount: { decrement: 1 } },
+                });
+                await tx.artist.update({
+                    where: { id: track.artistId },
+                    data: { reviewCount: { decrement: 1 } },
+                });
+            }
+            else {
+                const album = await tx.album.update({
+                    where: { id: albumId },
+                    data: { reviewCount: { decrement: 1 } },
+                });
+                await tx.artist.update({
+                    where: { id: album.artistId },
+                    data: { reviewCount: { decrement: 1 } },
+                });
+            }
         });
     }
     async hideCommentIfActive(id) {

@@ -5,4 +5,6 @@ export const CATALOG_STALENESS_DAYS = 7;
 export const CATALOG_SYNC_BATCH_SIZE = 50;
 export const ARTIST_DETAIL_TOP_N = 5;
 export const ARTIST_DETAIL_CACHE_TTL_SECONDS = 60 * 60;
+export const PREVIEW_URL_CACHE_TTL_SECONDS = 600;
+export const PREVIEW_URL_MISSING_CACHE_TTL_SECONDS = 86_400;
 //# sourceMappingURL=catalog.constants.js.map

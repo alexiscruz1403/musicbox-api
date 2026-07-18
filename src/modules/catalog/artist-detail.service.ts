@@ -13,11 +13,11 @@ import {
   CatalogRepository,
   type CatalogReviewGroup,
 } from './catalog.repository.js';
+import type { CatalogArtistDetail } from './catalog.service.js';
 import { CatalogService } from './catalog.service.js';
-import type { CatalogArtist } from './providers/music-catalog.provider.js';
 
 export interface ArtistDetailResponse {
-  artist: CatalogArtist;
+  artist: CatalogArtistDetail;
   topReviewedAlbums: TrendingAlbumItem[];
   topReviewedTracks: TrendingTrackItem[];
   trendingAlbums: TrendingAlbumItem[];
@@ -32,17 +32,29 @@ export class ArtistDetailService {
     private readonly redis: RedisService,
   ) {}
 
+  // reviewCount is always re-read live and overwritten below (hit or miss) —
+  // this whole response is cached for 1h (docs/fase-2-features.md), so if
+  // reviewCount were only set inside buildDetail() (the miss branch), a cache
+  // hit would silently serve a reviewCount up to 1h stale.
   async getDetail(deezerId: string): Promise<ArtistDetailResponse> {
     const key = `catalog:artist-detail:${deezerId}`;
     const cached = await this.redis.get(key);
-    if (cached !== null) return JSON.parse(cached) as ArtistDetailResponse;
-
-    const response = await this.buildDetail(deezerId);
-    await this.redis.set(
-      key,
-      JSON.stringify(response),
-      ARTIST_DETAIL_CACHE_TTL_SECONDS,
-    );
+    const response =
+      cached !== null
+        ? (JSON.parse(cached) as ArtistDetailResponse)
+        : await this.buildDetail(deezerId);
+    if (cached === null) {
+      await this.redis.set(
+        key,
+        JSON.stringify(response),
+        ARTIST_DETAIL_CACHE_TTL_SECONDS,
+      );
+    }
+    const artistStats = await this.repo.getArtistStats(deezerId);
+    response.artist = {
+      ...response.artist,
+      reviewCount: artistStats?.reviewCount ?? 0,
+    };
     return response;
   }
 

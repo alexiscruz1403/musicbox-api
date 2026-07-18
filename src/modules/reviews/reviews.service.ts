@@ -31,7 +31,9 @@ export class ReviewsService {
   ) {}
 
   async create(userId: string, dto: CreateReviewDto) {
-    const description = sanitizeHtml(dto.description, SANITIZE_OPTIONS);
+    const description = dto.description
+      ? sanitizeHtml(dto.description, SANITIZE_OPTIONS)
+      : null;
 
     if (dto.type === 'TRACK') {
       return this.createTrackReview(
@@ -52,7 +54,7 @@ export class ReviewsService {
   private async createTrackReview(
     userId: string,
     deezerId: string,
-    description: string,
+    description: string | null,
     rating: number,
   ) {
     const track = await this.catalog.getTrack(deezerId);
@@ -61,6 +63,7 @@ export class ReviewsService {
       const review = await this.repo.createTrackReview({
         userId,
         trackId: trackRow.id,
+        artistId: trackRow.artistId,
         description,
         rating,
         externalTitle: track.title,
@@ -83,7 +86,7 @@ export class ReviewsService {
   private async createAlbumReview(
     userId: string,
     deezerId: string,
-    description: string,
+    description: string | null,
     trackItems: TrackReviewItemDto[],
   ) {
     const album = await this.catalog.getAlbum(deezerId);
@@ -95,6 +98,7 @@ export class ReviewsService {
       const review = await this.repo.createAlbumReview({
         userId,
         albumId: albumRow.id,
+        artistId: albumRow.artistId,
         description,
         rating,
         externalTitle: album.title,
@@ -225,7 +229,7 @@ export class ReviewsService {
     const review = await this.getOwnedReviewAllowDeleted(userId, id);
     if (review.deletedAt || review.status !== 'ACTIVE') return;
 
-    await this.repo.softDelete(id);
+    await this.repo.softDelete(id, review.type, review.trackId, review.albumId);
     await this.events.emitDeleted({
       reviewId: id,
       userId,
@@ -297,6 +301,8 @@ export class ReviewsService {
       user.id,
       query.cursor,
       query.limit,
+      query.sort,
+      query.q,
     );
     return {
       items: result.items.map(({ user: reviewUser, ...review }) => ({
@@ -381,10 +387,14 @@ export class ReviewsService {
     }
   }
 
-  /** Rounds half-away-from-zero to 1 decimal, matching the Review.rating Decimal(3,1) column. */
+  // Rounds half-away-from-zero to 2 decimals, matching the Review.rating
+  // Decimal(4,2) column. The average of quarter-point inputs (1, 1.25, ...)
+  // isn't itself necessarily a quarter-point value (e.g. avg(8.25, 8.5, 9) =
+  // 8.5833...), so this only rounds for display/storage precision — it does
+  // not re-enforce the 0.25 granularity, which only applies to inputs.
   private computeAverageRating(ratings: number[]): number {
     const avg = ratings.reduce((sum, r) => sum + r, 0) / ratings.length;
-    return Number(avg.toFixed(1));
+    return Number(avg.toFixed(2));
   }
 
   private translatePrismaError(e: unknown) {

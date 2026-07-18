@@ -57,9 +57,11 @@ let CatalogSyncService = CatalogSyncService_1 = class CatalogSyncService {
             const fullAlbum = await this.catalogProvider.getAlbum(albumSummary.deezerId);
             const persistedAlbum = await this.repo.upsertAlbum(fullAlbum, artistRow.id);
             await this.redis.del(`catalog:album:${fullAlbum.deezerId}`);
+            await this.redis.del(`catalog:album-preview:${fullAlbum.deezerId}`);
             for (const track of fullAlbum.tracks) {
                 await this.repo.upsertTrack(track, artistRow.id, persistedAlbum.id);
                 await this.redis.del(`catalog:track:${track.deezerId}`);
+                await this.redis.del(`catalog:track-preview:${track.deezerId}`);
             }
         }
         await this.redis.deleteByPattern(`catalog:artist-tracks:${deezerId}:*`);

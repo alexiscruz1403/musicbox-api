@@ -633,7 +633,7 @@ describe('ReviewsService', () => {
     it('throws NotFoundException for an unknown user handle', async () => {
       mockRepo.findUserIdByHandle.mockRejectedValue(new Error('not found'));
       await expect(
-        service.listByUserHandle('unknown', { limit: 10 }),
+        service.listByUserHandle('unknown', { limit: 10, sort: 'recent' }),
       ).rejects.toThrow(NotFoundException);
     });
 
@@ -642,7 +642,11 @@ describe('ReviewsService', () => {
       mockRepo.isOwnerVisibleTo.mockResolvedValue(false);
 
       await expect(
-        service.listByUserHandle('private_user', { limit: 10 }, 'stranger'),
+        service.listByUserHandle(
+          'private_user',
+          { limit: 10, sort: 'recent' },
+          'stranger',
+        ),
       ).rejects.toThrow(ForbiddenException);
       expect(mockRepo.listByUserId).not.toHaveBeenCalled();
     });
@@ -660,7 +664,10 @@ describe('ReviewsService', () => {
         nextCursor: null,
       });
 
-      const result = await service.listByUserHandle('juan', { limit: 10 });
+      const result = await service.listByUserHandle('juan', {
+        limit: 10,
+        sort: 'recent',
+      });
 
       expect(result.items).toEqual([
         {
@@ -673,6 +680,8 @@ describe('ReviewsService', () => {
         'user-uuid-1',
         undefined,
         10,
+        'recent',
+        undefined,
       );
     });
   });

@@ -1,10 +1,10 @@
 import { RedisService } from '../../redis/redis.service.js';
 import type { TrendingAlbumItem, TrendingTrackItem } from '../trending/trending.service.js';
 import { CatalogRepository } from './catalog.repository.js';
+import type { CatalogArtistDetail } from './catalog.service.js';
 import { CatalogService } from './catalog.service.js';
-import type { CatalogArtist } from './providers/music-catalog.provider.js';
 export interface ArtistDetailResponse {
-    artist: CatalogArtist;
+    artist: CatalogArtistDetail;
     topReviewedAlbums: TrendingAlbumItem[];
     topReviewedTracks: TrendingTrackItem[];
     trendingAlbums: TrendingAlbumItem[];

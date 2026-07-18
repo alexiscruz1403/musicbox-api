@@ -33,7 +33,7 @@ let CatalogController = class CatalogController {
         this.history = history;
     }
     async search(dto, req) {
-        const result = await this.catalog.search(dto.q, dto.type, dto.limit, dto.cursor ?? null);
+        const result = await this.catalog.search(dto.q, dto.type, dto.limit, dto.cursor ?? null, req.user?.sub);
         if (req.user) {
             await this.history.recordSearch(req.user.sub, dto.q);
         }
@@ -43,14 +43,14 @@ let CatalogController = class CatalogController {
         return { data: await this.quickSearch.quickSearch(dto.q) };
     }
     async getAlbum(deezerId, req) {
-        const album = await this.catalog.getAlbum(deezerId);
+        const album = await this.catalog.getAlbum(deezerId, req.user?.sub);
         if (req.user) {
             await this.history.recordAlbumView(req.user.sub, album);
         }
         return { data: album };
     }
     async getTrack(deezerId, req) {
-        const track = await this.catalog.getTrack(deezerId);
+        const track = await this.catalog.getTrack(deezerId, req.user?.sub);
         if (req.user) {
             await this.history.recordTrackView(req.user.sub, track);
         }

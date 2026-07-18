@@ -5,8 +5,8 @@ export declare class UserSearchHistoryService {
     constructor(repo: UserSearchHistoryRepository);
     recordSearch(searcherId: string, query: string): Promise<void>;
     listHistory(searcherId: string): Promise<{
-        id: string;
         query: string;
+        id: string;
         searchedAt: Date;
         searcherId: string;
     }[]>;

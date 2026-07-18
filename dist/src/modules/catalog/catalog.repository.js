@@ -10,10 +10,140 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { decodeCatalogCursor, encodeCatalogCursor, } from './catalog-cursor.util.js';
+const NO_VIEWER = '__no_viewer__';
 let CatalogRepository = class CatalogRepository {
     prisma;
     constructor(prisma) {
         this.prisma = prisma;
+    }
+    async getAlbumStats(deezerId, userId) {
+        const album = await this.prisma.album.findUnique({
+            where: { deezerId },
+            select: {
+                reviewCount: true,
+                reviews: {
+                    where: {
+                        userId: userId ?? NO_VIEWER,
+                        type: 'ALBUM',
+                        status: 'ACTIVE',
+                        deletedAt: null,
+                    },
+                    take: 1,
+                    select: {
+                        rating: true,
+                        trackReviewItems: {
+                            select: { rating: true, track: { select: { deezerId: true } } },
+                        },
+                    },
+                },
+            },
+        });
+        if (!album)
+            return null;
+        const ownReview = album.reviews[0];
+        return {
+            reviewCount: album.reviewCount,
+            userRating: ownReview ? Number(ownReview.rating) : null,
+            trackRatings: new Map((ownReview?.trackReviewItems ?? []).map((item) => [
+                item.track.deezerId,
+                Number(item.rating),
+            ])),
+        };
+    }
+    async getTrackStats(deezerId, userId) {
+        const track = await this.prisma.track.findUnique({
+            where: { deezerId },
+            select: {
+                reviewCount: true,
+                reviews: {
+                    where: {
+                        userId: userId ?? NO_VIEWER,
+                        type: 'TRACK',
+                        status: 'ACTIVE',
+                        deletedAt: null,
+                    },
+                    take: 1,
+                    select: { rating: true },
+                },
+            },
+        });
+        if (!track)
+            return null;
+        return {
+            reviewCount: track.reviewCount,
+            userRating: track.reviews[0] ? Number(track.reviews[0].rating) : null,
+        };
+    }
+    getArtistStats(deezerId) {
+        return this.prisma.artist.findUnique({
+            where: { deezerId },
+            select: { reviewCount: true },
+        });
+    }
+    async getAlbumStatsBatch(deezerIds, userId) {
+        if (deezerIds.length === 0)
+            return new Map();
+        const rows = await this.prisma.album.findMany({
+            where: { deezerId: { in: deezerIds } },
+            select: {
+                deezerId: true,
+                reviewCount: true,
+                reviews: {
+                    where: {
+                        userId: userId ?? NO_VIEWER,
+                        type: 'ALBUM',
+                        status: 'ACTIVE',
+                        deletedAt: null,
+                    },
+                    take: 1,
+                    select: { rating: true },
+                },
+            },
+        });
+        return new Map(rows.map((r) => [
+            r.deezerId,
+            {
+                reviewCount: r.reviewCount,
+                userRating: r.reviews[0] ? Number(r.reviews[0].rating) : null,
+            },
+        ]));
+    }
+    async getTrackStatsBatch(deezerIds, userId) {
+        if (deezerIds.length === 0)
+            return new Map();
+        const rows = await this.prisma.track.findMany({
+            where: { deezerId: { in: deezerIds } },
+            select: {
+                deezerId: true,
+                reviewCount: true,
+                reviews: {
+                    where: {
+                        userId: userId ?? NO_VIEWER,
+                        type: 'TRACK',
+                        status: 'ACTIVE',
+                        deletedAt: null,
+                    },
+                    take: 1,
+                    select: { rating: true },
+                },
+            },
+        });
+        return new Map(rows.map((r) => [
+            r.deezerId,
+            {
+                reviewCount: r.reviewCount,
+                userRating: r.reviews[0] ? Number(r.reviews[0].rating) : null,
+            },
+        ]));
+    }
+    async getArtistStatsBatch(deezerIds) {
+        if (deezerIds.length === 0)
+            return new Map();
+        const rows = await this.prisma.artist.findMany({
+            where: { deezerId: { in: deezerIds } },
+            select: { deezerId: true, reviewCount: true },
+        });
+        return new Map(rows.map((r) => [r.deezerId, { reviewCount: r.reviewCount }]));
     }
     upsertArtist(data) {
         const now = new Date();
@@ -61,6 +191,13 @@ let CatalogRepository = class CatalogRepository {
     }
     findArtistByDeezerId(deezerId) {
         return this.prisma.artist.findUnique({ where: { deezerId } });
+    }
+    async findAlbumIdByDeezerId(deezerId) {
+        const album = await this.prisma.album.findUnique({
+            where: { deezerId },
+            select: { id: true },
+        });
+        return album?.id ?? null;
     }
     markCatalogSynced(artistId, when) {
         return this.prisma.artist.update({
@@ -212,6 +349,7 @@ let CatalogRepository = class CatalogRepository {
                 trackNumber: data.trackNumber,
                 previewUrl: data.previewUrl,
                 lastSyncedAt: now,
+                ...(albumId && { albumId }),
             },
             create: {
                 deezerId: data.deezerId,

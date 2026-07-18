@@ -7,7 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { IsInt, IsOptional, IsString, Length, Max, Min } from 'class-validator';
+import { IsNumber, IsOptional, IsString, Length, Max, Min, } from 'class-validator';
+import { IsQuarterPointRating } from './quarter-point-rating.validator.js';
 export class TrackReviewItemDto {
     deezerId;
     rating;
@@ -18,9 +19,10 @@ __decorate([
     __metadata("design:type", String)
 ], TrackReviewItemDto.prototype, "deezerId", void 0);
 __decorate([
-    IsInt(),
+    IsNumber(),
     Min(1),
     Max(10),
+    IsQuarterPointRating(),
     __metadata("design:type", Number)
 ], TrackReviewItemDto.prototype, "rating", void 0);
 __decorate([

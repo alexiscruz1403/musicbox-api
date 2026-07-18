@@ -16,7 +16,7 @@ export declare class CatalogController {
     search(dto: SearchCatalogDto, req: Request & {
         user?: JwtPayload;
     }): Promise<{
-        data: import("./providers/music-catalog.provider.js").CatalogPage<import("./providers/music-catalog.provider.js").CatalogSearchResult>;
+        data: import("./providers/music-catalog.provider.js").CatalogPage<import("./catalog.service.js").EnrichedCatalogSearchResult>;
     }>;
     quickSearchCatalog(dto: QuickSearchCatalogDto): Promise<{
         data: import("./catalog-quick-search.service.js").QuickSearchCatalogItem[];
@@ -24,18 +24,18 @@ export declare class CatalogController {
     getAlbum(deezerId: string, req: Request & {
         user?: JwtPayload;
     }): Promise<{
-        data: import("./providers/music-catalog.provider.js").CatalogAlbum;
+        data: import("./catalog.service.js").CatalogAlbumDetail;
     }>;
     getTrack(deezerId: string, req: Request & {
         user?: JwtPayload;
     }): Promise<{
-        data: import("./providers/music-catalog.provider.js").CatalogTrack;
+        data: import("./catalog.service.js").CatalogTrackDetail;
     }>;
     getArtistAlbums(deezerId: string, limit?: string, cursor?: string): Promise<{
         data: import("./providers/music-catalog.provider.js").CatalogPage<import("./providers/music-catalog.provider.js").CatalogAlbum>;
     }>;
     getArtist(deezerId: string): Promise<{
-        data: import("./providers/music-catalog.provider.js").CatalogArtist;
+        data: import("./catalog.service.js").CatalogArtistDetail;
     }>;
     getArtistDetail(deezerId: string, req: Request & {
         user?: JwtPayload;

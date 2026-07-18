@@ -16,6 +16,7 @@ export declare class CatalogSyncService {
         imageUrl: string | null;
         lastSyncedAt: Date;
         catalogSyncedAt: Date | null;
+        reviewCount: number;
     }>;
     private syncArtist;
     private fetchFullDiscography;

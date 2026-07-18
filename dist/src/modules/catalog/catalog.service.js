@@ -14,6 +14,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { RedisService } from '../../redis/redis.service.js';
 import { CatalogSyncService } from './catalog-sync.service.js';
 import { CatalogRepository } from './catalog.repository.js';
+import { PREVIEW_URL_CACHE_TTL_SECONDS, PREVIEW_URL_MISSING_CACHE_TTL_SECONDS, } from './catalog.constants.js';
 import { MUSIC_CATALOG_PROVIDER, } from './providers/music-catalog.provider.js';
 let CatalogService = class CatalogService {
     catalogProvider;
@@ -27,44 +28,143 @@ let CatalogService = class CatalogService {
         this.redis = redis;
         this.catalogSyncService = catalogSyncService;
     }
-    async withCache(key, fetcher) {
+    async withCacheTtl(key, fetcher, ttlSecondsFor) {
         const cached = await this.redis.get(key);
         if (cached !== null)
             return JSON.parse(cached);
         const result = await fetcher();
-        await this.redis.set(key, JSON.stringify(result), this.CACHE_TTL);
+        await this.redis.set(key, JSON.stringify(result), ttlSecondsFor(result));
         return result;
     }
-    search(query, type, limit, cursor) {
-        const key = `catalog:search:${type}:${query}:${limit}:${cursor ?? '0'}`;
-        return this.withCache(key, () => this.catalogProvider.search(query, type, limit, cursor));
+    withCache(key, fetcher) {
+        return this.withCacheTtl(key, fetcher, () => this.CACHE_TTL);
     }
-    getAlbum(deezerId) {
+    async search(query, type, limit, cursor, viewerId) {
+        const key = `catalog:search:${type}:${query}:${limit}:${cursor ?? '0'}`;
+        const page = await this.withCache(key, () => this.catalogProvider.search(query, type, limit, cursor));
+        return {
+            ...page,
+            items: await this.enrichSearchResults(page.items, viewerId),
+        };
+    }
+    async enrichSearchResults(items, viewerId) {
+        const albumIds = items
+            .filter((r) => r.type === 'album')
+            .map((r) => r.item.deezerId);
+        const trackIds = items
+            .filter((r) => r.type === 'track')
+            .map((r) => r.item.deezerId);
+        const artistIds = items
+            .filter((r) => r.type === 'artist')
+            .map((r) => r.item.deezerId);
+        const [albumStats, trackStats, artistStats] = await Promise.all([
+            this.repo.getAlbumStatsBatch(albumIds, viewerId),
+            this.repo.getTrackStatsBatch(trackIds, viewerId),
+            this.repo.getArtistStatsBatch(artistIds),
+        ]);
+        return items.map((result) => {
+            if (result.type === 'album') {
+                const stats = albumStats.get(result.item.deezerId);
+                return {
+                    type: 'album',
+                    item: {
+                        ...result.item,
+                        reviewCount: stats?.reviewCount ?? 0,
+                        userRating: stats?.userRating ?? null,
+                        tracks: [],
+                    },
+                };
+            }
+            if (result.type === 'track') {
+                const stats = trackStats.get(result.item.deezerId);
+                return {
+                    type: 'track',
+                    item: {
+                        ...result.item,
+                        reviewCount: stats?.reviewCount ?? 0,
+                        userRating: stats?.userRating ?? null,
+                    },
+                };
+            }
+            const stats = artistStats.get(result.item.deezerId);
+            return {
+                type: 'artist',
+                item: { ...result.item, reviewCount: stats?.reviewCount ?? 0 },
+            };
+        });
+    }
+    async getAlbum(deezerId, viewerId) {
         const key = `catalog:album:${deezerId}`;
-        return this.withCache(key, async () => {
+        let freshFromMetadataFetch = null;
+        const album = await this.withCache(key, async () => {
             const album = await this.catalogProvider.getAlbum(deezerId);
+            freshFromMetadataFetch = album;
             const artist = await this.repo.upsertArtist(album.artist);
             const persistedAlbum = await this.repo.upsertAlbum(album, artist.id);
             await Promise.all(album.tracks.map((track) => this.repo.upsertTrack(track, artist.id, persistedAlbum.id)));
             return album;
         });
+        const previewMap = await this.resolveAlbumPreviewMap(deezerId, freshFromMetadataFetch);
+        const stats = await this.repo.getAlbumStats(deezerId, viewerId);
+        return {
+            ...album,
+            reviewCount: stats?.reviewCount ?? 0,
+            userRating: stats?.userRating ?? null,
+            tracks: album.tracks.map((track) => ({
+                ...track,
+                previewUrl: previewMap.get(track.deezerId) ?? null,
+                userRating: stats?.trackRatings.get(track.deezerId) ?? null,
+            })),
+        };
     }
-    getTrack(deezerId) {
+    async resolveAlbumPreviewMap(deezerId, freshAlbum) {
+        const key = `catalog:album-preview:${deezerId}`;
+        const payload = await this.withCacheTtl(key, async () => {
+            const source = freshAlbum ?? (await this.catalogProvider.getAlbum(deezerId));
+            return Object.fromEntries(source.tracks.map((t) => [t.deezerId, t.previewUrl]));
+        }, () => PREVIEW_URL_CACHE_TTL_SECONDS);
+        return new Map(Object.entries(payload));
+    }
+    async getTrack(deezerId, viewerId) {
         const key = `catalog:track:${deezerId}`;
-        return this.withCache(key, async () => {
+        let freshFromMetadataFetch = null;
+        const track = await this.withCache(key, async () => {
             const track = await this.catalogProvider.getTrack(deezerId);
+            freshFromMetadataFetch = track;
             const artist = await this.repo.upsertArtist(track.artist);
-            await this.repo.upsertTrack(track, artist.id, null);
+            const albumId = track.albumDeezerId
+                ? await this.repo.findAlbumIdByDeezerId(track.albumDeezerId)
+                : null;
+            await this.repo.upsertTrack(track, artist.id, albumId);
             return track;
         });
+        const previewUrl = await this.resolveTrackPreviewUrl(deezerId, freshFromMetadataFetch);
+        const stats = await this.repo.getTrackStats(deezerId, viewerId);
+        return {
+            ...track,
+            previewUrl,
+            reviewCount: stats?.reviewCount ?? 0,
+            userRating: stats?.userRating ?? null,
+        };
     }
-    getArtist(deezerId) {
+    async resolveTrackPreviewUrl(deezerId, freshTrack) {
+        const key = `catalog:track-preview:${deezerId}`;
+        const wrapped = await this.withCacheTtl(key, async () => ({
+            previewUrl: (freshTrack ?? (await this.catalogProvider.getTrack(deezerId))).previewUrl,
+        }), (r) => r.previewUrl
+            ? PREVIEW_URL_CACHE_TTL_SECONDS
+            : PREVIEW_URL_MISSING_CACHE_TTL_SECONDS);
+        return wrapped.previewUrl;
+    }
+    async getArtist(deezerId) {
         const key = `catalog:artist:${deezerId}`;
-        return this.withCache(key, async () => {
+        const artist = await this.withCache(key, async () => {
             const artist = await this.catalogProvider.getArtist(deezerId);
             await this.repo.upsertArtist(artist);
             return artist;
         });
+        const stats = await this.repo.getArtistStats(deezerId);
+        return { ...artist, reviewCount: stats?.reviewCount ?? 0 };
     }
     getArtistAlbums(deezerId, limit, cursor) {
         const key = `catalog:artist-albums:${deezerId}:${limit}:${cursor ?? '0'}`;
