@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Type } from 'class-transformer';
 import { IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class ListFeedQueryDto {
     type = 'FOLLOWED';
     cursor;
@@ -16,20 +17,22 @@ export class ListFeedQueryDto {
 }
 __decorate([
     IsOptional(),
-    IsIn(['FOLLOWED', 'ALL']),
+    IsIn(['FOLLOWED', 'ALL'], {
+        message: i18nValidationMessage('validation.IS_IN'),
+    }),
     __metadata("design:type", String)
 ], ListFeedQueryDto.prototype, "type", void 0);
 __decorate([
     IsOptional(),
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], ListFeedQueryDto.prototype, "cursor", void 0);
 __decorate([
     IsOptional(),
     Type(() => Number),
-    IsInt(),
-    Min(1),
-    Max(50),
+    IsInt({ message: i18nValidationMessage('validation.IS_INT') }),
+    Min(1, { message: i18nValidationMessage('validation.MIN') }),
+    Max(50, { message: i18nValidationMessage('validation.MAX') }),
     __metadata("design:type", Number)
 ], ListFeedQueryDto.prototype, "limit", void 0);
 //# sourceMappingURL=list-feed-query.dto.js.map

@@ -27,11 +27,11 @@ export declare class ModerationRepository {
         status: import("../../../generated/prisma/enums.js").ReportStatus;
         createdAt: Date;
         targetId: string;
+        reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
-        reviewedAt: Date | null;
-        reporterId: string;
         reviewedById: string | null;
+        reviewedAt: Date | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -41,11 +41,11 @@ export declare class ModerationRepository {
         status: import("../../../generated/prisma/enums.js").ReportStatus;
         createdAt: Date;
         targetId: string;
+        reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
-        reviewedAt: Date | null;
-        reporterId: string;
         reviewedById: string | null;
+        reviewedAt: Date | null;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -61,11 +61,11 @@ export declare class ModerationRepository {
             status: import("../../../generated/prisma/enums.js").ReportStatus;
             createdAt: Date;
             targetId: string;
+            reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
             reason: string;
-            reviewedAt: Date | null;
-            reporterId: string;
             reviewedById: string | null;
+            reviewedAt: Date | null;
         } & {
             reportedContent: ReportedContent;
         })[];
@@ -78,11 +78,11 @@ export declare class ModerationRepository {
         status: import("../../../generated/prisma/enums.js").ReportStatus;
         createdAt: Date;
         targetId: string;
+        reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
-        reviewedAt: Date | null;
-        reporterId: string;
         reviewedById: string | null;
+        reviewedAt: Date | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -90,9 +90,9 @@ export declare class ModerationRepository {
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         userId: string;
+        albumId: string | null;
         type: import("../../../generated/prisma/enums.js").ReviewType;
         trackId: string | null;
-        albumId: string | null;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -112,9 +112,9 @@ export declare class ModerationRepository {
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
+        albumId: string | null;
         type: import("../../../generated/prisma/enums.js").ReviewType;
         trackId: string | null;
-        albumId: string | null;
         description: string | null;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -151,6 +151,7 @@ export declare class ModerationRepository {
         isPrivate: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
         role: import("../../../generated/prisma/enums.js").UserRole;
+        language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
@@ -178,6 +179,7 @@ export declare class ModerationRepository {
         isPrivate: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
         role: import("../../../generated/prisma/enums.js").UserRole;
+        language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
@@ -204,6 +206,7 @@ export declare class ModerationRepository {
         isPrivate: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
         role: import("../../../generated/prisma/enums.js").UserRole;
+        language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;

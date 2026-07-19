@@ -42,7 +42,7 @@ let ArtistDetailService = class ArtistDetailService {
         const artist = await this.catalogService.getArtist(deezerId);
         const artistRow = await this.repo.findArtistByDeezerId(deezerId);
         if (!artistRow) {
-            throw new NotFoundException(`Artist ${deezerId} not found`);
+            throw new NotFoundException({ code: 'ARTIST_NOT_FOUND' });
         }
         const windowStart = new Date(Date.now() - TRENDING_WINDOW_DAYS * 24 * 60 * 60 * 1000);
         const [topReviewedAlbumGroups, topReviewedTrackGroups, trendingAlbumGroups, trendingTrackGroups,] = await Promise.all([

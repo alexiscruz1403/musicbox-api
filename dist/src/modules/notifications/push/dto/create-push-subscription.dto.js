@@ -9,18 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Type } from 'class-transformer';
 import { IsString, IsUrl, ValidateNested, MinLength } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 class PushSubscriptionKeysDto {
     p256dh;
     auth;
 }
 __decorate([
-    IsString(),
-    MinLength(1),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
+    MinLength(1, { message: i18nValidationMessage('validation.MIN_LENGTH') }),
     __metadata("design:type", String)
 ], PushSubscriptionKeysDto.prototype, "p256dh", void 0);
 __decorate([
-    IsString(),
-    MinLength(1),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
+    MinLength(1, { message: i18nValidationMessage('validation.MIN_LENGTH') }),
     __metadata("design:type", String)
 ], PushSubscriptionKeysDto.prototype, "auth", void 0);
 export class CreatePushSubscriptionDto {
@@ -28,11 +29,13 @@ export class CreatePushSubscriptionDto {
     keys;
 }
 __decorate([
-    IsUrl({ require_tld: false }),
+    IsUrl({ require_tld: false }, { message: i18nValidationMessage('validation.IS_URL') }),
     __metadata("design:type", String)
 ], CreatePushSubscriptionDto.prototype, "endpoint", void 0);
 __decorate([
-    ValidateNested(),
+    ValidateNested({
+        message: i18nValidationMessage('validation.VALIDATE_NESTED'),
+    }),
     Type(() => PushSubscriptionKeysDto),
     __metadata("design:type", PushSubscriptionKeysDto)
 ], CreatePushSubscriptionDto.prototype, "keys", void 0);

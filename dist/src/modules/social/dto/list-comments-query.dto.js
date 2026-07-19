@@ -9,21 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Type } from 'class-transformer';
 import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class ListCommentsQueryDto {
     cursor;
     limit = 10;
 }
 __decorate([
     IsOptional(),
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], ListCommentsQueryDto.prototype, "cursor", void 0);
 __decorate([
     IsOptional(),
     Type(() => Number),
-    IsInt(),
-    Min(1),
-    Max(50),
+    IsInt({ message: i18nValidationMessage('validation.IS_INT') }),
+    Min(1, { message: i18nValidationMessage('validation.MIN') }),
+    Max(50, { message: i18nValidationMessage('validation.MAX') }),
     __metadata("design:type", Number)
 ], ListCommentsQueryDto.prototype, "limit", void 0);
 //# sourceMappingURL=list-comments-query.dto.js.map

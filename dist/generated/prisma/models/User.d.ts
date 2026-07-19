@@ -33,6 +33,7 @@ export type UserMinAggregateOutputType = {
     isPrivate: boolean | null;
     status: $Enums.UserStatus | null;
     role: $Enums.UserRole | null;
+    language: $Enums.Language | null;
     consentedAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -57,6 +58,7 @@ export type UserMaxAggregateOutputType = {
     isPrivate: boolean | null;
     status: $Enums.UserStatus | null;
     role: $Enums.UserRole | null;
+    language: $Enums.Language | null;
     consentedAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -81,6 +83,7 @@ export type UserCountAggregateOutputType = {
     isPrivate: number;
     status: number;
     role: number;
+    language: number;
     consentedAt: number;
     createdAt: number;
     updatedAt: number;
@@ -114,6 +117,7 @@ export type UserMinAggregateInputType = {
     isPrivate?: true;
     status?: true;
     role?: true;
+    language?: true;
     consentedAt?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -138,6 +142,7 @@ export type UserMaxAggregateInputType = {
     isPrivate?: true;
     status?: true;
     role?: true;
+    language?: true;
     consentedAt?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -162,6 +167,7 @@ export type UserCountAggregateInputType = {
     isPrivate?: true;
     status?: true;
     role?: true;
+    language?: true;
     consentedAt?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -215,6 +221,7 @@ export type UserGroupByOutputType = {
     isPrivate: boolean;
     status: $Enums.UserStatus;
     role: $Enums.UserRole;
+    language: $Enums.Language;
     consentedAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
@@ -250,6 +257,7 @@ export type UserWhereInput = {
     isPrivate?: Prisma.BoolFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFilter<"User"> | $Enums.Language;
     consentedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
@@ -293,6 +301,7 @@ export type UserOrderByWithRelationInput = {
     isPrivate?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    language?: Prisma.SortOrder;
     consentedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -339,6 +348,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     isPrivate?: Prisma.BoolFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFilter<"User"> | $Enums.Language;
     consentedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
@@ -382,6 +392,7 @@ export type UserOrderByWithAggregationInput = {
     isPrivate?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    language?: Prisma.SortOrder;
     consentedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -414,6 +425,7 @@ export type UserScalarWhereWithAggregatesInput = {
     isPrivate?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
     status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole;
+    language?: Prisma.EnumLanguageWithAggregatesFilter<"User"> | $Enums.Language;
     consentedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
@@ -438,6 +450,7 @@ export type UserCreateInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -481,6 +494,7 @@ export type UserUncheckedCreateInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -524,6 +538,7 @@ export type UserUpdateInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -567,6 +582,7 @@ export type UserUncheckedUpdateInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -610,6 +626,7 @@ export type UserCreateManyInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -634,6 +651,7 @@ export type UserUpdateManyMutationInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -658,6 +676,7 @@ export type UserUncheckedUpdateManyInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -682,6 +701,7 @@ export type UserCountOrderByAggregateInput = {
     isPrivate?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    language?: Prisma.SortOrder;
     consentedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -710,6 +730,7 @@ export type UserMaxOrderByAggregateInput = {
     isPrivate?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    language?: Prisma.SortOrder;
     consentedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -734,6 +755,7 @@ export type UserMinOrderByAggregateInput = {
     isPrivate?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    language?: Prisma.SortOrder;
     consentedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -768,6 +790,9 @@ export type EnumUserStatusFieldUpdateOperationsInput = {
 };
 export type EnumUserRoleFieldUpdateOperationsInput = {
     set?: $Enums.UserRole;
+};
+export type EnumLanguageFieldUpdateOperationsInput = {
+    set?: $Enums.Language;
 };
 export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null;
@@ -1030,6 +1055,7 @@ export type UserCreateWithoutFollowingInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1072,6 +1098,7 @@ export type UserUncheckedCreateWithoutFollowingInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1118,6 +1145,7 @@ export type UserCreateWithoutFollowersInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1160,6 +1188,7 @@ export type UserUncheckedCreateWithoutFollowersInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1215,6 +1244,7 @@ export type UserUpdateWithoutFollowingInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1257,6 +1287,7 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1308,6 +1339,7 @@ export type UserUpdateWithoutFollowersInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1350,6 +1382,7 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1392,6 +1425,7 @@ export type UserCreateWithoutFollowRequestsSentInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1434,6 +1468,7 @@ export type UserUncheckedCreateWithoutFollowRequestsSentInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1480,6 +1515,7 @@ export type UserCreateWithoutFollowRequestsReceivedInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1522,6 +1558,7 @@ export type UserUncheckedCreateWithoutFollowRequestsReceivedInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1577,6 +1614,7 @@ export type UserUpdateWithoutFollowRequestsSentInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1619,6 +1657,7 @@ export type UserUncheckedUpdateWithoutFollowRequestsSentInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1670,6 +1709,7 @@ export type UserUpdateWithoutFollowRequestsReceivedInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1712,6 +1752,7 @@ export type UserUncheckedUpdateWithoutFollowRequestsReceivedInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1754,6 +1795,7 @@ export type UserCreateWithoutRefreshTokensInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1796,6 +1838,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1851,6 +1894,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1893,6 +1937,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1935,6 +1980,7 @@ export type UserCreateWithoutReviewsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1977,6 +2023,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2032,6 +2079,7 @@ export type UserUpdateWithoutReviewsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2074,6 +2122,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2116,6 +2165,7 @@ export type UserCreateWithoutReactionsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2158,6 +2208,7 @@ export type UserUncheckedCreateWithoutReactionsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2213,6 +2264,7 @@ export type UserUpdateWithoutReactionsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2255,6 +2307,7 @@ export type UserUncheckedUpdateWithoutReactionsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2297,6 +2350,7 @@ export type UserCreateWithoutCommentsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2339,6 +2393,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2394,6 +2449,7 @@ export type UserUpdateWithoutCommentsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2436,6 +2492,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2478,6 +2535,7 @@ export type UserCreateWithoutNotificationsReceivedInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2520,6 +2578,7 @@ export type UserUncheckedCreateWithoutNotificationsReceivedInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2566,6 +2625,7 @@ export type UserCreateWithoutNotificationsActedInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2608,6 +2668,7 @@ export type UserUncheckedCreateWithoutNotificationsActedInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2663,6 +2724,7 @@ export type UserUpdateWithoutNotificationsReceivedInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2705,6 +2767,7 @@ export type UserUncheckedUpdateWithoutNotificationsReceivedInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2756,6 +2819,7 @@ export type UserUpdateWithoutNotificationsActedInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2798,6 +2862,7 @@ export type UserUncheckedUpdateWithoutNotificationsActedInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2840,6 +2905,7 @@ export type UserCreateWithoutNotifPreferenceInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2882,6 +2948,7 @@ export type UserUncheckedCreateWithoutNotifPreferenceInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -2937,6 +3004,7 @@ export type UserUpdateWithoutNotifPreferenceInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -2979,6 +3047,7 @@ export type UserUncheckedUpdateWithoutNotifPreferenceInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -3021,6 +3090,7 @@ export type UserCreateWithoutPushSubscriptionsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -3063,6 +3133,7 @@ export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -3118,6 +3189,7 @@ export type UserUpdateWithoutPushSubscriptionsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -3160,6 +3232,7 @@ export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -3202,6 +3275,7 @@ export type UserCreateWithoutReportsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -3244,6 +3318,7 @@ export type UserUncheckedCreateWithoutReportsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -3290,6 +3365,7 @@ export type UserCreateWithoutReportsReviewedInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -3332,6 +3408,7 @@ export type UserUncheckedCreateWithoutReportsReviewedInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -3387,6 +3464,7 @@ export type UserUpdateWithoutReportsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -3429,6 +3507,7 @@ export type UserUncheckedUpdateWithoutReportsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -3480,6 +3559,7 @@ export type UserUpdateWithoutReportsReviewedInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -3522,6 +3602,7 @@ export type UserUncheckedUpdateWithoutReportsReviewedInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -3564,6 +3645,7 @@ export type UserCreateWithoutRecommendationSnapshotInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -3606,6 +3688,7 @@ export type UserUncheckedCreateWithoutRecommendationSnapshotInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -3661,6 +3744,7 @@ export type UserUpdateWithoutRecommendationSnapshotInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -3703,6 +3787,7 @@ export type UserUncheckedUpdateWithoutRecommendationSnapshotInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -3745,6 +3830,7 @@ export type UserCreateWithoutFollowSuggestionSnapshotInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -3787,6 +3873,7 @@ export type UserUncheckedCreateWithoutFollowSuggestionSnapshotInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -3842,6 +3929,7 @@ export type UserUpdateWithoutFollowSuggestionSnapshotInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -3884,6 +3972,7 @@ export type UserUncheckedUpdateWithoutFollowSuggestionSnapshotInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -3926,6 +4015,7 @@ export type UserCreateWithoutCatalogSearchHistoryInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -3968,6 +4058,7 @@ export type UserUncheckedCreateWithoutCatalogSearchHistoryInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -4023,6 +4114,7 @@ export type UserUpdateWithoutCatalogSearchHistoryInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -4065,6 +4157,7 @@ export type UserUncheckedUpdateWithoutCatalogSearchHistoryInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -4107,6 +4200,7 @@ export type UserCreateWithoutUserSearchHistoryInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -4149,6 +4243,7 @@ export type UserUncheckedCreateWithoutUserSearchHistoryInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -4204,6 +4299,7 @@ export type UserUpdateWithoutUserSearchHistoryInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -4246,6 +4342,7 @@ export type UserUncheckedUpdateWithoutUserSearchHistoryInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -4288,6 +4385,7 @@ export type UserCreateWithoutRecentlyViewedItemsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -4330,6 +4428,7 @@ export type UserUncheckedCreateWithoutRecentlyViewedItemsInput = {
     isPrivate?: boolean;
     status?: $Enums.UserStatus;
     role?: $Enums.UserRole;
+    language?: $Enums.Language;
     consentedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -4385,6 +4484,7 @@ export type UserUpdateWithoutRecentlyViewedItemsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -4427,6 +4527,7 @@ export type UserUncheckedUpdateWithoutRecentlyViewedItemsInput = {
     isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language;
     consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -4556,6 +4657,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     isPrivate?: boolean;
     status?: boolean;
     role?: boolean;
+    language?: boolean;
     consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -4600,6 +4702,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     isPrivate?: boolean;
     status?: boolean;
     role?: boolean;
+    language?: boolean;
     consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -4624,6 +4727,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     isPrivate?: boolean;
     status?: boolean;
     role?: boolean;
+    language?: boolean;
     consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -4648,6 +4752,7 @@ export type UserSelectScalar = {
     isPrivate?: boolean;
     status?: boolean;
     role?: boolean;
+    language?: boolean;
     consentedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -4656,7 +4761,7 @@ export type UserSelectScalar = {
     penaltyLevel?: boolean;
     penalizedUntil?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "handle" | "displayName" | "email" | "passwordHash" | "googleId" | "avatarUrl" | "avatarPublicId" | "coverUrl" | "coverPublicId" | "bio" | "notifEnabled" | "isPrivate" | "status" | "role" | "consentedAt" | "createdAt" | "updatedAt" | "deletedAt" | "acceptedReportsCount" | "penaltyLevel" | "penalizedUntil", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "handle" | "displayName" | "email" | "passwordHash" | "googleId" | "avatarUrl" | "avatarPublicId" | "coverUrl" | "coverPublicId" | "bio" | "notifEnabled" | "isPrivate" | "status" | "role" | "language" | "consentedAt" | "createdAt" | "updatedAt" | "deletedAt" | "acceptedReportsCount" | "penaltyLevel" | "penalizedUntil", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     following?: boolean | Prisma.User$followingArgs<ExtArgs>;
     followers?: boolean | Prisma.User$followersArgs<ExtArgs>;
@@ -4720,6 +4825,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         isPrivate: boolean;
         status: $Enums.UserStatus;
         role: $Enums.UserRole;
+        language: $Enums.Language;
         consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
@@ -4818,6 +4924,7 @@ export interface UserFieldRefs {
     readonly isPrivate: Prisma.FieldRef<"User", 'Boolean'>;
     readonly status: Prisma.FieldRef<"User", 'UserStatus'>;
     readonly role: Prisma.FieldRef<"User", 'UserRole'>;
+    readonly language: Prisma.FieldRef<"User", 'Language'>;
     readonly consentedAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>;

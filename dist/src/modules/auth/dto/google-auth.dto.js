@@ -8,11 +8,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsString } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class GoogleAuthDto {
     idToken;
 }
 __decorate([
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], GoogleAuthDto.prototype, "idToken", void 0);
 //# sourceMappingURL=google-auth.dto.js.map

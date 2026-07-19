@@ -68,6 +68,7 @@ export const UserScalarFieldEnum = {
     isPrivate: 'isPrivate',
     status: 'status',
     role: 'role',
+    language: 'language',
     consentedAt: 'consentedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',

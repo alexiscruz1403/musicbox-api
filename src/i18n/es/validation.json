@@ -1,0 +1,22 @@
+{
+  "IS_EMAIL": "{property} debe ser un email válido",
+  "IS_STRING": "{property} debe ser un texto",
+  "IS_UUID": "{property} debe ser un UUID válido",
+  "MIN_LENGTH": "{property} debe tener al menos {constraints.0} caracteres",
+  "MAX_LENGTH": "{property} debe tener como máximo {constraints.0} caracteres",
+  "LENGTH": "{property} debe tener entre {constraints.0} y {constraints.1} caracteres",
+  "MIN": "{property} no puede ser menor que {constraints.0}",
+  "MAX": "{property} no puede ser mayor que {constraints.0}",
+  "IS_INT": "{property} debe ser un número entero",
+  "IS_NUMBER": "{property} debe ser un número",
+  "IS_BOOLEAN": "{property} debe ser un valor booleano",
+  "IS_IN": "{property} debe ser uno de los siguientes valores: {constraints.0}",
+  "IS_ENUM": "{property} debe tener un valor válido",
+  "IS_ARRAY": "{property} debe ser un arreglo",
+  "ARRAY_MIN_SIZE": "{property} debe contener al menos {constraints.0} elementos",
+  "VALIDATE_NESTED": "{property} no es válido",
+  "IS_URL": "{property} debe ser una URL válida",
+  "QUARTER_POINT_RATING": "{property} debe ser un múltiplo de 0.25",
+  "HANDLE_MATCHES": "el handle solo puede contener letras, números y guiones bajos",
+  "REGISTER_CONSENT_EQUALS": "Debés aceptar los Términos de Servicio y la Política de Privacidad"
+}

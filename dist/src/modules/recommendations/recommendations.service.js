@@ -8,6 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Injectable } from '@nestjs/common';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import { CatalogService } from '../catalog/catalog.service.js';
 import { LastFmClient } from './lastfm/lastfm.client.js';
 import { MAX_FAVORITE_ARTISTS, MAX_PER_ARTIST, MIN_REVIEWS_FOR_RECOMMENDATIONS, RECOMMENDATIONS_TOP_N, SIMILAR_ARTISTS_PER_FAVORITE, } from './recommendations.constants.js';
@@ -16,10 +17,12 @@ let RecommendationsService = class RecommendationsService {
     repo;
     catalog;
     lastfm;
-    constructor(repo, catalog, lastfm) {
+    i18n;
+    constructor(repo, catalog, lastfm, i18n) {
         this.repo = repo;
         this.catalog = catalog;
         this.lastfm = lastfm;
+        this.i18n = i18n;
     }
     async getRecommendations(userId) {
         const reviewCount = await this.repo.countActiveReviews(userId);
@@ -29,7 +32,16 @@ let RecommendationsService = class RecommendationsService {
         if (!snapshot)
             snapshot = await this.recompute(userId);
         const reviewedIds = await this.getReviewedDeezerIds(userId);
-        const recommendations = snapshot.payload.filter((r) => !reviewedIds.has(r.deezerId));
+        const lang = I18nContext.current()?.lang;
+        const recommendations = snapshot.payload
+            .filter((r) => !reviewedIds.has(r.deezerId))
+            .map((r) => ({
+            ...r,
+            reasonLabel: this.i18n.translate(`recommendations.${r.reason}`, {
+                lang,
+                args: r.reasonParams,
+            }),
+        }));
         return { recommendations, generatedAt: snapshot.generatedAt };
     }
     async recompute(userId) {
@@ -48,7 +60,7 @@ let RecommendationsService = class RecommendationsService {
         const seen = new Set(reviewedDeezerIds);
         const perArtist = new Map();
         const candidates = [];
-        const tryAdd = (album, reason, reasonLabel) => {
+        const tryAdd = (album, reason, reasonParams) => {
             if (seen.has(album.deezerId))
                 return;
             const count = perArtist.get(album.artist.deezerId) ?? 0;
@@ -63,7 +75,7 @@ let RecommendationsService = class RecommendationsService {
                 artistName: album.artist.name,
                 coverUrl: album.coverUrl,
                 reason,
-                reasonLabel,
+                reasonParams,
                 fans: album.fans,
             });
         };
@@ -78,7 +90,7 @@ let RecommendationsService = class RecommendationsService {
                             continue;
                         const albums = await this.catalog.getArtistAlbums(match.item.deezerId, SIMILAR_ARTISTS_PER_FAVORITE, null);
                         for (const album of albums.items) {
-                            tryAdd(album, 'SIMILAR_ARTIST', `Porque reseñaste a ${fav.name}`);
+                            tryAdd(album, 'SIMILAR_ARTIST', { artistName: fav.name });
                         }
                     }
                     catch {
@@ -94,7 +106,7 @@ let RecommendationsService = class RecommendationsService {
             for (const row of localAlbums) {
                 try {
                     const album = await this.catalog.getAlbum(row.deezerId);
-                    tryAdd(album, 'GENRE_MATCH', `Porque te gusta el género ${row.genreLabel}`);
+                    tryAdd(album, 'GENRE_MATCH', { genreLabel: row.genreLabel });
                 }
                 catch {
                 }
@@ -154,7 +166,8 @@ RecommendationsService = __decorate([
     Injectable(),
     __metadata("design:paramtypes", [RecommendationsRepository,
         CatalogService,
-        LastFmClient])
+        LastFmClient,
+        I18nService])
 ], RecommendationsService);
 export { RecommendationsService };
 //# sourceMappingURL=recommendations.service.js.map

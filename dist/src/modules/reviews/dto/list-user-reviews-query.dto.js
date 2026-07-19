@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Type } from 'class-transformer';
 import { IsIn, IsInt, IsOptional, IsString, Max, MaxLength, Min, MinLength, } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class ListUserReviewsQueryDto {
     cursor;
     limit = 10;
@@ -17,27 +18,29 @@ export class ListUserReviewsQueryDto {
 }
 __decorate([
     IsOptional(),
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], ListUserReviewsQueryDto.prototype, "cursor", void 0);
 __decorate([
     IsOptional(),
     Type(() => Number),
-    IsInt(),
-    Min(1),
-    Max(50),
+    IsInt({ message: i18nValidationMessage('validation.IS_INT') }),
+    Min(1, { message: i18nValidationMessage('validation.MIN') }),
+    Max(50, { message: i18nValidationMessage('validation.MAX') }),
     __metadata("design:type", Number)
 ], ListUserReviewsQueryDto.prototype, "limit", void 0);
 __decorate([
     IsOptional(),
-    IsIn(['recent', 'oldest', 'best', 'worst']),
+    IsIn(['recent', 'oldest', 'best', 'worst'], {
+        message: i18nValidationMessage('validation.IS_IN'),
+    }),
     __metadata("design:type", String)
 ], ListUserReviewsQueryDto.prototype, "sort", void 0);
 __decorate([
     IsOptional(),
-    IsString(),
-    MinLength(1),
-    MaxLength(100),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
+    MinLength(1, { message: i18nValidationMessage('validation.MIN_LENGTH') }),
+    MaxLength(100, { message: i18nValidationMessage('validation.MAX_LENGTH') }),
     __metadata("design:type", String)
 ], ListUserReviewsQueryDto.prototype, "q", void 0);
 //# sourceMappingURL=list-user-reviews-query.dto.js.map

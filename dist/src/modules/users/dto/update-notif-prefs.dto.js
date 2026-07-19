@@ -8,6 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsBoolean, IsOptional } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class UpdateNotifPrefsDto {
     likesEnabled;
     dislikesEnabled;
@@ -17,27 +18,27 @@ export class UpdateNotifPrefsDto {
 }
 __decorate([
     IsOptional(),
-    IsBoolean(),
+    IsBoolean({ message: i18nValidationMessage('validation.IS_BOOLEAN') }),
     __metadata("design:type", Boolean)
 ], UpdateNotifPrefsDto.prototype, "likesEnabled", void 0);
 __decorate([
     IsOptional(),
-    IsBoolean(),
+    IsBoolean({ message: i18nValidationMessage('validation.IS_BOOLEAN') }),
     __metadata("design:type", Boolean)
 ], UpdateNotifPrefsDto.prototype, "dislikesEnabled", void 0);
 __decorate([
     IsOptional(),
-    IsBoolean(),
+    IsBoolean({ message: i18nValidationMessage('validation.IS_BOOLEAN') }),
     __metadata("design:type", Boolean)
 ], UpdateNotifPrefsDto.prototype, "commentsEnabled", void 0);
 __decorate([
     IsOptional(),
-    IsBoolean(),
+    IsBoolean({ message: i18nValidationMessage('validation.IS_BOOLEAN') }),
     __metadata("design:type", Boolean)
 ], UpdateNotifPrefsDto.prototype, "followsEnabled", void 0);
 __decorate([
     IsOptional(),
-    IsBoolean(),
+    IsBoolean({ message: i18nValidationMessage('validation.IS_BOOLEAN') }),
     __metadata("design:type", Boolean)
 ], UpdateNotifPrefsDto.prototype, "followRequestsEnabled", void 0);
 //# sourceMappingURL=update-notif-prefs.dto.js.map

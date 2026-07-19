@@ -26,7 +26,6 @@ let ModerationService = class ModerationService {
         if (!exists) {
             throw new NotFoundException({
                 code: 'REPORT_TARGET_NOT_FOUND',
-                message: 'El contenido o usuario reportado no existe.',
             });
         }
         return this.repo.createReport({
@@ -44,7 +43,6 @@ let ModerationService = class ModerationService {
         if (!report) {
             throw new NotFoundException({
                 code: 'REPORT_NOT_FOUND',
-                message: 'Reporte no encontrado.',
             });
         }
         const updated = await this.repo.updateReportStatus(reportId, dto.status, adminId);
@@ -59,7 +57,6 @@ let ModerationService = class ModerationService {
             if (!review) {
                 throw new NotFoundException({
                     code: 'REVIEW_NOT_FOUND',
-                    message: 'Reseña no encontrada.',
                 });
             }
             return this.repo.hideReviewIfActive(id, review.type, review.trackId, review.albumId);
@@ -69,14 +66,12 @@ let ModerationService = class ModerationService {
             if (!comment) {
                 throw new NotFoundException({
                     code: 'COMMENT_NOT_FOUND',
-                    message: 'Comentario no encontrado.',
                 });
             }
             return this.repo.hideCommentIfActive(id);
         }
         throw new BadRequestException({
             code: 'INVALID_CONTENT_TYPE',
-            message: "El tipo debe ser 'review' o 'comment'.",
         });
     }
     async suspendUser(id) {
@@ -84,7 +79,6 @@ let ModerationService = class ModerationService {
         if (!user) {
             throw new NotFoundException({
                 code: 'USER_NOT_FOUND',
-                message: 'Usuario no encontrado.',
             });
         }
         await this.repo.suspendUser(id);
@@ -125,7 +119,7 @@ let ModerationService = class ModerationService {
         const level = count / PENALTY_REPORTS_PER_LEVEL;
         if (level > MAX_PENALTY_LEVEL) {
             const [offender] = await this.repo.suspendUser(offenderId);
-            await this.email.sendAccountSuspendedEmail(offender.email);
+            await this.email.sendAccountSuspendedEmail(offender.email, offender.language);
             return;
         }
         await this.repo.applyTemporaryPenalty(offenderId, level);

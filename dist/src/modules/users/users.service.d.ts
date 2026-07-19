@@ -21,6 +21,7 @@ export declare class UsersService {
             isPrivate: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
+            language: import("../../../generated/prisma/enums.js").Language;
             consentedAt: Date | null;
             createdAt: Date;
             updatedAt: Date;
@@ -51,6 +52,7 @@ export declare class UsersService {
         isPrivate: boolean;
         status: import("../../../generated/prisma/enums.js").UserStatus;
         role: import("../../../generated/prisma/enums.js").UserRole;
+        language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
@@ -78,6 +80,7 @@ export declare class UsersService {
             isPrivate: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
+            language: import("../../../generated/prisma/enums.js").Language;
             consentedAt: Date | null;
             createdAt: Date;
             updatedAt: Date;
@@ -102,9 +105,9 @@ export declare class UsersService {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
+            albumId: string | null;
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
-            albumId: string | null;
             description: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -205,6 +208,7 @@ export declare class UsersService {
             isPrivate: boolean;
             status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
+            language: import("../../../generated/prisma/enums.js").Language;
             consentedAt: Date | null;
             createdAt: Date;
             updatedAt: Date;

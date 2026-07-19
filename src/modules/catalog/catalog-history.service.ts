@@ -49,7 +49,8 @@ export class CatalogHistoryService {
 
   async deleteSearchHistoryItem(userId: string, id: string): Promise<void> {
     const deleted = await this.repo.deleteSearchHistoryItem(userId, id);
-    if (!deleted) throw new NotFoundException('Search history item not found');
+    if (!deleted)
+      throw new NotFoundException({ code: 'SEARCH_HISTORY_ITEM_NOT_FOUND' });
   }
 
   async deleteAllSearchHistory(userId: string): Promise<void> {

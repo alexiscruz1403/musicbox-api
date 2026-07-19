@@ -1,6 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
+import { I18nService } from 'nestjs-i18n';
+import type { Language } from '../../generated/prisma/client.js';
 
 @Injectable()
 export class EmailService {
@@ -9,7 +11,10 @@ export class EmailService {
   private readonly from: string;
   private readonly frontendUrl: string;
 
-  constructor(private readonly config: ConfigService) {
+  constructor(
+    private readonly config: ConfigService,
+    private readonly i18n: I18nService,
+  ) {
     this.from = config.getOrThrow<string>('EMAIL_FROM');
     this.frontendUrl = config.getOrThrow<string>('FRONTEND_URL');
     this.transporter = nodemailer.createTransport({
@@ -27,14 +32,20 @@ export class EmailService {
     to: string,
     userId: string,
     token: string,
+    language: Language,
   ): Promise<void> {
     const link = `${this.frontendUrl}/reset-password?userId=${userId}&token=${token}`;
     try {
       await this.transporter.sendMail({
         from: this.from,
         to,
-        subject: 'Restablecer contraseña en Vinlyst',
-        html: `<p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p><p><a href="${link}">${link}</a></p><p>El enlace expira en 1 hora.</p>`,
+        subject: this.i18n.translate('email.PASSWORD_RESET.subject', {
+          lang: language,
+        }),
+        html: this.i18n.translate('email.PASSWORD_RESET.body', {
+          lang: language,
+          args: { link },
+        }),
       });
     } catch (err) {
       this.logger.error(`Failed to send password reset email to ${to}`, err);
@@ -45,14 +56,21 @@ export class EmailService {
     to: string,
     userId: string,
     token: string,
+    language: Language,
   ): Promise<void> {
     const link = `${this.frontendUrl}/confirm-change-email?userId=${userId}&token=${token}`;
     try {
       await this.transporter.sendMail({
         from: this.from,
         to,
-        subject: 'Confirma tu nuevo email en Vinlyst',
-        html: `<p>Haz clic en el siguiente enlace para confirmar tu nuevo email:</p><p><a href="${link}">${link}</a></p><p>El enlace expira en 1 hora.</p>`,
+        subject: this.i18n.translate(
+          'email.CHANGE_EMAIL_CONFIRMATION.subject',
+          { lang: language },
+        ),
+        html: this.i18n.translate('email.CHANGE_EMAIL_CONFIRMATION.body', {
+          lang: language,
+          args: { link },
+        }),
       });
     } catch (err) {
       this.logger.error(
@@ -62,13 +80,20 @@ export class EmailService {
     }
   }
 
-  async sendAccountSuspendedEmail(to: string): Promise<void> {
+  async sendAccountSuspendedEmail(
+    to: string,
+    language: Language,
+  ): Promise<void> {
     try {
       await this.transporter.sendMail({
         from: this.from,
         to,
-        subject: 'Tu cuenta de Vinlyst fue suspendida',
-        html: `<p>Tu cuenta fue suspendida por incumplir reiteradamente las normas de la comunidad (reportes validados por nuestro equipo de moderación).</p>`,
+        subject: this.i18n.translate('email.ACCOUNT_SUSPENDED.subject', {
+          lang: language,
+        }),
+        html: this.i18n.translate('email.ACCOUNT_SUSPENDED.body', {
+          lang: language,
+        }),
       });
     } catch (err) {
       this.logger.error(`Failed to send suspension email to ${to}`, err);

@@ -28,7 +28,6 @@ export class RolesGuard implements CanActivate {
     if (!user || !requiredRoles.includes(user.role)) {
       throw new ForbiddenException({
         code: 'ADMIN_ONLY',
-        message: 'Requiere permisos de administrador.',
       });
     }
 

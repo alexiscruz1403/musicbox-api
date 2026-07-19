@@ -8,13 +8,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsString, MaxLength, MinLength } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class QuickSearchCatalogDto {
     q;
 }
 __decorate([
-    IsString(),
-    MinLength(1),
-    MaxLength(100),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
+    MinLength(1, { message: i18nValidationMessage('validation.MIN_LENGTH') }),
+    MaxLength(100, { message: i18nValidationMessage('validation.MAX_LENGTH') }),
     __metadata("design:type", String)
 ], QuickSearchCatalogDto.prototype, "q", void 0);
 //# sourceMappingURL=quick-search-catalog.dto.js.map

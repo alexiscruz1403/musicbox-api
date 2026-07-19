@@ -232,6 +232,7 @@ describe('AuthService', () => {
         email: 'e@e.com',
         status: 'ACTIVE',
         role: 'USER',
+        language: 'ES',
       });
       mockPrisma.refreshToken.create.mockResolvedValue({});
 
@@ -246,6 +247,11 @@ describe('AuthService', () => {
         handle: 'h',
         email: 'e@e.com',
       });
+      // Fase 9 — el claim `language` viaja en el JWT firmado, leído fresco de
+      // DB en issueTokens() (no del payload de entrada de login()).
+      expect(mockJwt.sign).toHaveBeenCalledWith(
+        expect.objectContaining({ language: 'ES' }),
+      );
     });
   });
 
@@ -354,6 +360,7 @@ describe('AuthService', () => {
         email: 'a@a.com',
         googleId: null,
         passwordHash: 'existing_hash',
+        language: 'EN',
       });
       await service.forgotPassword('a@a.com');
       expect(mockRedis.set).toHaveBeenCalledWith(
@@ -365,6 +372,7 @@ describe('AuthService', () => {
         'a@a.com',
         'u1',
         'test-uuid',
+        'EN',
       );
     });
 
@@ -485,6 +493,7 @@ describe('AuthService', () => {
           email: 'old@a.com',
           googleId: null,
           passwordHash: 'hash',
+          language: 'ES',
         })
         .mockResolvedValueOnce(null);
 
@@ -499,6 +508,7 @@ describe('AuthService', () => {
         'new@a.com',
         'u1',
         'test-uuid',
+        'ES',
       );
     });
   });

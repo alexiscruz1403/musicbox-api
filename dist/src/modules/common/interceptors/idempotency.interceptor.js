@@ -26,7 +26,6 @@ let IdempotencyInterceptor = class IdempotencyInterceptor {
         if (!key || typeof key !== 'string') {
             throw new BadRequestException({
                 code: 'IDEMPOTENCY_KEY_REQUIRED',
-                message: 'Header Idempotency-Key is required for this endpoint.',
             });
         }
         const redisKey = `idempotency:${key}`;

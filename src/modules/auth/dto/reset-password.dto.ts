@@ -1,13 +1,14 @@
 import { IsString, IsUUID, MinLength } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 
 export class ResetPasswordDto {
-  @IsUUID()
+  @IsUUID(undefined, { message: i18nValidationMessage('validation.IS_UUID') })
   userId: string;
 
-  @IsString()
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
   token: string;
 
-  @IsString()
-  @MinLength(8)
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
+  @MinLength(8, { message: i18nValidationMessage('validation.MIN_LENGTH') })
   newPassword: string;
 }

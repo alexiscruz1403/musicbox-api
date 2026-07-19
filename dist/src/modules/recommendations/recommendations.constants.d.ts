@@ -10,6 +10,11 @@ export declare const RECOMMENDATIONS_CRON_PATTERN = "0 3 * * *";
 export declare const INSUFFICIENT_REVIEWS_HEADER = "X-Recommendation-Status";
 export declare const INSUFFICIENT_REVIEWS_STATUS = "INSUFFICIENT_REVIEWS";
 export type RecommendationReason = 'SIMILAR_ARTIST' | 'GENRE_MATCH';
+export type RecommendationReasonParams = {
+    artistName: string;
+} | {
+    genreLabel: string;
+};
 export interface RecommendationItem {
     deezerId: string;
     type: 'album';
@@ -17,5 +22,5 @@ export interface RecommendationItem {
     artistName: string;
     coverUrl: string | null;
     reason: RecommendationReason;
-    reasonLabel: string;
+    reasonParams: RecommendationReasonParams;
 }

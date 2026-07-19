@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import type { Prisma } from '../../../generated/prisma/client.js';
 import { CatalogService } from '../catalog/catalog.service.js';
 import type { CatalogAlbum } from '../catalog/providers/music-catalog.provider.js';
@@ -30,10 +31,11 @@ export class RecommendationsService {
     private readonly repo: RecommendationsRepository,
     private readonly catalog: CatalogService,
     private readonly lastfm: LastFmClient,
+    private readonly i18n: I18nService,
   ) {}
 
   async getRecommendations(userId: string): Promise<{
-    recommendations: RecommendationItem[];
+    recommendations: (RecommendationItem & { reasonLabel: string })[];
     generatedAt: Date;
   } | null> {
     const reviewCount = await this.repo.countActiveReviews(userId);
@@ -46,9 +48,18 @@ export class RecommendationsService {
     // albums the user reviewed since the snapshot was generated, without
     // forcing a recompute.
     const reviewedIds = await this.getReviewedDeezerIds(userId);
+    const lang = I18nContext.current()?.lang;
     const recommendations = (
       snapshot.payload as unknown as RecommendationItem[]
-    ).filter((r) => !reviewedIds.has(r.deezerId));
+    )
+      .filter((r) => !reviewedIds.has(r.deezerId))
+      .map((r) => ({
+        ...r,
+        reasonLabel: this.i18n.translate(`recommendations.${r.reason}`, {
+          lang,
+          args: r.reasonParams,
+        }),
+      }));
 
     return { recommendations, generatedAt: snapshot.generatedAt };
   }
@@ -76,7 +87,7 @@ export class RecommendationsService {
     const tryAdd = (
       album: CatalogAlbum,
       reason: RecommendationReason,
-      reasonLabel: string,
+      reasonParams: RecommendationItem['reasonParams'],
     ) => {
       if (seen.has(album.deezerId)) return;
       const count = perArtist.get(album.artist.deezerId) ?? 0;
@@ -90,7 +101,7 @@ export class RecommendationsService {
         artistName: album.artist.name,
         coverUrl: album.coverUrl,
         reason,
-        reasonLabel,
+        reasonParams,
         fans: album.fans,
       });
     };
@@ -112,7 +123,7 @@ export class RecommendationsService {
               null,
             );
             for (const album of albums.items) {
-              tryAdd(album, 'SIMILAR_ARTIST', `Porque reseñaste a ${fav.name}`);
+              tryAdd(album, 'SIMILAR_ARTIST', { artistName: fav.name });
             }
           } catch {
             // One similar artist failing to resolve on Deezer shouldn't
@@ -135,11 +146,9 @@ export class RecommendationsService {
       for (const row of localAlbums) {
         try {
           const album = await this.catalog.getAlbum(row.deezerId);
-          tryAdd(
-            album,
-            'GENRE_MATCH',
-            `Porque te gusta el género ${row.genreLabel}`,
-          );
+          // Non-null: the query filters `genreLabel: { in: genres }`, a
+          // non-null string array, so a match can never carry a null value.
+          tryAdd(album, 'GENRE_MATCH', { genreLabel: row.genreLabel! });
         } catch {
           // Locally cached album no longer reachable on Deezer — skip.
         }

@@ -8,22 +8,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsString, IsUUID, MinLength } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class ResetPasswordDto {
     userId;
     token;
     newPassword;
 }
 __decorate([
-    IsUUID(),
+    IsUUID(undefined, { message: i18nValidationMessage('validation.IS_UUID') }),
     __metadata("design:type", String)
 ], ResetPasswordDto.prototype, "userId", void 0);
 __decorate([
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], ResetPasswordDto.prototype, "token", void 0);
 __decorate([
-    IsString(),
-    MinLength(8),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
+    MinLength(8, { message: i18nValidationMessage('validation.MIN_LENGTH') }),
     __metadata("design:type", String)
 ], ResetPasswordDto.prototype, "newPassword", void 0);
 //# sourceMappingURL=reset-password.dto.js.map

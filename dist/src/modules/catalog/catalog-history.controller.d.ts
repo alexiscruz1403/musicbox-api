@@ -5,9 +5,9 @@ export declare class CatalogHistoryController {
     constructor(history: CatalogHistoryService);
     listSearchHistory(user: JwtPayload): Promise<{
         data: {
-            query: string;
             id: string;
             userId: string;
+            query: string;
             searchedAt: Date;
         }[];
     }>;
@@ -15,14 +15,14 @@ export declare class CatalogHistoryController {
     deleteAllSearchHistory(user: JwtPayload): Promise<void>;
     listRecentlyViewed(user: JwtPayload): Promise<{
         data: {
+            id: string;
+            coverUrl: string | null;
+            userId: string;
             deezerId: string;
             title: string;
-            coverUrl: string | null;
-            id: string;
-            albumsCount: number | null;
-            userId: string;
             resourceType: import("../../../generated/prisma/enums.js").CatalogResourceType;
             artistName: string | null;
+            albumsCount: number | null;
             viewedAt: Date;
         }[];
     }>;

@@ -7,30 +7,30 @@ import {
   Matches,
   MinLength,
 } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 
 export class RegisterDto {
-  @IsString()
-  @Length(3, 30)
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
+  @Length(3, 30, { message: i18nValidationMessage('validation.LENGTH') })
   @Matches(/^[a-zA-Z0-9_]{3,30}$/, {
-    message: 'handle solo puede contener letras, números y guiones bajos.',
+    message: i18nValidationMessage('validation.HANDLE_MATCHES'),
   })
   handle: string;
 
-  @IsString()
-  @Length(1, 50)
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
+  @Length(1, 50, { message: i18nValidationMessage('validation.LENGTH') })
   displayName: string;
 
-  @IsEmail()
+  @IsEmail({}, { message: i18nValidationMessage('validation.IS_EMAIL') })
   email: string;
 
-  @IsString()
-  @MinLength(8)
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
+  @MinLength(8, { message: i18nValidationMessage('validation.MIN_LENGTH') })
   password: string;
 
-  @IsBoolean()
+  @IsBoolean({ message: i18nValidationMessage('validation.IS_BOOLEAN') })
   @Equals(true, {
-    message:
-      'Debés aceptar los Términos de Servicio y la Política de Privacidad.',
+    message: i18nValidationMessage('validation.REGISTER_CONSENT_EQUALS'),
   })
   consent!: boolean;
 }

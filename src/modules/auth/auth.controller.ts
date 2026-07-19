@@ -11,6 +11,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import type { Request } from 'express';
 import { Throttle } from '@nestjs/throttler';
+import { I18n, type I18nContext } from 'nestjs-i18n';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
@@ -72,17 +73,25 @@ export class AuthController {
   @Public()
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
-  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+  async forgotPassword(
+    @Body() dto: ForgotPasswordDto,
+    @I18n() i18n: I18nContext,
+  ) {
     await this.auth.forgotPassword(dto.email);
-    return { data: { message: 'Email enviado si la cuenta existe.' } };
+    return {
+      data: { message: i18n.t('auth.PASSWORD_RESET_EMAIL_SENT') },
+    };
   }
 
   @Public()
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
-  async resetPassword(@Body() dto: ResetPasswordDto) {
+  async resetPassword(
+    @Body() dto: ResetPasswordDto,
+    @I18n() i18n: I18nContext,
+  ) {
     await this.auth.resetPassword(dto.userId, dto.token, dto.newPassword);
-    return { data: { message: 'Contraseña actualizada correctamente.' } };
+    return { data: { message: i18n.t('auth.PASSWORD_UPDATED') } };
   }
 
   @Post('change-email')
@@ -90,18 +99,22 @@ export class AuthController {
   async changeEmail(
     @CurrentUser() user: JwtPayload,
     @Body() dto: ChangeEmailDto,
+    @I18n() i18n: I18nContext,
   ) {
     await this.auth.changeEmail(user.sub, dto.newEmail);
     return {
-      data: { message: 'Email de confirmación enviado al nuevo correo.' },
+      data: { message: i18n.t('auth.CHANGE_EMAIL_CONFIRMATION_SENT') },
     };
   }
 
   @Public()
   @Post('confirm-change-email')
   @HttpCode(HttpStatus.OK)
-  async confirmChangeEmail(@Body() dto: ConfirmChangeEmailDto) {
+  async confirmChangeEmail(
+    @Body() dto: ConfirmChangeEmailDto,
+    @I18n() i18n: I18nContext,
+  ) {
     await this.auth.confirmChangeEmail(dto.userId, dto.token);
-    return { data: { message: 'Email actualizado correctamente.' } };
+    return { data: { message: i18n.t('auth.EMAIL_UPDATED') } };
   }
 }

@@ -1,0 +1,4 @@
+{
+  "SIMILAR_ARTIST": "Porque reseñaste a {artistName}",
+  "GENRE_MATCH": "Porque te gusta el género {genreLabel}"
+}

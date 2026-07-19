@@ -1,8 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { I18nService } from 'nestjs-i18n';
 import { CatalogService } from '../catalog/catalog.service.js';
 import { LastFmClient } from './lastfm/lastfm.client.js';
 import { RecommendationsRepository } from './recommendations.repository.js';
 import { RecommendationsService } from './recommendations.service.js';
+
+const mockI18n = {
+  translate: vi.fn((key: string) => key),
+};
 
 const mockRepo = {
   countActiveReviews: vi.fn(),
@@ -64,11 +69,13 @@ describe('RecommendationsService', () => {
         { provide: RecommendationsRepository, useValue: mockRepo },
         { provide: CatalogService, useValue: mockCatalog },
         { provide: LastFmClient, useValue: mockLastFm },
+        { provide: I18nService, useValue: mockI18n },
       ],
     }).compile();
 
     service = module.get(RecommendationsService);
     vi.clearAllMocks();
+    mockI18n.translate.mockImplementation((key: string) => key);
     mockRepo.findAlbumsByGenres.mockResolvedValue([]);
     mockRepo.upsertSnapshot.mockImplementation(
       (userId: string, payload: unknown, generatedAt: Date) =>
@@ -111,7 +118,7 @@ describe('RecommendationsService', () => {
             artistName: 'Radiohead',
             coverUrl: null,
             reason: 'SIMILAR_ARTIST',
-            reasonLabel: 'Porque reseñaste a Radiohead',
+            reasonParams: { artistName: 'Radiohead' },
           },
         ],
         generatedAt,
@@ -137,7 +144,7 @@ describe('RecommendationsService', () => {
             artistName: 'A',
             coverUrl: null,
             reason: 'SIMILAR_ARTIST',
-            reasonLabel: 'x',
+            reasonParams: { artistName: 'A' },
           },
           {
             deezerId: 'd2',
@@ -146,7 +153,7 @@ describe('RecommendationsService', () => {
             artistName: 'B',
             coverUrl: null,
             reason: 'GENRE_MATCH',
-            reasonLabel: 'y',
+            reasonParams: { genreLabel: 'B' },
           },
         ],
         generatedAt: new Date(),
@@ -223,14 +230,18 @@ describe('RecommendationsService', () => {
       );
       const [, payload] = mockRepo.upsertSnapshot.mock.calls[0] as [
         string,
-        Array<{ deezerId: string; reason: string; reasonLabel: string }>,
+        Array<{
+          deezerId: string;
+          reason: string;
+          reasonParams: Record<string, string>;
+        }>,
         Date,
       ];
       expect(payload).toEqual([
         expect.objectContaining({
           deezerId: 'd1',
           reason: 'SIMILAR_ARTIST',
-          reasonLabel: 'Porque reseñaste a Radiohead',
+          reasonParams: { artistName: 'Radiohead' },
         }),
       ]);
     });
@@ -330,14 +341,18 @@ describe('RecommendationsService', () => {
       );
       const [, payload] = mockRepo.upsertSnapshot.mock.calls[0] as [
         string,
-        Array<{ deezerId: string; reason: string; reasonLabel: string }>,
+        Array<{
+          deezerId: string;
+          reason: string;
+          reasonParams: Record<string, string>;
+        }>,
         Date,
       ];
       expect(payload).toEqual([
         expect.objectContaining({
           deezerId: 'd2',
           reason: 'GENRE_MATCH',
-          reasonLabel: 'Porque te gusta el género Rock',
+          reasonParams: { genreLabel: 'Rock' },
         }),
       ]);
     });

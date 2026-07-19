@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Transform, Type } from 'class-transformer';
 import { IsBoolean, IsInt, IsOptional, IsString, Max, Min, } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class ListNotificationsQueryDto {
     cursor;
     limit = 20;
@@ -16,21 +17,21 @@ export class ListNotificationsQueryDto {
 }
 __decorate([
     IsOptional(),
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], ListNotificationsQueryDto.prototype, "cursor", void 0);
 __decorate([
     IsOptional(),
     Type(() => Number),
-    IsInt(),
-    Min(1),
-    Max(50),
+    IsInt({ message: i18nValidationMessage('validation.IS_INT') }),
+    Min(1, { message: i18nValidationMessage('validation.MIN') }),
+    Max(50, { message: i18nValidationMessage('validation.MAX') }),
     __metadata("design:type", Number)
 ], ListNotificationsQueryDto.prototype, "limit", void 0);
 __decorate([
     IsOptional(),
     Transform(({ value }) => value === 'true' || value === true),
-    IsBoolean(),
+    IsBoolean({ message: i18nValidationMessage('validation.IS_BOOLEAN') }),
     __metadata("design:type", Boolean)
 ], ListNotificationsQueryDto.prototype, "unreadOnly", void 0);
 //# sourceMappingURL=list-notifications-query.dto.js.map

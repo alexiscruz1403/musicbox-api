@@ -30,7 +30,7 @@ let UserSearchHistoryService = UserSearchHistoryService_1 = class UserSearchHist
     async deleteHistoryItem(searcherId, id) {
         const deleted = await this.repo.deleteSearchHistoryItem(searcherId, id);
         if (!deleted)
-            throw new NotFoundException('Search history item not found');
+            throw new NotFoundException({ code: 'SEARCH_HISTORY_ITEM_NOT_FOUND' });
     }
     async deleteAllHistory(searcherId) {
         await this.repo.deleteAllSearchHistory(searcherId);

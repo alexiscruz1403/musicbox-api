@@ -162,6 +162,19 @@ describe('UsersService', () => {
       });
     });
 
+    it('passes language through to the repository unchanged', async () => {
+      mockRepo.findByHandle.mockResolvedValue(null);
+      mockRepo.updateProfile.mockResolvedValue({ id: 'u1', language: 'ES' });
+
+      const result = await service.updateProfile('u1', { language: 'ES' });
+
+      expect(mockRepo.updateProfile).toHaveBeenCalledWith(
+        'u1',
+        expect.objectContaining({ language: 'ES' }),
+      );
+      expect(result).toMatchObject({ language: 'ES' });
+    });
+
     it('does not touch follow requests when isPrivate goes false -> true', async () => {
       mockRepo.findById.mockResolvedValue({ id: 'u1', isPrivate: false });
       mockRepo.updateProfile.mockResolvedValue({ id: 'u1', isPrivate: true });

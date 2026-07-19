@@ -8,22 +8,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsIn, IsString, IsUUID, Length } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class CreateReportDto {
     targetType;
     targetId;
     reason;
 }
 __decorate([
-    IsIn(['REVIEW', 'COMMENT', 'USER']),
+    IsIn(['REVIEW', 'COMMENT', 'USER'], {
+        message: i18nValidationMessage('validation.IS_IN'),
+    }),
     __metadata("design:type", String)
 ], CreateReportDto.prototype, "targetType", void 0);
 __decorate([
-    IsUUID(),
+    IsUUID(undefined, { message: i18nValidationMessage('validation.IS_UUID') }),
     __metadata("design:type", String)
 ], CreateReportDto.prototype, "targetId", void 0);
 __decorate([
-    IsString(),
-    Length(1, 500),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
+    Length(1, 500, { message: i18nValidationMessage('validation.LENGTH') }),
     __metadata("design:type", String)
 ], CreateReportDto.prototype, "reason", void 0);
 //# sourceMappingURL=create-report.dto.js.map

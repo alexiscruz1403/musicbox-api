@@ -39,7 +39,7 @@ let CatalogHistoryService = CatalogHistoryService_1 = class CatalogHistoryServic
     async deleteSearchHistoryItem(userId, id) {
         const deleted = await this.repo.deleteSearchHistoryItem(userId, id);
         if (!deleted)
-            throw new NotFoundException('Search history item not found');
+            throw new NotFoundException({ code: 'SEARCH_HISTORY_ITEM_NOT_FOUND' });
     }
     async deleteAllSearchHistory(userId) {
         await this.repo.deleteAllSearchHistory(userId);

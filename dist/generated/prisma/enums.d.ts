@@ -59,3 +59,8 @@ export declare const CatalogResourceType: {
     readonly TRACK: "TRACK";
 };
 export type CatalogResourceType = (typeof CatalogResourceType)[keyof typeof CatalogResourceType];
+export declare const Language: {
+    readonly EN: "EN";
+    readonly ES: "ES";
+};
+export type Language = (typeof Language)[keyof typeof Language];

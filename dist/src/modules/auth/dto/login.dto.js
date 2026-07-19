@@ -8,16 +8,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsEmail, IsString } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class LoginDto {
     email;
     password;
 }
 __decorate([
-    IsEmail(),
+    IsEmail({}, { message: i18nValidationMessage('validation.IS_EMAIL') }),
     __metadata("design:type", String)
 ], LoginDto.prototype, "email", void 0);
 __decorate([
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], LoginDto.prototype, "password", void 0);
 //# sourceMappingURL=login.dto.js.map

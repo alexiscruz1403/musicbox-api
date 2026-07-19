@@ -15,6 +15,12 @@ export const INSUFFICIENT_REVIEWS_STATUS = 'INSUFFICIENT_REVIEWS';
 
 export type RecommendationReason = 'SIMILAR_ARTIST' | 'GENRE_MATCH';
 
+// Datos crudos para armar `reasonLabel` en el idioma del request en vez de un
+// string pre-formateado — el snapshot persiste esto, no el texto ya traducido
+// (docs/fase-9-features.md).
+export type RecommendationReasonParams =
+  { artistName: string } | { genreLabel: string };
+
 export interface RecommendationItem {
   deezerId: string;
   type: 'album';
@@ -22,5 +28,5 @@ export interface RecommendationItem {
   artistName: string;
   coverUrl: string | null;
   reason: RecommendationReason;
-  reasonLabel: string;
+  reasonParams: RecommendationReasonParams;
 }

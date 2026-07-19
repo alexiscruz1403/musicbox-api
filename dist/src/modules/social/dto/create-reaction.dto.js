@@ -8,11 +8,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsIn } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class CreateReactionDto {
     type;
 }
 __decorate([
-    IsIn(['LIKE', 'DISLIKE']),
+    IsIn(['LIKE', 'DISLIKE'], {
+        message: i18nValidationMessage('validation.IS_IN'),
+    }),
     __metadata("design:type", String)
 ], CreateReactionDto.prototype, "type", void 0);
 //# sourceMappingURL=create-reaction.dto.js.map

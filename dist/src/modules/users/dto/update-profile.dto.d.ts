@@ -3,4 +3,5 @@ export declare class UpdateProfileDto {
     displayName?: string;
     bio?: string;
     isPrivate?: boolean;
+    language?: 'EN' | 'ES';
 }

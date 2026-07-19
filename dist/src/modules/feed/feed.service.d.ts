@@ -23,9 +23,9 @@ export declare class FeedService {
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
+            albumId: string | null;
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
-            albumId: string | null;
             description: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;

@@ -22,7 +22,6 @@ let LocalStrategy = class LocalStrategy extends PassportStrategy(Strategy) {
         if (!user)
             throw new UnauthorizedException({
                 code: 'INVALID_CREDENTIALS',
-                message: 'Email o contraseña incorrectos.',
             });
         return user;
     }

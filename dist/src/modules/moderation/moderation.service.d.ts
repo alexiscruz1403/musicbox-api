@@ -14,11 +14,11 @@ export declare class ModerationService {
         status: import("../../../generated/prisma/enums.js").ReportStatus;
         createdAt: Date;
         targetId: string;
+        reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
-        reviewedAt: Date | null;
-        reporterId: string;
         reviewedById: string | null;
+        reviewedAt: Date | null;
     }>;
     listReports(query: ListReportsQueryDto): Promise<{
         items: ({
@@ -32,11 +32,11 @@ export declare class ModerationService {
             status: import("../../../generated/prisma/enums.js").ReportStatus;
             createdAt: Date;
             targetId: string;
+            reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
             reason: string;
-            reviewedAt: Date | null;
-            reporterId: string;
             reviewedById: string | null;
+            reviewedAt: Date | null;
         } & {
             reportedContent: import("./moderation.repository.js").ReportedContent;
         })[];
@@ -47,11 +47,11 @@ export declare class ModerationService {
         status: import("../../../generated/prisma/enums.js").ReportStatus;
         createdAt: Date;
         targetId: string;
+        reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
-        reviewedAt: Date | null;
-        reporterId: string;
         reviewedById: string | null;
+        reviewedAt: Date | null;
     }>;
     hideContent(type: string, id: string): Promise<void>;
     suspendUser(id: string): Promise<void>;

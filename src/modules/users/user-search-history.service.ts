@@ -23,7 +23,8 @@ export class UserSearchHistoryService {
 
   async deleteHistoryItem(searcherId: string, id: string): Promise<void> {
     const deleted = await this.repo.deleteSearchHistoryItem(searcherId, id);
-    if (!deleted) throw new NotFoundException('Search history item not found');
+    if (!deleted)
+      throw new NotFoundException({ code: 'SEARCH_HISTORY_ITEM_NOT_FOUND' });
   }
 
   async deleteAllHistory(searcherId: string): Promise<void> {

@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Type } from 'class-transformer';
 import { IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class ListReviewsQueryDto {
     cursor;
     limit = 10;
@@ -16,20 +17,22 @@ export class ListReviewsQueryDto {
 }
 __decorate([
     IsOptional(),
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], ListReviewsQueryDto.prototype, "cursor", void 0);
 __decorate([
     IsOptional(),
     Type(() => Number),
-    IsInt(),
-    Min(1),
-    Max(50),
+    IsInt({ message: i18nValidationMessage('validation.IS_INT') }),
+    Min(1, { message: i18nValidationMessage('validation.MIN') }),
+    Max(50, { message: i18nValidationMessage('validation.MAX') }),
     __metadata("design:type", Number)
 ], ListReviewsQueryDto.prototype, "limit", void 0);
 __decorate([
     IsOptional(),
-    IsIn(['recent', 'rating']),
+    IsIn(['recent', 'rating'], {
+        message: i18nValidationMessage('validation.IS_IN'),
+    }),
     __metadata("design:type", String)
 ], ListReviewsQueryDto.prototype, "sort", void 0);
 //# sourceMappingURL=list-reviews-query.dto.js.map

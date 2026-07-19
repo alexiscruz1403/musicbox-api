@@ -1,0 +1,14 @@
+{
+  "PASSWORD_RESET": {
+    "subject": "Reset your Vinlyst password",
+    "body": "<p>Click the link below to reset your password:</p><p><a href=\"{link}\">{link}</a></p><p>The link expires in 1 hour.</p>"
+  },
+  "CHANGE_EMAIL_CONFIRMATION": {
+    "subject": "Confirm your new email on Vinlyst",
+    "body": "<p>Click the link below to confirm your new email:</p><p><a href=\"{link}\">{link}</a></p><p>The link expires in 1 hour.</p>"
+  },
+  "ACCOUNT_SUSPENDED": {
+    "subject": "Your Vinlyst account was suspended",
+    "body": "<p>Your account was suspended for repeatedly violating community guidelines (reports validated by our moderation team).</p>"
+  }
+}

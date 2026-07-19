@@ -8,16 +8,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsString, IsUUID } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class ConfirmChangeEmailDto {
     userId;
     token;
 }
 __decorate([
-    IsUUID(),
+    IsUUID(undefined, { message: i18nValidationMessage('validation.IS_UUID') }),
     __metadata("design:type", String)
 ], ConfirmChangeEmailDto.prototype, "userId", void 0);
 __decorate([
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], ConfirmChangeEmailDto.prototype, "token", void 0);
 //# sourceMappingURL=confirm-change-email.dto.js.map

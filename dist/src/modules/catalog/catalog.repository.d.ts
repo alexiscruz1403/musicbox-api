@@ -41,13 +41,13 @@ export declare class CatalogRepository {
     }>;
     upsertAlbum(data: CatalogAlbum, artistId: string): import("../../../generated/prisma/models.js").Prisma__AlbumClient<{
         id: string;
+        coverUrl: string | null;
         deezerId: string;
         mbid: string | null;
         lastSyncedAt: Date;
         reviewCount: number;
         title: string;
         artistId: string;
-        coverUrl: string | null;
         releaseDate: Date | null;
         genreLabel: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
@@ -101,9 +101,9 @@ export declare class CatalogRepository {
                 reviewCount: number;
             };
             album: {
+                coverUrl: string | null;
                 deezerId: string;
                 title: string;
-                coverUrl: string | null;
                 releaseDate: Date | null;
             } | null;
         } & {
@@ -139,13 +139,13 @@ export declare class CatalogRepository {
         };
     } & {
         id: string;
+        coverUrl: string | null;
         deezerId: string;
         mbid: string | null;
         lastSyncedAt: Date;
         reviewCount: number;
         title: string;
         artistId: string;
-        coverUrl: string | null;
         releaseDate: Date | null;
         genreLabel: string | null;
     })[]>;
@@ -161,8 +161,8 @@ export declare class CatalogRepository {
             reviewCount: number;
         };
         album: {
-            deezerId: string;
             coverUrl: string | null;
+            deezerId: string;
         } | null;
     } & {
         id: string;

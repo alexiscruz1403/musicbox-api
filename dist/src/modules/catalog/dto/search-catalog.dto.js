@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, Max, Min, MinLength, } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class SearchCatalogDto {
     q;
     type;
@@ -16,25 +17,27 @@ export class SearchCatalogDto {
     cursor;
 }
 __decorate([
-    IsString(),
-    MinLength(1),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
+    MinLength(1, { message: i18nValidationMessage('validation.MIN_LENGTH') }),
     __metadata("design:type", String)
 ], SearchCatalogDto.prototype, "q", void 0);
 __decorate([
-    IsEnum(['album', 'track', 'artist']),
+    IsEnum(['album', 'track', 'artist'], {
+        message: i18nValidationMessage('validation.IS_ENUM'),
+    }),
     __metadata("design:type", String)
 ], SearchCatalogDto.prototype, "type", void 0);
 __decorate([
     IsOptional(),
     Type(() => Number),
-    IsInt(),
-    Min(1),
-    Max(50),
+    IsInt({ message: i18nValidationMessage('validation.IS_INT') }),
+    Min(1, { message: i18nValidationMessage('validation.MIN') }),
+    Max(50, { message: i18nValidationMessage('validation.MAX') }),
     __metadata("design:type", Number)
 ], SearchCatalogDto.prototype, "limit", void 0);
 __decorate([
     IsOptional(),
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], SearchCatalogDto.prototype, "cursor", void 0);
 //# sourceMappingURL=search-catalog.dto.js.map

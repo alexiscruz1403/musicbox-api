@@ -130,7 +130,7 @@ export class ReviewsService {
       if (!albumTracksByDeezerId.has(item.deezerId)) {
         throw new BadRequestException({
           code: 'TRACK_NOT_IN_ALBUM',
-          message: `El track ${item.deezerId} no pertenece a este álbum.`,
+          args: { deezerId: item.deezerId },
         });
       }
     }
@@ -169,8 +169,7 @@ export class ReviewsService {
     if (review.type === 'TRACK') {
       if (dto.trackItems) {
         throw new BadRequestException({
-          code: 'INVALID_UPDATE_FOR_TYPE',
-          message: 'No se pueden enviar trackItems en una reseña de track.',
+          code: 'TRACK_ITEMS_NOT_ALLOWED',
         });
       }
       const description = dto.description
@@ -192,8 +191,7 @@ export class ReviewsService {
 
     if (dto.rating !== undefined) {
       throw new BadRequestException({
-        code: 'INVALID_UPDATE_FOR_TYPE',
-        message: 'El rating de álbum se calcula automáticamente.',
+        code: 'ALBUM_RATING_AUTO_CALCULATED',
       });
     }
     const description = dto.description
@@ -293,7 +291,6 @@ export class ReviewsService {
     const user = await this.repo.findUserIdByHandle(handle).catch(() => {
       throw new NotFoundException({
         code: 'USER_NOT_FOUND',
-        message: 'Usuario no encontrado.',
       });
     });
     await this.assertOwnerVisible(user.id, viewerId);
@@ -317,7 +314,6 @@ export class ReviewsService {
     return this.repo.findAlbumByDeezerId(deezerId).catch(() => {
       throw new NotFoundException({
         code: 'ALBUM_NOT_FOUND',
-        message: 'Álbum no encontrado.',
       });
     });
   }
@@ -326,7 +322,6 @@ export class ReviewsService {
     return this.repo.findTrackByDeezerId(deezerId).catch(() => {
       throw new NotFoundException({
         code: 'TRACK_NOT_FOUND',
-        message: 'Track no encontrado.',
       });
     });
   }
@@ -336,7 +331,6 @@ export class ReviewsService {
     if (!review || review.deletedAt || review.status !== 'ACTIVE') {
       throw new NotFoundException({
         code: 'REVIEW_NOT_FOUND',
-        message: 'Reseña no encontrada.',
       });
     }
     return review;
@@ -347,7 +341,6 @@ export class ReviewsService {
     if (review.userId !== userId) {
       throw new ForbiddenException({
         code: 'NOT_REVIEW_OWNER',
-        message: 'No puedes modificar esta reseña.',
       });
     }
     return review;
@@ -363,13 +356,11 @@ export class ReviewsService {
     if (!review) {
       throw new NotFoundException({
         code: 'REVIEW_NOT_FOUND',
-        message: 'Reseña no encontrada.',
       });
     }
     if (review.userId !== userId) {
       throw new ForbiddenException({
         code: 'NOT_REVIEW_OWNER',
-        message: 'No puedes modificar esta reseña.',
       });
     }
     return review;
@@ -382,7 +373,6 @@ export class ReviewsService {
     if (!visible) {
       throw new ForbiddenException({
         code: 'PRIVATE_PROFILE',
-        message: 'Este perfil es privado.',
       });
     }
   }
@@ -404,7 +394,6 @@ export class ReviewsService {
     ) {
       return new ConflictException({
         code: 'REVIEW_ALREADY_EXISTS',
-        message: 'Ya existe una reseña de este recurso para este usuario.',
       });
     }
     return e;

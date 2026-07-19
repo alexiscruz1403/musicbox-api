@@ -252,7 +252,7 @@ describe('ModerationService', () => {
     it('suspends the account and emails the user at the 24th accepted report (level 8)', async () => {
       mockRepo.incrementAcceptedReports.mockResolvedValue(24);
       mockRepo.suspendUser.mockResolvedValue([
-        { id: 'user1', email: 'offender@test.com' },
+        { id: 'user1', email: 'offender@test.com', language: 'EN' },
         {},
       ]);
 
@@ -262,6 +262,7 @@ describe('ModerationService', () => {
       expect(mockRepo.applyTemporaryPenalty).not.toHaveBeenCalled();
       expect(mockEmail.sendAccountSuspendedEmail).toHaveBeenCalledWith(
         'offender@test.com',
+        'EN',
       );
     });
   });

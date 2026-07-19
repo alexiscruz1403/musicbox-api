@@ -11,14 +11,17 @@ var EmailService_1;
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
+import { I18nService } from 'nestjs-i18n';
 let EmailService = EmailService_1 = class EmailService {
     config;
+    i18n;
     logger = new Logger(EmailService_1.name);
     transporter;
     from;
     frontendUrl;
-    constructor(config) {
+    constructor(config, i18n) {
         this.config = config;
+        this.i18n = i18n;
         this.from = config.getOrThrow('EMAIL_FROM');
         this.frontendUrl = config.getOrThrow('FRONTEND_URL');
         this.transporter = nodemailer.createTransport({
@@ -31,41 +34,53 @@ let EmailService = EmailService_1 = class EmailService {
             },
         });
     }
-    async sendPasswordResetEmail(to, userId, token) {
+    async sendPasswordResetEmail(to, userId, token, language) {
         const link = `${this.frontendUrl}/reset-password?userId=${userId}&token=${token}`;
         try {
             await this.transporter.sendMail({
                 from: this.from,
                 to,
-                subject: 'Restablecer contraseña en Vinlyst',
-                html: `<p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p><p><a href="${link}">${link}</a></p><p>El enlace expira en 1 hora.</p>`,
+                subject: this.i18n.translate('email.PASSWORD_RESET.subject', {
+                    lang: language,
+                }),
+                html: this.i18n.translate('email.PASSWORD_RESET.body', {
+                    lang: language,
+                    args: { link },
+                }),
             });
         }
         catch (err) {
             this.logger.error(`Failed to send password reset email to ${to}`, err);
         }
     }
-    async sendChangeEmailConfirmation(to, userId, token) {
+    async sendChangeEmailConfirmation(to, userId, token, language) {
         const link = `${this.frontendUrl}/confirm-change-email?userId=${userId}&token=${token}`;
         try {
             await this.transporter.sendMail({
                 from: this.from,
                 to,
-                subject: 'Confirma tu nuevo email en Vinlyst',
-                html: `<p>Haz clic en el siguiente enlace para confirmar tu nuevo email:</p><p><a href="${link}">${link}</a></p><p>El enlace expira en 1 hora.</p>`,
+                subject: this.i18n.translate('email.CHANGE_EMAIL_CONFIRMATION.subject', { lang: language }),
+                html: this.i18n.translate('email.CHANGE_EMAIL_CONFIRMATION.body', {
+                    lang: language,
+                    args: { link },
+                }),
             });
         }
         catch (err) {
             this.logger.error(`Failed to send change-email confirmation to ${to}`, err);
         }
     }
-    async sendAccountSuspendedEmail(to) {
+    async sendAccountSuspendedEmail(to, language) {
         try {
             await this.transporter.sendMail({
                 from: this.from,
                 to,
-                subject: 'Tu cuenta de Vinlyst fue suspendida',
-                html: `<p>Tu cuenta fue suspendida por incumplir reiteradamente las normas de la comunidad (reportes validados por nuestro equipo de moderación).</p>`,
+                subject: this.i18n.translate('email.ACCOUNT_SUSPENDED.subject', {
+                    lang: language,
+                }),
+                html: this.i18n.translate('email.ACCOUNT_SUSPENDED.body', {
+                    lang: language,
+                }),
             });
         }
         catch (err) {
@@ -75,7 +90,8 @@ let EmailService = EmailService_1 = class EmailService {
 };
 EmailService = EmailService_1 = __decorate([
     Injectable(),
-    __metadata("design:paramtypes", [ConfigService])
+    __metadata("design:paramtypes", [ConfigService,
+        I18nService])
 ], EmailService);
 export { EmailService };
 //# sourceMappingURL=email.service.js.map

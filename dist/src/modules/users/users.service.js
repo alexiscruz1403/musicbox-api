@@ -26,7 +26,6 @@ let UsersService = class UsersService {
         if (!user)
             throw new NotFoundException({
                 code: 'USER_NOT_FOUND',
-                message: 'Usuario no encontrado.',
             });
         const { passwordHash: _pw, googleId: _gid, avatarPublicId: _api, coverPublicId: _cpi, ...safeUser } = user;
         const [reviewCount, followersCount, followingCount] = await this.repo.getStats(userId);
@@ -41,7 +40,6 @@ let UsersService = class UsersService {
             if (existing && existing.id !== userId) {
                 throw new ConflictException({
                     code: 'HANDLE_TAKEN',
-                    message: 'El handle ya está en uso.',
                 });
             }
         }
@@ -76,7 +74,6 @@ let UsersService = class UsersService {
         if (!current)
             throw new NotFoundException({
                 code: 'USER_NOT_FOUND',
-                message: 'Usuario no encontrado.',
             });
         const { secureUrl, publicId } = await this.cloudinaryService.upload(buffer, 'avatars');
         await this.repo.updateAvatar(userId, secureUrl, publicId);
@@ -88,7 +85,6 @@ let UsersService = class UsersService {
         if (!current)
             throw new NotFoundException({
                 code: 'USER_NOT_FOUND',
-                message: 'Usuario no encontrado.',
             });
         const { secureUrl, publicId } = await this.cloudinaryService.upload(buffer, 'covers');
         await this.repo.updateCover(userId, secureUrl, publicId);
@@ -107,7 +103,6 @@ let UsersService = class UsersService {
         if (!user)
             throw new NotFoundException({
                 code: 'USER_NOT_FOUND',
-                message: 'Usuario no encontrado.',
             });
         const { passwordHash: _pw, googleId: _gid, ...profile } = user;
         const data = await this.repo.getExportData(userId);
@@ -130,7 +125,6 @@ let UsersService = class UsersService {
         if (!prefs)
             throw new NotFoundException({
                 code: 'PREFS_NOT_FOUND',
-                message: 'Preferencias no encontradas.',
             });
         return this.applyNotifPrefsVisibility(prefs, user.isPrivate);
     }
@@ -147,7 +141,6 @@ let UsersService = class UsersService {
         if (!user)
             throw new NotFoundException({
                 code: 'USER_NOT_FOUND',
-                message: 'Usuario no encontrado.',
             });
         return user;
     }
@@ -161,7 +154,6 @@ let UsersService = class UsersService {
         if (!/^[a-zA-Z0-9_]{3,30}$/.test(handle)) {
             throw new BadRequestException({
                 code: 'HANDLE_INVALID_FORMAT',
-                message: 'El handle solo puede contener letras, números y guiones bajos (3–30 caracteres).',
             });
         }
         const existing = await this.repo.findByHandle(handle);
@@ -172,7 +164,6 @@ let UsersService = class UsersService {
         if (!user || user.status === 'DELETED') {
             throw new NotFoundException({
                 code: 'USER_NOT_FOUND',
-                message: 'Usuario no encontrado.',
             });
         }
         const [reviewCount, followersCount, followingCount] = await this.repo.getStats(user.id);
@@ -210,20 +201,17 @@ let UsersService = class UsersService {
         if (!target || target.status === 'DELETED') {
             throw new NotFoundException({
                 code: 'USER_NOT_FOUND',
-                message: 'Usuario no encontrado.',
             });
         }
         if (target.id === followerId) {
             throw new BadRequestException({
                 code: 'CANNOT_FOLLOW_SELF',
-                message: 'No puedes seguirte a ti mismo.',
             });
         }
         const exists = await this.repo.followExists(followerId, target.id);
         if (exists)
             throw new ConflictException({
                 code: 'ALREADY_FOLLOWING',
-                message: 'Ya sigues a este usuario.',
             });
         if (!target.isPrivate) {
             await this.repo.createFollow(followerId, target.id);
@@ -237,7 +225,6 @@ let UsersService = class UsersService {
         if (existingRequest?.status === 'PENDING') {
             throw new ConflictException({
                 code: 'FOLLOW_REQUEST_ALREADY_SENT',
-                message: 'Ya enviaste una solicitud de seguimiento a este usuario.',
             });
         }
         const request = await this.repo.createOrResetFollowRequest(followerId, target.id);
@@ -252,7 +239,6 @@ let UsersService = class UsersService {
         if (!target)
             throw new NotFoundException({
                 code: 'USER_NOT_FOUND',
-                message: 'Usuario no encontrado.',
             });
         const exists = await this.repo.followExists(followerId, target.id);
         if (exists) {
@@ -266,7 +252,6 @@ let UsersService = class UsersService {
         }
         throw new NotFoundException({
             code: 'NOT_FOLLOWING',
-            message: 'No sigues a este usuario.',
         });
     }
     async listFollowRequests(userId, cursor, limit) {
@@ -285,19 +270,16 @@ let UsersService = class UsersService {
         if (!request) {
             throw new NotFoundException({
                 code: 'FOLLOW_REQUEST_NOT_FOUND',
-                message: 'Solicitud de seguimiento no encontrada.',
             });
         }
         if (request.targetId !== userId) {
             throw new ForbiddenException({
                 code: 'NOT_FOLLOW_REQUEST_TARGET',
-                message: 'No puedes responder esta solicitud.',
             });
         }
         if (request.status !== 'PENDING') {
             throw new ConflictException({
                 code: 'FOLLOW_REQUEST_ALREADY_RESOLVED',
-                message: 'Esta solicitud ya fue resuelta.',
             });
         }
         if (status === 'REJECTED') {

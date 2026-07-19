@@ -8,11 +8,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsIn } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class UpdateReportStatusDto {
     status;
 }
 __decorate([
-    IsIn(['REVIEWED', 'DISMISSED']),
+    IsIn(['REVIEWED', 'DISMISSED'], {
+        message: i18nValidationMessage('validation.IS_IN'),
+    }),
     __metadata("design:type", String)
 ], UpdateReportStatusDto.prototype, "status", void 0);
 //# sourceMappingURL=update-report-status.dto.js.map

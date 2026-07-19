@@ -1,4 +1,5 @@
 import type { Request } from 'express';
+import { type I18nContext } from 'nestjs-i18n';
 import { AuthService } from './auth.service.js';
 import { ChangeEmailDto } from './dto/change-email.dto.js';
 import { ConfirmChangeEmailDto } from './dto/confirm-change-email.dto.js';
@@ -33,22 +34,22 @@ export declare class AuthController {
             user: object;
         };
     }>;
-    forgotPassword(dto: ForgotPasswordDto): Promise<{
+    forgotPassword(dto: ForgotPasswordDto, i18n: I18nContext): Promise<{
         data: {
             message: string;
         };
     }>;
-    resetPassword(dto: ResetPasswordDto): Promise<{
+    resetPassword(dto: ResetPasswordDto, i18n: I18nContext): Promise<{
         data: {
             message: string;
         };
     }>;
-    changeEmail(user: JwtPayload, dto: ChangeEmailDto): Promise<{
+    changeEmail(user: JwtPayload, dto: ChangeEmailDto, i18n: I18nContext): Promise<{
         data: {
             message: string;
         };
     }>;
-    confirmChangeEmail(dto: ConfirmChangeEmailDto): Promise<{
+    confirmChangeEmail(dto: ConfirmChangeEmailDto, i18n: I18nContext): Promise<{
         data: {
             message: string;
         };

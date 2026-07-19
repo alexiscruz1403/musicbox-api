@@ -26,7 +26,6 @@ let RolesGuard = class RolesGuard {
         if (!user || !requiredRoles.includes(user.role)) {
             throw new ForbiddenException({
                 code: 'ADMIN_ONLY',
-                message: 'Requiere permisos de administrador.',
             });
         }
         return true;

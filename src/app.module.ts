@@ -1,8 +1,11 @@
+import { fileURLToPath } from 'node:url';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
+import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
 import { configValidationSchema } from './config/config.validation.js';
 import { CloudinaryModule } from './cloudinary/cloudinary.module.js';
 import { EmailModule } from './email/email.module.js';
@@ -15,6 +18,7 @@ import { AppService } from './app.service.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { CommonModule } from './modules/common/common.module.js';
 import { JwtAuthGuard } from './modules/common/guards/jwt-auth.guard.js';
+import { JwtLanguageResolver } from './modules/common/i18n/jwt-language.resolver.js';
 import { UsersModule } from './modules/users/users.module.js';
 import { CatalogModule } from './modules/catalog/catalog.module.js';
 import { EventsModule } from './modules/events/events.module.js';
@@ -45,6 +49,20 @@ import { TrendingModule } from './modules/trending/trending.module.js';
     RedisModule,
     EmailModule,
     CloudinaryModule,
+    // Fase 9 — Internacionalización (docs/fase-9-features.md). Resolución de
+    // idioma: claim `language` del JWT (sin verificar firma — JwtAuthGuard ya
+    // autentica en un paso posterior) → header Accept-Language → fallback en.
+    I18nModule.forRootAsync({
+      useFactory: () => ({
+        fallbackLanguage: 'en',
+        loaderOptions: {
+          path: fileURLToPath(new URL('./i18n/', import.meta.url)),
+          watch: process.env['NODE_ENV'] !== 'production',
+        },
+      }),
+      resolvers: [JwtLanguageResolver, AcceptLanguageResolver],
+      imports: [JwtModule.register({})],
+    }),
     ThrottlerModule.forRootAsync({
       inject: [RedisService],
       useFactory: (redis: RedisService) => ({

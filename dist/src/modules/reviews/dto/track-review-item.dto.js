@@ -8,6 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsNumber, IsOptional, IsString, Length, Max, Min, } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 import { IsQuarterPointRating } from './quarter-point-rating.validator.js';
 export class TrackReviewItemDto {
     deezerId;
@@ -15,20 +16,22 @@ export class TrackReviewItemDto {
     description;
 }
 __decorate([
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], TrackReviewItemDto.prototype, "deezerId", void 0);
 __decorate([
-    IsNumber(),
-    Min(1),
-    Max(10),
-    IsQuarterPointRating(),
+    IsNumber({}, { message: i18nValidationMessage('validation.IS_NUMBER') }),
+    Min(1, { message: i18nValidationMessage('validation.MIN') }),
+    Max(10, { message: i18nValidationMessage('validation.MAX') }),
+    IsQuarterPointRating({
+        message: i18nValidationMessage('validation.QUARTER_POINT_RATING'),
+    }),
     __metadata("design:type", Number)
 ], TrackReviewItemDto.prototype, "rating", void 0);
 __decorate([
     IsOptional(),
-    IsString(),
-    Length(0, 1000),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
+    Length(0, 1000, { message: i18nValidationMessage('validation.LENGTH') }),
     __metadata("design:type", String)
 ], TrackReviewItemDto.prototype, "description", void 0);
 //# sourceMappingURL=track-review-item.dto.js.map

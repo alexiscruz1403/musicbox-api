@@ -6,32 +6,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var HttpExceptionFilter_1;
 import { Catch, HttpException, HttpStatus, Logger, } from '@nestjs/common';
+import { I18nContext } from 'nestjs-i18n';
 let HttpExceptionFilter = HttpExceptionFilter_1 = class HttpExceptionFilter {
     logger = new Logger(HttpExceptionFilter_1.name);
     catch(exception, host) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
         const request = ctx.getRequest();
+        const i18n = I18nContext.current(host);
         let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        let message = 'Internal server error';
         let code = 'INTERNAL_ERROR';
+        let args;
         if (exception instanceof HttpException) {
             statusCode = exception.getStatus();
             const exceptionResponse = exception.getResponse();
             if (typeof exceptionResponse === 'string') {
-                message = exceptionResponse;
+                code = this.statusToCode(statusCode);
             }
             else if (typeof exceptionResponse === 'object' &&
                 exceptionResponse !== null) {
                 const res = exceptionResponse;
-                message =
-                    typeof res['message'] === 'string'
-                        ? res['message']
-                        : exception.message;
                 code =
                     typeof res['code'] === 'string'
                         ? res['code']
                         : this.statusToCode(statusCode);
+                args = res['args'];
             }
         }
         else {
@@ -39,6 +38,7 @@ let HttpExceptionFilter = HttpExceptionFilter_1 = class HttpExceptionFilter {
             const stack = exception instanceof Error ? exception.stack : undefined;
             this.logger.error(`Unhandled exception on ${request.method} ${request.url}: ${msg}`, stack);
         }
+        const message = i18n?.translate(`errors.${code}`, { args, defaultValue: code }) ?? code;
         const body = {
             error: { code, message, statusCode },
         };

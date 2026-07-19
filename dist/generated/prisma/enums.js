@@ -49,4 +49,8 @@ export const CatalogResourceType = {
     ALBUM: 'ALBUM',
     TRACK: 'TRACK'
 };
+export const Language = {
+    EN: 'EN',
+    ES: 'ES'
+};
 //# sourceMappingURL=enums.js.map

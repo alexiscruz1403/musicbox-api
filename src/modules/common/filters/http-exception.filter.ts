@@ -7,6 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import type { Request, Response } from 'express';
+import { I18nContext } from 'nestjs-i18n';
 
 interface ErrorResponse {
   error: {
@@ -16,6 +17,10 @@ interface ErrorResponse {
   };
 }
 
+// Cada excepción de negocio lanza { code, args? } — el texto final se resuelve
+// acá, en el idioma del request (I18nContext.current()), contra
+// src/i18n/{en,es}/errors.json usando `code` como clave (docs/fase-9-features.md).
+// Los `throw` a lo largo del código ya no llevan un `message` literal.
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(HttpExceptionFilter.name);
@@ -24,29 +29,27 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+    const i18n = I18nContext.current(host);
 
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-    let message = 'Internal server error';
     let code = 'INTERNAL_ERROR';
+    let args: Record<string, unknown> | undefined;
 
     if (exception instanceof HttpException) {
       statusCode = exception.getStatus();
       const exceptionResponse = exception.getResponse();
       if (typeof exceptionResponse === 'string') {
-        message = exceptionResponse;
+        code = this.statusToCode(statusCode);
       } else if (
         typeof exceptionResponse === 'object' &&
         exceptionResponse !== null
       ) {
         const res = exceptionResponse as Record<string, unknown>;
-        message =
-          typeof res['message'] === 'string'
-            ? res['message']
-            : exception.message;
         code =
           typeof res['code'] === 'string'
             ? res['code']
             : this.statusToCode(statusCode);
+        args = res['args'] as Record<string, unknown> | undefined;
       }
     } else {
       const msg =
@@ -57,6 +60,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
         stack,
       );
     }
+
+    const message =
+      i18n?.translate(`errors.${code}`, { args, defaultValue: code }) ?? code;
 
     const body: ErrorResponse = {
       error: { code, message, statusCode },

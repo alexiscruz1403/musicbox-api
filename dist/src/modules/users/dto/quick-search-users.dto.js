@@ -8,12 +8,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsString, Length } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class QuickSearchUsersDto {
     q;
 }
 __decorate([
-    IsString(),
-    Length(1, 50),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
+    Length(1, 50, { message: i18nValidationMessage('validation.LENGTH') }),
     __metadata("design:type", String)
 ], QuickSearchUsersDto.prototype, "q", void 0);
 //# sourceMappingURL=quick-search-users.dto.js.map

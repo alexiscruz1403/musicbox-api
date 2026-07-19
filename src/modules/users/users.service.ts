@@ -25,7 +25,6 @@ export class UsersService {
     if (!user)
       throw new NotFoundException({
         code: 'USER_NOT_FOUND',
-        message: 'Usuario no encontrado.',
       });
 
     const {
@@ -50,7 +49,6 @@ export class UsersService {
       if (existing && existing.id !== userId) {
         throw new ConflictException({
           code: 'HANDLE_TAKEN',
-          message: 'El handle ya está en uso.',
         });
       }
     }
@@ -103,7 +101,6 @@ export class UsersService {
     if (!current)
       throw new NotFoundException({
         code: 'USER_NOT_FOUND',
-        message: 'Usuario no encontrado.',
       });
 
     const { secureUrl, publicId } = await this.cloudinaryService.upload(
@@ -121,7 +118,6 @@ export class UsersService {
     if (!current)
       throw new NotFoundException({
         code: 'USER_NOT_FOUND',
-        message: 'Usuario no encontrado.',
       });
 
     const { secureUrl, publicId } = await this.cloudinaryService.upload(
@@ -147,7 +143,6 @@ export class UsersService {
     if (!user)
       throw new NotFoundException({
         code: 'USER_NOT_FOUND',
-        message: 'Usuario no encontrado.',
       });
 
     const { passwordHash: _pw, googleId: _gid, ...profile } = user;
@@ -173,7 +168,6 @@ export class UsersService {
     if (!prefs)
       throw new NotFoundException({
         code: 'PREFS_NOT_FOUND',
-        message: 'Preferencias no encontradas.',
       });
     return this.applyNotifPrefsVisibility(prefs, user.isPrivate);
   }
@@ -196,7 +190,6 @@ export class UsersService {
     if (!user)
       throw new NotFoundException({
         code: 'USER_NOT_FOUND',
-        message: 'Usuario no encontrado.',
       });
     return user;
   }
@@ -217,8 +210,6 @@ export class UsersService {
     if (!/^[a-zA-Z0-9_]{3,30}$/.test(handle)) {
       throw new BadRequestException({
         code: 'HANDLE_INVALID_FORMAT',
-        message:
-          'El handle solo puede contener letras, números y guiones bajos (3–30 caracteres).',
       });
     }
     const existing = await this.repo.findByHandle(handle);
@@ -230,7 +221,6 @@ export class UsersService {
     if (!user || user.status === 'DELETED') {
       throw new NotFoundException({
         code: 'USER_NOT_FOUND',
-        message: 'Usuario no encontrado.',
       });
     }
 
@@ -305,20 +295,17 @@ export class UsersService {
     if (!target || target.status === 'DELETED') {
       throw new NotFoundException({
         code: 'USER_NOT_FOUND',
-        message: 'Usuario no encontrado.',
       });
     }
     if (target.id === followerId) {
       throw new BadRequestException({
         code: 'CANNOT_FOLLOW_SELF',
-        message: 'No puedes seguirte a ti mismo.',
       });
     }
     const exists = await this.repo.followExists(followerId, target.id);
     if (exists)
       throw new ConflictException({
         code: 'ALREADY_FOLLOWING',
-        message: 'Ya sigues a este usuario.',
       });
 
     if (!target.isPrivate) {
@@ -337,7 +324,6 @@ export class UsersService {
     if (existingRequest?.status === 'PENDING') {
       throw new ConflictException({
         code: 'FOLLOW_REQUEST_ALREADY_SENT',
-        message: 'Ya enviaste una solicitud de seguimiento a este usuario.',
       });
     }
 
@@ -357,7 +343,6 @@ export class UsersService {
     if (!target)
       throw new NotFoundException({
         code: 'USER_NOT_FOUND',
-        message: 'Usuario no encontrado.',
       });
 
     const exists = await this.repo.followExists(followerId, target.id);
@@ -377,7 +362,6 @@ export class UsersService {
 
     throw new NotFoundException({
       code: 'NOT_FOLLOWING',
-      message: 'No sigues a este usuario.',
     });
   }
 
@@ -406,19 +390,16 @@ export class UsersService {
     if (!request) {
       throw new NotFoundException({
         code: 'FOLLOW_REQUEST_NOT_FOUND',
-        message: 'Solicitud de seguimiento no encontrada.',
       });
     }
     if (request.targetId !== userId) {
       throw new ForbiddenException({
         code: 'NOT_FOLLOW_REQUEST_TARGET',
-        message: 'No puedes responder esta solicitud.',
       });
     }
     if (request.status !== 'PENDING') {
       throw new ConflictException({
         code: 'FOLLOW_REQUEST_ALREADY_RESOLVED',
-        message: 'Esta solicitud ya fue resuelta.',
       });
     }
 

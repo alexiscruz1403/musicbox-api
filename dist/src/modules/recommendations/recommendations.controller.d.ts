@@ -6,7 +6,9 @@ export declare class RecommendationsController {
     constructor(service: RecommendationsService);
     getRecommendations(user: JwtPayload, res: Response): Promise<{
         data: {
-            recommendations: import("./recommendations.constants.js").RecommendationItem[];
+            recommendations: (import("./recommendations.constants.js").RecommendationItem & {
+                reasonLabel: string;
+            })[];
             generatedAt: Date;
         };
     } | undefined>;

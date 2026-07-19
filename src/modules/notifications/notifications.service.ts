@@ -200,13 +200,11 @@ export class NotificationsService {
     if (!notification) {
       throw new NotFoundException({
         code: 'NOTIFICATION_NOT_FOUND',
-        message: 'Notificación no encontrada.',
       });
     }
     if (notification.recipientId !== userId) {
       throw new ForbiddenException({
         code: 'NOT_NOTIFICATION_RECIPIENT',
-        message: 'No puedes modificar esta notificación.',
       });
     }
     return notification;

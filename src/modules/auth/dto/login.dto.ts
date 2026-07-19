@@ -1,9 +1,10 @@
 import { IsEmail, IsString } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 
 export class LoginDto {
-  @IsEmail()
+  @IsEmail({}, { message: i18nValidationMessage('validation.IS_EMAIL') })
   email: string;
 
-  @IsString()
+  @IsString({ message: i18nValidationMessage('validation.IS_STRING') })
   password: string;
 }

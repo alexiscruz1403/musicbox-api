@@ -8,11 +8,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { IsEmail } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 export class ChangeEmailDto {
     newEmail;
 }
 __decorate([
-    IsEmail(),
+    IsEmail({}, { message: i18nValidationMessage('validation.IS_EMAIL') }),
     __metadata("design:type", String)
 ], ChangeEmailDto.prototype, "newEmail", void 0);
 //# sourceMappingURL=change-email.dto.js.map

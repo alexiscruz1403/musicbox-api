@@ -4,25 +4,25 @@ export declare class FollowSuggestionsRepository {
     private readonly prisma;
     constructor(prisma: PrismaService);
     getOwnReviewSignals(userId: string): Prisma.PrismaPromise<{
+        albumId: string | null;
+        trackId: string | null;
         album: {
             artistId: string;
         } | null;
         track: {
             artistId: string;
         } | null;
-        trackId: string | null;
-        albumId: string | null;
     }[]>;
     getOwnLikeSignals(userId: string): Prisma.PrismaPromise<{
         review: {
+            albumId: string | null;
+            trackId: string | null;
             album: {
                 artistId: string;
             } | null;
             track: {
                 artistId: string;
             } | null;
-            trackId: string | null;
-            albumId: string | null;
         };
     }[]>;
     findReviewsByAlbumIds(albumIds: string[]): Promise<never[]> | Prisma.PrismaPromise<{
@@ -34,27 +34,28 @@ export declare class FollowSuggestionsRepository {
         trackId: string | null;
     }[]>;
     findReviewsByArtistIds(artistIds: string[]): Promise<never[]> | Prisma.PrismaPromise<{
+        userId: string;
         album: {
             artistId: string;
         } | null;
         track: {
             artistId: string;
         } | null;
-        userId: string;
     }[]>;
     findLikesByAlbumIds(albumIds: string[]): Promise<never[]> | Prisma.PrismaPromise<{
+        userId: string;
         review: {
             albumId: string | null;
         };
-        userId: string;
     }[]>;
     findLikesByTrackIds(trackIds: string[]): Promise<never[]> | Prisma.PrismaPromise<{
+        userId: string;
         review: {
             trackId: string | null;
         };
-        userId: string;
     }[]>;
     findLikesByArtistIds(artistIds: string[]): Promise<never[]> | Prisma.PrismaPromise<{
+        userId: string;
         review: {
             album: {
                 artistId: string;
@@ -63,7 +64,6 @@ export declare class FollowSuggestionsRepository {
                 artistId: string;
             } | null;
         };
-        userId: string;
     }[]>;
     getFollowedIds(userId: string): Prisma.PrismaPromise<{
         followeeId: string;

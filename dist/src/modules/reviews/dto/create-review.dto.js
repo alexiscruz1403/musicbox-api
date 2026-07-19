@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Type } from 'class-transformer';
 import { ArrayMinSize, IsArray, IsIn, IsNumber, IsOptional, IsString, Length, Max, Min, ValidateIf, ValidateNested, } from 'class-validator';
+import { i18nValidationMessage } from 'nestjs-i18n';
 import { IsQuarterPointRating } from './quarter-point-rating.validator.js';
 import { TrackReviewItemDto } from './track-review-item.dto.js';
 export class CreateReviewDto {
@@ -19,32 +20,41 @@ export class CreateReviewDto {
     trackItems;
 }
 __decorate([
-    IsIn(['TRACK', 'ALBUM']),
+    IsIn(['TRACK', 'ALBUM'], {
+        message: i18nValidationMessage('validation.IS_IN'),
+    }),
     __metadata("design:type", String)
 ], CreateReviewDto.prototype, "type", void 0);
 __decorate([
-    IsString(),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
     __metadata("design:type", String)
 ], CreateReviewDto.prototype, "deezerId", void 0);
 __decorate([
     IsOptional(),
-    IsString(),
-    Length(1, 2000),
+    IsString({ message: i18nValidationMessage('validation.IS_STRING') }),
+    Length(1, 2000, { message: i18nValidationMessage('validation.LENGTH') }),
     __metadata("design:type", String)
 ], CreateReviewDto.prototype, "description", void 0);
 __decorate([
     ValidateIf((o) => o.type === 'TRACK'),
-    IsNumber(),
-    Min(1),
-    Max(10),
-    IsQuarterPointRating(),
+    IsNumber({}, { message: i18nValidationMessage('validation.IS_NUMBER') }),
+    Min(1, { message: i18nValidationMessage('validation.MIN') }),
+    Max(10, { message: i18nValidationMessage('validation.MAX') }),
+    IsQuarterPointRating({
+        message: i18nValidationMessage('validation.QUARTER_POINT_RATING'),
+    }),
     __metadata("design:type", Number)
 ], CreateReviewDto.prototype, "rating", void 0);
 __decorate([
     ValidateIf((o) => o.type === 'ALBUM'),
-    IsArray(),
-    ArrayMinSize(1),
-    ValidateNested({ each: true }),
+    IsArray({ message: i18nValidationMessage('validation.IS_ARRAY') }),
+    ArrayMinSize(1, {
+        message: i18nValidationMessage('validation.ARRAY_MIN_SIZE'),
+    }),
+    ValidateNested({
+        each: true,
+        message: i18nValidationMessage('validation.VALIDATE_NESTED'),
+    }),
     Type(() => TrackReviewItemDto),
     __metadata("design:type", Array)
 ], CreateReviewDto.prototype, "trackItems", void 0);

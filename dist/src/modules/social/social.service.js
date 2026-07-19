@@ -54,7 +54,6 @@ let SocialService = class SocialService {
         if (!existing) {
             throw new NotFoundException({
                 code: 'REACTION_NOT_FOUND',
-                message: 'No has reaccionado a esta reseña.',
             });
         }
         await this.repo.deleteReaction(userId, reviewId);
@@ -95,7 +94,6 @@ let SocialService = class SocialService {
         if (!review) {
             throw new NotFoundException({
                 code: 'REVIEW_NOT_FOUND',
-                message: 'Reseña no encontrada.',
             });
         }
         return review;
@@ -105,7 +103,6 @@ let SocialService = class SocialService {
         if (!visible) {
             throw new ForbiddenException({
                 code: 'PRIVATE_PROFILE',
-                message: 'Este perfil es privado.',
             });
         }
     }
@@ -114,7 +111,6 @@ let SocialService = class SocialService {
         if (!comment || comment.deletedAt || comment.status !== 'ACTIVE') {
             throw new NotFoundException({
                 code: 'COMMENT_NOT_FOUND',
-                message: 'Comentario no encontrado.',
             });
         }
         return comment;
@@ -124,7 +120,6 @@ let SocialService = class SocialService {
         if (comment.userId !== userId) {
             throw new ForbiddenException({
                 code: 'NOT_COMMENT_OWNER',
-                message: 'No puedes modificar este comentario.',
             });
         }
         return comment;

@@ -64,7 +64,7 @@ export class ArtistDetailService {
     const artist = await this.catalogService.getArtist(deezerId);
     const artistRow = await this.repo.findArtistByDeezerId(deezerId);
     if (!artistRow) {
-      throw new NotFoundException(`Artist ${deezerId} not found`);
+      throw new NotFoundException({ code: 'ARTIST_NOT_FOUND' });
     }
 
     const windowStart = new Date(

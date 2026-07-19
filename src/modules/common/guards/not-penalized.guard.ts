@@ -32,15 +32,12 @@ export class NotPenalizedGuard implements CanActivate {
     if (user.status === 'SUSPENDED') {
       throw new ForbiddenException({
         code: 'ACCOUNT_SUSPENDED',
-        message: 'Tu cuenta está suspendida.',
       });
     }
 
     if (user.penalizedUntil && user.penalizedUntil > new Date()) {
       throw new ForbiddenException({
         code: 'USER_PENALIZED',
-        message:
-          'No podés publicar reviews ni comentarios mientras tengas una penalización activa.',
         penalizedUntil: user.penalizedUntil,
       });
     }

@@ -57,13 +57,11 @@ export class AuthService {
     if (existing?.email === dto.email) {
       throw new ConflictException({
         code: 'EMAIL_TAKEN',
-        message: 'El email ya está en uso.',
       });
     }
     if (existing?.handle === dto.handle) {
       throw new ConflictException({
         code: 'HANDLE_TAKEN',
-        message: 'El handle ya está en uso.',
       });
     }
 
@@ -115,6 +113,7 @@ export class AuthService {
       email: user.email,
       status: user.status,
       role: user.role,
+      language: user.language,
     };
   }
 
@@ -154,7 +153,6 @@ export class AuthService {
     if (!matched)
       throw new UnauthorizedException({
         code: 'INVALID_REFRESH_TOKEN',
-        message: 'Refresh token inválido o expirado.',
       });
 
     await this.prisma.refreshToken.update({
@@ -192,21 +190,18 @@ export class AuthService {
     } catch {
       throw new UnauthorizedException({
         code: 'INVALID_GOOGLE_TOKEN',
-        message: 'Token de Google inválido o expirado.',
       });
     }
     const payload = ticket.getPayload();
     if (!payload?.sub)
       throw new UnauthorizedException({
         code: 'INVALID_GOOGLE_TOKEN',
-        message: 'Token de Google inválido.',
       });
 
     const { sub: googleId, email, name } = payload;
     if (!email)
       throw new UnauthorizedException({
         code: 'GOOGLE_NO_EMAIL',
-        message: 'La cuenta de Google no tiene email.',
       });
 
     let user = await this.prisma.user.findUnique({ where: { googleId } });
@@ -265,7 +260,12 @@ export class AuthService {
       await argon2.hash(token, ARGON2_OPTIONS),
       3600,
     );
-    await this.email.sendPasswordResetEmail(user.email, user.id, token);
+    await this.email.sendPasswordResetEmail(
+      user.email,
+      user.id,
+      token,
+      user.language,
+    );
   }
 
   async resetPassword(
@@ -277,14 +277,12 @@ export class AuthService {
     if (!stored)
       throw new UnauthorizedException({
         code: 'INVALID_RESET_TOKEN',
-        message: 'Token de reset inválido o expirado.',
       });
 
     const valid = await argon2.verify(stored, token);
     if (!valid)
       throw new UnauthorizedException({
         code: 'INVALID_RESET_TOKEN',
-        message: 'Token de reset inválido o expirado.',
       });
 
     // Defense in depth: forgotPassword never issues tokens for Google-only
@@ -293,8 +291,6 @@ export class AuthService {
     if (user?.googleId && !user?.passwordHash) {
       throw new ForbiddenException({
         code: 'OAUTH_ACCOUNT_NO_PASSWORD',
-        message:
-          'Esta cuenta usa Google Sign-In y no tiene contraseña que restablecer.',
       });
     }
 
@@ -317,20 +313,16 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException({
         code: 'USER_NOT_FOUND',
-        message: 'Usuario no encontrado.',
       });
     }
     if (user.googleId && !user.passwordHash) {
       throw new ForbiddenException({
         code: 'OAUTH_ACCOUNT_EMAIL_LOCKED',
-        message:
-          'Esta cuenta usa Google Sign-In y no puede cambiar su email desde aquí.',
       });
     }
     if (newEmail === user.email) {
       throw new BadRequestException({
         code: 'SAME_EMAIL',
-        message: 'El nuevo email debe ser diferente al actual.',
       });
     }
     const taken = await this.prisma.user.findUnique({
@@ -339,7 +331,6 @@ export class AuthService {
     if (taken) {
       throw new ConflictException({
         code: 'EMAIL_TAKEN',
-        message: 'El email ya está en uso.',
       });
     }
 
@@ -352,7 +343,12 @@ export class AuthService {
       }),
       3600,
     );
-    await this.email.sendChangeEmailConfirmation(newEmail, userId, token);
+    await this.email.sendChangeEmailConfirmation(
+      newEmail,
+      userId,
+      token,
+      user.language,
+    );
   }
 
   async confirmChangeEmail(userId: string, token: string): Promise<void> {
@@ -360,7 +356,6 @@ export class AuthService {
     if (!stored)
       throw new UnauthorizedException({
         code: 'INVALID_CHANGE_EMAIL_TOKEN',
-        message: 'Token inválido o expirado.',
       });
 
     const { tokenHash, newEmail } = JSON.parse(stored) as {
@@ -371,7 +366,6 @@ export class AuthService {
     if (!valid)
       throw new UnauthorizedException({
         code: 'INVALID_CHANGE_EMAIL_TOKEN',
-        message: 'Token inválido o expirado.',
       });
 
     // Defense in depth, mismo patrón que resetPassword.
@@ -379,8 +373,6 @@ export class AuthService {
     if (user?.googleId && !user?.passwordHash) {
       throw new ForbiddenException({
         code: 'OAUTH_ACCOUNT_EMAIL_LOCKED',
-        message:
-          'Esta cuenta usa Google Sign-In y no puede cambiar su email desde aquí.',
       });
     }
     // Re-chequeo por si el email fue tomado entre el request y el confirm.
@@ -390,7 +382,6 @@ export class AuthService {
     if (taken && taken.id !== userId) {
       throw new ConflictException({
         code: 'EMAIL_TAKEN',
-        message: 'El email ya está en uso.',
       });
     }
 
@@ -410,13 +401,13 @@ export class AuthService {
         email: true,
         status: true,
         role: true,
+        language: true,
       },
     });
 
     if (user.status === 'SUSPENDED') {
       throw new ForbiddenException({
         code: 'ACCOUNT_SUSPENDED',
-        message: 'Tu cuenta está suspendida.',
       });
     }
 
@@ -426,6 +417,7 @@ export class AuthService {
       email: user.email,
       status: user.status,
       role: user.role,
+      language: user.language,
     };
     const accessToken = this.jwt.sign(jwtPayload);
 

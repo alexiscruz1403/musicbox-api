@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 import { Body, Controller, HttpCode, HttpStatus, Post, Req, UseGuards, UseInterceptors, } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Throttle } from '@nestjs/throttler';
+import { I18n } from 'nestjs-i18n';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
@@ -49,23 +50,25 @@ let AuthController = class AuthController {
         const result = await this.auth.googleAuth(dto.idToken, req);
         return { data: result };
     }
-    async forgotPassword(dto) {
+    async forgotPassword(dto, i18n) {
         await this.auth.forgotPassword(dto.email);
-        return { data: { message: 'Email enviado si la cuenta existe.' } };
-    }
-    async resetPassword(dto) {
-        await this.auth.resetPassword(dto.userId, dto.token, dto.newPassword);
-        return { data: { message: 'Contraseña actualizada correctamente.' } };
-    }
-    async changeEmail(user, dto) {
-        await this.auth.changeEmail(user.sub, dto.newEmail);
         return {
-            data: { message: 'Email de confirmación enviado al nuevo correo.' },
+            data: { message: i18n.t('auth.PASSWORD_RESET_EMAIL_SENT') },
         };
     }
-    async confirmChangeEmail(dto) {
+    async resetPassword(dto, i18n) {
+        await this.auth.resetPassword(dto.userId, dto.token, dto.newPassword);
+        return { data: { message: i18n.t('auth.PASSWORD_UPDATED') } };
+    }
+    async changeEmail(user, dto, i18n) {
+        await this.auth.changeEmail(user.sub, dto.newEmail);
+        return {
+            data: { message: i18n.t('auth.CHANGE_EMAIL_CONFIRMATION_SENT') },
+        };
+    }
+    async confirmChangeEmail(dto, i18n) {
         await this.auth.confirmChangeEmail(dto.userId, dto.token);
-        return { data: { message: 'Email actualizado correctamente.' } };
+        return { data: { message: i18n.t('auth.EMAIL_UPDATED') } };
     }
 };
 __decorate([
@@ -122,8 +125,9 @@ __decorate([
     Post('forgot-password'),
     HttpCode(HttpStatus.OK),
     __param(0, Body()),
+    __param(1, I18n()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [ForgotPasswordDto]),
+    __metadata("design:paramtypes", [ForgotPasswordDto, Function]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "forgotPassword", null);
 __decorate([
@@ -131,8 +135,9 @@ __decorate([
     Post('reset-password'),
     HttpCode(HttpStatus.OK),
     __param(0, Body()),
+    __param(1, I18n()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [ResetPasswordDto]),
+    __metadata("design:paramtypes", [ResetPasswordDto, Function]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "resetPassword", null);
 __decorate([
@@ -140,8 +145,9 @@ __decorate([
     HttpCode(HttpStatus.OK),
     __param(0, CurrentUser()),
     __param(1, Body()),
+    __param(2, I18n()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, ChangeEmailDto]),
+    __metadata("design:paramtypes", [Object, ChangeEmailDto, Function]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "changeEmail", null);
 __decorate([
@@ -149,8 +155,9 @@ __decorate([
     Post('confirm-change-email'),
     HttpCode(HttpStatus.OK),
     __param(0, Body()),
+    __param(1, I18n()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [ConfirmChangeEmailDto]),
+    __metadata("design:paramtypes", [ConfirmChangeEmailDto, Function]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "confirmChangeEmail", null);
 AuthController = __decorate([
