@@ -12,15 +12,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
+import { BullMqJobScheduler } from '../../common/scheduling/bullmq-job-scheduler.js';
 import { RECOMMENDATIONS_QUEUE } from '../../events/events.constants.js';
 import { RECOMMENDATIONS_CRON_PATTERN, RECOMMENDATIONS_JOB_NAME, RECOMMENDATIONS_SCHEDULER_ID, } from '../recommendations.constants.js';
-let RecommendationsScheduler = class RecommendationsScheduler {
-    queue;
+let RecommendationsScheduler = class RecommendationsScheduler extends BullMqJobScheduler {
     constructor(queue) {
-        this.queue = queue;
-    }
-    async onApplicationBootstrap() {
-        await this.queue.upsertJobScheduler(RECOMMENDATIONS_SCHEDULER_ID, { pattern: RECOMMENDATIONS_CRON_PATTERN }, { name: RECOMMENDATIONS_JOB_NAME });
+        super(queue, RECOMMENDATIONS_SCHEDULER_ID, RECOMMENDATIONS_JOB_NAME, {
+            pattern: RECOMMENDATIONS_CRON_PATTERN,
+        });
     }
 };
 RecommendationsScheduler = __decorate([

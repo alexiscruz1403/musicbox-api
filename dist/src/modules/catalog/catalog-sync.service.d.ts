@@ -9,14 +9,14 @@ export declare class CatalogSyncService {
     constructor(catalogProvider: MusicCatalogProvider, repo: CatalogRepository, redis: RedisService);
     syncStaleArtists(): Promise<void>;
     ensureArtistSynced(deezerId: string): Promise<{
+        name: string;
         id: string;
+        reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        name: string;
         imageUrl: string | null;
         lastSyncedAt: Date;
         catalogSyncedAt: Date | null;
-        reviewCount: number;
     }>;
     private syncArtist;
     private fetchFullDiscography;

@@ -1,6 +1,7 @@
 import { InjectQueue } from '@nestjs/bullmq';
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import type { Queue } from 'bullmq';
+import { BullMqJobScheduler } from '../../common/scheduling/bullmq-job-scheduler.js';
 import { TRENDING_QUEUE } from '../../events/events.constants.js';
 import {
   TRENDING_JOB_NAME,
@@ -13,14 +14,10 @@ import {
 // "BullMQ is the only job primitive in the project". upsertJobScheduler is
 // idempotent across restarts/instances (same schedulerId just gets updated).
 @Injectable()
-export class TrendingScheduler implements OnApplicationBootstrap {
-  constructor(@InjectQueue(TRENDING_QUEUE) private readonly queue: Queue) {}
-
-  async onApplicationBootstrap(): Promise<void> {
-    await this.queue.upsertJobScheduler(
-      TRENDING_SCHEDULER_ID,
-      { every: TRENDING_RECALC_INTERVAL_MS },
-      { name: TRENDING_JOB_NAME },
-    );
+export class TrendingScheduler extends BullMqJobScheduler {
+  constructor(@InjectQueue(TRENDING_QUEUE) queue: Queue) {
+    super(queue, TRENDING_SCHEDULER_ID, TRENDING_JOB_NAME, {
+      every: TRENDING_RECALC_INTERVAL_MS,
+    });
   }
 }

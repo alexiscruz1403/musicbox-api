@@ -28,12 +28,16 @@ export class PushSubscriptionsController {
     return { data: { publicKey: this.push.getVapidPublicKey() } };
   }
 
+  // Upsert by endpoint — no meaningful "created" vs "updated" distinction to
+  // report back, and the sibling DELETE below is already 204 for the same
+  // reason. Nothing in the response body either way.
   @Post('subscriptions')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async subscribe(
     @CurrentUser() user: JwtPayload,
     @Body() dto: CreatePushSubscriptionDto,
     @Req() req: Request,
-  ) {
+  ): Promise<void> {
     await this.push.subscribe(user.sub, dto, req.headers['user-agent']);
   }
 

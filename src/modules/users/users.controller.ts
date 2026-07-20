@@ -24,13 +24,12 @@ import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
-import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
-import { ReviewsService } from '../reviews/reviews.service.js';
 import { QuickSearchUsersDto } from './dto/quick-search-users.dto.js';
 import { SearchUsersQueryDto } from './dto/search-users-query.dto.js';
 import { UpdateFollowRequestStatusDto } from './dto/update-follow-request-status.dto.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
+import { FollowService } from './follow.service.js';
 import { UserSearchHistoryService } from './user-search-history.service.js';
 import { UsersService } from './users.service.js';
 
@@ -38,7 +37,7 @@ import { UsersService } from './users.service.js';
 export class UsersController {
   constructor(
     private readonly users: UsersService,
-    private readonly reviews: ReviewsService,
+    private readonly followService: FollowService,
     private readonly searchHistory: UserSearchHistoryService,
   ) {}
 
@@ -131,7 +130,7 @@ export class UsersController {
     @Query('cursor') cursor?: string,
     @Query('limit') limit?: string,
   ) {
-    const result = await this.users.listFollowRequests(
+    const result = await this.followService.listFollowRequests(
       user.sub,
       cursor,
       limit ? parseInt(limit, 10) : undefined,
@@ -146,7 +145,11 @@ export class UsersController {
     @Body() dto: UpdateFollowRequestStatusDto,
   ) {
     return {
-      data: await this.users.respondToFollowRequest(user.sub, id, dto.status),
+      data: await this.followService.respondToFollowRequest(
+        user.sub,
+        id,
+        dto.status,
+      ),
     };
   }
 
@@ -232,7 +235,7 @@ export class UsersController {
     @Query('limit') limit?: string,
   ) {
     return {
-      data: await this.users.getFollowers(
+      data: await this.followService.getFollowers(
         handle,
         cursor,
         limit ? parseInt(limit, 10) : undefined,
@@ -251,7 +254,7 @@ export class UsersController {
     @Query('limit') limit?: string,
   ) {
     return {
-      data: await this.users.getFollowing(
+      data: await this.followService.getFollowing(
         handle,
         cursor,
         limit ? parseInt(limit, 10) : undefined,
@@ -260,29 +263,13 @@ export class UsersController {
     };
   }
 
-  @Public()
-  @Get(':handle/reviews')
-  @UseGuards(OptionalJwtAuthGuard)
-  async getReviews(
-    @Param('handle') handle: string,
-    @Query() query: ListUserReviewsQueryDto,
-    @Req() req: Request & { user?: JwtPayload },
-  ) {
-    const result = await this.reviews.listByUserHandle(
-      handle,
-      query,
-      req.user?.sub,
-    );
-    return { data: result.items, meta: { cursor: result.nextCursor } };
-  }
-
   @Post(':handle/follow')
   async follow(
     @CurrentUser() user: JwtPayload,
     @Param('handle') handle: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const result = await this.users.follow(user.sub, handle);
+    const result = await this.followService.follow(user.sub, handle);
     if (result.status === 'PENDING') {
       res.status(HttpStatus.CREATED);
       return { data: result };
@@ -296,6 +283,6 @@ export class UsersController {
     @CurrentUser() user: JwtPayload,
     @Param('handle') handle: string,
   ) {
-    await this.users.unfollow(user.sub, handle);
+    await this.followService.unfollow(user.sub, handle);
   }
 }

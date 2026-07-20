@@ -1,19 +1,22 @@
 import { CloudinaryService } from '../../cloudinary/cloudinary.service.js';
-import { SocialEventsProducer } from '../events/social-events.producer.js';
+import { FollowService } from './follow.service.js';
+import { UserSearchRepository } from './user-search.repository.js';
 import type { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import type { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersRepository } from './users.repository.js';
 export declare class UsersService {
     private readonly repo;
-    private readonly events;
+    private readonly userSearchRepo;
+    private readonly followService;
     private readonly cloudinaryService;
-    constructor(repo: UsersRepository, events: SocialEventsProducer, cloudinaryService: CloudinaryService);
+    constructor(repo: UsersRepository, userSearchRepo: UserSearchRepository, followService: FollowService, cloudinaryService: CloudinaryService);
     getMe(userId: string): Promise<{
         user: {
+            createdAt: Date;
             id: string;
             handle: string;
-            displayName: string;
             email: string;
+            displayName: string;
             avatarUrl: string | null;
             coverUrl: string | null;
             bio: string | null;
@@ -23,7 +26,6 @@ export declare class UsersService {
             role: import("../../../generated/prisma/enums.js").UserRole;
             language: import("../../../generated/prisma/enums.js").Language;
             consentedAt: Date | null;
-            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             acceptedReportsCount: number;
@@ -37,12 +39,13 @@ export declare class UsersService {
         };
     }>;
     updateProfile(userId: string, dto: UpdateProfileDto): Promise<{
+        createdAt: Date;
         id: string;
         handle: string;
-        displayName: string;
         email: string;
-        passwordHash: string | null;
         googleId: string | null;
+        displayName: string;
+        passwordHash: string | null;
         avatarUrl: string | null;
         avatarPublicId: string | null;
         coverUrl: string | null;
@@ -54,23 +57,22 @@ export declare class UsersService {
         role: import("../../../generated/prisma/enums.js").UserRole;
         language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
-        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         acceptedReportsCount: number;
         penaltyLevel: number;
         penalizedUntil: Date | null;
     }>;
-    private autoAcceptPendingFollowRequests;
     uploadAvatar(userId: string, buffer: Buffer): Promise<string>;
     uploadCover(userId: string, buffer: Buffer): Promise<string>;
     deleteAccount(userId: string): Promise<void>;
     exportAccountData(userId: string): Promise<{
         profile: {
+            createdAt: Date;
             id: string;
             handle: string;
-            displayName: string;
             email: string;
+            displayName: string;
             avatarUrl: string | null;
             avatarPublicId: string | null;
             coverUrl: string | null;
@@ -82,7 +84,6 @@ export declare class UsersService {
             role: import("../../../generated/prisma/enums.js").UserRole;
             language: import("../../../generated/prisma/enums.js").Language;
             consentedAt: Date | null;
-            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             acceptedReportsCount: number;
@@ -99,15 +100,15 @@ export declare class UsersService {
                 position: number;
             }[];
         } & {
+            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
-            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
+            albumId: string | null;
             description: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
@@ -115,9 +116,9 @@ export declare class UsersService {
             externalCoverUrl: string | null;
         })[];
         comments: {
+            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
-            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
@@ -125,8 +126,8 @@ export declare class UsersService {
             content: string;
         }[];
         reactions: {
-            id: string;
             createdAt: Date;
+            id: string;
             userId: string;
             type: import("../../../generated/prisma/enums.js").ReactionType;
             reviewId: string;
@@ -204,17 +205,9 @@ export declare class UsersService {
             avatarUrl: string | null;
             coverUrl: string | null;
             bio: string | null;
-            notifEnabled: boolean;
+            status: "ACTIVE" | "SUSPENDED";
             isPrivate: boolean;
-            status: import("../../../generated/prisma/enums.js").UserStatus;
-            role: import("../../../generated/prisma/enums.js").UserRole;
-            language: import("../../../generated/prisma/enums.js").Language;
-            consentedAt: Date | null;
             createdAt: Date;
-            updatedAt: Date;
-            acceptedReportsCount: number;
-            penaltyLevel: number;
-            penalizedUntil: Date | null;
         };
         stats: {
             reviewCount: number;
@@ -225,72 +218,21 @@ export declare class UsersService {
         followRequestPending: boolean;
     }>;
     searchUsers(q: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
-        items: {
-            isFollowing: boolean;
+        items: ({
             id: string;
             handle: string;
             displayName: string;
             avatarUrl: string | null;
-        }[];
+        } & {
+            isFollowing: boolean;
+        })[];
         nextCursor: string | null;
     }>;
     quickSearchUsers(q: string, viewerId?: string): Promise<{
-        isFollowing: boolean;
         handle: string;
         displayName: string;
         avatarUrl: string | null;
         isPrivate: boolean;
+        isFollowing: boolean;
     }[]>;
-    getFollowers(handle: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
-        items: ({
-            id: string;
-            handle: string;
-            displayName: string;
-            avatarUrl: string | null;
-            isPrivate: boolean;
-        } & {
-            isFollowing: boolean;
-        })[];
-        nextCursor: string | null;
-    }>;
-    getFollowing(handle: string, cursor?: string, limit?: number, viewerId?: string): Promise<{
-        items: ({
-            id: string;
-            handle: string;
-            displayName: string;
-            avatarUrl: string | null;
-            isPrivate: boolean;
-        } & {
-            isFollowing: boolean;
-        })[];
-        nextCursor: string | null;
-    }>;
-    follow(followerId: string, handle: string): Promise<{
-        status: 'FOLLOWING';
-    } | {
-        status: 'PENDING';
-        followRequestId: string;
-    }>;
-    unfollow(followerId: string, handle: string): Promise<void>;
-    listFollowRequests(userId: string, cursor?: string, limit?: number): Promise<{
-        items: {
-            id: string;
-            createdAt: Date;
-            requester: {
-                id: string;
-                handle: string;
-                displayName: string;
-                avatarUrl: string | null;
-            };
-        }[];
-        nextCursor: string | null;
-    }>;
-    respondToFollowRequest(userId: string, requestId: string, status: 'ACCEPTED' | 'REJECTED'): Promise<{
-        id: string;
-        status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
-        createdAt: Date;
-        requesterId: string;
-        targetId: string;
-        respondedAt: Date | null;
-    }>;
 }

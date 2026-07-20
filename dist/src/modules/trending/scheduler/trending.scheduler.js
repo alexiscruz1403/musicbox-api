@@ -12,15 +12,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
+import { BullMqJobScheduler } from '../../common/scheduling/bullmq-job-scheduler.js';
 import { TRENDING_QUEUE } from '../../events/events.constants.js';
 import { TRENDING_JOB_NAME, TRENDING_RECALC_INTERVAL_MS, TRENDING_SCHEDULER_ID, } from '../trending.constants.js';
-let TrendingScheduler = class TrendingScheduler {
-    queue;
+let TrendingScheduler = class TrendingScheduler extends BullMqJobScheduler {
     constructor(queue) {
-        this.queue = queue;
-    }
-    async onApplicationBootstrap() {
-        await this.queue.upsertJobScheduler(TRENDING_SCHEDULER_ID, { every: TRENDING_RECALC_INTERVAL_MS }, { name: TRENDING_JOB_NAME });
+        super(queue, TRENDING_SCHEDULER_ID, TRENDING_JOB_NAME, {
+            every: TRENDING_RECALC_INTERVAL_MS,
+        });
     }
 };
 TrendingScheduler = __decorate([

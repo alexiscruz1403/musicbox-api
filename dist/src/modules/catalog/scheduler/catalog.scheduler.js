@@ -12,15 +12,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
+import { BullMqJobScheduler } from '../../common/scheduling/bullmq-job-scheduler.js';
 import { CATALOG_QUEUE } from '../../events/events.constants.js';
 import { CATALOG_SYNC_CRON_PATTERN, CATALOG_SYNC_JOB_NAME, CATALOG_SYNC_SCHEDULER_ID, } from '../catalog.constants.js';
-let CatalogScheduler = class CatalogScheduler {
-    queue;
+let CatalogScheduler = class CatalogScheduler extends BullMqJobScheduler {
     constructor(queue) {
-        this.queue = queue;
-    }
-    async onApplicationBootstrap() {
-        await this.queue.upsertJobScheduler(CATALOG_SYNC_SCHEDULER_ID, { pattern: CATALOG_SYNC_CRON_PATTERN }, { name: CATALOG_SYNC_JOB_NAME });
+        super(queue, CATALOG_SYNC_SCHEDULER_ID, CATALOG_SYNC_JOB_NAME, {
+            pattern: CATALOG_SYNC_CRON_PATTERN,
+        });
     }
 };
 CatalogScheduler = __decorate([

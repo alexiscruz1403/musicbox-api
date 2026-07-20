@@ -12,12 +12,17 @@ import { AlbumTrackReviewsController } from './album-track-reviews.controller.js
 import { ReviewsController } from './reviews.controller.js';
 import { ReviewsRepository } from './reviews.repository.js';
 import { ReviewsService } from './reviews.service.js';
+import { UserReviewsController } from './user-reviews.controller.js';
 let ReviewsModule = class ReviewsModule {
 };
 ReviewsModule = __decorate([
     Module({
         imports: [CatalogModule, EventsModule, SocialModule],
-        controllers: [ReviewsController, AlbumTrackReviewsController],
+        controllers: [
+            ReviewsController,
+            AlbumTrackReviewsController,
+            UserReviewsController,
+        ],
         providers: [ReviewsService, ReviewsRepository],
         exports: [ReviewsService],
     })

@@ -18,7 +18,7 @@ import { LocalStrategy } from './strategies/local.strategy.js';
       useFactory: (config: ConfigService): JwtModuleOptions => ({
         secret: config.getOrThrow<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: (process.env['JWT_EXPIRES_IN'] ?? '15m') as never,
+          expiresIn: config.getOrThrow<string>('JWT_EXPIRES_IN') as never,
         },
       }),
     }),

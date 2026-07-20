@@ -28,24 +28,24 @@ export declare class CatalogRepository {
         reviewCount: number;
     }>>;
     upsertArtist(data: CatalogArtist): import("../../../generated/prisma/models.js").Prisma__ArtistClient<{
+        name: string;
         id: string;
+        reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        name: string;
         imageUrl: string | null;
         lastSyncedAt: Date;
         catalogSyncedAt: Date | null;
-        reviewCount: number;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     upsertAlbum(data: CatalogAlbum, artistId: string): import("../../../generated/prisma/models.js").Prisma__AlbumClient<{
         id: string;
         coverUrl: string | null;
+        reviewCount: number;
         deezerId: string;
         mbid: string | null;
         lastSyncedAt: Date;
-        reviewCount: number;
         title: string;
         artistId: string;
         releaseDate: Date | null;
@@ -54,51 +54,51 @@ export declare class CatalogRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findStaleArtists(olderThan: Date, take: number): import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<{
+        name: string;
         id: string;
+        reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        name: string;
         imageUrl: string | null;
         lastSyncedAt: Date;
         catalogSyncedAt: Date | null;
-        reviewCount: number;
     }[]>;
     findArtistByDeezerId(deezerId: string): import("../../../generated/prisma/models.js").Prisma__ArtistClient<{
+        name: string;
         id: string;
+        reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        name: string;
         imageUrl: string | null;
         lastSyncedAt: Date;
         catalogSyncedAt: Date | null;
-        reviewCount: number;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findAlbumIdByDeezerId(deezerId: string): Promise<string | null>;
     markCatalogSynced(artistId: string, when: Date): import("../../../generated/prisma/models.js").Prisma__ArtistClient<{
+        name: string;
         id: string;
+        reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        name: string;
         imageUrl: string | null;
         lastSyncedAt: Date;
         catalogSyncedAt: Date | null;
-        reviewCount: number;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findTracksByArtist(artistId: string, cursor: string | null, limit: number): Promise<{
         items: ({
             artist: {
+                name: string;
                 id: string;
+                reviewCount: number;
                 deezerId: string;
                 mbid: string | null;
-                name: string;
                 imageUrl: string | null;
                 lastSyncedAt: Date;
                 catalogSyncedAt: Date | null;
-                reviewCount: number;
             };
             album: {
                 coverUrl: string | null;
@@ -108,13 +108,13 @@ export declare class CatalogRepository {
             } | null;
         } & {
             id: string;
+            albumId: string | null;
+            reviewCount: number;
             deezerId: string;
             mbid: string | null;
             lastSyncedAt: Date;
-            reviewCount: number;
             title: string;
             artistId: string;
-            albumId: string | null;
             durationMs: number | null;
             trackNumber: number | null;
             previewUrl: string | null;
@@ -128,22 +128,22 @@ export declare class CatalogRepository {
     trendingTrackIds(artistId: string, take: number, windowStart: Date): Promise<CatalogReviewGroup[]>;
     hydrateAlbumSummaries(ids: string[]): Promise<never[]> | import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<({
         artist: {
+            name: string;
             id: string;
+            reviewCount: number;
             deezerId: string;
             mbid: string | null;
-            name: string;
             imageUrl: string | null;
             lastSyncedAt: Date;
             catalogSyncedAt: Date | null;
-            reviewCount: number;
         };
     } & {
         id: string;
         coverUrl: string | null;
+        reviewCount: number;
         deezerId: string;
         mbid: string | null;
         lastSyncedAt: Date;
-        reviewCount: number;
         title: string;
         artistId: string;
         releaseDate: Date | null;
@@ -151,14 +151,14 @@ export declare class CatalogRepository {
     })[]>;
     hydrateTrackSummaries(ids: string[]): Promise<never[]> | import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<({
         artist: {
+            name: string;
             id: string;
+            reviewCount: number;
             deezerId: string;
             mbid: string | null;
-            name: string;
             imageUrl: string | null;
             lastSyncedAt: Date;
             catalogSyncedAt: Date | null;
-            reviewCount: number;
         };
         album: {
             coverUrl: string | null;
@@ -166,26 +166,26 @@ export declare class CatalogRepository {
         } | null;
     } & {
         id: string;
+        albumId: string | null;
+        reviewCount: number;
         deezerId: string;
         mbid: string | null;
         lastSyncedAt: Date;
-        reviewCount: number;
         title: string;
         artistId: string;
-        albumId: string | null;
         durationMs: number | null;
         trackNumber: number | null;
         previewUrl: string | null;
     })[]>;
     upsertTrack(data: CatalogTrack, artistId: string, albumId: string | null): import("../../../generated/prisma/models.js").Prisma__TrackClient<{
         id: string;
+        albumId: string | null;
+        reviewCount: number;
         deezerId: string;
         mbid: string | null;
         lastSyncedAt: Date;
-        reviewCount: number;
         title: string;
         artistId: string;
-        albumId: string | null;
         durationMs: number | null;
         trackNumber: number | null;
         previewUrl: string | null;

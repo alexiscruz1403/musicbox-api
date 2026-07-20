@@ -1,13 +1,4 @@
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-export function encodeFollowedCursor(id) {
-    return Buffer.from(id).toString('base64');
-}
-export function decodeFollowedCursor(cursor) {
-    if (!cursor)
-        return undefined;
-    const decoded = Buffer.from(cursor, 'base64').toString('utf8');
-    return UUID_RE.test(decoded) ? decoded : undefined;
-}
+export { encodeIdCursor as encodeFollowedCursor, decodeIdCursor as decodeFollowedCursor, } from '../common/pagination/id-cursor.util.js';
 export const FEED_PHASES = ['S', 'T', 'R'];
 const DEFAULT_ALL_CURSOR = { phase: 'S', id: undefined };
 export function encodeAllCursor(cursor) {

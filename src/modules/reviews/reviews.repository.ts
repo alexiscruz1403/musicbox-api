@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '../../../generated/prisma/client.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
+import {
+  decodeIdCursor,
+  paginate,
+} from '../common/pagination/id-cursor.util.js';
 import type { UserReviewSortMode } from './dto/list-user-reviews-query.dto.js';
 
 export interface AlbumReviewItemInput {
@@ -258,7 +262,7 @@ export class ReviewsRepository {
     viewerId?: string,
   ) {
     const take = Math.min(limit, 50);
-    const cursorId = this.decodeCursor(cursor);
+    const cursorId = decodeIdCursor(cursor);
     const reviews = await this.prisma.review.findMany({
       where: {
         albumId,
@@ -285,7 +289,7 @@ export class ReviewsRepository {
         },
       },
     });
-    return this.paginate(reviews, take);
+    return paginate(reviews, take);
   }
 
   async listByTrack(
@@ -296,7 +300,7 @@ export class ReviewsRepository {
     viewerId?: string,
   ) {
     const take = Math.min(limit, 50);
-    const cursorId = this.decodeCursor(cursor);
+    const cursorId = decodeIdCursor(cursor);
     const reviews = await this.prisma.review.findMany({
       where: {
         trackId,
@@ -321,7 +325,7 @@ export class ReviewsRepository {
         },
       },
     });
-    return this.paginate(reviews, take);
+    return paginate(reviews, take);
   }
 
   // Filtra a nivel de where (no post-proceso) para no romper el cálculo de
@@ -346,7 +350,7 @@ export class ReviewsRepository {
     textQuery?: string,
   ) {
     const take = Math.min(limit, 50);
-    const cursorId = this.decodeCursor(cursor);
+    const cursorId = decodeIdCursor(cursor);
     const reviews = await this.prisma.review.findMany({
       where: {
         userId,
@@ -366,7 +370,7 @@ export class ReviewsRepository {
       ...(cursorId && { cursor: { id: cursorId }, skip: 1 }),
       include: { user: { select: { avatarUrl: true } } },
     });
-    return this.paginate(reviews, take);
+    return paginate(reviews, take);
   }
 
   private buildOrderBy(sort: SortMode) {
@@ -401,18 +405,5 @@ export class ReviewsRepository {
       default:
         return [{ createdAt: 'desc' as const }, { id: 'desc' as const }];
     }
-  }
-
-  private decodeCursor(cursor?: string): string | undefined {
-    return cursor ? Buffer.from(cursor, 'base64').toString('utf8') : undefined;
-  }
-
-  private paginate<T extends { id: string }>(rows: T[], take: number) {
-    const hasMore = rows.length > take;
-    const items = hasMore ? rows.slice(0, take) : rows;
-    const nextCursor = hasMore
-      ? Buffer.from(items[items.length - 1].id).toString('base64')
-      : null;
-    return { items, nextCursor };
   }
 }

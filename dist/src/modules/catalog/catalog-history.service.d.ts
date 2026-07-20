@@ -21,9 +21,9 @@ export declare class CatalogHistoryService {
     constructor(repo: CatalogHistoryRepository, catalog: CatalogService, artistDetail: ArtistDetailService);
     recordSearch(userId: string, query: string): Promise<void>;
     listSearchHistory(userId: string): Promise<{
+        query: string;
         id: string;
         userId: string;
-        query: string;
         searchedAt: Date;
     }[]>;
     deleteSearchHistoryItem(userId: string, id: string): Promise<void>;
@@ -37,9 +37,9 @@ export declare class CatalogHistoryService {
         userId: string;
         deezerId: string;
         title: string;
+        albumsCount: number | null;
         resourceType: CatalogResourceType;
         artistName: string | null;
-        albumsCount: number | null;
         viewedAt: Date;
     }[]>;
     getRecentlyViewedDetails(userId: string): Promise<RecentlyViewedDetailItem[]>;

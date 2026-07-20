@@ -23,29 +23,29 @@ export declare class ModerationRepository {
         targetId: string;
         reason: string;
     }): import("../../../generated/prisma/models.js").Prisma__ReportClient<{
+        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").ReportStatus;
-        createdAt: Date;
         targetId: string;
-        reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
-        reviewedById: string | null;
         reviewedAt: Date | null;
+        reporterId: string;
+        reviewedById: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     targetExists(targetType: ReportTargetType, targetId: string): Promise<boolean>;
     findReportById(id: string): import("../../../generated/prisma/models.js").Prisma__ReportClient<{
+        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").ReportStatus;
-        createdAt: Date;
         targetId: string;
-        reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
-        reviewedById: string | null;
         reviewedAt: Date | null;
+        reporterId: string;
+        reviewedById: string | null;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -57,15 +57,15 @@ export declare class ModerationRepository {
                 displayName: string;
             };
         } & {
+            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ReportStatus;
-            createdAt: Date;
             targetId: string;
-            reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
             reason: string;
-            reviewedById: string | null;
             reviewedAt: Date | null;
+            reporterId: string;
+            reviewedById: string | null;
         } & {
             reportedContent: ReportedContent;
         })[];
@@ -74,15 +74,15 @@ export declare class ModerationRepository {
     private hydrateReportedContent;
     private buildReportedContent;
     updateReportStatus(id: string, status: 'REVIEWED' | 'DISMISSED', reviewedById: string): import("../../../generated/prisma/models.js").Prisma__ReportClient<{
+        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").ReportStatus;
-        createdAt: Date;
         targetId: string;
-        reporterId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
-        reviewedById: string | null;
         reviewedAt: Date | null;
+        reporterId: string;
+        reviewedById: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -90,9 +90,9 @@ export declare class ModerationRepository {
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
         userId: string;
-        albumId: string | null;
         type: import("../../../generated/prisma/enums.js").ReviewType;
         trackId: string | null;
+        albumId: string | null;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
@@ -106,15 +106,15 @@ export declare class ModerationRepository {
     hideReviewIfActive(id: string, type: 'TRACK' | 'ALBUM', trackId: string | null, albumId: string | null): Promise<void>;
     hideCommentIfActive(id: string): Promise<void>;
     findActiveReview(id: string): import("../../../generated/prisma/models.js").Prisma__ReviewClient<{
+        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
-        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
-        albumId: string | null;
         type: import("../../../generated/prisma/enums.js").ReviewType;
         trackId: string | null;
+        albumId: string | null;
         description: string | null;
         rating: import("@prisma/client-runtime-utils").Decimal;
         externalTitle: string;
@@ -124,9 +124,9 @@ export declare class ModerationRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findActiveComment(id: string): import("../../../generated/prisma/models.js").Prisma__CommentClient<{
+        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
-        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
@@ -136,12 +136,13 @@ export declare class ModerationRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findActiveUser(id: string): import("../../../generated/prisma/models.js").Prisma__UserClient<{
+        createdAt: Date;
         id: string;
         handle: string;
-        displayName: string;
         email: string;
-        passwordHash: string | null;
         googleId: string | null;
+        displayName: string;
+        passwordHash: string | null;
         avatarUrl: string | null;
         avatarPublicId: string | null;
         coverUrl: string | null;
@@ -153,7 +154,6 @@ export declare class ModerationRepository {
         role: import("../../../generated/prisma/enums.js").UserRole;
         language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
-        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         acceptedReportsCount: number;
@@ -164,12 +164,13 @@ export declare class ModerationRepository {
     }>;
     incrementAcceptedReports(userId: string): Promise<number>;
     applyTemporaryPenalty(userId: string, level: number): import("../../../generated/prisma/models.js").Prisma__UserClient<{
+        createdAt: Date;
         id: string;
         handle: string;
-        displayName: string;
         email: string;
-        passwordHash: string | null;
         googleId: string | null;
+        displayName: string;
+        passwordHash: string | null;
         avatarUrl: string | null;
         avatarPublicId: string | null;
         coverUrl: string | null;
@@ -181,7 +182,6 @@ export declare class ModerationRepository {
         role: import("../../../generated/prisma/enums.js").UserRole;
         language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
-        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         acceptedReportsCount: number;
@@ -191,12 +191,13 @@ export declare class ModerationRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     suspendUser(id: string): Promise<[{
+        createdAt: Date;
         id: string;
         handle: string;
-        displayName: string;
         email: string;
-        passwordHash: string | null;
         googleId: string | null;
+        displayName: string;
+        passwordHash: string | null;
         avatarUrl: string | null;
         avatarPublicId: string | null;
         coverUrl: string | null;
@@ -208,14 +209,11 @@ export declare class ModerationRepository {
         role: import("../../../generated/prisma/enums.js").UserRole;
         language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
-        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         acceptedReportsCount: number;
         penaltyLevel: number;
         penalizedUntil: Date | null;
     }, import("../../../generated/prisma/internal/prismaNamespace.js").BatchPayload]>;
-    private decodeCursor;
-    private paginate;
 }
 export {};

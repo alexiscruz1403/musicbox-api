@@ -1,6 +1,7 @@
 import { InjectQueue } from '@nestjs/bullmq';
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import type { Queue } from 'bullmq';
+import { BullMqJobScheduler } from '../../common/scheduling/bullmq-job-scheduler.js';
 import { RECOMMENDATIONS_QUEUE } from '../../events/events.constants.js';
 import {
   RECOMMENDATIONS_CRON_PATTERN,
@@ -13,16 +14,10 @@ import {
 // TrendingScheduler), here using a cron `pattern` instead of `every` since
 // the spec calls for a fixed daily time, not an interval.
 @Injectable()
-export class RecommendationsScheduler implements OnApplicationBootstrap {
-  constructor(
-    @InjectQueue(RECOMMENDATIONS_QUEUE) private readonly queue: Queue,
-  ) {}
-
-  async onApplicationBootstrap(): Promise<void> {
-    await this.queue.upsertJobScheduler(
-      RECOMMENDATIONS_SCHEDULER_ID,
-      { pattern: RECOMMENDATIONS_CRON_PATTERN },
-      { name: RECOMMENDATIONS_JOB_NAME },
-    );
+export class RecommendationsScheduler extends BullMqJobScheduler {
+  constructor(@InjectQueue(RECOMMENDATIONS_QUEUE) queue: Queue) {
+    super(queue, RECOMMENDATIONS_SCHEDULER_ID, RECOMMENDATIONS_JOB_NAME, {
+      pattern: RECOMMENDATIONS_CRON_PATTERN,
+    });
   }
 }

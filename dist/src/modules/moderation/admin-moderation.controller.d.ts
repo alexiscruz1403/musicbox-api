@@ -13,15 +13,15 @@ export declare class AdminModerationController {
                 displayName: string;
             };
         } & {
+            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ReportStatus;
-            createdAt: Date;
             targetId: string;
-            reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
             reason: string;
-            reviewedById: string | null;
             reviewedAt: Date | null;
+            reporterId: string;
+            reviewedById: string | null;
         } & {
             reportedContent: import("./moderation.repository.js").ReportedContent;
         })[];
@@ -31,15 +31,15 @@ export declare class AdminModerationController {
     }>;
     updateStatus(admin: JwtPayload, id: string, dto: UpdateReportStatusDto): Promise<{
         data: {
+            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ReportStatus;
-            createdAt: Date;
             targetId: string;
-            reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
             reason: string;
-            reviewedById: string | null;
             reviewedAt: Date | null;
+            reporterId: string;
+            reviewedById: string | null;
         };
     }>;
     hideContent(type: string, id: string): Promise<void>;

@@ -26,7 +26,7 @@ AuthModule = __decorate([
                 useFactory: (config) => ({
                     secret: config.getOrThrow('JWT_SECRET'),
                     signOptions: {
-                        expiresIn: (process.env['JWT_EXPIRES_IN'] ?? '15m'),
+                        expiresIn: config.getOrThrow('JWT_EXPIRES_IN'),
                     },
                 }),
             }),

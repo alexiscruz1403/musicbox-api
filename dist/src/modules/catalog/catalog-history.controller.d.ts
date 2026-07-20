@@ -5,9 +5,9 @@ export declare class CatalogHistoryController {
     constructor(history: CatalogHistoryService);
     listSearchHistory(user: JwtPayload): Promise<{
         data: {
+            query: string;
             id: string;
             userId: string;
-            query: string;
             searchedAt: Date;
         }[];
     }>;
@@ -20,9 +20,9 @@ export declare class CatalogHistoryController {
             userId: string;
             deezerId: string;
             title: string;
+            albumsCount: number | null;
             resourceType: import("../../../generated/prisma/enums.js").CatalogResourceType;
             artistName: string | null;
-            albumsCount: number | null;
             viewedAt: Date;
         }[];
     }>;

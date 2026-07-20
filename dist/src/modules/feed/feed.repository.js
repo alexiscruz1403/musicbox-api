@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
-import { decodeFollowedCursor, encodeFollowedCursor, } from './feed-cursor.util.js';
+import { decodeIdCursor, paginate, } from '../common/pagination/id-cursor.util.js';
 const REVIEW_USER_INCLUDE = {
     user: {
         select: { id: true, handle: true, displayName: true, avatarUrl: true },
@@ -22,7 +22,7 @@ let FeedRepository = class FeedRepository {
     }
     async listFeed(userId, cursor, limit) {
         const take = Math.min(limit, 50);
-        const cursorId = decodeFollowedCursor(cursor);
+        const cursorId = decodeIdCursor(cursor);
         const reviews = await this.prisma.review.findMany({
             where: {
                 deletedAt: null,
@@ -34,15 +34,7 @@ let FeedRepository = class FeedRepository {
             ...(cursorId && { cursor: { id: cursorId }, skip: 1 }),
             include: REVIEW_USER_INCLUDE,
         });
-        return this.paginate(reviews, take);
-    }
-    paginate(rows, take) {
-        const hasMore = rows.length > take;
-        const items = hasMore ? rows.slice(0, take) : rows;
-        const nextCursor = hasMore
-            ? encodeFollowedCursor(items[items.length - 1].id)
-            : null;
-        return { items, nextCursor };
+        return paginate(reviews, take);
     }
     async getFollowedIds(userId) {
         const rows = await this.prisma.follow.findMany({

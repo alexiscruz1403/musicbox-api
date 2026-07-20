@@ -56,12 +56,9 @@ let CatalogController = class CatalogController {
         }
         return { data: track };
     }
-    async getArtistAlbums(deezerId, limit, cursor) {
-        const parsedLimit = limit
-            ? Math.min(Math.max(parseInt(limit, 10), 1), 50)
-            : 20;
+    async getArtistAlbums(deezerId, dto) {
         return {
-            data: await this.catalog.getArtistAlbums(deezerId, parsedLimit, cursor ?? null),
+            data: await this.catalog.getArtistAlbums(deezerId, dto.limit, dto.cursor ?? null),
         };
     }
     async getArtist(deezerId) {
@@ -118,10 +115,9 @@ __decorate([
 __decorate([
     Get('artists/:deezerId/albums'),
     __param(0, Param('deezerId')),
-    __param(1, Query('limit')),
-    __param(2, Query('cursor')),
+    __param(1, Query()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:paramtypes", [String, ArtistTracksQueryDto]),
     __metadata("design:returntype", Promise)
 ], CatalogController.prototype, "getArtistAlbums", null);
 __decorate([

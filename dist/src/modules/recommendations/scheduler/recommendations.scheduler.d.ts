@@ -1,7 +1,5 @@
-import { OnApplicationBootstrap } from '@nestjs/common';
 import type { Queue } from 'bullmq';
-export declare class RecommendationsScheduler implements OnApplicationBootstrap {
-    private readonly queue;
+import { BullMqJobScheduler } from '../../common/scheduling/bullmq-job-scheduler.js';
+export declare class RecommendationsScheduler extends BullMqJobScheduler {
     constructor(queue: Queue);
-    onApplicationBootstrap(): Promise<void>;
 }

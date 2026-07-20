@@ -23,8 +23,8 @@ export declare class NotificationsRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findRecentGroupable(recipientId: string, reviewId: string, type: 'LIKE' | 'DISLIKE', since: Date): import("../../../generated/prisma/models.js").Prisma__NotificationClient<{
-        id: string;
         createdAt: Date;
+        id: string;
         type: import("../../../generated/prisma/enums.js").NotificationType;
         reviewId: string | null;
         recipientId: string;
@@ -48,8 +48,8 @@ export declare class NotificationsRepository {
             avatarUrl: string | null;
         } | null;
     } & {
-        id: string;
         createdAt: Date;
+        id: string;
         type: import("../../../generated/prisma/enums.js").NotificationType;
         reviewId: string | null;
         recipientId: string;
@@ -71,8 +71,8 @@ export declare class NotificationsRepository {
             avatarUrl: string | null;
         } | null;
     } & {
-        id: string;
         createdAt: Date;
+        id: string;
         type: import("../../../generated/prisma/enums.js").NotificationType;
         reviewId: string | null;
         recipientId: string;
@@ -94,8 +94,8 @@ export declare class NotificationsRepository {
             avatarUrl: string | null;
         } | null;
     } & {
-        id: string;
         createdAt: Date;
+        id: string;
         type: import("../../../generated/prisma/enums.js").NotificationType;
         reviewId: string | null;
         recipientId: string;
@@ -107,8 +107,8 @@ export declare class NotificationsRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findById(id: string): import("../../../generated/prisma/models.js").Prisma__NotificationClient<{
-        id: string;
         createdAt: Date;
+        id: string;
         type: import("../../../generated/prisma/enums.js").NotificationType;
         reviewId: string | null;
         recipientId: string;
@@ -133,8 +133,8 @@ export declare class NotificationsRepository {
                 avatarUrl: string | null;
             } | null;
         } & {
-            id: string;
             createdAt: Date;
+            id: string;
             type: import("../../../generated/prisma/enums.js").NotificationType;
             reviewId: string | null;
             recipientId: string;
@@ -146,8 +146,8 @@ export declare class NotificationsRepository {
         nextCursor: string | null;
     }>;
     markRead(id: string): import("../../../generated/prisma/models.js").Prisma__NotificationClient<{
-        id: string;
         createdAt: Date;
+        id: string;
         type: import("../../../generated/prisma/enums.js").NotificationType;
         reviewId: string | null;
         recipientId: string;
@@ -159,5 +159,4 @@ export declare class NotificationsRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     markAllRead(recipientId: string): import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<import("../../../generated/prisma/internal/prismaNamespace.js").BatchPayload>;
-    private paginate;
 }

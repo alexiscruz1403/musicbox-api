@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
+import {
+  decodeIdCursor,
+  paginate,
+} from '../common/pagination/id-cursor.util.js';
 
 const HYDRATE_INCLUDE = {
   actor: { select: { handle: true, displayName: true, avatarUrl: true } },
@@ -82,9 +86,7 @@ export class NotificationsRepository {
     unreadOnly: boolean,
   ) {
     const take = Math.min(limit, 50);
-    const cursorId = cursor
-      ? Buffer.from(cursor, 'base64').toString('utf8')
-      : undefined;
+    const cursorId = decodeIdCursor(cursor);
 
     const rows = await this.prisma.notification.findMany({
       where: { recipientId, ...(unreadOnly ? { readAt: null } : {}) },
@@ -94,7 +96,7 @@ export class NotificationsRepository {
       include: HYDRATE_INCLUDE,
     });
 
-    return this.paginate(rows, take);
+    return paginate(rows, take);
   }
 
   markRead(id: string) {
@@ -109,14 +111,5 @@ export class NotificationsRepository {
       where: { recipientId, readAt: null },
       data: { readAt: new Date() },
     });
-  }
-
-  private paginate<T extends { id: string }>(rows: T[], take: number) {
-    const hasMore = rows.length > take;
-    const items = hasMore ? rows.slice(0, take) : rows;
-    const nextCursor = hasMore
-      ? Buffer.from(items[items.length - 1].id).toString('base64')
-      : null;
-    return { items, nextCursor };
   }
 }

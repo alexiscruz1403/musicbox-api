@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
+import { decodeIdCursor, paginate, } from '../common/pagination/id-cursor.util.js';
 let SocialRepository = class SocialRepository {
     prisma;
     constructor(prisma) {
@@ -121,7 +122,7 @@ let SocialRepository = class SocialRepository {
     }
     async listComments(reviewId, cursor, limit) {
         const take = Math.min(limit, 50);
-        const cursorId = this.decodeCursor(cursor);
+        const cursorId = decodeIdCursor(cursor);
         const comments = await this.prisma.comment.findMany({
             where: { reviewId, status: 'ACTIVE', deletedAt: null },
             orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
@@ -138,18 +139,7 @@ let SocialRepository = class SocialRepository {
                 },
             },
         });
-        return this.paginate(comments, take);
-    }
-    decodeCursor(cursor) {
-        return cursor ? Buffer.from(cursor, 'base64').toString('utf8') : undefined;
-    }
-    paginate(rows, take) {
-        const hasMore = rows.length > take;
-        const items = hasMore ? rows.slice(0, take) : rows;
-        const nextCursor = hasMore
-            ? Buffer.from(items[items.length - 1].id).toString('base64')
-            : null;
-        return { items, nextCursor };
+        return paginate(comments, take);
     }
 };
 SocialRepository = __decorate([

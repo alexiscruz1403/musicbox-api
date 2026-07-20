@@ -18,22 +18,21 @@ import { OptionalJwtAuthGuard } from '../common/guards/optional-jwt-auth.guard.j
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { Public } from '../common/decorators/public.decorator.js';
 import { IdempotencyInterceptor } from '../common/interceptors/idempotency.interceptor.js';
-import { ListUserReviewsQueryDto } from '../reviews/dto/list-user-reviews-query.dto.js';
-import { ReviewsService } from '../reviews/reviews.service.js';
 import { QuickSearchUsersDto } from './dto/quick-search-users.dto.js';
 import { SearchUsersQueryDto } from './dto/search-users-query.dto.js';
 import { UpdateFollowRequestStatusDto } from './dto/update-follow-request-status.dto.js';
 import { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
+import { FollowService } from './follow.service.js';
 import { UserSearchHistoryService } from './user-search-history.service.js';
 import { UsersService } from './users.service.js';
 let UsersController = class UsersController {
     users;
-    reviews;
+    followService;
     searchHistory;
-    constructor(users, reviews, searchHistory) {
+    constructor(users, followService, searchHistory) {
         this.users = users;
-        this.reviews = reviews;
+        this.followService = followService;
         this.searchHistory = searchHistory;
     }
     async getMe(user) {
@@ -63,12 +62,12 @@ let UsersController = class UsersController {
         return { data: await this.users.updateNotifPrefs(user.sub, dto) };
     }
     async listFollowRequests(user, cursor, limit) {
-        const result = await this.users.listFollowRequests(user.sub, cursor, limit ? parseInt(limit, 10) : undefined);
+        const result = await this.followService.listFollowRequests(user.sub, cursor, limit ? parseInt(limit, 10) : undefined);
         return { data: result.items, meta: { cursor: result.nextCursor } };
     }
     async respondFollowRequest(user, id, dto) {
         return {
-            data: await this.users.respondToFollowRequest(user.sub, id, dto.status),
+            data: await this.followService.respondToFollowRequest(user.sub, id, dto.status),
         };
     }
     async searchUsers(query, req) {
@@ -100,20 +99,16 @@ let UsersController = class UsersController {
     }
     async getFollowers(handle, req, cursor, limit) {
         return {
-            data: await this.users.getFollowers(handle, cursor, limit ? parseInt(limit, 10) : undefined, req.user?.sub),
+            data: await this.followService.getFollowers(handle, cursor, limit ? parseInt(limit, 10) : undefined, req.user?.sub),
         };
     }
     async getFollowing(handle, req, cursor, limit) {
         return {
-            data: await this.users.getFollowing(handle, cursor, limit ? parseInt(limit, 10) : undefined, req.user?.sub),
+            data: await this.followService.getFollowing(handle, cursor, limit ? parseInt(limit, 10) : undefined, req.user?.sub),
         };
     }
-    async getReviews(handle, query, req) {
-        const result = await this.reviews.listByUserHandle(handle, query, req.user?.sub);
-        return { data: result.items, meta: { cursor: result.nextCursor } };
-    }
     async follow(user, handle, res) {
-        const result = await this.users.follow(user.sub, handle);
+        const result = await this.followService.follow(user.sub, handle);
         if (result.status === 'PENDING') {
             res.status(HttpStatus.CREATED);
             return { data: result };
@@ -121,7 +116,7 @@ let UsersController = class UsersController {
         res.status(HttpStatus.NO_CONTENT);
     }
     async unfollow(user, handle) {
-        await this.users.unfollow(user.sub, handle);
+        await this.followService.unfollow(user.sub, handle);
     }
 };
 __decorate([
@@ -315,17 +310,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getFollowing", null);
 __decorate([
-    Public(),
-    Get(':handle/reviews'),
-    UseGuards(OptionalJwtAuthGuard),
-    __param(0, Param('handle')),
-    __param(1, Query()),
-    __param(2, Req()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, ListUserReviewsQueryDto, Object]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "getReviews", null);
-__decorate([
     Post(':handle/follow'),
     __param(0, CurrentUser()),
     __param(1, Param('handle')),
@@ -346,7 +330,7 @@ __decorate([
 UsersController = __decorate([
     Controller('users'),
     __metadata("design:paramtypes", [UsersService,
-        ReviewsService,
+        FollowService,
         UserSearchHistoryService])
 ], UsersController);
 export { UsersController };

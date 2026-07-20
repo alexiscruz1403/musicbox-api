@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
+import {
+  decodeIdCursor,
+  paginate,
+} from '../common/pagination/id-cursor.util.js';
 
 export interface ReviewStats {
   likesCount: number;
@@ -138,7 +142,7 @@ export class SocialRepository {
     limit: number,
   ) {
     const take = Math.min(limit, 50);
-    const cursorId = this.decodeCursor(cursor);
+    const cursorId = decodeIdCursor(cursor);
     const comments = await this.prisma.comment.findMany({
       where: { reviewId, status: 'ACTIVE', deletedAt: null },
       orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
@@ -155,19 +159,6 @@ export class SocialRepository {
         },
       },
     });
-    return this.paginate(comments, take);
-  }
-
-  private decodeCursor(cursor?: string): string | undefined {
-    return cursor ? Buffer.from(cursor, 'base64').toString('utf8') : undefined;
-  }
-
-  private paginate<T extends { id: string }>(rows: T[], take: number) {
-    const hasMore = rows.length > take;
-    const items = hasMore ? rows.slice(0, take) : rows;
-    const nextCursor = hasMore
-      ? Buffer.from(items[items.length - 1].id).toString('base64')
-      : null;
-    return { items, nextCursor };
+    return paginate(comments, take);
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import {
-  decodeCatalogCursor,
-  encodeCatalogCursor,
-} from './catalog-cursor.util.js';
+  decodeIdCursor,
+  encodeIdCursor,
+} from '../common/pagination/id-cursor.util.js';
 import type {
   CatalogAlbum,
   CatalogArtist,
@@ -279,7 +279,7 @@ export class CatalogRepository {
     cursor: string | null,
     limit: number,
   ) {
-    const cursorId = decodeCatalogCursor(cursor);
+    const cursorId = decodeIdCursor(cursor);
     const [rows, total] = await Promise.all([
       this.prisma.track.findMany({
         where: { artistId },
@@ -304,7 +304,7 @@ export class CatalogRepository {
     const hasMore = rows.length > limit;
     const items = hasMore ? rows.slice(0, limit) : rows;
     const nextCursor = hasMore
-      ? encodeCatalogCursor(items[items.length - 1].id)
+      ? encodeIdCursor(items[items.length - 1].id)
       : null;
     return { items, nextCursor, total };
   }

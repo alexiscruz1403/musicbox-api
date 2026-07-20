@@ -1,13 +1,13 @@
 import {
   BadRequestException,
-  ConflictException,
-  ForbiddenException,
   Injectable,
+  ConflictException,
   NotFoundException,
 } from '@nestjs/common';
 import sanitizeHtml from 'sanitize-html';
 import { CloudinaryService } from '../../cloudinary/cloudinary.service.js';
-import { SocialEventsProducer } from '../events/social-events.producer.js';
+import { FollowService } from './follow.service.js';
+import { UserSearchRepository } from './user-search.repository.js';
 import type { UpdateNotifPrefsDto } from './dto/update-notif-prefs.dto.js';
 import type { UpdateProfileDto } from './dto/update-profile.dto.js';
 import { UsersRepository } from './users.repository.js';
@@ -16,7 +16,8 @@ import { UsersRepository } from './users.repository.js';
 export class UsersService {
   constructor(
     private readonly repo: UsersRepository,
-    private readonly events: SocialEventsProducer,
+    private readonly userSearchRepo: UserSearchRepository,
+    private readonly followService: FollowService,
     private readonly cloudinaryService: CloudinaryService,
   ) {}
 
@@ -74,26 +75,10 @@ export class UsersService {
     const updated = await this.repo.updateProfile(userId, sanitized);
 
     if (current?.isPrivate === true && dto.isPrivate === false) {
-      await this.autoAcceptPendingFollowRequests(userId);
+      await this.followService.acceptAllPendingFollowRequests(userId);
     }
 
     return updated;
-  }
-
-  // Al pasar un perfil de privado a público, el gate de aprobación deja de
-  // tener sentido — todas las solicitudes PENDING se resuelven como
-  // aceptadas (docs/fase-7-features.md, sección de perfiles privados).
-  private async autoAcceptPendingFollowRequests(targetId: string) {
-    const requesterIds =
-      await this.repo.acceptAllPendingFollowRequests(targetId);
-    await Promise.all(
-      requesterIds.map((requesterId) =>
-        this.events.emitFollowRequestAccepted({
-          requesterId,
-          accepterId: targetId,
-        }),
-      ),
-    );
   }
 
   async uploadAvatar(userId: string, buffer: Buffer): Promise<string> {
@@ -227,25 +212,25 @@ export class UsersService {
     const [reviewCount, followersCount, followingCount] =
       await this.repo.getStats(user.id);
 
-    let isFollowing = false;
-    let followRequestPending = false;
-    if (viewerId) {
-      isFollowing = !!(await this.repo.followExists(viewerId, user.id));
-      if (!isFollowing) {
-        const request = await this.repo.findFollowRequest(viewerId, user.id);
-        followRequestPending = request?.status === 'PENDING';
-      }
-    }
+    const { isFollowing, followRequestPending } =
+      await this.followService.getFollowStatus(viewerId, user.id);
 
-    const {
-      email: _email,
-      passwordHash: _pw,
-      googleId: _gid,
-      deletedAt: _da,
-      avatarPublicId: _api,
-      coverPublicId: _cpi,
-      ...publicFields
-    } = user;
+    // Allow-list, not an exclusion list: every new sensitive User field added
+    // over time (role, consentedAt, acceptedReportsCount, penaltyLevel,
+    // penalizedUntil, notifEnabled, language, ...) must be excluded by
+    // omission from a public/unauthenticated response by default, instead of
+    // relying on someone remembering to add it to a deny-list here.
+    const publicFields = {
+      id: user.id,
+      handle: user.handle,
+      displayName: user.displayName,
+      avatarUrl: user.avatarUrl,
+      coverUrl: user.coverUrl,
+      bio: user.bio,
+      status: user.status,
+      isPrivate: user.isPrivate,
+      createdAt: user.createdAt,
+    };
     return {
       user: publicFields,
       stats: { reviewCount, followersCount, followingCount },
@@ -260,159 +245,10 @@ export class UsersService {
     limit?: number,
     viewerId?: string,
   ) {
-    return this.repo.searchUsers(q.trim(), cursor, limit, viewerId);
+    return this.userSearchRepo.searchUsers(q.trim(), cursor, limit, viewerId);
   }
 
   async quickSearchUsers(q: string, viewerId?: string) {
-    return this.repo.quickSearchUsers(q.trim(), 5, viewerId);
-  }
-
-  async getFollowers(
-    handle: string,
-    cursor?: string,
-    limit?: number,
-    viewerId?: string,
-  ) {
-    return this.repo.getFollowers(handle, cursor, limit, viewerId);
-  }
-
-  async getFollowing(
-    handle: string,
-    cursor?: string,
-    limit?: number,
-    viewerId?: string,
-  ) {
-    return this.repo.getFollowing(handle, cursor, limit, viewerId);
-  }
-
-  async follow(
-    followerId: string,
-    handle: string,
-  ): Promise<
-    { status: 'FOLLOWING' } | { status: 'PENDING'; followRequestId: string }
-  > {
-    const target = await this.repo.findByHandle(handle);
-    if (!target || target.status === 'DELETED') {
-      throw new NotFoundException({
-        code: 'USER_NOT_FOUND',
-      });
-    }
-    if (target.id === followerId) {
-      throw new BadRequestException({
-        code: 'CANNOT_FOLLOW_SELF',
-      });
-    }
-    const exists = await this.repo.followExists(followerId, target.id);
-    if (exists)
-      throw new ConflictException({
-        code: 'ALREADY_FOLLOWING',
-      });
-
-    if (!target.isPrivate) {
-      await this.repo.createFollow(followerId, target.id);
-      await this.events.emitFollowCreated({
-        followerId,
-        followeeId: target.id,
-      });
-      return { status: 'FOLLOWING' };
-    }
-
-    const existingRequest = await this.repo.findFollowRequest(
-      followerId,
-      target.id,
-    );
-    if (existingRequest?.status === 'PENDING') {
-      throw new ConflictException({
-        code: 'FOLLOW_REQUEST_ALREADY_SENT',
-      });
-    }
-
-    const request = await this.repo.createOrResetFollowRequest(
-      followerId,
-      target.id,
-    );
-    await this.events.emitFollowRequested({
-      requesterId: followerId,
-      targetId: target.id,
-    });
-    return { status: 'PENDING', followRequestId: request.id };
-  }
-
-  async unfollow(followerId: string, handle: string) {
-    const target = await this.repo.findByHandle(handle);
-    if (!target)
-      throw new NotFoundException({
-        code: 'USER_NOT_FOUND',
-      });
-
-    const exists = await this.repo.followExists(followerId, target.id);
-    if (exists) {
-      await this.repo.deleteFollow(followerId, target.id);
-      return;
-    }
-
-    const pendingRequest = await this.repo.findFollowRequest(
-      followerId,
-      target.id,
-    );
-    if (pendingRequest?.status === 'PENDING') {
-      await this.repo.deleteFollowRequest(followerId, target.id);
-      return;
-    }
-
-    throw new NotFoundException({
-      code: 'NOT_FOLLOWING',
-    });
-  }
-
-  async listFollowRequests(userId: string, cursor?: string, limit?: number) {
-    const result = await this.repo.listIncomingFollowRequests(
-      userId,
-      cursor,
-      limit,
-    );
-    return {
-      items: result.items.map((r) => ({
-        id: r.id,
-        createdAt: r.createdAt,
-        requester: r.requester,
-      })),
-      nextCursor: result.nextCursor,
-    };
-  }
-
-  async respondToFollowRequest(
-    userId: string,
-    requestId: string,
-    status: 'ACCEPTED' | 'REJECTED',
-  ) {
-    const request = await this.repo.findFollowRequestById(requestId);
-    if (!request) {
-      throw new NotFoundException({
-        code: 'FOLLOW_REQUEST_NOT_FOUND',
-      });
-    }
-    if (request.targetId !== userId) {
-      throw new ForbiddenException({
-        code: 'NOT_FOLLOW_REQUEST_TARGET',
-      });
-    }
-    if (request.status !== 'PENDING') {
-      throw new ConflictException({
-        code: 'FOLLOW_REQUEST_ALREADY_RESOLVED',
-      });
-    }
-
-    if (status === 'REJECTED') {
-      // Sin notificación al rechazar — requisito explícito.
-      return this.repo.rejectFollowRequest(requestId);
-    }
-
-    const accepted = await this.repo.acceptFollowRequest(requestId);
-    await this.events.emitFollowRequestAccepted({
-      requesterId: accepted.requesterId,
-      accepterId: userId,
-    });
-    return accepted;
+    return this.userSearchRepo.quickSearchUsers(q.trim(), 5, viewerId);
   }
 }

@@ -76,17 +76,13 @@ export class CatalogController {
   @Get('artists/:deezerId/albums')
   async getArtistAlbums(
     @Param('deezerId') deezerId: string,
-    @Query('limit') limit?: string,
-    @Query('cursor') cursor?: string,
+    @Query() dto: ArtistTracksQueryDto,
   ) {
-    const parsedLimit = limit
-      ? Math.min(Math.max(parseInt(limit, 10), 1), 50)
-      : 20;
     return {
       data: await this.catalog.getArtistAlbums(
         deezerId,
-        parsedLimit,
-        cursor ?? null,
+        dto.limit,
+        dto.cursor ?? null,
       ),
     };
   }

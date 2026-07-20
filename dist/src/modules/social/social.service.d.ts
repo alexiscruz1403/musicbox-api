@@ -10,8 +10,8 @@ export declare class SocialService {
     constructor(repo: SocialRepository, events: SocialEventsProducer);
     getReviewStats(reviewIds: string[], viewerId?: string): Promise<Map<string, import("./social.repository.js").ReviewStats>>;
     react(userId: string, reviewId: string, dto: CreateReactionDto): Promise<{
-        id: string;
         createdAt: Date;
+        id: string;
         userId: string;
         type: import("../../../generated/prisma/enums.js").ReactionType;
         reviewId: string;
@@ -26,9 +26,9 @@ export declare class SocialService {
                 avatarUrl: string | null;
             };
         } & {
+            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
-            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
@@ -38,9 +38,9 @@ export declare class SocialService {
         nextCursor: string | null;
     }>;
     createComment(userId: string, reviewId: string, dto: CreateCommentDto): Promise<{
+        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
-        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
@@ -48,9 +48,9 @@ export declare class SocialService {
         content: string;
     }>;
     updateComment(userId: string, id: string, dto: UpdateCommentDto): Promise<{
+        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
-        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;

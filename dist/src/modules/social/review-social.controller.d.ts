@@ -9,8 +9,8 @@ export declare class ReviewSocialController {
     constructor(social: SocialService);
     react(user: JwtPayload, id: string, dto: CreateReactionDto): Promise<{
         data: {
-            id: string;
             createdAt: Date;
+            id: string;
             userId: string;
             type: import("../../../generated/prisma/enums.js").ReactionType;
             reviewId: string;
@@ -28,9 +28,9 @@ export declare class ReviewSocialController {
                 avatarUrl: string | null;
             };
         } & {
+            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
-            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
@@ -43,9 +43,9 @@ export declare class ReviewSocialController {
     }>;
     createComment(user: JwtPayload, id: string, dto: CreateCommentDto): Promise<{
         data: {
+            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
-            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;

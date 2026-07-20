@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '../../../generated/prisma/client.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
+import { decodeIdCursor, paginate, } from '../common/pagination/id-cursor.util.js';
 let ReviewsRepository = class ReviewsRepository {
     prisma;
     constructor(prisma) {
@@ -202,7 +203,7 @@ let ReviewsRepository = class ReviewsRepository {
     }
     async listByAlbum(albumId, cursor, limit, sort, viewerId) {
         const take = Math.min(limit, 50);
-        const cursorId = this.decodeCursor(cursor);
+        const cursorId = decodeIdCursor(cursor);
         const reviews = await this.prisma.review.findMany({
             where: {
                 albumId,
@@ -226,11 +227,11 @@ let ReviewsRepository = class ReviewsRepository {
                 },
             },
         });
-        return this.paginate(reviews, take);
+        return paginate(reviews, take);
     }
     async listByTrack(trackId, cursor, limit, sort, viewerId) {
         const take = Math.min(limit, 50);
-        const cursorId = this.decodeCursor(cursor);
+        const cursorId = decodeIdCursor(cursor);
         const reviews = await this.prisma.review.findMany({
             where: {
                 trackId,
@@ -254,7 +255,7 @@ let ReviewsRepository = class ReviewsRepository {
                 },
             },
         });
-        return this.paginate(reviews, take);
+        return paginate(reviews, take);
     }
     buildVisibilityFilter(viewerId) {
         if (!viewerId)
@@ -269,7 +270,7 @@ let ReviewsRepository = class ReviewsRepository {
     }
     async listByUserId(userId, cursor, limit, sort, textQuery) {
         const take = Math.min(limit, 50);
-        const cursorId = this.decodeCursor(cursor);
+        const cursorId = decodeIdCursor(cursor);
         const reviews = await this.prisma.review.findMany({
             where: {
                 userId,
@@ -289,7 +290,7 @@ let ReviewsRepository = class ReviewsRepository {
             ...(cursorId && { cursor: { id: cursorId }, skip: 1 }),
             include: { user: { select: { avatarUrl: true } } },
         });
-        return this.paginate(reviews, take);
+        return paginate(reviews, take);
     }
     buildOrderBy(sort) {
         return sort === 'rating'
@@ -319,17 +320,6 @@ let ReviewsRepository = class ReviewsRepository {
             default:
                 return [{ createdAt: 'desc' }, { id: 'desc' }];
         }
-    }
-    decodeCursor(cursor) {
-        return cursor ? Buffer.from(cursor, 'base64').toString('utf8') : undefined;
-    }
-    paginate(rows, take) {
-        const hasMore = rows.length > take;
-        const items = hasMore ? rows.slice(0, take) : rows;
-        const nextCursor = hasMore
-            ? Buffer.from(items[items.length - 1].id).toString('base64')
-            : null;
-        return { items, nextCursor };
     }
 };
 ReviewsRepository = __decorate([

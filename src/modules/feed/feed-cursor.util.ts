@@ -1,21 +1,12 @@
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-export function encodeFollowedCursor(id: string): string {
-  return Buffer.from(id).toString('base64');
-}
-
-/**
- * Validates the decoded string looks like a review id (UUID) before
- * returning it — guards against an ALL-mode JSON cursor being replayed
- * against FOLLOWED mode (e.g. the client switched tabs). base64-decoding
- * never throws, so a shape check is required.
- */
-export function decodeFollowedCursor(cursor?: string): string | undefined {
-  if (!cursor) return undefined;
-  const decoded = Buffer.from(cursor, 'base64').toString('utf8');
-  return UUID_RE.test(decoded) ? decoded : undefined;
-}
+// FOLLOWED-mode cursors are plain id-cursors — see
+// src/modules/common/pagination/id-cursor.util.ts (encodeIdCursor/
+// decodeIdCursor). Re-exported here under the old names so existing imports
+// (and the "legacy FOLLOWED cursor replayed against ALL mode" fallback test
+// below) keep reading naturally in this file's own vocabulary.
+export {
+  encodeIdCursor as encodeFollowedCursor,
+  decodeIdCursor as decodeFollowedCursor,
+} from '../common/pagination/id-cursor.util.js';
 
 export type FeedPhase = 'S' | 'T' | 'R';
 export const FEED_PHASES: FeedPhase[] = ['S', 'T', 'R'];

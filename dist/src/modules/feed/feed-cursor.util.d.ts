@@ -1,5 +1,4 @@
-export declare function encodeFollowedCursor(id: string): string;
-export declare function decodeFollowedCursor(cursor?: string): string | undefined;
+export { encodeIdCursor as encodeFollowedCursor, decodeIdCursor as decodeFollowedCursor, } from '../common/pagination/id-cursor.util.js';
 export type FeedPhase = 'S' | 'T' | 'R';
 export declare const FEED_PHASES: FeedPhase[];
 export interface AllFeedCursor {

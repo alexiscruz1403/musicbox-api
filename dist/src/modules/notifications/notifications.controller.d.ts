@@ -1,4 +1,5 @@
 import { type MessageEvent } from '@nestjs/common';
+import type { Response } from 'express';
 import type { Observable } from 'rxjs';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { ListNotificationsQueryDto } from './dto/list-notifications-query.dto.js';
@@ -22,8 +23,8 @@ export declare class NotificationsController {
                 avatarUrl: string | null;
             } | null;
         } & {
-            id: string;
             createdAt: Date;
+            id: string;
             type: import("../../../generated/prisma/enums.js").NotificationType;
             reviewId: string | null;
             recipientId: string;
@@ -38,8 +39,8 @@ export declare class NotificationsController {
     }>;
     markRead(user: JwtPayload, id: string): Promise<{
         data: {
-            id: string;
             createdAt: Date;
+            id: string;
             type: import("../../../generated/prisma/enums.js").NotificationType;
             reviewId: string | null;
             recipientId: string;
@@ -50,5 +51,5 @@ export declare class NotificationsController {
         };
     }>;
     markAllRead(user: JwtPayload): Promise<void>;
-    stream(user: JwtPayload): Observable<MessageEvent>;
+    stream(user: JwtPayload, res: Response): Observable<MessageEvent>;
 }

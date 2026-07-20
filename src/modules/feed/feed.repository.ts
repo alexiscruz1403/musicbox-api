@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import type { Prisma } from '../../../generated/prisma/client.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import {
-  decodeFollowedCursor,
-  encodeFollowedCursor,
-} from './feed-cursor.util.js';
+  decodeIdCursor,
+  paginate,
+} from '../common/pagination/id-cursor.util.js';
 
 const REVIEW_USER_INCLUDE = {
   user: {
@@ -36,7 +36,7 @@ export class FeedRepository {
   // ── FOLLOWED mode ──────────────────────────────────────────────
   async listFeed(userId: string, cursor: string | undefined, limit: number) {
     const take = Math.min(limit, 50);
-    const cursorId = decodeFollowedCursor(cursor);
+    const cursorId = decodeIdCursor(cursor);
     const reviews = await this.prisma.review.findMany({
       where: {
         deletedAt: null,
@@ -48,16 +48,7 @@ export class FeedRepository {
       ...(cursorId && { cursor: { id: cursorId }, skip: 1 }),
       include: REVIEW_USER_INCLUDE,
     });
-    return this.paginate(reviews, take);
-  }
-
-  private paginate<T extends { id: string }>(rows: T[], take: number) {
-    const hasMore = rows.length > take;
-    const items = hasMore ? rows.slice(0, take) : rows;
-    const nextCursor = hasMore
-      ? encodeFollowedCursor(items[items.length - 1].id)
-      : null;
-    return { items, nextCursor };
+    return paginate(reviews, take);
   }
 
   // ── ALL mode: shared precompute ────────────────────────────────

@@ -16,15 +16,15 @@ export declare class FeedController {
                 displayName: string;
                 avatarUrl: string | null;
             };
+            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
-            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
-            albumId: string | null;
             type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
+            albumId: string | null;
             description: string | null;
             rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;

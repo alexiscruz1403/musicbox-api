@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Sse, } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Res, Sse, } from '@nestjs/common';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { ListNotificationsQueryDto } from './dto/list-notifications-query.dto.js';
 import { NotificationsSseService } from './notifications-sse.service.js';
@@ -32,7 +32,8 @@ let NotificationsController = class NotificationsController {
     async markAllRead(user) {
         await this.service.markAllRead(user.sub);
     }
-    stream(user) {
+    stream(user, res) {
+        res.setHeader('X-Accel-Buffering', 'no');
         return this.sse.subscribe(user.sub);
     }
 };
@@ -63,8 +64,9 @@ __decorate([
 __decorate([
     Sse('stream'),
     __param(0, CurrentUser()),
+    __param(1, Res({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Function)
 ], NotificationsController.prototype, "stream", null);
 NotificationsController = __decorate([

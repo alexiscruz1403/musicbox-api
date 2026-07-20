@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service.js';
+import { decodeIdCursor, paginate, } from '../common/pagination/id-cursor.util.js';
 let ModerationRepository = class ModerationRepository {
     prisma;
     constructor(prisma) {
@@ -41,7 +42,7 @@ let ModerationRepository = class ModerationRepository {
     }
     async listReports(status, targetType, cursor, limit) {
         const take = Math.min(limit, 50);
-        const cursorId = this.decodeCursor(cursor);
+        const cursorId = decodeIdCursor(cursor);
         const reports = await this.prisma.report.findMany({
             where: { ...(status && { status }), ...(targetType && { targetType }) },
             orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
@@ -51,7 +52,7 @@ let ModerationRepository = class ModerationRepository {
                 reporter: { select: { id: true, handle: true, displayName: true } },
             },
         });
-        const { items, nextCursor } = this.paginate(reports, take);
+        const { items, nextCursor } = paginate(reports, take);
         return { items: await this.hydrateReportedContent(items), nextCursor };
     }
     async hydrateReportedContent(reports) {
@@ -233,17 +234,6 @@ let ModerationRepository = class ModerationRepository {
                 data: { revokedAt: new Date() },
             }),
         ]);
-    }
-    decodeCursor(cursor) {
-        return cursor ? Buffer.from(cursor, 'base64').toString('utf8') : undefined;
-    }
-    paginate(rows, take) {
-        const hasMore = rows.length > take;
-        const items = hasMore ? rows.slice(0, take) : rows;
-        const nextCursor = hasMore
-            ? Buffer.from(items[items.length - 1].id).toString('base64')
-            : null;
-        return { items, nextCursor };
     }
 };
 ModerationRepository = __decorate([

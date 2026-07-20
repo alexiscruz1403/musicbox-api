@@ -6,15 +6,15 @@ export declare class ReportsController {
     constructor(moderation: ModerationService);
     create(user: JwtPayload, dto: CreateReportDto): Promise<{
         data: {
+            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ReportStatus;
-            createdAt: Date;
             targetId: string;
-            reporterId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
             reason: string;
-            reviewedById: string | null;
             reviewedAt: Date | null;
+            reporterId: string;
+            reviewedById: string | null;
         };
     }>;
 }

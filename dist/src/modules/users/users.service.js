@@ -7,18 +7,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException, } from '@nestjs/common';
+import { BadRequestException, Injectable, ConflictException, NotFoundException, } from '@nestjs/common';
 import sanitizeHtml from 'sanitize-html';
 import { CloudinaryService } from '../../cloudinary/cloudinary.service.js';
-import { SocialEventsProducer } from '../events/social-events.producer.js';
+import { FollowService } from './follow.service.js';
+import { UserSearchRepository } from './user-search.repository.js';
 import { UsersRepository } from './users.repository.js';
 let UsersService = class UsersService {
     repo;
-    events;
+    userSearchRepo;
+    followService;
     cloudinaryService;
-    constructor(repo, events, cloudinaryService) {
+    constructor(repo, userSearchRepo, followService, cloudinaryService) {
         this.repo = repo;
-        this.events = events;
+        this.userSearchRepo = userSearchRepo;
+        this.followService = followService;
         this.cloudinaryService = cloudinaryService;
     }
     async getMe(userId) {
@@ -58,16 +61,9 @@ let UsersService = class UsersService {
         };
         const updated = await this.repo.updateProfile(userId, sanitized);
         if (current?.isPrivate === true && dto.isPrivate === false) {
-            await this.autoAcceptPendingFollowRequests(userId);
+            await this.followService.acceptAllPendingFollowRequests(userId);
         }
         return updated;
-    }
-    async autoAcceptPendingFollowRequests(targetId) {
-        const requesterIds = await this.repo.acceptAllPendingFollowRequests(targetId);
-        await Promise.all(requesterIds.map((requesterId) => this.events.emitFollowRequestAccepted({
-            requesterId,
-            accepterId: targetId,
-        })));
     }
     async uploadAvatar(userId, buffer) {
         const current = await this.repo.findById(userId);
@@ -167,16 +163,18 @@ let UsersService = class UsersService {
             });
         }
         const [reviewCount, followersCount, followingCount] = await this.repo.getStats(user.id);
-        let isFollowing = false;
-        let followRequestPending = false;
-        if (viewerId) {
-            isFollowing = !!(await this.repo.followExists(viewerId, user.id));
-            if (!isFollowing) {
-                const request = await this.repo.findFollowRequest(viewerId, user.id);
-                followRequestPending = request?.status === 'PENDING';
-            }
-        }
-        const { email: _email, passwordHash: _pw, googleId: _gid, deletedAt: _da, avatarPublicId: _api, coverPublicId: _cpi, ...publicFields } = user;
+        const { isFollowing, followRequestPending } = await this.followService.getFollowStatus(viewerId, user.id);
+        const publicFields = {
+            id: user.id,
+            handle: user.handle,
+            displayName: user.displayName,
+            avatarUrl: user.avatarUrl,
+            coverUrl: user.coverUrl,
+            bio: user.bio,
+            status: user.status,
+            isPrivate: user.isPrivate,
+            createdAt: user.createdAt,
+        };
         return {
             user: publicFields,
             stats: { reviewCount, followersCount, followingCount },
@@ -185,118 +183,17 @@ let UsersService = class UsersService {
         };
     }
     async searchUsers(q, cursor, limit, viewerId) {
-        return this.repo.searchUsers(q.trim(), cursor, limit, viewerId);
+        return this.userSearchRepo.searchUsers(q.trim(), cursor, limit, viewerId);
     }
     async quickSearchUsers(q, viewerId) {
-        return this.repo.quickSearchUsers(q.trim(), 5, viewerId);
-    }
-    async getFollowers(handle, cursor, limit, viewerId) {
-        return this.repo.getFollowers(handle, cursor, limit, viewerId);
-    }
-    async getFollowing(handle, cursor, limit, viewerId) {
-        return this.repo.getFollowing(handle, cursor, limit, viewerId);
-    }
-    async follow(followerId, handle) {
-        const target = await this.repo.findByHandle(handle);
-        if (!target || target.status === 'DELETED') {
-            throw new NotFoundException({
-                code: 'USER_NOT_FOUND',
-            });
-        }
-        if (target.id === followerId) {
-            throw new BadRequestException({
-                code: 'CANNOT_FOLLOW_SELF',
-            });
-        }
-        const exists = await this.repo.followExists(followerId, target.id);
-        if (exists)
-            throw new ConflictException({
-                code: 'ALREADY_FOLLOWING',
-            });
-        if (!target.isPrivate) {
-            await this.repo.createFollow(followerId, target.id);
-            await this.events.emitFollowCreated({
-                followerId,
-                followeeId: target.id,
-            });
-            return { status: 'FOLLOWING' };
-        }
-        const existingRequest = await this.repo.findFollowRequest(followerId, target.id);
-        if (existingRequest?.status === 'PENDING') {
-            throw new ConflictException({
-                code: 'FOLLOW_REQUEST_ALREADY_SENT',
-            });
-        }
-        const request = await this.repo.createOrResetFollowRequest(followerId, target.id);
-        await this.events.emitFollowRequested({
-            requesterId: followerId,
-            targetId: target.id,
-        });
-        return { status: 'PENDING', followRequestId: request.id };
-    }
-    async unfollow(followerId, handle) {
-        const target = await this.repo.findByHandle(handle);
-        if (!target)
-            throw new NotFoundException({
-                code: 'USER_NOT_FOUND',
-            });
-        const exists = await this.repo.followExists(followerId, target.id);
-        if (exists) {
-            await this.repo.deleteFollow(followerId, target.id);
-            return;
-        }
-        const pendingRequest = await this.repo.findFollowRequest(followerId, target.id);
-        if (pendingRequest?.status === 'PENDING') {
-            await this.repo.deleteFollowRequest(followerId, target.id);
-            return;
-        }
-        throw new NotFoundException({
-            code: 'NOT_FOLLOWING',
-        });
-    }
-    async listFollowRequests(userId, cursor, limit) {
-        const result = await this.repo.listIncomingFollowRequests(userId, cursor, limit);
-        return {
-            items: result.items.map((r) => ({
-                id: r.id,
-                createdAt: r.createdAt,
-                requester: r.requester,
-            })),
-            nextCursor: result.nextCursor,
-        };
-    }
-    async respondToFollowRequest(userId, requestId, status) {
-        const request = await this.repo.findFollowRequestById(requestId);
-        if (!request) {
-            throw new NotFoundException({
-                code: 'FOLLOW_REQUEST_NOT_FOUND',
-            });
-        }
-        if (request.targetId !== userId) {
-            throw new ForbiddenException({
-                code: 'NOT_FOLLOW_REQUEST_TARGET',
-            });
-        }
-        if (request.status !== 'PENDING') {
-            throw new ConflictException({
-                code: 'FOLLOW_REQUEST_ALREADY_RESOLVED',
-            });
-        }
-        if (status === 'REJECTED') {
-            return this.repo.rejectFollowRequest(requestId);
-        }
-        const accepted = await this.repo.acceptFollowRequest(requestId);
-        await this.events.emitFollowRequestAccepted({
-            requesterId: accepted.requesterId,
-            accepterId: userId,
-        });
-        return accepted;
+        return this.userSearchRepo.quickSearchUsers(q.trim(), 5, viewerId);
     }
 };
 UsersService = __decorate([
     Injectable(),
     __metadata("design:paramtypes", [UsersRepository,
-        SocialEventsProducer,
+        UserSearchRepository,
+        FollowService,
         CloudinaryService])
 ], UsersService);
 export { UsersService };

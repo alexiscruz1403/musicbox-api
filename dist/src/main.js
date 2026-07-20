@@ -1,5 +1,6 @@
 import './instrument.js';
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { Logger } from 'nestjs-pino';
 import helmet from 'helmet';
 import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
@@ -7,10 +8,14 @@ import { AppModule } from './app.module.js';
 import { HttpExceptionFilter } from './modules/common/filters/http-exception.filter.js';
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, { bufferLogs: true });
+    const config = app.get(ConfigService);
     app.useLogger(app.get(Logger));
     app.setGlobalPrefix('v1');
     app.use(helmet());
-    app.enableCors({ origin: process.env['FRONTEND_URL'], credentials: true });
+    app.enableCors({
+        origin: config.getOrThrow('FRONTEND_URL'),
+        credentials: true,
+    });
     app.useGlobalPipes(new I18nValidationPipe({
         whitelist: true,
         forbidNonWhitelisted: true,
@@ -29,7 +34,7 @@ async function bootstrap() {
             };
         },
     }), new HttpExceptionFilter());
-    await app.listen(process.env['PORT'] ?? 3001);
+    await app.listen(config.getOrThrow('PORT'));
 }
 void bootstrap();
 //# sourceMappingURL=main.js.map

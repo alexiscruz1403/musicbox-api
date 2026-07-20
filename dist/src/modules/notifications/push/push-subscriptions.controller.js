@@ -39,6 +39,7 @@ __decorate([
 ], PushSubscriptionsController.prototype, "getVapidPublicKey", null);
 __decorate([
     Post('subscriptions'),
+    HttpCode(HttpStatus.NO_CONTENT),
     __param(0, CurrentUser()),
     __param(1, Body()),
     __param(2, Req()),
