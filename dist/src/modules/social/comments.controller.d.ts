@@ -6,13 +6,13 @@ export declare class CommentsController {
     constructor(social: SocialService);
     update(user: JwtPayload, id: string, dto: UpdateCommentDto): Promise<{
         data: {
-            createdAt: Date;
-            id: string;
+            userId: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
+            id: string;
+            reviewId: string;
+            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
-            userId: string;
-            reviewId: string;
             content: string;
         };
     }>;

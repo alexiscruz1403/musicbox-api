@@ -7,25 +7,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
-import { BullMqJobScheduler } from '../../common/scheduling/bullmq-job-scheduler.js';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
+import { PgBossJobScheduler } from '../../common/scheduling/pgboss-job-scheduler.js';
 import { CATALOG_QUEUE } from '../../events/events.constants.js';
 import { CATALOG_SYNC_CRON_PATTERN, CATALOG_SYNC_JOB_NAME, CATALOG_SYNC_SCHEDULER_ID, } from '../catalog.constants.js';
-let CatalogScheduler = class CatalogScheduler extends BullMqJobScheduler {
-    constructor(queue) {
-        super(queue, CATALOG_SYNC_SCHEDULER_ID, CATALOG_SYNC_JOB_NAME, {
-            pattern: CATALOG_SYNC_CRON_PATTERN,
-        });
+let CatalogScheduler = class CatalogScheduler extends PgBossJobScheduler {
+    constructor(pgBoss) {
+        super(pgBoss, CATALOG_QUEUE, CATALOG_SYNC_JOB_NAME, CATALOG_SYNC_CRON_PATTERN, CATALOG_SYNC_SCHEDULER_ID);
     }
 };
 CatalogScheduler = __decorate([
     Injectable(),
-    __param(0, InjectQueue(CATALOG_QUEUE)),
-    __metadata("design:paramtypes", [Function])
+    __metadata("design:paramtypes", [PgBossService])
 ], CatalogScheduler);
 export { CatalogScheduler };
 //# sourceMappingURL=catalog.scheduler.js.map

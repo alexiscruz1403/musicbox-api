@@ -1,8 +1,10 @@
-import { WorkerHost } from '@nestjs/bullmq';
-import type { Job } from 'bullmq';
+import { type OnApplicationBootstrap } from '@nestjs/common';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
 import { TrendingService } from '../trending.service.js';
-export declare class TrendingQueueProcessor extends WorkerHost {
+export declare class TrendingQueueProcessor implements OnApplicationBootstrap {
     private readonly trendingService;
-    constructor(trendingService: TrendingService);
-    process(job: Job): Promise<void>;
+    private readonly pgBoss;
+    constructor(trendingService: TrendingService, pgBoss: PgBossService);
+    onApplicationBootstrap(): Promise<void>;
+    private handleBatch;
 }

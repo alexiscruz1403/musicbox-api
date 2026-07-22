@@ -8,6 +8,11 @@ export const configValidationSchema = Joi.object({
 
   DATABASE_URL: Joi.string().required(),
   DIRECT_URL: Joi.string().optional(),
+  // Conexión de pg-boss (bus de jobs). DEBE ser session-mode/direct para
+  // soportar el schema propio de pg-boss — NO el transaction pooler de
+  // Supabase. Si no se setea, PgBossService cae a DIRECT_URL y luego a
+  // DATABASE_URL.
+  PGBOSS_DATABASE_URL: Joi.string().optional(),
 
   REDIS_URL: Joi.string().required(),
 
@@ -38,6 +43,16 @@ export const configValidationSchema = Joi.object({
   MUSICBRAINZ_CONTACT_EMAIL: Joi.string().email().optional(),
 
   SENTRY_DSN: Joi.string().optional().allow(''),
+  // Muestreo de trazas de performance de Sentry (0–1). Bajo por defecto en
+  // prod para no gastar cuota; los errores igual se capturan al 100%.
+  SENTRY_TRACES_SAMPLE_RATE: Joi.number().min(0).max(1).default(0.1),
+  // Release para atribuir issues a una versión (SHA de git). Opcional — Render
+  // expone RENDER_GIT_COMMIT, que instrument.ts usa como fallback.
+  SENTRY_RELEASE: Joi.string().optional().allow(''),
+
+  // Expone la doc OpenAPI en GET /v1/docs. Off por defecto (no exponer la
+  // superficie de API en prod salvo intención explícita).
+  SWAGGER_ENABLED: Joi.boolean().default(false),
 
   VAPID_PUBLIC_KEY: Joi.string().required(),
   VAPID_PRIVATE_KEY: Joi.string().required(),

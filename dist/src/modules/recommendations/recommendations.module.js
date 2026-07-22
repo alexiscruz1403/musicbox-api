@@ -5,11 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { HttpModule } from '@nestjs/axios';
-import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CatalogModule } from '../catalog/catalog.module.js';
-import { RECOMMENDATIONS_QUEUE } from '../events/events.constants.js';
 import { LastFmClient } from './lastfm/lastfm.client.js';
 import { RecommendationsQueueProcessor } from './processors/recommendations-queue.processor.js';
 import { RecommendationsController } from './recommendations.controller.js';
@@ -21,7 +19,6 @@ let RecommendationsModule = class RecommendationsModule {
 RecommendationsModule = __decorate([
     Module({
         imports: [
-            BullModule.registerQueue({ name: RECOMMENDATIONS_QUEUE }),
             CatalogModule,
             HttpModule.registerAsync({
                 inject: [ConfigService],

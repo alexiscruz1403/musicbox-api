@@ -1,19 +1,30 @@
-import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { Injectable } from '@nestjs/common';
-import type { Job } from 'bullmq';
-import { TRENDING_QUEUE } from '../../events/events.constants.js';
+import { Injectable, type OnApplicationBootstrap } from '@nestjs/common';
+import type { Job } from 'pg-boss';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
+import {
+  TRENDING_QUEUE,
+  type JobEnvelope,
+} from '../../events/events.constants.js';
 import { TRENDING_JOB_NAME } from '../trending.constants.js';
 import { TrendingService } from '../trending.service.js';
 
 @Injectable()
-@Processor(TRENDING_QUEUE)
-export class TrendingQueueProcessor extends WorkerHost {
-  constructor(private readonly trendingService: TrendingService) {
-    super();
+export class TrendingQueueProcessor implements OnApplicationBootstrap {
+  constructor(
+    private readonly trendingService: TrendingService,
+    private readonly pgBoss: PgBossService,
+  ) {}
+
+  async onApplicationBootstrap(): Promise<void> {
+    await this.pgBoss.boss.work<JobEnvelope>(TRENDING_QUEUE, (jobs) =>
+      this.handleBatch(jobs),
+    );
   }
 
-  async process(job: Job): Promise<void> {
-    if (job.name !== TRENDING_JOB_NAME) return;
-    await this.trendingService.recalculate();
+  private async handleBatch(jobs: Job<JobEnvelope>[]): Promise<void> {
+    for (const { data } of jobs) {
+      if (data.event !== TRENDING_JOB_NAME) continue;
+      await this.trendingService.recalculate();
+    }
   }
 }

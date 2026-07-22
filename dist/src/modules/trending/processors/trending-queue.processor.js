@@ -7,27 +7,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
-import { TRENDING_QUEUE } from '../../events/events.constants.js';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
+import { TRENDING_QUEUE, } from '../../events/events.constants.js';
 import { TRENDING_JOB_NAME } from '../trending.constants.js';
 import { TrendingService } from '../trending.service.js';
-let TrendingQueueProcessor = class TrendingQueueProcessor extends WorkerHost {
+let TrendingQueueProcessor = class TrendingQueueProcessor {
     trendingService;
-    constructor(trendingService) {
-        super();
+    pgBoss;
+    constructor(trendingService, pgBoss) {
         this.trendingService = trendingService;
+        this.pgBoss = pgBoss;
     }
-    async process(job) {
-        if (job.name !== TRENDING_JOB_NAME)
-            return;
-        await this.trendingService.recalculate();
+    async onApplicationBootstrap() {
+        await this.pgBoss.boss.work(TRENDING_QUEUE, (jobs) => this.handleBatch(jobs));
+    }
+    async handleBatch(jobs) {
+        for (const { data } of jobs) {
+            if (data.event !== TRENDING_JOB_NAME)
+                continue;
+            await this.trendingService.recalculate();
+        }
     }
 };
 TrendingQueueProcessor = __decorate([
     Injectable(),
-    Processor(TRENDING_QUEUE),
-    __metadata("design:paramtypes", [TrendingService])
+    __metadata("design:paramtypes", [TrendingService,
+        PgBossService])
 ], TrendingQueueProcessor);
 export { TrendingQueueProcessor };
 //# sourceMappingURL=trending-queue.processor.js.map

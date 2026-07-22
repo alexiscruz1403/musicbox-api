@@ -3,7 +3,9 @@ export const TRENDING_TOP_N = 20;
 
 // Recalculo cada 1h (desviación acordada con el usuario respecto a las 4h de
 // docs/musicbox.md §13) — el TTL de cache queda alineado a esa cadencia.
-export const TRENDING_RECALC_INTERVAL_MS = 60 * 60 * 1000;
+// Cron de pg-boss: dispara al inicio de cada hora (migrado desde el intervalo
+// `every: 1h` de BullMQ en Fase 10).
+export const TRENDING_CRON_PATTERN = '0 * * * *';
 export const TRENDING_CACHE_TTL_SECONDS = 60 * 60 + 300;
 
 export const TRENDING_JOB_NAME = 'recalculate-trending';

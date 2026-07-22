@@ -55,9 +55,9 @@ export declare class FollowService {
         nextCursor: string | null;
     }>;
     respondToFollowRequest(userId: string, requestId: string, status: 'ACCEPTED' | 'REJECTED'): Promise<{
-        createdAt: Date;
-        id: string;
         status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
+        id: string;
+        createdAt: Date;
         requesterId: string;
         targetId: string;
         respondedAt: Date | null;

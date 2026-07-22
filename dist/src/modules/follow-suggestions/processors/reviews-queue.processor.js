@@ -7,35 +7,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-import { InjectQueue, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
 import { RECOMMENDATIONS_QUEUE, REVIEWS_QUEUE, } from '../../events/events.constants.js';
 import { FollowSuggestionsService } from '../follow-suggestions.service.js';
-let ReviewsQueueProcessor = class ReviewsQueueProcessor extends WorkerHost {
+let ReviewsQueueProcessor = class ReviewsQueueProcessor {
     followSuggestions;
-    recommendations;
-    constructor(followSuggestions, recommendations) {
-        super();
+    pgBoss;
+    constructor(followSuggestions, pgBoss) {
         this.followSuggestions = followSuggestions;
-        this.recommendations = recommendations;
+        this.pgBoss = pgBoss;
     }
-    async process(job) {
-        if (job.name !== 'review.created')
-            return;
-        await Promise.all([
-            this.recommendations.add(job.name, job.data),
-            this.followSuggestions.recompute(job.data.userId),
-        ]);
+    async onApplicationBootstrap() {
+        await this.pgBoss.boss.work(REVIEWS_QUEUE, (jobs) => this.handleBatch(jobs));
+    }
+    async handleBatch(jobs) {
+        for (const { data } of jobs) {
+            if (data.event !== 'review.created')
+                continue;
+            await Promise.all([
+                this.pgBoss.boss.send(RECOMMENDATIONS_QUEUE, data),
+                this.followSuggestions.recompute(data.payload.userId),
+            ]);
+        }
     }
 };
 ReviewsQueueProcessor = __decorate([
     Injectable(),
-    Processor(REVIEWS_QUEUE),
-    __param(1, InjectQueue(RECOMMENDATIONS_QUEUE)),
-    __metadata("design:paramtypes", [FollowSuggestionsService, Function])
+    __metadata("design:paramtypes", [FollowSuggestionsService,
+        PgBossService])
 ], ReviewsQueueProcessor);
 export { ReviewsQueueProcessor };
 //# sourceMappingURL=reviews-queue.processor.js.map

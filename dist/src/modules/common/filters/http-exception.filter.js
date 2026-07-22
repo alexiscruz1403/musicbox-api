@@ -6,6 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var HttpExceptionFilter_1;
 import { Catch, HttpException, HttpStatus, Logger, } from '@nestjs/common';
+import * as Sentry from '@sentry/nestjs';
 import { I18nContext } from 'nestjs-i18n';
 let HttpExceptionFilter = HttpExceptionFilter_1 = class HttpExceptionFilter {
     logger = new Logger(HttpExceptionFilter_1.name);
@@ -37,6 +38,7 @@ let HttpExceptionFilter = HttpExceptionFilter_1 = class HttpExceptionFilter {
             const msg = exception instanceof Error ? exception.message : String(exception);
             const stack = exception instanceof Error ? exception.stack : undefined;
             this.logger.error(`Unhandled exception on ${request.method} ${request.url}: ${msg}`, stack);
+            Sentry.captureException(exception);
         }
         const message = i18n?.translate(`errors.${code}`, { args, defaultValue: code }) ?? code;
         const body = {

@@ -1,8 +1,10 @@
-import { WorkerHost } from '@nestjs/bullmq';
-import type { Job } from 'bullmq';
+import { type OnApplicationBootstrap } from '@nestjs/common';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
 import { NotificationsService } from '../notifications.service.js';
-export declare class NotificationsQueueProcessor extends WorkerHost {
+export declare class NotificationsQueueProcessor implements OnApplicationBootstrap {
     private readonly notifications;
-    constructor(notifications: NotificationsService);
-    process(job: Job): Promise<void>;
+    private readonly pgBoss;
+    constructor(notifications: NotificationsService, pgBoss: PgBossService);
+    onApplicationBootstrap(): Promise<void>;
+    private handleBatch;
 }

@@ -1,6 +1,5 @@
-import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
-import type { Queue } from 'bullmq';
+import { PgBossService } from '../../pgboss/pgboss.service.js';
 import { SOCIAL_QUEUE } from './events.constants.js';
 
 export interface ReactionEventPayload {
@@ -35,29 +34,47 @@ export interface FollowRequestAcceptedEventPayload {
 
 @Injectable()
 export class SocialEventsProducer {
-  constructor(@InjectQueue(SOCIAL_QUEUE) private readonly queue: Queue) {}
+  constructor(private readonly pgBoss: PgBossService) {}
 
   emitReactionAdded(payload: ReactionEventPayload) {
-    return this.queue.add('reaction.added', payload);
+    return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+      event: 'reaction.added',
+      payload,
+    });
   }
 
   emitReactionChanged(payload: ReactionEventPayload) {
-    return this.queue.add('reaction.changed', payload);
+    return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+      event: 'reaction.changed',
+      payload,
+    });
   }
 
   emitCommentCreated(payload: CommentEventPayload) {
-    return this.queue.add('comment.created', payload);
+    return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+      event: 'comment.created',
+      payload,
+    });
   }
 
   emitFollowCreated(payload: FollowEventPayload) {
-    return this.queue.add('follow.created', payload);
+    return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+      event: 'follow.created',
+      payload,
+    });
   }
 
   emitFollowRequested(payload: FollowRequestEventPayload) {
-    return this.queue.add('follow.requested', payload);
+    return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+      event: 'follow.requested',
+      payload,
+    });
   }
 
   emitFollowRequestAccepted(payload: FollowRequestAcceptedEventPayload) {
-    return this.queue.add('follow.request.accepted', payload);
+    return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+      event: 'follow.request.accepted',
+      payload,
+    });
   }
 }

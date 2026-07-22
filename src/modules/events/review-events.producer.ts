@@ -1,6 +1,5 @@
-import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
-import type { Queue } from 'bullmq';
+import { PgBossService } from '../../pgboss/pgboss.service.js';
 import { REVIEWS_QUEUE } from './events.constants.js';
 
 export interface ReviewEventPayload {
@@ -13,17 +12,26 @@ export interface ReviewEventPayload {
 
 @Injectable()
 export class ReviewEventsProducer {
-  constructor(@InjectQueue(REVIEWS_QUEUE) private readonly queue: Queue) {}
+  constructor(private readonly pgBoss: PgBossService) {}
 
   emitCreated(payload: ReviewEventPayload) {
-    return this.queue.add('review.created', payload);
+    return this.pgBoss.boss.send(REVIEWS_QUEUE, {
+      event: 'review.created',
+      payload,
+    });
   }
 
   emitUpdated(payload: ReviewEventPayload) {
-    return this.queue.add('review.updated', payload);
+    return this.pgBoss.boss.send(REVIEWS_QUEUE, {
+      event: 'review.updated',
+      payload,
+    });
   }
 
   emitDeleted(payload: ReviewEventPayload) {
-    return this.queue.add('review.deleted', payload);
+    return this.pgBoss.boss.send(REVIEWS_QUEUE, {
+      event: 'review.deleted',
+      payload,
+    });
   }
 }

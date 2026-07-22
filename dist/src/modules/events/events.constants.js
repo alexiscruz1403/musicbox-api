@@ -4,10 +4,17 @@ export const NOTIFICATIONS_QUEUE = 'notifications';
 export const TRENDING_QUEUE = 'trending';
 export const RECOMMENDATIONS_QUEUE = 'recommendations';
 export const CATALOG_QUEUE = 'catalog';
-export const DEFAULT_JOB_OPTIONS = {
-    attempts: 3,
-    backoff: { type: 'exponential', delay: 2000 },
-    removeOnComplete: { count: 100 },
-    removeOnFail: { count: 50 },
+export const ALL_QUEUES = [
+    REVIEWS_QUEUE,
+    SOCIAL_QUEUE,
+    NOTIFICATIONS_QUEUE,
+    TRENDING_QUEUE,
+    RECOMMENDATIONS_QUEUE,
+    CATALOG_QUEUE,
+];
+export const PGBOSS_QUEUE_OPTIONS = {
+    retryLimit: 2,
+    retryBackoff: true,
+    retryDelay: 2,
 };
 //# sourceMappingURL=events.constants.js.map

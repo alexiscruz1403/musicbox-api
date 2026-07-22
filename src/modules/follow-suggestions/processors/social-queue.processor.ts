@@ -1,9 +1,10 @@
-import { InjectQueue, Processor, WorkerHost } from '@nestjs/bullmq';
-import { Injectable } from '@nestjs/common';
-import type { Job, Queue } from 'bullmq';
+import { Injectable, type OnApplicationBootstrap } from '@nestjs/common';
+import type { Job } from 'pg-boss';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
 import {
   NOTIFICATIONS_QUEUE,
   SOCIAL_QUEUE,
+  type JobEnvelope,
 } from '../../events/events.constants.js';
 import type {
   CommentEventPayload,
@@ -21,10 +22,12 @@ type SocialJobPayload =
   | FollowRequestEventPayload
   | FollowRequestAcceptedEventPayload;
 
-// Notification-relevant job names relayed to NOTIFICATIONS_QUEUE — literal
-// reading of the event list in musicbox.md §11 (reaction.changed excluded,
-// same criterion this processor already applies for follow-suggestions).
-const NOTIFIABLE_JOB_NAMES = new Set([
+type SocialJob = JobEnvelope<SocialJobPayload>;
+
+// Eventos relevantes para notificaciones, relayados a NOTIFICATIONS_QUEUE —
+// lectura literal de la lista de eventos de musicbox.md §11 (reaction.changed
+// excluido, mismo criterio que este processor aplica para follow-suggestions).
+const NOTIFIABLE_EVENTS = new Set([
   'reaction.added',
   'comment.created',
   'follow.created',
@@ -32,44 +35,48 @@ const NOTIFIABLE_JOB_NAMES = new Set([
   'follow.request.accepted',
 ]);
 
+// Worker (pg-boss) de SOCIAL_QUEUE. Cada job pg-boss se entrega a un solo
+// worker (mismo modelo single-consumer que BullMQ), así que este processor es
+// el dueño exclusivo de la cola y relaya los eventos que le importan a
+// NOTIFICATIONS_QUEUE (que NotificationsModule consume en exclusiva) en vez de
+// registrar un segundo worker competidor sobre SOCIAL_QUEUE.
 @Injectable()
-@Processor(SOCIAL_QUEUE)
-export class SocialQueueProcessor extends WorkerHost {
+export class SocialQueueProcessor implements OnApplicationBootstrap {
   constructor(
     private readonly followSuggestions: FollowSuggestionsService,
-    @InjectQueue(NOTIFICATIONS_QUEUE) private readonly notifications: Queue,
-  ) {
-    super();
+    private readonly pgBoss: PgBossService,
+  ) {}
+
+  async onApplicationBootstrap(): Promise<void> {
+    await this.pgBoss.boss.work<SocialJob>(SOCIAL_QUEUE, (jobs) =>
+      this.handleBatch(jobs),
+    );
   }
 
-  async process(job: Job<SocialJobPayload>): Promise<void> {
-    await this.relayToNotifications(job);
-    await this.recomputeFollowSuggestions(job);
-  }
-
-  // A queue can only have one @Processor in this app (BullMQ splits jobs
-  // between workers on the same queue instead of delivering to both) — see
-  // docs/musicbox-backend-guide.md:2066. NotificationsModule can't register
-  // its own @Processor(SOCIAL_QUEUE), so this processor relays the job names
-  // it cares about onto NOTIFICATIONS_QUEUE, which NotificationsModule owns
-  // exclusively.
-  private async relayToNotifications(
-    job: Job<SocialJobPayload>,
-  ): Promise<void> {
-    if (!NOTIFIABLE_JOB_NAMES.has(job.name)) return;
-    await this.notifications.add(job.name, job.data);
-  }
-
-  private async recomputeFollowSuggestions(
-    job: Job<SocialJobPayload>,
-  ): Promise<void> {
-    // No-op for comment.created/follow.created and DISLIKE reactions — only
-    // LIKE add/change is a positive taste signal per spec.
-    if (job.name !== 'reaction.added' && job.name !== 'reaction.changed') {
-      return;
+  private async handleBatch(jobs: Job<SocialJob>[]): Promise<void> {
+    for (const { data } of jobs) {
+      await this.relayToNotifications(data);
+      await this.recomputeFollowSuggestions(data);
     }
-    const payload = job.data as ReactionEventPayload;
-    if (payload.type !== 'LIKE') return;
-    await this.followSuggestions.recompute(payload.userId);
+  }
+
+  private async relayToNotifications({
+    event,
+    payload,
+  }: SocialJob): Promise<void> {
+    if (!NOTIFIABLE_EVENTS.has(event)) return;
+    await this.pgBoss.boss.send(NOTIFICATIONS_QUEUE, { event, payload });
+  }
+
+  private async recomputeFollowSuggestions({
+    event,
+    payload,
+  }: SocialJob): Promise<void> {
+    // No-op para comment.created/follow.created y reacciones DISLIKE — solo un
+    // LIKE add/change es señal de gusto positiva, según spec.
+    if (event !== 'reaction.added' && event !== 'reaction.changed') return;
+    const reaction = payload as ReactionEventPayload;
+    if (reaction.type !== 'LIKE') return;
+    await this.followSuggestions.recompute(reaction.userId);
   }
 }

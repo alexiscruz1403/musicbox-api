@@ -7,25 +7,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
-import { BullMqJobScheduler } from '../../common/scheduling/bullmq-job-scheduler.js';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
+import { PgBossJobScheduler } from '../../common/scheduling/pgboss-job-scheduler.js';
 import { RECOMMENDATIONS_QUEUE } from '../../events/events.constants.js';
 import { RECOMMENDATIONS_CRON_PATTERN, RECOMMENDATIONS_JOB_NAME, RECOMMENDATIONS_SCHEDULER_ID, } from '../recommendations.constants.js';
-let RecommendationsScheduler = class RecommendationsScheduler extends BullMqJobScheduler {
-    constructor(queue) {
-        super(queue, RECOMMENDATIONS_SCHEDULER_ID, RECOMMENDATIONS_JOB_NAME, {
-            pattern: RECOMMENDATIONS_CRON_PATTERN,
-        });
+let RecommendationsScheduler = class RecommendationsScheduler extends PgBossJobScheduler {
+    constructor(pgBoss) {
+        super(pgBoss, RECOMMENDATIONS_QUEUE, RECOMMENDATIONS_JOB_NAME, RECOMMENDATIONS_CRON_PATTERN, RECOMMENDATIONS_SCHEDULER_ID);
     }
 };
 RecommendationsScheduler = __decorate([
     Injectable(),
-    __param(0, InjectQueue(RECOMMENDATIONS_QUEUE)),
-    __metadata("design:paramtypes", [Function])
+    __metadata("design:paramtypes", [PgBossService])
 ], RecommendationsScheduler);
 export { RecommendationsScheduler };
 //# sourceMappingURL=recommendations.scheduler.js.map

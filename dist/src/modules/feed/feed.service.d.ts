@@ -17,13 +17,13 @@ export declare class FeedService {
                 displayName: string;
                 avatarUrl: string | null;
             };
-            createdAt: Date;
-            id: string;
+            userId: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            id: string;
+            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
-            userId: string;
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             trackId: string | null;
             albumId: string | null;
             description: string | null;

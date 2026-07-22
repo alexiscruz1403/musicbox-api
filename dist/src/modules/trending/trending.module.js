@@ -4,10 +4,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { CatalogModule } from '../catalog/catalog.module.js';
-import { TRENDING_QUEUE } from '../events/events.constants.js';
 import { TrendingQueueProcessor } from './processors/trending-queue.processor.js';
 import { TrendingScheduler } from './scheduler/trending.scheduler.js';
 import { TrendingController } from './trending.controller.js';
@@ -17,7 +15,7 @@ let TrendingModule = class TrendingModule {
 };
 TrendingModule = __decorate([
     Module({
-        imports: [BullModule.registerQueue({ name: TRENDING_QUEUE }), CatalogModule],
+        imports: [CatalogModule],
         controllers: [TrendingController],
         providers: [
             TrendingService,

@@ -7,52 +7,51 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-import { InjectQueue, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
 import { NOTIFICATIONS_QUEUE, SOCIAL_QUEUE, } from '../../events/events.constants.js';
 import { FollowSuggestionsService } from '../follow-suggestions.service.js';
-const NOTIFIABLE_JOB_NAMES = new Set([
+const NOTIFIABLE_EVENTS = new Set([
     'reaction.added',
     'comment.created',
     'follow.created',
     'follow.requested',
     'follow.request.accepted',
 ]);
-let SocialQueueProcessor = class SocialQueueProcessor extends WorkerHost {
+let SocialQueueProcessor = class SocialQueueProcessor {
     followSuggestions;
-    notifications;
-    constructor(followSuggestions, notifications) {
-        super();
+    pgBoss;
+    constructor(followSuggestions, pgBoss) {
         this.followSuggestions = followSuggestions;
-        this.notifications = notifications;
+        this.pgBoss = pgBoss;
     }
-    async process(job) {
-        await this.relayToNotifications(job);
-        await this.recomputeFollowSuggestions(job);
+    async onApplicationBootstrap() {
+        await this.pgBoss.boss.work(SOCIAL_QUEUE, (jobs) => this.handleBatch(jobs));
     }
-    async relayToNotifications(job) {
-        if (!NOTIFIABLE_JOB_NAMES.has(job.name))
-            return;
-        await this.notifications.add(job.name, job.data);
-    }
-    async recomputeFollowSuggestions(job) {
-        if (job.name !== 'reaction.added' && job.name !== 'reaction.changed') {
-            return;
+    async handleBatch(jobs) {
+        for (const { data } of jobs) {
+            await this.relayToNotifications(data);
+            await this.recomputeFollowSuggestions(data);
         }
-        const payload = job.data;
-        if (payload.type !== 'LIKE')
+    }
+    async relayToNotifications({ event, payload, }) {
+        if (!NOTIFIABLE_EVENTS.has(event))
             return;
-        await this.followSuggestions.recompute(payload.userId);
+        await this.pgBoss.boss.send(NOTIFICATIONS_QUEUE, { event, payload });
+    }
+    async recomputeFollowSuggestions({ event, payload, }) {
+        if (event !== 'reaction.added' && event !== 'reaction.changed')
+            return;
+        const reaction = payload;
+        if (reaction.type !== 'LIKE')
+            return;
+        await this.followSuggestions.recompute(reaction.userId);
     }
 };
 SocialQueueProcessor = __decorate([
     Injectable(),
-    Processor(SOCIAL_QUEUE),
-    __param(1, InjectQueue(NOTIFICATIONS_QUEUE)),
-    __metadata("design:paramtypes", [FollowSuggestionsService, Function])
+    __metadata("design:paramtypes", [FollowSuggestionsService,
+        PgBossService])
 ], SocialQueueProcessor);
 export { SocialQueueProcessor };
 //# sourceMappingURL=social-queue.processor.js.map

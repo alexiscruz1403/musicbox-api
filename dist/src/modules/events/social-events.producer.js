@@ -7,40 +7,54 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
+import { PgBossService } from '../../pgboss/pgboss.service.js';
 import { SOCIAL_QUEUE } from './events.constants.js';
 let SocialEventsProducer = class SocialEventsProducer {
-    queue;
-    constructor(queue) {
-        this.queue = queue;
+    pgBoss;
+    constructor(pgBoss) {
+        this.pgBoss = pgBoss;
     }
     emitReactionAdded(payload) {
-        return this.queue.add('reaction.added', payload);
+        return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+            event: 'reaction.added',
+            payload,
+        });
     }
     emitReactionChanged(payload) {
-        return this.queue.add('reaction.changed', payload);
+        return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+            event: 'reaction.changed',
+            payload,
+        });
     }
     emitCommentCreated(payload) {
-        return this.queue.add('comment.created', payload);
+        return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+            event: 'comment.created',
+            payload,
+        });
     }
     emitFollowCreated(payload) {
-        return this.queue.add('follow.created', payload);
+        return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+            event: 'follow.created',
+            payload,
+        });
     }
     emitFollowRequested(payload) {
-        return this.queue.add('follow.requested', payload);
+        return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+            event: 'follow.requested',
+            payload,
+        });
     }
     emitFollowRequestAccepted(payload) {
-        return this.queue.add('follow.request.accepted', payload);
+        return this.pgBoss.boss.send(SOCIAL_QUEUE, {
+            event: 'follow.request.accepted',
+            payload,
+        });
     }
 };
 SocialEventsProducer = __decorate([
     Injectable(),
-    __param(0, InjectQueue(SOCIAL_QUEUE)),
-    __metadata("design:paramtypes", [Function])
+    __metadata("design:paramtypes", [PgBossService])
 ], SocialEventsProducer);
 export { SocialEventsProducer };
 //# sourceMappingURL=social-events.producer.js.map

@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
+import * as Sentry from '@sentry/nestjs';
 import type { Request, Response } from 'express';
 import { I18nContext } from 'nestjs-i18n';
 
@@ -59,6 +60,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
         `Unhandled exception on ${request.method} ${request.url}: ${msg}`,
         stack,
       );
+      // Solo los errores inesperados (5xx no-HttpException) van a Sentry — los
+      // 4xx de negocio (HttpException, arriba) se excluyen para no meter ruido.
+      // Inerte si Sentry no fue inicializado (sin SENTRY_DSN).
+      Sentry.captureException(exception);
     }
 
     const message =

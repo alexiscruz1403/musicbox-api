@@ -58,7 +58,7 @@ export class NotificationsService {
   }
 
   // Aviso de moderación (contenido ocultado por un admin) — creado directo
-  // por ModerationModule, sin pasar por la cola BullMQ (acción de bajo
+  // por ModerationModule, sin pasar por la cola de jobs (acción de bajo
   // volumen) y sin gating por notifEnabled/notifPreference: es un aviso de
   // política, no un opt-out social.
   async notifyModeration(

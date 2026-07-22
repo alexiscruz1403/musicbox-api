@@ -1,21 +1,31 @@
-import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { Injectable } from '@nestjs/common';
-import type { Job } from 'bullmq';
-import { NOTIFICATIONS_QUEUE } from '../../events/events.constants.js';
+import { Injectable, type OnApplicationBootstrap } from '@nestjs/common';
+import type { Job } from 'pg-boss';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
+import {
+  NOTIFICATIONS_QUEUE,
+  type JobEnvelope,
+} from '../../events/events.constants.js';
 import { NotificationsService } from '../notifications.service.js';
 
-// Exclusive owner of NOTIFICATIONS_QUEUE — fed by the relay added to
-// FollowSuggestionsModule's SocialQueueProcessor (see docs/musicbox-backend-guide.md:2066:
-// a queue can only have one @Processor, so this consumer never listens on
-// SOCIAL_QUEUE directly).
+// Dueño exclusivo de NOTIFICATIONS_QUEUE — alimentado por el relay de
+// SocialQueueProcessor (FollowSuggestionsModule): cada job pg-boss va a un
+// solo worker, así que este consumer nunca escucha SOCIAL_QUEUE directamente.
 @Injectable()
-@Processor(NOTIFICATIONS_QUEUE)
-export class NotificationsQueueProcessor extends WorkerHost {
-  constructor(private readonly notifications: NotificationsService) {
-    super();
+export class NotificationsQueueProcessor implements OnApplicationBootstrap {
+  constructor(
+    private readonly notifications: NotificationsService,
+    private readonly pgBoss: PgBossService,
+  ) {}
+
+  async onApplicationBootstrap(): Promise<void> {
+    await this.pgBoss.boss.work<JobEnvelope>(NOTIFICATIONS_QUEUE, (jobs) =>
+      this.handleBatch(jobs),
+    );
   }
 
-  async process(job: Job): Promise<void> {
-    await this.notifications.createFromEvent(job.name, job.data);
+  private async handleBatch(jobs: Job<JobEnvelope>[]): Promise<void> {
+    for (const { data } of jobs) {
+      await this.notifications.createFromEvent(data.event, data.payload);
+    }
   }
 }

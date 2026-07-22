@@ -1,4 +1,4 @@
-import type { Queue } from 'bullmq';
+import { PgBossService } from '../../pgboss/pgboss.service.js';
 export interface ReactionEventPayload {
     reactionId: string;
     reviewId: string;
@@ -25,12 +25,12 @@ export interface FollowRequestAcceptedEventPayload {
     accepterId: string;
 }
 export declare class SocialEventsProducer {
-    private readonly queue;
-    constructor(queue: Queue);
-    emitReactionAdded(payload: ReactionEventPayload): Promise<import("bullmq").Job<any, any, string>>;
-    emitReactionChanged(payload: ReactionEventPayload): Promise<import("bullmq").Job<any, any, string>>;
-    emitCommentCreated(payload: CommentEventPayload): Promise<import("bullmq").Job<any, any, string>>;
-    emitFollowCreated(payload: FollowEventPayload): Promise<import("bullmq").Job<any, any, string>>;
-    emitFollowRequested(payload: FollowRequestEventPayload): Promise<import("bullmq").Job<any, any, string>>;
-    emitFollowRequestAccepted(payload: FollowRequestAcceptedEventPayload): Promise<import("bullmq").Job<any, any, string>>;
+    private readonly pgBoss;
+    constructor(pgBoss: PgBossService);
+    emitReactionAdded(payload: ReactionEventPayload): Promise<string | null>;
+    emitReactionChanged(payload: ReactionEventPayload): Promise<string | null>;
+    emitCommentCreated(payload: CommentEventPayload): Promise<string | null>;
+    emitFollowCreated(payload: FollowEventPayload): Promise<string | null>;
+    emitFollowRequested(payload: FollowRequestEventPayload): Promise<string | null>;
+    emitFollowRequestAccepted(payload: FollowRequestAcceptedEventPayload): Promise<string | null>;
 }

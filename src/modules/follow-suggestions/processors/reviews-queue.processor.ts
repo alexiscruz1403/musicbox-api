@@ -1,39 +1,40 @@
-import { InjectQueue, Processor, WorkerHost } from '@nestjs/bullmq';
-import { Injectable } from '@nestjs/common';
-import type { Job, Queue } from 'bullmq';
+import { Injectable, type OnApplicationBootstrap } from '@nestjs/common';
+import type { Job } from 'pg-boss';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
 import {
   RECOMMENDATIONS_QUEUE,
   REVIEWS_QUEUE,
+  type JobEnvelope,
 } from '../../events/events.constants.js';
 import type { ReviewEventPayload } from '../../events/review-events.producer.js';
 import { FollowSuggestionsService } from '../follow-suggestions.service.js';
 
-// EventsModule (@Global) already registers REVIEWS_QUEUE via
-// BullModule.registerQueue — @Processor discovery is app-wide (Nest's
-// DiscoveryService scans every provider), so this module doesn't need to
-// import EventsModule for the worker to bind correctly.
-//
-// A queue can only have one @Processor in this app (BullMQ splits jobs
-// between workers on the same queue instead of delivering to both) — see
-// docs/musicbox-backend-guide.md:2066. RecommendationsModule can't register
-// its own @Processor(REVIEWS_QUEUE), so this processor relays review.created
-// onto RECOMMENDATIONS_QUEUE, which RecommendationsModule owns exclusively
-// (same relay pattern SocialQueueProcessor already uses for notifications).
+type ReviewJob = JobEnvelope<ReviewEventPayload>;
+
+// Worker (pg-boss) de REVIEWS_QUEUE. Dueño exclusivo de la cola: relaya
+// review.created a RECOMMENDATIONS_QUEUE (que RecommendationsModule consume en
+// exclusiva) — mismo patrón de relay que SocialQueueProcessor usa para
+// notifications, ya que cada job pg-boss se entrega a un solo worker.
 @Injectable()
-@Processor(REVIEWS_QUEUE)
-export class ReviewsQueueProcessor extends WorkerHost {
+export class ReviewsQueueProcessor implements OnApplicationBootstrap {
   constructor(
     private readonly followSuggestions: FollowSuggestionsService,
-    @InjectQueue(RECOMMENDATIONS_QUEUE) private readonly recommendations: Queue,
-  ) {
-    super();
+    private readonly pgBoss: PgBossService,
+  ) {}
+
+  async onApplicationBootstrap(): Promise<void> {
+    await this.pgBoss.boss.work<ReviewJob>(REVIEWS_QUEUE, (jobs) =>
+      this.handleBatch(jobs),
+    );
   }
 
-  async process(job: Job<ReviewEventPayload>): Promise<void> {
-    if (job.name !== 'review.created') return;
-    await Promise.all([
-      this.recommendations.add(job.name, job.data),
-      this.followSuggestions.recompute(job.data.userId),
-    ]);
+  private async handleBatch(jobs: Job<ReviewJob>[]): Promise<void> {
+    for (const { data } of jobs) {
+      if (data.event !== 'review.created') continue;
+      await Promise.all([
+        this.pgBoss.boss.send(RECOMMENDATIONS_QUEUE, data),
+        this.followSuggestions.recompute(data.payload.userId),
+      ]);
+    }
   }
 }

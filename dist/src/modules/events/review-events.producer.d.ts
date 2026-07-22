@@ -1,4 +1,4 @@
-import type { Queue } from 'bullmq';
+import { PgBossService } from '../../pgboss/pgboss.service.js';
 export interface ReviewEventPayload {
     reviewId: string;
     userId: string;
@@ -7,9 +7,9 @@ export interface ReviewEventPayload {
     trackId: string | null;
 }
 export declare class ReviewEventsProducer {
-    private readonly queue;
-    constructor(queue: Queue);
-    emitCreated(payload: ReviewEventPayload): Promise<import("bullmq").Job<any, any, string>>;
-    emitUpdated(payload: ReviewEventPayload): Promise<import("bullmq").Job<any, any, string>>;
-    emitDeleted(payload: ReviewEventPayload): Promise<import("bullmq").Job<any, any, string>>;
+    private readonly pgBoss;
+    constructor(pgBoss: PgBossService);
+    emitCreated(payload: ReviewEventPayload): Promise<string | null>;
+    emitUpdated(payload: ReviewEventPayload): Promise<string | null>;
+    emitDeleted(payload: ReviewEventPayload): Promise<string | null>;
 }

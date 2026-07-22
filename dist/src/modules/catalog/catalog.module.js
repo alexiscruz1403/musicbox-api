@@ -5,10 +5,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { HttpModule } from '@nestjs/axios';
-import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { CATALOG_QUEUE } from '../events/events.constants.js';
 import { ArtistDetailService } from './artist-detail.service.js';
 import { CatalogSyncService } from './catalog-sync.service.js';
 import { CatalogController } from './catalog.controller.js';
@@ -34,7 +32,6 @@ CatalogModule = __decorate([
                     timeout: 10_000,
                 }),
             }),
-            BullModule.registerQueue({ name: CATALOG_QUEUE }),
         ],
         controllers: [CatalogController, CatalogHistoryController],
         providers: [

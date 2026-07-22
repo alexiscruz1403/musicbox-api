@@ -7,31 +7,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
+import { PgBossService } from '../../pgboss/pgboss.service.js';
 import { REVIEWS_QUEUE } from './events.constants.js';
 let ReviewEventsProducer = class ReviewEventsProducer {
-    queue;
-    constructor(queue) {
-        this.queue = queue;
+    pgBoss;
+    constructor(pgBoss) {
+        this.pgBoss = pgBoss;
     }
     emitCreated(payload) {
-        return this.queue.add('review.created', payload);
+        return this.pgBoss.boss.send(REVIEWS_QUEUE, {
+            event: 'review.created',
+            payload,
+        });
     }
     emitUpdated(payload) {
-        return this.queue.add('review.updated', payload);
+        return this.pgBoss.boss.send(REVIEWS_QUEUE, {
+            event: 'review.updated',
+            payload,
+        });
     }
     emitDeleted(payload) {
-        return this.queue.add('review.deleted', payload);
+        return this.pgBoss.boss.send(REVIEWS_QUEUE, {
+            event: 'review.deleted',
+            payload,
+        });
     }
 };
 ReviewEventsProducer = __decorate([
     Injectable(),
-    __param(0, InjectQueue(REVIEWS_QUEUE)),
-    __metadata("design:paramtypes", [Function])
+    __metadata("design:paramtypes", [PgBossService])
 ], ReviewEventsProducer);
 export { ReviewEventsProducer };
 //# sourceMappingURL=review-events.producer.js.map

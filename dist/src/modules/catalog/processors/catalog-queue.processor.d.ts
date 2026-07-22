@@ -1,8 +1,10 @@
-import { WorkerHost } from '@nestjs/bullmq';
-import type { Job } from 'bullmq';
+import { type OnApplicationBootstrap } from '@nestjs/common';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
 import { CatalogSyncService } from '../catalog-sync.service.js';
-export declare class CatalogQueueProcessor extends WorkerHost {
+export declare class CatalogQueueProcessor implements OnApplicationBootstrap {
     private readonly catalogSyncService;
-    constructor(catalogSyncService: CatalogSyncService);
-    process(job: Job): Promise<void>;
+    private readonly pgBoss;
+    constructor(catalogSyncService: CatalogSyncService, pgBoss: PgBossService);
+    onApplicationBootstrap(): Promise<void>;
+    private handleBatch;
 }

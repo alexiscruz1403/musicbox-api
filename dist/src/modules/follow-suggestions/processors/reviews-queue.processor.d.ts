@@ -1,10 +1,10 @@
-import { WorkerHost } from '@nestjs/bullmq';
-import type { Job, Queue } from 'bullmq';
-import type { ReviewEventPayload } from '../../events/review-events.producer.js';
+import { type OnApplicationBootstrap } from '@nestjs/common';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
 import { FollowSuggestionsService } from '../follow-suggestions.service.js';
-export declare class ReviewsQueueProcessor extends WorkerHost {
+export declare class ReviewsQueueProcessor implements OnApplicationBootstrap {
     private readonly followSuggestions;
-    private readonly recommendations;
-    constructor(followSuggestions: FollowSuggestionsService, recommendations: Queue);
-    process(job: Job<ReviewEventPayload>): Promise<void>;
+    private readonly pgBoss;
+    constructor(followSuggestions: FollowSuggestionsService, pgBoss: PgBossService);
+    onApplicationBootstrap(): Promise<void>;
+    private handleBatch;
 }

@@ -10,9 +10,9 @@ export declare class ModerationService {
     private readonly email;
     constructor(repo: ModerationRepository, notifications: NotificationsService, email: EmailService);
     createReport(reporterId: string, dto: CreateReportDto): Promise<{
-        createdAt: Date;
-        id: string;
         status: import("../../../generated/prisma/enums.js").ReportStatus;
+        id: string;
+        createdAt: Date;
         targetId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;
@@ -28,9 +28,9 @@ export declare class ModerationService {
                 displayName: string;
             };
         } & {
-            createdAt: Date;
-            id: string;
             status: import("../../../generated/prisma/enums.js").ReportStatus;
+            id: string;
+            createdAt: Date;
             targetId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
             reason: string;
@@ -43,9 +43,9 @@ export declare class ModerationService {
         nextCursor: string | null;
     }>;
     updateReportStatus(adminId: string, reportId: string, dto: UpdateReportStatusDto): Promise<{
-        createdAt: Date;
-        id: string;
         status: import("../../../generated/prisma/enums.js").ReportStatus;
+        id: string;
+        createdAt: Date;
         targetId: string;
         targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
         reason: string;

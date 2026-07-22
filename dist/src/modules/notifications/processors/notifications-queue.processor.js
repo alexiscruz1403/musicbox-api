@@ -7,24 +7,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
-import { NOTIFICATIONS_QUEUE } from '../../events/events.constants.js';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
+import { NOTIFICATIONS_QUEUE, } from '../../events/events.constants.js';
 import { NotificationsService } from '../notifications.service.js';
-let NotificationsQueueProcessor = class NotificationsQueueProcessor extends WorkerHost {
+let NotificationsQueueProcessor = class NotificationsQueueProcessor {
     notifications;
-    constructor(notifications) {
-        super();
+    pgBoss;
+    constructor(notifications, pgBoss) {
         this.notifications = notifications;
+        this.pgBoss = pgBoss;
     }
-    async process(job) {
-        await this.notifications.createFromEvent(job.name, job.data);
+    async onApplicationBootstrap() {
+        await this.pgBoss.boss.work(NOTIFICATIONS_QUEUE, (jobs) => this.handleBatch(jobs));
+    }
+    async handleBatch(jobs) {
+        for (const { data } of jobs) {
+            await this.notifications.createFromEvent(data.event, data.payload);
+        }
     }
 };
 NotificationsQueueProcessor = __decorate([
     Injectable(),
-    Processor(NOTIFICATIONS_QUEUE),
-    __metadata("design:paramtypes", [NotificationsService])
+    __metadata("design:paramtypes", [NotificationsService,
+        PgBossService])
 ], NotificationsQueueProcessor);
 export { NotificationsQueueProcessor };
 //# sourceMappingURL=notifications-queue.processor.js.map

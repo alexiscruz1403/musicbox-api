@@ -1,23 +1,26 @@
-import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
-import type { Queue } from 'bullmq';
-import { BullMqJobScheduler } from '../../common/scheduling/bullmq-job-scheduler.js';
+import { PgBossService } from '../../../pgboss/pgboss.service.js';
+import { PgBossJobScheduler } from '../../common/scheduling/pgboss-job-scheduler.js';
 import { TRENDING_QUEUE } from '../../events/events.constants.js';
 import {
+  TRENDING_CRON_PATTERN,
   TRENDING_JOB_NAME,
-  TRENDING_RECALC_INTERVAL_MS,
   TRENDING_SCHEDULER_ID,
 } from '../trending.constants.js';
 
-// No cron primitive exists in this repo (@nestjs/schedule isn't installed) —
-// BullMQ's job-scheduler API is the idiomatic equivalent, consistent with
-// "BullMQ is the only job primitive in the project". upsertJobScheduler is
-// idempotent across restarts/instances (same schedulerId just gets updated).
+// Recalculo horario vía el cron de pg-boss (`boss.schedule`), idempotente por
+// (cola, key). Antes era un intervalo `every: 1h` de BullMQ; el cron `0 * * * *`
+// dispara en la hora exacta en vez de a las N horas del boot — equivalente en
+// cadencia y alineado al TTL de cache (TRENDING_CACHE_TTL_SECONDS).
 @Injectable()
-export class TrendingScheduler extends BullMqJobScheduler {
-  constructor(@InjectQueue(TRENDING_QUEUE) queue: Queue) {
-    super(queue, TRENDING_SCHEDULER_ID, TRENDING_JOB_NAME, {
-      every: TRENDING_RECALC_INTERVAL_MS,
-    });
+export class TrendingScheduler extends PgBossJobScheduler {
+  constructor(pgBoss: PgBossService) {
+    super(
+      pgBoss,
+      TRENDING_QUEUE,
+      TRENDING_JOB_NAME,
+      TRENDING_CRON_PATTERN,
+      TRENDING_SCHEDULER_ID,
+    );
   }
 }

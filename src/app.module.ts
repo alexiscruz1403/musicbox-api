@@ -9,6 +9,7 @@ import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
 import { configValidationSchema } from './config/config.validation.js';
 import { CloudinaryModule } from './cloudinary/cloudinary.module.js';
 import { EmailModule } from './email/email.module.js';
+import { PgBossModule } from './pgboss/pgboss.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { RedisModule } from './redis/redis.module.js';
 import { RedisService } from './redis/redis.service.js';
@@ -24,6 +25,7 @@ import { CatalogModule } from './modules/catalog/catalog.module.js';
 import { EventsModule } from './modules/events/events.module.js';
 import { FeedModule } from './modules/feed/feed.module.js';
 import { FollowSuggestionsModule } from './modules/follow-suggestions/follow-suggestions.module.js';
+import { HealthModule } from './modules/health/health.module.js';
 import { ModerationModule } from './modules/moderation/moderation.module.js';
 import { NotificationsModule } from './modules/notifications/notifications.module.js';
 import { RecommendationsModule } from './modules/recommendations/recommendations.module.js';
@@ -33,6 +35,10 @@ import { TrendingModule } from './modules/trending/trending.module.js';
 
 @Module({
   imports: [
+    // La instrumentación de Sentry se configura en instrument.ts (Sentry.init
+    // con nestIntegration), importado al tope de main.ts — @sentry/nestjs v10
+    // ya no expone un SentryModule. La captura de errores se hace en
+    // HttpExceptionFilter (Sentry.captureException en la rama de 5xx).
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: configValidationSchema,
@@ -43,10 +49,22 @@ import { TrendingModule } from './modules/trending/trending.module.js';
           process.env['NODE_ENV'] !== 'production'
             ? { target: 'pino-pretty', options: { singleLine: true } }
             : undefined,
+        // Redacción defensiva de credenciales/PII en los logs locales
+        // (complementa el scrubbing de Sentry en instrument.ts).
+        redact: [
+          'req.headers.authorization',
+          'req.headers.cookie',
+          'req.body.password',
+          'req.body.currentPassword',
+          'req.body.newPassword',
+          'req.body.token',
+          'req.body.refreshToken',
+        ],
       },
     }),
     PrismaModule,
     RedisModule,
+    PgBossModule,
     EmailModule,
     CloudinaryModule,
     // Fase 9 — Internacionalización (docs/fase-9-features.md). Resolución de
@@ -83,6 +101,7 @@ import { TrendingModule } from './modules/trending/trending.module.js';
     NotificationsModule,
     RecommendationsModule,
     ModerationModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [
