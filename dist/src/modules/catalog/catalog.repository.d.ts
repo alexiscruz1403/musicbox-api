@@ -28,13 +28,13 @@ export declare class CatalogRepository {
         reviewCount: number;
     }>>;
     upsertArtist(data: CatalogArtist): import("../../../generated/prisma/models.js").Prisma__ArtistClient<{
-        name: string;
         id: string;
+        name: string;
         reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        imageUrl: string | null;
         lastSyncedAt: Date;
+        imageUrl: string | null;
         catalogSyncedAt: Date | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
@@ -45,45 +45,45 @@ export declare class CatalogRepository {
         reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
         releaseDate: Date | null;
         genreLabel: string | null;
+        lastSyncedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findStaleArtists(olderThan: Date, take: number): import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<{
-        name: string;
         id: string;
+        name: string;
         reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        imageUrl: string | null;
         lastSyncedAt: Date;
+        imageUrl: string | null;
         catalogSyncedAt: Date | null;
     }[]>;
     findArtistByDeezerId(deezerId: string): import("../../../generated/prisma/models.js").Prisma__ArtistClient<{
-        name: string;
         id: string;
+        name: string;
         reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        imageUrl: string | null;
         lastSyncedAt: Date;
+        imageUrl: string | null;
         catalogSyncedAt: Date | null;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findAlbumIdByDeezerId(deezerId: string): Promise<string | null>;
     markCatalogSynced(artistId: string, when: Date): import("../../../generated/prisma/models.js").Prisma__ArtistClient<{
-        name: string;
         id: string;
+        name: string;
         reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        imageUrl: string | null;
         lastSyncedAt: Date;
+        imageUrl: string | null;
         catalogSyncedAt: Date | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
@@ -91,13 +91,13 @@ export declare class CatalogRepository {
     findTracksByArtist(artistId: string, cursor: string | null, limit: number): Promise<{
         items: ({
             artist: {
-                name: string;
                 id: string;
+                name: string;
                 reviewCount: number;
                 deezerId: string;
                 mbid: string | null;
-                imageUrl: string | null;
                 lastSyncedAt: Date;
+                imageUrl: string | null;
                 catalogSyncedAt: Date | null;
             };
             album: {
@@ -112,9 +112,9 @@ export declare class CatalogRepository {
             reviewCount: number;
             deezerId: string;
             mbid: string | null;
-            lastSyncedAt: Date;
             title: string;
             artistId: string;
+            lastSyncedAt: Date;
             durationMs: number | null;
             trackNumber: number | null;
             previewUrl: string | null;
@@ -128,13 +128,13 @@ export declare class CatalogRepository {
     trendingTrackIds(artistId: string, take: number, windowStart: Date): Promise<CatalogReviewGroup[]>;
     hydrateAlbumSummaries(ids: string[]): Promise<never[]> | import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<({
         artist: {
-            name: string;
             id: string;
+            name: string;
             reviewCount: number;
             deezerId: string;
             mbid: string | null;
-            imageUrl: string | null;
             lastSyncedAt: Date;
+            imageUrl: string | null;
             catalogSyncedAt: Date | null;
         };
     } & {
@@ -143,21 +143,21 @@ export declare class CatalogRepository {
         reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
         releaseDate: Date | null;
         genreLabel: string | null;
+        lastSyncedAt: Date;
     })[]>;
     hydrateTrackSummaries(ids: string[]): Promise<never[]> | import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<({
         artist: {
-            name: string;
             id: string;
+            name: string;
             reviewCount: number;
             deezerId: string;
             mbid: string | null;
-            imageUrl: string | null;
             lastSyncedAt: Date;
+            imageUrl: string | null;
             catalogSyncedAt: Date | null;
         };
         album: {
@@ -170,9 +170,9 @@ export declare class CatalogRepository {
         reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
+        lastSyncedAt: Date;
         durationMs: number | null;
         trackNumber: number | null;
         previewUrl: string | null;
@@ -183,9 +183,9 @@ export declare class CatalogRepository {
         reviewCount: number;
         deezerId: string;
         mbid: string | null;
-        lastSyncedAt: Date;
         title: string;
         artistId: string;
+        lastSyncedAt: Date;
         durationMs: number | null;
         trackNumber: number | null;
         previewUrl: string | null;

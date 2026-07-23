@@ -35,11 +35,6 @@ export declare class CatalogController {
         data: import("./providers/music-catalog.provider.js").CatalogPage<import("./providers/music-catalog.provider.js").CatalogAlbum>;
     }>;
     getArtist(deezerId: string): Promise<{
-        data: import("./catalog.service.js").CatalogArtistDetail;
-    }>;
-    getArtistDetail(deezerId: string, req: Request & {
-        user?: JwtPayload;
-    }): Promise<{
         data: import("./artist-detail.service.js").ArtistDetailResponse;
     }>;
     getArtistTracks(deezerId: string, dto: ArtistTracksQueryDto): Promise<{

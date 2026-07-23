@@ -37,6 +37,10 @@ let HttpExceptionFilter = HttpExceptionFilter_1 = class HttpExceptionFilter {
         else {
             const msg = exception instanceof Error ? exception.message : String(exception);
             const stack = exception instanceof Error ? exception.stack : undefined;
+            if (this.isConnectionFailure(exception)) {
+                statusCode = HttpStatus.SERVICE_UNAVAILABLE;
+                code = 'SERVICE_UNAVAILABLE';
+            }
             this.logger.error(`Unhandled exception on ${request.method} ${request.url}: ${msg}`, stack);
             Sentry.captureException(exception);
         }
@@ -56,8 +60,33 @@ let HttpExceptionFilter = HttpExceptionFilter_1 = class HttpExceptionFilter {
             422: 'UNPROCESSABLE_ENTITY',
             429: 'TOO_MANY_REQUESTS',
             500: 'INTERNAL_ERROR',
+            503: 'SERVICE_UNAVAILABLE',
         };
         return map[status] ?? 'UNKNOWN_ERROR';
+    }
+    isConnectionFailure(exception) {
+        const MESSAGE_MARKERS = [
+            'EMAXCONNSESSION',
+            'too many clients',
+            'too many connections',
+            'Connection terminated',
+            'ECONNREFUSED',
+            'ETIMEDOUT',
+        ];
+        const CODES = ['53300', 'ECONNREFUSED', 'ETIMEDOUT', 'ECONNRESET'];
+        for (let err = exception, depth = 0; err && depth < 5; depth++) {
+            const candidate = err;
+            if (typeof candidate.message === 'string' &&
+                MESSAGE_MARKERS.some((marker) => candidate.message.includes(marker))) {
+                return true;
+            }
+            if (typeof candidate.code === 'string' &&
+                CODES.includes(candidate.code)) {
+                return true;
+            }
+            err = candidate.cause;
+        }
+        return false;
     }
 };
 HttpExceptionFilter = HttpExceptionFilter_1 = __decorate([

@@ -27,30 +27,30 @@ export declare class FollowRepository {
         nextCursor: string | null;
     }>;
     followExists(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
+        createdAt: Date;
         followerId: string;
         followeeId: string;
-        createdAt: Date;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     createFollow(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
+        createdAt: Date;
         followerId: string;
         followeeId: string;
-        createdAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     deleteFollow(followerId: string, followeeId: string): import("../../../generated/prisma/models.js").Prisma__FollowClient<{
+        createdAt: Date;
         followerId: string;
         followeeId: string;
-        createdAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findFollowRequest(requesterId: string, targetId: string): import("../../../generated/prisma/models.js").Prisma__FollowRequestClient<{
-        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
+        createdAt: Date;
         requesterId: string;
         targetId: string;
         respondedAt: Date | null;
@@ -58,9 +58,9 @@ export declare class FollowRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     createOrResetFollowRequest(requesterId: string, targetId: string): import("../../../generated/prisma/models.js").Prisma__FollowRequestClient<{
-        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
+        createdAt: Date;
         requesterId: string;
         targetId: string;
         respondedAt: Date | null;
@@ -68,9 +68,9 @@ export declare class FollowRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     deleteFollowRequest(requesterId: string, targetId: string): import("../../../generated/prisma/models.js").Prisma__FollowRequestClient<{
-        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
+        createdAt: Date;
         requesterId: string;
         targetId: string;
         respondedAt: Date | null;
@@ -78,9 +78,9 @@ export declare class FollowRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findFollowRequestById(id: string): import("../../../generated/prisma/models.js").Prisma__FollowRequestClient<{
-        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
+        createdAt: Date;
         requesterId: string;
         targetId: string;
         respondedAt: Date | null;
@@ -96,9 +96,9 @@ export declare class FollowRepository {
                 avatarUrl: string | null;
             };
         } & {
-            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
+            createdAt: Date;
             requesterId: string;
             targetId: string;
             respondedAt: Date | null;
@@ -106,17 +106,17 @@ export declare class FollowRepository {
         nextCursor: string | null;
     }>;
     acceptFollowRequest(id: string): Promise<{
-        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
+        createdAt: Date;
         requesterId: string;
         targetId: string;
         respondedAt: Date | null;
     }>;
     rejectFollowRequest(id: string): import("../../../generated/prisma/models.js").Prisma__FollowRequestClient<{
-        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
+        createdAt: Date;
         requesterId: string;
         targetId: string;
         respondedAt: Date | null;

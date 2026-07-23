@@ -14,9 +14,9 @@ export declare class PushSubscriptionsRepository {
         createdAt: Date;
         userId: string;
         userAgent: string | null;
+        auth: string;
         endpoint: string;
         p256dh: string;
-        auth: string;
         lastSeenAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
@@ -28,9 +28,9 @@ export declare class PushSubscriptionsRepository {
         createdAt: Date;
         userId: string;
         userAgent: string | null;
+        auth: string;
         endpoint: string;
         p256dh: string;
-        auth: string;
         lastSeenAt: Date;
     }[]>;
 }

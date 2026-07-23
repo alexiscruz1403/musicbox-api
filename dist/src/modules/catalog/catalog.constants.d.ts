@@ -7,3 +7,4 @@ export declare const ARTIST_DETAIL_TOP_N = 5;
 export declare const ARTIST_DETAIL_CACHE_TTL_SECONDS: number;
 export declare const PREVIEW_URL_CACHE_TTL_SECONDS = 600;
 export declare const PREVIEW_URL_MISSING_CACHE_TTL_SECONDS = 86400;
+export declare const CATALOG_DB_FANOUT_CONCURRENCY = 4;

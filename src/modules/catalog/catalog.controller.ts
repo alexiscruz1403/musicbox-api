@@ -54,9 +54,6 @@ export class CatalogController {
     @Req() req: Request & { user?: JwtPayload },
   ) {
     const album = await this.catalog.getAlbum(deezerId, req.user?.sub);
-    if (req.user) {
-      await this.history.recordAlbumView(req.user.sub, album);
-    }
     return { data: album };
   }
 
@@ -67,9 +64,6 @@ export class CatalogController {
     @Req() req: Request & { user?: JwtPayload },
   ) {
     const track = await this.catalog.getTrack(deezerId, req.user?.sub);
-    if (req.user) {
-      await this.history.recordTrackView(req.user.sub, track);
-    }
     return { data: track };
   }
 
@@ -87,22 +81,13 @@ export class CatalogController {
     };
   }
 
+  // Detalle (extendido) de un artista: info básica + reviewCount + top-5
+  // reseñados/trending. Antes convivía con un `.../detail` separado; se
+  // consolidaron en esta única ruta. La persistencia lazy y el reviewCount los
+  // garantiza ArtistDetailService.getDetail (vía CatalogService.getArtist).
   @Get('artists/:deezerId')
   async getArtist(@Param('deezerId') deezerId: string) {
-    return { data: await this.catalog.getArtist(deezerId) };
-  }
-
-  @Get('artists/:deezerId/detail')
-  @UseGuards(OptionalJwtAuthGuard)
-  async getArtistDetail(
-    @Param('deezerId') deezerId: string,
-    @Req() req: Request & { user?: JwtPayload },
-  ) {
-    const detail = await this.artistDetail.getDetail(deezerId);
-    if (req.user) {
-      await this.history.recordArtistView(req.user.sub, detail.artist);
-    }
-    return { data: detail };
+    return { data: await this.artistDetail.getDetail(deezerId) };
   }
 
   @Get('artists/:deezerId/tracks')

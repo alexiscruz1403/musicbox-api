@@ -6,8 +6,8 @@ export declare class CatalogHistoryController {
     listSearchHistory(user: JwtPayload): Promise<{
         data: {
             query: string;
-            userId: string;
             id: string;
+            userId: string;
             searchedAt: Date;
         }[];
     }>;
@@ -15,13 +15,13 @@ export declare class CatalogHistoryController {
     deleteAllSearchHistory(user: JwtPayload): Promise<void>;
     listRecentlyViewed(user: JwtPayload): Promise<{
         data: {
-            userId: string;
             id: string;
-            coverUrl: string | null;
+            userId: string;
+            resourceType: import("../../../generated/prisma/enums.js").CatalogResourceType;
             deezerId: string;
             title: string;
-            resourceType: import("../../../generated/prisma/enums.js").CatalogResourceType;
             artistName: string | null;
+            coverUrl: string | null;
             albumsCount: number | null;
             viewedAt: Date;
         }[];
@@ -29,4 +29,7 @@ export declare class CatalogHistoryController {
     listRecentlyViewedDetails(user: JwtPayload): Promise<{
         data: import("./catalog-history.service.js").RecentlyViewedDetailItem[];
     }>;
+    recordAlbumView(user: JwtPayload, deezerId: string): Promise<void>;
+    recordTrackView(user: JwtPayload, deezerId: string): Promise<void>;
+    recordArtistView(user: JwtPayload, deezerId: string): Promise<void>;
 }

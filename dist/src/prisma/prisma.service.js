@@ -8,12 +8,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../../generated/prisma/client.js';
 let PrismaService = class PrismaService extends PrismaClient {
-    constructor() {
+    constructor(config) {
         super({
-            adapter: new PrismaPg({ connectionString: process.env['DATABASE_URL'] }),
+            adapter: new PrismaPg({
+                connectionString: config.getOrThrow('DATABASE_URL'),
+                max: config.get('DATABASE_POOL_MAX'),
+                application_name: 'musicbox-api',
+            }),
         });
     }
     async onModuleInit() {
@@ -25,7 +30,7 @@ let PrismaService = class PrismaService extends PrismaClient {
 };
 PrismaService = __decorate([
     Injectable(),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [ConfigService])
 ], PrismaService);
 export { PrismaService };
 //# sourceMappingURL=prisma.service.js.map

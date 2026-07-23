@@ -5,6 +5,7 @@ export const configValidationSchema = Joi.object({
         .default('development'),
     PORT: Joi.number().default(3001),
     DATABASE_URL: Joi.string().required(),
+    DATABASE_POOL_MAX: Joi.number().min(1).default(8),
     DIRECT_URL: Joi.string().optional(),
     PGBOSS_DATABASE_URL: Joi.string().optional(),
     REDIS_URL: Joi.string().required(),

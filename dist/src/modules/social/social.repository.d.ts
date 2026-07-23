@@ -17,8 +17,8 @@ export declare class SocialRepository {
     }>;
     isOwnerVisibleTo(ownerId: string, viewerId?: string): Promise<boolean>;
     findReaction(userId: string, reviewId: string): import("../../../generated/prisma/models.js").Prisma__ReviewReactionClient<{
-        createdAt: Date;
         id: string;
+        createdAt: Date;
         userId: string;
         type: import("../../../generated/prisma/enums.js").ReactionType;
         reviewId: string;
@@ -26,8 +26,8 @@ export declare class SocialRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     upsertReaction(userId: string, reviewId: string, type: 'LIKE' | 'DISLIKE'): import("../../../generated/prisma/models.js").Prisma__ReviewReactionClient<{
-        createdAt: Date;
         id: string;
+        createdAt: Date;
         userId: string;
         type: import("../../../generated/prisma/enums.js").ReactionType;
         reviewId: string;
@@ -35,8 +35,8 @@ export declare class SocialRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     deleteReaction(userId: string, reviewId: string): import("../../../generated/prisma/models.js").Prisma__ReviewReactionClient<{
-        createdAt: Date;
         id: string;
+        createdAt: Date;
         userId: string;
         type: import("../../../generated/prisma/enums.js").ReactionType;
         reviewId: string;
@@ -48,9 +48,9 @@ export declare class SocialRepository {
         reviewId: string;
         content: string;
     }): import("../../../generated/prisma/models.js").Prisma__CommentClient<{
-        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
+        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
@@ -60,9 +60,9 @@ export declare class SocialRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findCommentById(id: string): import("../../../generated/prisma/models.js").Prisma__CommentClient<{
-        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
+        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
@@ -72,9 +72,9 @@ export declare class SocialRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     updateComment(id: string, content: string): import("../../../generated/prisma/models.js").Prisma__CommentClient<{
-        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
+        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
@@ -84,9 +84,9 @@ export declare class SocialRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     softDeleteComment(id: string): import("../../../generated/prisma/models.js").Prisma__CommentClient<{
-        createdAt: Date;
         id: string;
         status: import("../../../generated/prisma/enums.js").ContentStatus;
+        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         userId: string;
@@ -104,9 +104,9 @@ export declare class SocialRepository {
                 avatarUrl: string | null;
             };
         } & {
-            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
+            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;

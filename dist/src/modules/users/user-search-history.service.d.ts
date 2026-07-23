@@ -5,10 +5,10 @@ export declare class UserSearchHistoryService {
     constructor(repo: UserSearchHistoryRepository);
     recordSearch(searcherId: string, query: string): Promise<void>;
     listHistory(searcherId: string): Promise<{
-        id: string;
         query: string;
-        searchedAt: Date;
+        id: string;
         searcherId: string;
+        searchedAt: Date;
     }[]>;
     deleteHistoryItem(searcherId: string, id: string): Promise<void>;
     deleteAllHistory(searcherId: string): Promise<void>;

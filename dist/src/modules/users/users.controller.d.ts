@@ -16,9 +16,7 @@ export declare class UsersController {
     getMe(user: JwtPayload): Promise<{
         data: {
             user: {
-                status: import("../../../generated/prisma/enums.js").UserStatus;
                 id: string;
-                createdAt: Date;
                 handle: string;
                 displayName: string;
                 email: string;
@@ -27,9 +25,11 @@ export declare class UsersController {
                 bio: string | null;
                 notifEnabled: boolean;
                 isPrivate: boolean;
+                status: import("../../../generated/prisma/enums.js").UserStatus;
                 role: import("../../../generated/prisma/enums.js").UserRole;
                 language: import("../../../generated/prisma/enums.js").Language;
                 consentedAt: Date | null;
+                createdAt: Date;
                 updatedAt: Date;
                 deletedAt: Date | null;
                 acceptedReportsCount: number;
@@ -45,9 +45,7 @@ export declare class UsersController {
     }>;
     updateMe(user: JwtPayload, dto: UpdateProfileDto): Promise<{
         data: {
-            status: import("../../../generated/prisma/enums.js").UserStatus;
             id: string;
-            createdAt: Date;
             handle: string;
             displayName: string;
             email: string;
@@ -60,9 +58,11 @@ export declare class UsersController {
             bio: string | null;
             notifEnabled: boolean;
             isPrivate: boolean;
+            status: import("../../../generated/prisma/enums.js").UserStatus;
             role: import("../../../generated/prisma/enums.js").UserRole;
             language: import("../../../generated/prisma/enums.js").Language;
             consentedAt: Date | null;
+            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             acceptedReportsCount: number;
@@ -84,9 +84,7 @@ export declare class UsersController {
     exportMe(user: JwtPayload): Promise<{
         data: {
             profile: {
-                status: import("../../../generated/prisma/enums.js").UserStatus;
                 id: string;
-                createdAt: Date;
                 handle: string;
                 displayName: string;
                 email: string;
@@ -97,9 +95,11 @@ export declare class UsersController {
                 bio: string | null;
                 notifEnabled: boolean;
                 isPrivate: boolean;
+                status: import("../../../generated/prisma/enums.js").UserStatus;
                 role: import("../../../generated/prisma/enums.js").UserRole;
                 language: import("../../../generated/prisma/enums.js").Language;
                 consentedAt: Date | null;
+                createdAt: Date;
                 updatedAt: Date;
                 deletedAt: Date | null;
                 acceptedReportsCount: number;
@@ -109,20 +109,20 @@ export declare class UsersController {
             reviews: ({
                 trackReviewItems: {
                     id: string;
-                    reviewId: string;
                     trackId: string;
                     description: string | null;
                     rating: import("@prisma/client-runtime-utils").Decimal;
+                    reviewId: string;
                     position: number;
                 }[];
             } & {
-                userId: string;
-                status: import("../../../generated/prisma/enums.js").ContentStatus;
-                type: import("../../../generated/prisma/enums.js").ReviewType;
                 id: string;
+                status: import("../../../generated/prisma/enums.js").ContentStatus;
                 createdAt: Date;
                 updatedAt: Date;
                 deletedAt: Date | null;
+                userId: string;
+                type: import("../../../generated/prisma/enums.js").ReviewType;
                 trackId: string | null;
                 albumId: string | null;
                 description: string | null;
@@ -132,21 +132,21 @@ export declare class UsersController {
                 externalCoverUrl: string | null;
             })[];
             comments: {
-                userId: string;
-                status: import("../../../generated/prisma/enums.js").ContentStatus;
                 id: string;
-                reviewId: string;
+                status: import("../../../generated/prisma/enums.js").ContentStatus;
                 createdAt: Date;
                 updatedAt: Date;
                 deletedAt: Date | null;
+                userId: string;
+                reviewId: string;
                 content: string;
             }[];
             reactions: {
+                id: string;
+                createdAt: Date;
                 userId: string;
                 type: import("../../../generated/prisma/enums.js").ReactionType;
-                id: string;
                 reviewId: string;
-                createdAt: Date;
             }[];
             follows: {
                 followers: {
@@ -230,8 +230,8 @@ export declare class UsersController {
     }>;
     respondFollowRequest(user: JwtPayload, id: string, dto: UpdateFollowRequestStatusDto): Promise<{
         data: {
-            status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
             id: string;
+            status: import("../../../generated/prisma/enums.js").FollowRequestStatus;
             createdAt: Date;
             requesterId: string;
             targetId: string;

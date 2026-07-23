@@ -16,8 +16,8 @@ export declare class RecommendationsService {
         generatedAt: Date;
     } | null>;
     recompute(userId: string): Promise<{
-        userId: string;
         payload: import("@prisma/client/runtime/client").JsonValue;
+        userId: string;
         generatedAt: Date;
     }>;
     private getFavoriteArtists;

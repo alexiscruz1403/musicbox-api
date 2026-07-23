@@ -13,8 +13,8 @@ export declare class AdminModerationController {
                 displayName: string;
             };
         } & {
-            status: import("../../../generated/prisma/enums.js").ReportStatus;
             id: string;
+            status: import("../../../generated/prisma/enums.js").ReportStatus;
             createdAt: Date;
             targetId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;
@@ -31,8 +31,8 @@ export declare class AdminModerationController {
     }>;
     updateStatus(admin: JwtPayload, id: string, dto: UpdateReportStatusDto): Promise<{
         data: {
-            status: import("../../../generated/prisma/enums.js").ReportStatus;
             id: string;
+            status: import("../../../generated/prisma/enums.js").ReportStatus;
             createdAt: Date;
             targetId: string;
             targetType: import("../../../generated/prisma/enums.js").ReportTargetType;

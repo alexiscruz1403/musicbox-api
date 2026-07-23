@@ -52,5 +52,6 @@
   "CONFLICT": "Conflicto.",
   "UNPROCESSABLE_ENTITY": "Entidad no procesable.",
   "TOO_MANY_REQUESTS": "Demasiadas solicitudes.",
+  "SERVICE_UNAVAILABLE": "Servicio temporalmente no disponible. Intenta de nuevo.",
   "UNKNOWN_ERROR": "Error desconocido."
 }

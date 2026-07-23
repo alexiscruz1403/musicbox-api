@@ -22,8 +22,8 @@ export declare class CatalogHistoryService {
     recordSearch(userId: string, query: string): Promise<void>;
     listSearchHistory(userId: string): Promise<{
         query: string;
-        userId: string;
         id: string;
+        userId: string;
         searchedAt: Date;
     }[]>;
     deleteSearchHistoryItem(userId: string, id: string): Promise<void>;
@@ -31,14 +31,17 @@ export declare class CatalogHistoryService {
     recordAlbumView(userId: string, album: CatalogAlbum): Promise<void>;
     recordTrackView(userId: string, track: CatalogTrack): Promise<void>;
     recordArtistView(userId: string, artist: CatalogArtist): Promise<void>;
+    viewAlbum(userId: string, deezerId: string): Promise<void>;
+    viewTrack(userId: string, deezerId: string): Promise<void>;
+    viewArtist(userId: string, deezerId: string): Promise<void>;
     listRecentlyViewed(userId: string): Promise<{
-        userId: string;
         id: string;
-        coverUrl: string | null;
+        userId: string;
+        resourceType: CatalogResourceType;
         deezerId: string;
         title: string;
-        resourceType: CatalogResourceType;
         artistName: string | null;
+        coverUrl: string | null;
         albumsCount: number | null;
         viewedAt: Date;
     }[]>;

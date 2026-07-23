@@ -56,6 +56,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
       const msg =
         exception instanceof Error ? exception.message : String(exception);
       const stack = exception instanceof Error ? exception.stack : undefined;
+      // Un pool/pooler saturado o una DB inalcanzable no es un bug de la app:
+      // es indisponibilidad temporal, y el cliente puede reintentar. Se degrada
+      // a 503 en vez del 500 genérico (se sigue reportando a Sentry abajo,
+      // porque es un incidente real de infraestructura).
+      if (this.isConnectionFailure(exception)) {
+        statusCode = HttpStatus.SERVICE_UNAVAILABLE;
+        code = 'SERVICE_UNAVAILABLE';
+      }
       this.logger.error(
         `Unhandled exception on ${request.method} ${request.url}: ${msg}`,
         stack,
@@ -86,7 +94,50 @@ export class HttpExceptionFilter implements ExceptionFilter {
       422: 'UNPROCESSABLE_ENTITY',
       429: 'TOO_MANY_REQUESTS',
       500: 'INTERNAL_ERROR',
+      503: 'SERVICE_UNAVAILABLE',
     };
     return map[status] ?? 'UNKNOWN_ERROR';
+  }
+
+  // Se detecta por duck-typing en vez de instanceof: el error llega envuelto en
+  // un DriverAdapterError de Prisma (tipo interno del adapter, no exportado en
+  // el barrel público), con el error real de `pg` colgando de `cause`.
+  private isConnectionFailure(exception: unknown): boolean {
+    // EMAXCONNSESSION: pooler de Supabase en session mode sin cupos.
+    // "too many clients": mensaje nativo de PgBouncer/PostgreSQL.
+    // 53300: SQLSTATE too_many_connections.
+    const MESSAGE_MARKERS = [
+      'EMAXCONNSESSION',
+      'too many clients',
+      'too many connections',
+      'Connection terminated',
+      'ECONNREFUSED',
+      'ETIMEDOUT',
+    ];
+    const CODES = ['53300', 'ECONNREFUSED', 'ETIMEDOUT', 'ECONNRESET'];
+
+    for (let err: unknown = exception, depth = 0; err && depth < 5; depth++) {
+      const candidate = err as {
+        message?: unknown;
+        code?: unknown;
+        cause?: unknown;
+      };
+      if (
+        typeof candidate.message === 'string' &&
+        MESSAGE_MARKERS.some((marker) =>
+          (candidate.message as string).includes(marker),
+        )
+      ) {
+        return true;
+      }
+      if (
+        typeof candidate.code === 'string' &&
+        CODES.includes(candidate.code)
+      ) {
+        return true;
+      }
+      err = candidate.cause;
+    }
+    return false;
   }
 }

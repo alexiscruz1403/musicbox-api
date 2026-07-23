@@ -7,4 +7,5 @@ export const ARTIST_DETAIL_TOP_N = 5;
 export const ARTIST_DETAIL_CACHE_TTL_SECONDS = 60 * 60;
 export const PREVIEW_URL_CACHE_TTL_SECONDS = 600;
 export const PREVIEW_URL_MISSING_CACHE_TTL_SECONDS = 86_400;
+export const CATALOG_DB_FANOUT_CONCURRENCY = 4;
 //# sourceMappingURL=catalog.constants.js.map

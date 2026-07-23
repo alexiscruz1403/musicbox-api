@@ -2,7 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { RedisService } from '../../redis/redis.service.js';
 import { CatalogSyncService } from './catalog-sync.service.js';
 import { CatalogRepository } from './catalog.repository.js';
+import { mapWithConcurrency } from '../common/concurrency/map-with-concurrency.util.js';
 import {
+  CATALOG_DB_FANOUT_CONCURRENCY,
   PREVIEW_URL_CACHE_TTL_SECONDS,
   PREVIEW_URL_MISSING_CACHE_TTL_SECONDS,
 } from './catalog.constants.js';
@@ -159,10 +161,13 @@ export class CatalogService {
       freshFromMetadataFetch = album;
       const artist = await this.repo.upsertArtist(album.artist);
       const persistedAlbum = await this.repo.upsertAlbum(album, artist.id);
-      await Promise.all(
-        album.tracks.map((track) =>
-          this.repo.upsertTrack(track, artist.id, persistedAlbum.id),
-        ),
+      // Concurrencia acotada, no `Promise.all`: un álbum puede traer 40+
+      // tracks y cada upsert toma una conexión del pool
+      // (CATALOG_DB_FANOUT_CONCURRENCY).
+      await mapWithConcurrency(
+        album.tracks,
+        CATALOG_DB_FANOUT_CONCURRENCY,
+        (track) => this.repo.upsertTrack(track, artist.id, persistedAlbum.id),
       );
       return album;
     });

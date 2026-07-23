@@ -10,17 +10,17 @@ export declare class CatalogHistoryRepository {
     private readonly prisma;
     constructor(prisma: PrismaService);
     upsertSearchHistory(userId: string, query: string): import("../../../generated/prisma/models.js").Prisma__CatalogSearchHistoryClient<{
+        query: string;
         id: string;
         userId: string;
-        query: string;
         searchedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     listSearchHistory(userId: string): import("../../../generated/prisma/internal/prismaNamespace.js").PrismaPromise<{
+        query: string;
         id: string;
         userId: string;
-        query: string;
         searchedAt: Date;
     }[]>;
     deleteSearchHistoryItem(userId: string, id: string): Promise<boolean>;
@@ -31,9 +31,9 @@ export declare class CatalogHistoryRepository {
         userId: string;
         deezerId: string;
         title: string;
+        albumsCount: number | null;
         resourceType: CatalogResourceType;
         artistName: string | null;
-        albumsCount: number | null;
         viewedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
@@ -44,9 +44,9 @@ export declare class CatalogHistoryRepository {
         userId: string;
         deezerId: string;
         title: string;
+        albumsCount: number | null;
         resourceType: CatalogResourceType;
         artistName: string | null;
-        albumsCount: number | null;
         viewedAt: Date;
     }[]>;
 }

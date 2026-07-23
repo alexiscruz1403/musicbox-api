@@ -36,9 +36,9 @@ export declare class FeedRepository {
                 avatarUrl: string | null;
             };
         } & {
-            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
+            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;

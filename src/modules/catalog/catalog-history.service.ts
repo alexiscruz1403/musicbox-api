@@ -1,6 +1,8 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { mapWithConcurrency } from '../common/concurrency/map-with-concurrency.util.js';
 import { ArtistDetailService } from './artist-detail.service.js';
 import { CatalogHistoryRepository } from './catalog-history.repository.js';
+import { CATALOG_DB_FANOUT_CONCURRENCY } from './catalog.constants.js';
 import { CatalogService } from './catalog.service.js';
 import type {
   CatalogAlbum,
@@ -100,6 +102,40 @@ export class CatalogHistoryService {
     }
   }
 
+  // Entradas explícitas para POST /catalog/{albums,tracks,artists}/:id/view —
+  // el registro de "visto recientemente" ya NO cuelga de los GET de detalle
+  // (el frontend los prefetchea, lo que ensuciaba la lista con recursos que el
+  // usuario nunca visitó). El objeto de dominio se re-obtiene acá (cache Redis
+  // caliente por el prefetch) para conservar la garantía de datos autoritativos
+  // de record*View. Todo el fetch va en try/catch: una vista es un side-effect
+  // no crítico y un id inexistente en Deezer no debe romper la respuesta 204.
+  async viewAlbum(userId: string, deezerId: string): Promise<void> {
+    try {
+      const album = await this.catalog.getAlbum(deezerId);
+      await this.recordAlbumView(userId, album);
+    } catch (err) {
+      this.logger.warn(`Failed to record recently-viewed album view: ${err}`);
+    }
+  }
+
+  async viewTrack(userId: string, deezerId: string): Promise<void> {
+    try {
+      const track = await this.catalog.getTrack(deezerId);
+      await this.recordTrackView(userId, track);
+    } catch (err) {
+      this.logger.warn(`Failed to record recently-viewed track view: ${err}`);
+    }
+  }
+
+  async viewArtist(userId: string, deezerId: string): Promise<void> {
+    try {
+      const artist = await this.catalog.getArtist(deezerId);
+      await this.recordArtistView(userId, artist);
+    } catch (err) {
+      this.logger.warn(`Failed to record recently-viewed artist view: ${err}`);
+    }
+  }
+
   async listRecentlyViewed(userId: string) {
     return this.repo.listRecentlyViewed(userId);
   }
@@ -115,7 +151,12 @@ export class CatalogHistoryService {
     userId: string,
   ): Promise<RecentlyViewedDetailItem[]> {
     const items = await this.repo.listRecentlyViewed(userId);
-    return Promise.all(items.map((item) => this.hydrateOne(item)));
+    // Concurrencia acotada: cada hydrateOne puede a su vez abrir el fan-out de
+    // tracks de un álbum, así que sin límite este endpoint solo multiplicaba la
+    // presión sobre el pool de conexiones.
+    return mapWithConcurrency(items, CATALOG_DB_FANOUT_CONCURRENCY, (item) =>
+      this.hydrateOne(item),
+    );
   }
 
   private async hydrateOne(item: {

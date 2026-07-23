@@ -161,4 +161,42 @@ describe('HttpExceptionFilter', () => {
       },
     });
   });
+
+  // Pool/pooler saturado o DB inalcanzable: indisponibilidad temporal, no un
+  // bug de la app — el cliente puede reintentar.
+  it.each([
+    [
+      'pooler de Supabase sin cupos',
+      new Error(
+        '(EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15',
+      ),
+    ],
+    [
+      'error de pg anidado en el cause del DriverAdapterError',
+      Object.assign(new Error('Error in PostgreSQL connection'), {
+        cause: Object.assign(new Error('sorry, too many clients already'), {
+          code: '53300',
+        }),
+      }),
+    ],
+    [
+      'DB inalcanzable',
+      Object.assign(new Error('connect ECONNREFUSED 127.0.0.1:5432'), {
+        code: 'ECONNREFUSED',
+      }),
+    ],
+  ])('degrades a 503 SERVICE_UNAVAILABLE: %s', (_label, exception) => {
+    const { host, jsonSpy, response } = buildHost();
+
+    filter.catch(exception, host);
+
+    expect(response.status).toHaveBeenCalledWith(503);
+    expect(jsonSpy).toHaveBeenCalledWith({
+      error: {
+        code: 'SERVICE_UNAVAILABLE',
+        message: 'SERVICE_UNAVAILABLE',
+        statusCode: 503,
+      },
+    });
+  });
 });

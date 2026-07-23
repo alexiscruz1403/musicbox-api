@@ -5,13 +5,12 @@ export declare class UsersRepository {
     private readonly prisma;
     constructor(prisma: PrismaService);
     findById(id: string): import("../../../generated/prisma/models.js").Prisma__UserClient<{
-        createdAt: Date;
         id: string;
         handle: string;
-        email: string;
-        googleId: string | null;
         displayName: string;
+        email: string;
         passwordHash: string | null;
+        googleId: string | null;
         avatarUrl: string | null;
         avatarPublicId: string | null;
         coverUrl: string | null;
@@ -23,6 +22,7 @@ export declare class UsersRepository {
         role: import("../../../generated/prisma/enums.js").UserRole;
         language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
+        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         acceptedReportsCount: number;
@@ -32,13 +32,12 @@ export declare class UsersRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     findByHandle(handle: string): import("../../../generated/prisma/models.js").Prisma__UserClient<{
-        createdAt: Date;
         id: string;
         handle: string;
-        email: string;
-        googleId: string | null;
         displayName: string;
+        email: string;
         passwordHash: string | null;
+        googleId: string | null;
         avatarUrl: string | null;
         avatarPublicId: string | null;
         coverUrl: string | null;
@@ -50,6 +49,7 @@ export declare class UsersRepository {
         role: import("../../../generated/prisma/enums.js").UserRole;
         language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
+        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         acceptedReportsCount: number;
@@ -60,13 +60,12 @@ export declare class UsersRepository {
     }>;
     getStats(userId: string): Promise<[number, number, number]>;
     updateProfile(userId: string, data: UpdateProfileDto): Promise<{
-        createdAt: Date;
         id: string;
         handle: string;
-        email: string;
-        googleId: string | null;
         displayName: string;
+        email: string;
         passwordHash: string | null;
+        googleId: string | null;
         avatarUrl: string | null;
         avatarPublicId: string | null;
         coverUrl: string | null;
@@ -78,6 +77,7 @@ export declare class UsersRepository {
         role: import("../../../generated/prisma/enums.js").UserRole;
         language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
+        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         acceptedReportsCount: number;
@@ -99,9 +99,9 @@ export declare class UsersRepository {
                 position: number;
             }[];
         } & {
-            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
+            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
@@ -115,9 +115,9 @@ export declare class UsersRepository {
             externalCoverUrl: string | null;
         })[];
         comments: {
-            createdAt: Date;
             id: string;
             status: import("../../../generated/prisma/enums.js").ContentStatus;
+            createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
             userId: string;
@@ -125,8 +125,8 @@ export declare class UsersRepository {
             content: string;
         }[];
         reactions: {
-            createdAt: Date;
             id: string;
+            createdAt: Date;
             userId: string;
             type: import("../../../generated/prisma/enums.js").ReactionType;
             reviewId: string;
@@ -138,9 +138,9 @@ export declare class UsersRepository {
                 displayName: string;
             };
         } & {
+            createdAt: Date;
             followerId: string;
             followeeId: string;
-            createdAt: Date;
         })[];
         following: ({
             followee: {
@@ -149,9 +149,9 @@ export declare class UsersRepository {
                 displayName: string;
             };
         } & {
+            createdAt: Date;
             followerId: string;
             followeeId: string;
-            createdAt: Date;
         })[];
         notifPrefs: {
             userId: string;
@@ -163,13 +163,12 @@ export declare class UsersRepository {
         } | null;
     }>;
     updateAvatar(userId: string, avatarUrl: string, avatarPublicId: string): import("../../../generated/prisma/models.js").Prisma__UserClient<{
-        createdAt: Date;
         id: string;
         handle: string;
-        email: string;
-        googleId: string | null;
         displayName: string;
+        email: string;
         passwordHash: string | null;
+        googleId: string | null;
         avatarUrl: string | null;
         avatarPublicId: string | null;
         coverUrl: string | null;
@@ -181,6 +180,7 @@ export declare class UsersRepository {
         role: import("../../../generated/prisma/enums.js").UserRole;
         language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
+        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         acceptedReportsCount: number;
@@ -190,13 +190,12 @@ export declare class UsersRepository {
         omit: import("../../../generated/prisma/internal/prismaNamespace.js").GlobalOmitConfig | undefined;
     }>;
     updateCover(userId: string, coverUrl: string, coverPublicId: string): import("../../../generated/prisma/models.js").Prisma__UserClient<{
-        createdAt: Date;
         id: string;
         handle: string;
-        email: string;
-        googleId: string | null;
         displayName: string;
+        email: string;
         passwordHash: string | null;
+        googleId: string | null;
         avatarUrl: string | null;
         avatarPublicId: string | null;
         coverUrl: string | null;
@@ -208,6 +207,7 @@ export declare class UsersRepository {
         role: import("../../../generated/prisma/enums.js").UserRole;
         language: import("../../../generated/prisma/enums.js").Language;
         consentedAt: Date | null;
+        createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         acceptedReportsCount: number;

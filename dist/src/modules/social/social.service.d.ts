@@ -10,11 +10,11 @@ export declare class SocialService {
     constructor(repo: SocialRepository, events: SocialEventsProducer);
     getReviewStats(reviewIds: string[], viewerId?: string): Promise<Map<string, import("./social.repository.js").ReviewStats>>;
     react(userId: string, reviewId: string, dto: CreateReactionDto): Promise<{
+        id: string;
+        createdAt: Date;
         userId: string;
         type: import("../../../generated/prisma/enums.js").ReactionType;
-        id: string;
         reviewId: string;
-        createdAt: Date;
     }>;
     removeReaction(userId: string, reviewId: string): Promise<void>;
     listComments(reviewId: string, query: ListCommentsQueryDto, viewerId?: string): Promise<{
@@ -26,35 +26,35 @@ export declare class SocialService {
                 avatarUrl: string | null;
             };
         } & {
-            userId: string;
-            status: import("../../../generated/prisma/enums.js").ContentStatus;
             id: string;
-            reviewId: string;
+            status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
+            userId: string;
+            reviewId: string;
             content: string;
         })[];
         nextCursor: string | null;
     }>;
     createComment(userId: string, reviewId: string, dto: CreateCommentDto): Promise<{
-        userId: string;
-        status: import("../../../generated/prisma/enums.js").ContentStatus;
         id: string;
-        reviewId: string;
+        status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
+        userId: string;
+        reviewId: string;
         content: string;
     }>;
     updateComment(userId: string, id: string, dto: UpdateCommentDto): Promise<{
-        userId: string;
-        status: import("../../../generated/prisma/enums.js").ContentStatus;
         id: string;
-        reviewId: string;
+        status: import("../../../generated/prisma/enums.js").ContentStatus;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
+        userId: string;
+        reviewId: string;
         content: string;
     }>;
     removeComment(userId: string, id: string): Promise<void>;

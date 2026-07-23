@@ -22,6 +22,7 @@ const mockRepo = {
 const mockCatalog = {
   getAlbum: vi.fn(),
   getTrack: vi.fn(),
+  getArtist: vi.fn(),
 };
 
 const mockArtistDetail = {
@@ -183,6 +184,99 @@ describe('CatalogHistoryService', () => {
       await expect(
         service.recordArtistView('user-1', artistFixture),
       ).resolves.toBeUndefined();
+    });
+  });
+
+  describe('viewAlbum', () => {
+    it('re-fetches the album and records it as ALBUM', async () => {
+      mockCatalog.getAlbum.mockResolvedValue(albumFixture);
+      mockRepo.upsertRecentlyViewed.mockResolvedValue({});
+
+      await service.viewAlbum('user-1', '302127');
+
+      expect(mockCatalog.getAlbum).toHaveBeenCalledWith('302127');
+      expect(mockRepo.upsertRecentlyViewed).toHaveBeenCalledWith(
+        'user-1',
+        'ALBUM',
+        '302127',
+        {
+          title: 'Discovery',
+          artistName: 'Daft Punk',
+          coverUrl: albumFixture.coverUrl,
+          albumsCount: null,
+        },
+      );
+    });
+
+    it('swallows a fetch failure (unknown id) without recording or throwing', async () => {
+      mockCatalog.getAlbum.mockRejectedValue(new NotFoundException());
+
+      await expect(
+        service.viewAlbum('user-1', 'nope'),
+      ).resolves.toBeUndefined();
+      expect(mockRepo.upsertRecentlyViewed).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('viewTrack', () => {
+    it('re-fetches the track and records it as TRACK', async () => {
+      mockCatalog.getTrack.mockResolvedValue(trackFixture);
+      mockRepo.upsertRecentlyViewed.mockResolvedValue({});
+
+      await service.viewTrack('user-1', '3135556');
+
+      expect(mockCatalog.getTrack).toHaveBeenCalledWith('3135556');
+      expect(mockRepo.upsertRecentlyViewed).toHaveBeenCalledWith(
+        'user-1',
+        'TRACK',
+        '3135556',
+        {
+          title: 'One More Time',
+          artistName: 'Daft Punk',
+          coverUrl: trackFixture.coverUrl,
+          albumsCount: null,
+        },
+      );
+    });
+
+    it('swallows a fetch failure (unknown id) without recording or throwing', async () => {
+      mockCatalog.getTrack.mockRejectedValue(new NotFoundException());
+
+      await expect(
+        service.viewTrack('user-1', 'nope'),
+      ).resolves.toBeUndefined();
+      expect(mockRepo.upsertRecentlyViewed).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('viewArtist', () => {
+    it('re-fetches the artist (via getArtist) and records it as ARTIST', async () => {
+      mockCatalog.getArtist.mockResolvedValue(artistFixture);
+      mockRepo.upsertRecentlyViewed.mockResolvedValue({});
+
+      await service.viewArtist('user-1', '27');
+
+      expect(mockCatalog.getArtist).toHaveBeenCalledWith('27');
+      expect(mockRepo.upsertRecentlyViewed).toHaveBeenCalledWith(
+        'user-1',
+        'ARTIST',
+        '27',
+        {
+          title: 'Daft Punk',
+          artistName: null,
+          coverUrl: artistFixture.imageUrl,
+          albumsCount: 9,
+        },
+      );
+    });
+
+    it('swallows a fetch failure (unknown id) without recording or throwing', async () => {
+      mockCatalog.getArtist.mockRejectedValue(new NotFoundException());
+
+      await expect(
+        service.viewArtist('user-1', 'nope'),
+      ).resolves.toBeUndefined();
+      expect(mockRepo.upsertRecentlyViewed).not.toHaveBeenCalled();
     });
   });
 

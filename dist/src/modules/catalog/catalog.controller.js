@@ -10,6 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+import { createRequire as _createRequire } from "module";
+const __require = _createRequire(import.meta.url);
+const openapi = __require("@nestjs/swagger");
 import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { Public } from '../common/decorators/public.decorator.js';
@@ -44,16 +47,10 @@ let CatalogController = class CatalogController {
     }
     async getAlbum(deezerId, req) {
         const album = await this.catalog.getAlbum(deezerId, req.user?.sub);
-        if (req.user) {
-            await this.history.recordAlbumView(req.user.sub, album);
-        }
         return { data: album };
     }
     async getTrack(deezerId, req) {
         const track = await this.catalog.getTrack(deezerId, req.user?.sub);
-        if (req.user) {
-            await this.history.recordTrackView(req.user.sub, track);
-        }
         return { data: track };
     }
     async getArtistAlbums(deezerId, dto) {
@@ -62,14 +59,7 @@ let CatalogController = class CatalogController {
         };
     }
     async getArtist(deezerId) {
-        return { data: await this.catalog.getArtist(deezerId) };
-    }
-    async getArtistDetail(deezerId, req) {
-        const detail = await this.artistDetail.getDetail(deezerId);
-        if (req.user) {
-            await this.history.recordArtistView(req.user.sub, detail.artist);
-        }
-        return { data: detail };
+        return { data: await this.artistDetail.getDetail(deezerId) };
     }
     async getArtistTracks(deezerId, dto) {
         return {
@@ -80,6 +70,7 @@ let CatalogController = class CatalogController {
 __decorate([
     Get('search'),
     UseGuards(OptionalJwtAuthGuard),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, Query()),
     __param(1, Req()),
     __metadata("design:type", Function),
@@ -89,6 +80,7 @@ __decorate([
 __decorate([
     Get('quick-search'),
     Throttle({ default: { limit: 30, ttl: 60 } }),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, Query()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [QuickSearchCatalogDto]),
@@ -97,6 +89,7 @@ __decorate([
 __decorate([
     Get('albums/:deezerId'),
     UseGuards(OptionalJwtAuthGuard),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, Param('deezerId')),
     __param(1, Req()),
     __metadata("design:type", Function),
@@ -106,6 +99,7 @@ __decorate([
 __decorate([
     Get('tracks/:deezerId'),
     UseGuards(OptionalJwtAuthGuard),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, Param('deezerId')),
     __param(1, Req()),
     __metadata("design:type", Function),
@@ -114,6 +108,7 @@ __decorate([
 ], CatalogController.prototype, "getTrack", null);
 __decorate([
     Get('artists/:deezerId/albums'),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, Param('deezerId')),
     __param(1, Query()),
     __metadata("design:type", Function),
@@ -122,22 +117,15 @@ __decorate([
 ], CatalogController.prototype, "getArtistAlbums", null);
 __decorate([
     Get('artists/:deezerId'),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, Param('deezerId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CatalogController.prototype, "getArtist", null);
 __decorate([
-    Get('artists/:deezerId/detail'),
-    UseGuards(OptionalJwtAuthGuard),
-    __param(0, Param('deezerId')),
-    __param(1, Req()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
-    __metadata("design:returntype", Promise)
-], CatalogController.prototype, "getArtistDetail", null);
-__decorate([
     Get('artists/:deezerId/tracks'),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, Param('deezerId')),
     __param(1, Query()),
     __metadata("design:type", Function),

@@ -13,8 +13,8 @@ export declare class TrendingRepository {
     topTrackGroups(): Promise<TrendingGroup[]>;
     hydrateAlbums(ids: string[]): Promise<never[]> | Prisma.PrismaPromise<({
         artist: {
-            name: string;
             id: string;
+            name: string;
             reviewCount: number;
             deezerId: string;
             mbid: string | null;
@@ -35,13 +35,9 @@ export declare class TrendingRepository {
         lastSyncedAt: Date;
     })[]>;
     hydrateTracks(ids: string[]): Promise<never[]> | Prisma.PrismaPromise<({
-        album: {
-            coverUrl: string | null;
-            deezerId: string;
-        } | null;
         artist: {
-            name: string;
             id: string;
+            name: string;
             reviewCount: number;
             deezerId: string;
             mbid: string | null;
@@ -49,6 +45,10 @@ export declare class TrendingRepository {
             imageUrl: string | null;
             catalogSyncedAt: Date | null;
         };
+        album: {
+            coverUrl: string | null;
+            deezerId: string;
+        } | null;
     } & {
         id: string;
         albumId: string | null;
@@ -63,15 +63,15 @@ export declare class TrendingRepository {
         previewUrl: string | null;
     })[]>;
     saveSnapshot(payload: Prisma.InputJsonValue): Prisma.Prisma__TrendingSnapshotClient<{
-        payload: import("@prisma/client/runtime/client").JsonValue;
         id: string;
+        payload: import("@prisma/client/runtime/client").JsonValue;
         snapshotAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: Prisma.GlobalOmitConfig | undefined;
     }>;
     findLatestSnapshot(): Prisma.Prisma__TrendingSnapshotClient<{
-        payload: import("@prisma/client/runtime/client").JsonValue;
         id: string;
+        payload: import("@prisma/client/runtime/client").JsonValue;
         snapshotAt: Date;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: Prisma.GlobalOmitConfig | undefined;

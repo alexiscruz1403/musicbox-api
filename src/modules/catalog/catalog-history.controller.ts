@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Post,
 } from '@nestjs/common';
 import type { JwtPayload } from '../auth/strategies/jwt.strategy.js';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
@@ -50,5 +51,37 @@ export class CatalogHistoryController {
   @Get('recently-viewed/details')
   async listRecentlyViewedDetails(@CurrentUser() user: JwtPayload) {
     return { data: await this.history.getRecentlyViewedDetails(user.sub) };
+  }
+
+  // Registro explícito de "visto recientemente". Deliberadamente separado de
+  // los GET de detalle (que el frontend prefetchea): solo se llama cuando el
+  // usuario visita de verdad el recurso. Idempotente (upsert por
+  // userId+resourceType+deezerId, solo sube viewedAt) y tolerante a fallos:
+  // siempre 204, incluso si el id no existe (ver CatalogHistoryService.view*).
+  @Post('albums/:deezerId/view')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async recordAlbumView(
+    @CurrentUser() user: JwtPayload,
+    @Param('deezerId') deezerId: string,
+  ) {
+    await this.history.viewAlbum(user.sub, deezerId);
+  }
+
+  @Post('tracks/:deezerId/view')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async recordTrackView(
+    @CurrentUser() user: JwtPayload,
+    @Param('deezerId') deezerId: string,
+  ) {
+    await this.history.viewTrack(user.sub, deezerId);
+  }
+
+  @Post('artists/:deezerId/view')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async recordArtistView(
+    @CurrentUser() user: JwtPayload,
+    @Param('deezerId') deezerId: string,
+  ) {
+    await this.history.viewArtist(user.sub, deezerId);
   }
 }

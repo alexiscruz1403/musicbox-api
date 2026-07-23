@@ -10,17 +10,17 @@ export declare class UserReviewsController {
     }): Promise<{
         data: {
             avatarUrl: string | null;
-            userId: string;
-            status: import("../../../generated/prisma/enums.js").ContentStatus;
-            type: import("../../../generated/prisma/enums.js").ReviewType;
             id: string;
+            albumId: string | null;
+            userId: string;
+            type: import("../../../generated/prisma/enums.js").ReviewType;
+            trackId: string | null;
+            description: string | null;
+            rating: import("@prisma/client-runtime-utils").Decimal;
+            status: import("../../../generated/prisma/enums.js").ContentStatus;
             createdAt: Date;
             updatedAt: Date;
             deletedAt: Date | null;
-            trackId: string | null;
-            albumId: string | null;
-            description: string | null;
-            rating: import("@prisma/client-runtime-utils").Decimal;
             externalTitle: string;
             externalArtistName: string;
             externalCoverUrl: string | null;

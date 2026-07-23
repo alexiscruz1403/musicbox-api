@@ -10,7 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Controller, Delete, Get, HttpCode, HttpStatus, Param, } from '@nestjs/common';
+import { createRequire as _createRequire } from "module";
+const __require = _createRequire(import.meta.url);
+const openapi = __require("@nestjs/swagger");
+import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, } from '@nestjs/common';
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
 import { CatalogHistoryService } from './catalog-history.service.js';
 let CatalogHistoryController = class CatalogHistoryController {
@@ -33,9 +36,19 @@ let CatalogHistoryController = class CatalogHistoryController {
     async listRecentlyViewedDetails(user) {
         return { data: await this.history.getRecentlyViewedDetails(user.sub) };
     }
+    async recordAlbumView(user, deezerId) {
+        await this.history.viewAlbum(user.sub, deezerId);
+    }
+    async recordTrackView(user, deezerId) {
+        await this.history.viewTrack(user.sub, deezerId);
+    }
+    async recordArtistView(user, deezerId) {
+        await this.history.viewArtist(user.sub, deezerId);
+    }
 };
 __decorate([
     Get('search-history'),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, CurrentUser()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -44,6 +57,7 @@ __decorate([
 __decorate([
     Delete('search-history/:id'),
     HttpCode(HttpStatus.NO_CONTENT),
+    openapi.ApiResponse({ status: HttpStatus.NO_CONTENT }),
     __param(0, CurrentUser()),
     __param(1, Param('id')),
     __metadata("design:type", Function),
@@ -53,6 +67,7 @@ __decorate([
 __decorate([
     Delete('search-history'),
     HttpCode(HttpStatus.NO_CONTENT),
+    openapi.ApiResponse({ status: HttpStatus.NO_CONTENT }),
     __param(0, CurrentUser()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -60,6 +75,7 @@ __decorate([
 ], CatalogHistoryController.prototype, "deleteAllSearchHistory", null);
 __decorate([
     Get('recently-viewed'),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, CurrentUser()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -67,11 +83,42 @@ __decorate([
 ], CatalogHistoryController.prototype, "listRecentlyViewed", null);
 __decorate([
     Get('recently-viewed/details'),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, CurrentUser()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CatalogHistoryController.prototype, "listRecentlyViewedDetails", null);
+__decorate([
+    Post('albums/:deezerId/view'),
+    HttpCode(HttpStatus.NO_CONTENT),
+    openapi.ApiResponse({ status: HttpStatus.NO_CONTENT }),
+    __param(0, CurrentUser()),
+    __param(1, Param('deezerId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], CatalogHistoryController.prototype, "recordAlbumView", null);
+__decorate([
+    Post('tracks/:deezerId/view'),
+    HttpCode(HttpStatus.NO_CONTENT),
+    openapi.ApiResponse({ status: HttpStatus.NO_CONTENT }),
+    __param(0, CurrentUser()),
+    __param(1, Param('deezerId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], CatalogHistoryController.prototype, "recordTrackView", null);
+__decorate([
+    Post('artists/:deezerId/view'),
+    HttpCode(HttpStatus.NO_CONTENT),
+    openapi.ApiResponse({ status: HttpStatus.NO_CONTENT }),
+    __param(0, CurrentUser()),
+    __param(1, Param('deezerId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], CatalogHistoryController.prototype, "recordArtistView", null);
 CatalogHistoryController = __decorate([
     Controller('catalog'),
     __metadata("design:paramtypes", [CatalogHistoryService])

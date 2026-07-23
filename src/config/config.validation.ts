@@ -7,6 +7,11 @@ export const configValidationSchema = Joi.object({
   PORT: Joi.number().default(3001),
 
   DATABASE_URL: Joi.string().required(),
+  // Tamaño del pool de Prisma (PrismaService). El presupuesto total de
+  // conexiones debe caber en el `pool_size` del pooler de Supabase:
+  // DATABASE_POOL_MAX + el `max: 5` de PgBossService. Default conservador para
+  // dejar margen a Prisma Studio / migrate / una segunda instancia.
+  DATABASE_POOL_MAX: Joi.number().min(1).default(8),
   DIRECT_URL: Joi.string().optional(),
   // Conexión de pg-boss (bus de jobs). DEBE ser session-mode/direct para
   // soportar el schema propio de pg-boss — NO el transaction pooler de

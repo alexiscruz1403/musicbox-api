@@ -9,8 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var CatalogHistoryService_1;
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { mapWithConcurrency } from '../common/concurrency/map-with-concurrency.util.js';
 import { ArtistDetailService } from './artist-detail.service.js';
 import { CatalogHistoryRepository } from './catalog-history.repository.js';
+import { CATALOG_DB_FANOUT_CONCURRENCY } from './catalog.constants.js';
 import { CatalogService } from './catalog.service.js';
 const ALBUM = 'ALBUM';
 const TRACK = 'TRACK';
@@ -83,12 +85,39 @@ let CatalogHistoryService = CatalogHistoryService_1 = class CatalogHistoryServic
             this.logger.warn(`Failed to record recently-viewed artist: ${err}`);
         }
     }
+    async viewAlbum(userId, deezerId) {
+        try {
+            const album = await this.catalog.getAlbum(deezerId);
+            await this.recordAlbumView(userId, album);
+        }
+        catch (err) {
+            this.logger.warn(`Failed to record recently-viewed album view: ${err}`);
+        }
+    }
+    async viewTrack(userId, deezerId) {
+        try {
+            const track = await this.catalog.getTrack(deezerId);
+            await this.recordTrackView(userId, track);
+        }
+        catch (err) {
+            this.logger.warn(`Failed to record recently-viewed track view: ${err}`);
+        }
+    }
+    async viewArtist(userId, deezerId) {
+        try {
+            const artist = await this.catalog.getArtist(deezerId);
+            await this.recordArtistView(userId, artist);
+        }
+        catch (err) {
+            this.logger.warn(`Failed to record recently-viewed artist view: ${err}`);
+        }
+    }
     async listRecentlyViewed(userId) {
         return this.repo.listRecentlyViewed(userId);
     }
     async getRecentlyViewedDetails(userId) {
         const items = await this.repo.listRecentlyViewed(userId);
-        return Promise.all(items.map((item) => this.hydrateOne(item)));
+        return mapWithConcurrency(items, CATALOG_DB_FANOUT_CONCURRENCY, (item) => this.hydrateOne(item));
     }
     async hydrateOne(item) {
         try {

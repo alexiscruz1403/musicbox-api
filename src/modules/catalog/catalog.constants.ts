@@ -30,3 +30,11 @@ export const PREVIEW_URL_CACHE_TTL_SECONDS = 600; // 10 min, seguro bajo los 900
 // token, así que se cachea tan largo como el resto de los metadatos en vez
 // de re-consultarse contra Deezer cada ~10 minutos para siempre.
 export const PREVIEW_URL_MISSING_CACHE_TTL_SECONDS = 86_400; // espeja CatalogService.CACHE_TTL
+
+// Tope de queries concurrentes cuando un solo request abre un fan-out sobre
+// una lista de tamaño arbitrario (los tracks de un álbum, la hidratación del
+// historial). Cada query en vuelo toma una conexión del pool de Prisma
+// (DATABASE_POOL_MAX), así que un `Promise.all` sin límite bastaba para
+// agotarlo y hacer fallar al pooler de Supabase con EMAXCONNSESSION. Se deja
+// bien por debajo del tamaño del pool para que un request nunca lo monopolice.
+export const CATALOG_DB_FANOUT_CONCURRENCY = 4;
